@@ -44,12 +44,9 @@ public final class ProfileUtils {
 	 * Load a profile.
 	 * 
 	 * @param name the name of the profile to load
-	 * @return the profile
+	 * @return the profile, or {@code null} if the profile does not exist
 	 */
 	public static ProfileInfo profile(String name) {
-
-		SnTokenCredentials creds = null;
-
 		// load from user configuration
 		Path credPath = userConfigurationDir().resolve(CREDENTIALS_FILENAME);
 		if (Files.isReadable(credPath)) {
@@ -59,15 +56,15 @@ public final class ProfileUtils {
 					JsonNode root = mapper.readTree(in);
 					JsonNode credsNode = root.findValue(name);
 					if (credsNode != null) {
-						creds = mapper.treeToValue(credsNode, SnTokenCredentials.class);
+						SnTokenCredentials creds = mapper.treeToValue(credsNode, SnTokenCredentials.class);
+						return new ProfileInfo(name, creds);
 					}
 				}
 			} catch (Exception e) {
 				log.warn("Error reading credentials file [{}]: {}", credPath, e.toString());
 			}
 		}
-
-		return new ProfileInfo(name, creds);
+		return null;
 	}
 
 }
