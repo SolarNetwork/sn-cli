@@ -1,0 +1,32 @@
+plugins {
+	id 'java-library'
+	id 'eclipse'
+	id 'org.springframework.boot' version '3.5.5' apply false
+}
+
+apply plugin: 'java-library'
+apply plugin: 'io.spring.dependency-management'
+
+dependencyManagement {
+	imports {
+		mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+	}
+}
+
+description = 'sn-cli: Common Test'
+version = '0.1.0'
+
+base {
+	archivesName = 'sn-cli-common-test'
+}
+
+dependencies {
+	api 'ch.qos.logback:logback-classic'
+	api 'org.junit.jupiter:junit-jupiter-api'
+	api 'org.springframework.boot:spring-boot-starter-test'
+}
+
+jar.manifest {
+	attributes('Implementation-Version': version)
+}
+

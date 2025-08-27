@@ -1,0 +1,49 @@
+plugins {
+	id 'java-library'
+	id 'org.springframework.boot' version '3.5.5' apply false
+}
+
+apply plugin: 'java-library'
+apply plugin: 'io.spring.dependency-management'
+
+dependencyManagement {
+	imports {
+		mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+	}
+}
+
+description = 'sn-cli: Common'
+version = '0.1.0'
+
+base {
+	archivesName = 'sn-cli-common'
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	implementation "info.picocli:picocli:${picoCliVersion}"
+
+	// JSON
+	implementation 'com.fasterxml.jackson.core:jackson-annotations'
+	implementation 'com.fasterxml.jackson.core:jackson-core'
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
+	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-toml'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+	
+	// Utilities
+	api 'org.slf4j:slf4j-api'
+	
+	// SolarNetwork
+	api "net.solarnetwork.common:net.solarnetwork.common:${snCommonVersion}"
+	implementation "net.solarnetwork.common:net.solarnetwork.common.web.jakarta:${snCommonWebJakartaVersion}"
+	
+	annotationProcessor "info.picocli:picocli-codegen:${picoCliVersion}"
+	
+	// Testing
+	testImplementation project(':sn-cli-common-test')
+}
+
+jar.manifest {
+	attributes('Implementation-Version': version)
+}

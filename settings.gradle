@@ -1,0 +1,16 @@
+plugins {
+    id('org.gradle.toolchains.foojay-resolver-convention') version '1.0.0'
+}
+
+rootProject.name = 'sn-cli'
+
+include "app"
+include "common"
+include "common-test"
+include "instructions"
+
+project(':app').name = "sn-cli-app"
+project(':common').name = "sn-cli-common"
+project(':common-test').name = "sn-cli-common-test"
+project(':instructions').name = "sn-cli-instructions"
+
