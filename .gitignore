@@ -14,3 +14,4 @@ target/
 junit*.properties
 /*.yml
 /*.conf
+/*/*.yml

@@ -71,7 +71,7 @@ subprojects {
 	ext {
 		commonsIoVersion = '2.20.0'
 		picoCliVersion = '4.7.7'
-		snCommonVersion = '4.2.1'
+		snCommonVersion = '4.2.2'
 		snCommonWebJakartaVersion = '2.1.1'
 		superCsvVersion = '2.4.0'
 		threetenExtraVersion = '1.8.0'

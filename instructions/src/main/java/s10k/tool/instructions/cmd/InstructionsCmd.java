@@ -8,7 +8,7 @@ import s10k.tool.instructions.controls.cmd.ControlsCmd;
 /**
  * Instruction commands.
  */
-@Command(name = "instructions", subcommands = { ControlsCmd.class })
+@Command(name = "instructions", subcommands = { ControlsCmd.class, ListInstructionsCmd.class })
 public class InstructionsCmd extends BaseSubCmd<ToolCmd> {
 
 }

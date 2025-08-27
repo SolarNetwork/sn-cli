@@ -22,7 +22,7 @@ import s10k.tool.common.util.RestUtils;
 public abstract class BaseSubCmd<P extends ProfileProvider> implements ProfileProvider {
 
 	@ParentCommand
-	private P parentCmd;
+	protected P parentCmd;
 
 	/** The client HTTP request factory. */
 	protected final ClientHttpRequestFactory reqFactory;
