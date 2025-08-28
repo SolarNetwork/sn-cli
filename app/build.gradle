@@ -36,6 +36,7 @@ dependencyManagement {
 dependencies {
 	implementation project(':sn-cli-common')
 	implementation project(':sn-cli-instructions')
+	implementation project(':sn-cli-nodes')
 
 	implementation "info.picocli:picocli-spring-boot-starter:${picoCliVersion}"
 	implementation 'org.springframework.boot:spring-boot-starter'

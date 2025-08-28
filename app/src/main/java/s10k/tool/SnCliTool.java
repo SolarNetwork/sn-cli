@@ -13,6 +13,7 @@ import picocli.CommandLine;
 import picocli.CommandLine.IFactory;
 import s10k.tool.common.cmd.ToolCmd;
 import s10k.tool.instructions.cmd.InstructionsCmd;
+import s10k.tool.nodes.cmd.NodesCmd;
 
 /**
  * SolarNetwork command-line tool.
@@ -42,6 +43,7 @@ public class SnCliTool implements CommandLineRunner, ExitCodeGenerator {
 		exitCode = new CommandLine(app, factory)
 				.setExecutionStrategy(app::globalInit)
 				.addSubcommand(new InstructionsCmd())
+				.addSubcommand(new NodesCmd())
 				.execute(args);
 		// @formatter:on
 	}

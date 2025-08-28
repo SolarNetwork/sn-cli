@@ -42,6 +42,10 @@ public class TableUtils {
 				dispMap.put(k, v);
 			}
 		}
+
+		keyWidth = Math.min(keyWidth, 28);
+		valWidth = Math.min(valWidth, 68);
+
 		final String tmpl = "%-" + keyWidth + "s %" + (valRightJustified ? "" : "-") + valWidth + "s\n";
 		StringBuilder buf = new StringBuilder(256);
 		if (keyName != null && valName != null && !keyName.isBlank() && !valName.isBlank()) {

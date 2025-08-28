@@ -6,8 +6,13 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import net.solarnetwork.codec.JsonUtils;
+import net.solarnetwork.domain.datum.GeneralDatumMetadata;
+import s10k.tool.nodes.codec.GeneralDatumMetadataSerializer;
+import s10k.tool.nodes.codec.NodeMetadataDeserializer;
+import s10k.tool.nodes.domain.NodeMetadata;
 
 /**
  * JSON configuration.
@@ -18,7 +23,16 @@ public class JsonConfig {
 	@Bean
 	@Primary
 	public ObjectMapper objectMapper() {
-		return JsonUtils.newDatumObjectMapper();
+		ObjectMapper mapper = JsonUtils.newDatumObjectMapper();
+
+		SimpleModule toolModule = new SimpleModule("s10k");
+		toolModule.addDeserializer(NodeMetadata.class, NodeMetadataDeserializer.INSTANCE);
+
+		toolModule.addSerializer(GeneralDatumMetadata.class, GeneralDatumMetadataSerializer.INSTANCE);
+
+		mapper.registerModule(toolModule);
+
+		return mapper;
 	}
 
 	@Bean
