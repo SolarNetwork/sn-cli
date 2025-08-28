@@ -36,15 +36,15 @@ import s10k.tool.common.cmd.BaseSubCmd;
 public class UpdateInstructionsState extends BaseSubCmd<InstructionsCmd> implements Callable<Integer> {
 
 	@Option(names = { "-instruction",
-			"--instruction-id" }, description = "an instruction ID to validate", split = "\\s*,\\s*", splitSynopsisLabel = ",")
+			"--instruction-id" }, description = "an instruction ID to validate", split = "\\s*,\\s*", splitSynopsisLabel = ",", paramLabel = "instructionId")
 	Long[] instructionIds;
 
 	@Option(names = { "-node",
-			"--node-id" }, description = "a node ID to return instructions for", split = "\\s*,\\s*", splitSynopsisLabel = ",")
+			"--node-id" }, description = "a node ID to return instructions for", split = "\\s*,\\s*", splitSynopsisLabel = ",", paramLabel = "nodeId")
 	Long[] nodeIds;
 
 	@Option(names = { "-state",
-			"--state" }, description = "an instruction state to match", split = "\\s*,\\s*", splitSynopsisLabel = ",")
+			"--state" }, description = "an instruction state to match", split = "\\s*,\\s*", splitSynopsisLabel = ",", paramLabel = "state")
 	InstructionState[] instructionStates;
 
 	@Parameters(index = "0", description = "the desired state to set the matching instructions to")

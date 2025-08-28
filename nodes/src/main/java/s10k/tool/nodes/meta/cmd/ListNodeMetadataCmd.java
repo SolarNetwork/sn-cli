@@ -36,7 +36,7 @@ import s10k.tool.nodes.domain.NodeMetadata;
 public class ListNodeMetadataCmd extends BaseSubCmd<NodeMetadataCmd> implements Callable<Integer> {
 
 	@Option(names = { "-node",
-			"--node-id" }, description = "a node ID to return metadata for", split = "\\s*,\\s*", splitSynopsisLabel = ",", required = true)
+			"--node-id" }, description = "a node ID to return metadata for", split = "\\s*,\\s*", splitSynopsisLabel = ",", paramLabel = "nodeId", required = true)
 	Long[] nodeIds;
 
 	@Option(names = { "-filter", "--filter" }, description = "a metadata filter")
