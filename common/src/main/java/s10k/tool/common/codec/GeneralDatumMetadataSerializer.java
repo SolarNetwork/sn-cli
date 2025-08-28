@@ -1,4 +1,4 @@
-package s10k.tool.nodes.codec;
+package s10k.tool.common.codec;
 
 import java.io.IOException;
 import java.util.Map;
@@ -57,7 +57,7 @@ public class GeneralDatumMetadataSerializer extends StdSerializer<GeneralDatumMe
 			gen.getCodec().writeValue(gen, pm);
 		}
 		if (tags != null && !tags.isEmpty()) {
-			gen.writeFieldName("tags");
+			gen.writeFieldName("t");
 			gen.getCodec().writeValue(gen, tags);
 		}
 

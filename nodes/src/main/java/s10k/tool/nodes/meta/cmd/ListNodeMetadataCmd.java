@@ -60,6 +60,10 @@ public class ListNodeMetadataCmd extends BaseSubCmd<NodeMetadataCmd> implements 
 
 		try {
 			Collection<NodeMetadata> metas = listNodeMetadata(restClient, objectMapper, nodeIds, filter);
+			if (metas.isEmpty()) {
+				System.out.println("No metadata matched your criteria.");
+				return 0;
+			}
 			boolean multi = false;
 			for (NodeMetadata meta : metas) {
 				if (multi) {
@@ -83,6 +87,7 @@ public class ListNodeMetadataCmd extends BaseSubCmd<NodeMetadataCmd> implements 
 					System.out.println(pretty.writeValueAsString(gdm));
 				}
 			}
+			return 0;
 		} catch (Exception e) {
 			System.err.println("Error listing node metadata: %s".formatted(e.getMessage()));
 		}
@@ -99,8 +104,8 @@ public class ListNodeMetadataCmd extends BaseSubCmd<NodeMetadataCmd> implements 
 	 * @return the instruction statuses
 	 * @throws IllegalStateException if the instruction listing is not available
 	 */
-	private Collection<NodeMetadata> listNodeMetadata(RestClient restClient, ObjectMapper objectMapper, Long[] nodeIds,
-			String filter) {
+	public static Collection<NodeMetadata> listNodeMetadata(RestClient restClient, ObjectMapper objectMapper,
+			Long[] nodeIds, String filter) {
 		assert filter != null;
 		// @formatter:off
 		JsonNode response = restClient.get()
@@ -128,8 +133,7 @@ public class ListNodeMetadataCmd extends BaseSubCmd<NodeMetadataCmd> implements 
 			try {
 				meta = objectMapper.treeToValue(node, NodeMetadata.class);
 			} catch (JsonProcessingException | IllegalArgumentException e) {
-				log.warn("Error parsing metadata response: {}", e.toString(), e);
-				continue;
+				throw new IllegalStateException("Error parsing node metadata response: " + e.getMessage(), e);
 			}
 			if (meta != null) {
 				result.add(meta);

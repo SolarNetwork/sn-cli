@@ -1,10 +1,9 @@
 /**
  * 
  */
-package s10k.tool.nodes.codec;
+package s10k.tool.common.codec;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,39 +15,34 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
-import net.solarnetwork.codec.JsonDateUtils;
 import net.solarnetwork.codec.JsonUtils;
 import net.solarnetwork.domain.datum.GeneralDatumMetadata;
-import s10k.tool.common.codec.CommonJsonUtils;
-import s10k.tool.nodes.domain.NodeMetadata;
 
 /**
- * Deserialize {@link NodeMetadata}.
+ * Deserialize {@link GeneralDatumMetadata}.
  */
-public class NodeMetadataDeserializer extends StdDeserializer<NodeMetadata> {
+public class GeneralDatumMetadataDeserializer extends StdDeserializer<GeneralDatumMetadata> {
 
-	private static final long serialVersionUID = 2287288509607507040L;
+	private static final long serialVersionUID = -3685787787120339120L;
 
 	/** A default instance . */
-	public static final JsonDeserializer<NodeMetadata> INSTANCE = new NodeMetadataDeserializer();
+	public static final JsonDeserializer<GeneralDatumMetadata> INSTANCE = new GeneralDatumMetadataDeserializer();
 
 	/**
 	 * Constructor.
 	 */
-	public NodeMetadataDeserializer() {
-		super(NodeMetadata.class);
+	public GeneralDatumMetadataDeserializer() {
+		super(GeneralDatumMetadata.class);
 	}
 
 	@SuppressWarnings("StatementSwitchToExpressionSwitch")
 	@Override
-	public NodeMetadata deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
+	public GeneralDatumMetadata deserialize(JsonParser p, DeserializationContext ctxt)
+			throws IOException, JacksonException {
 		JsonToken t = p.currentToken();
 		if (t == JsonToken.VALUE_NULL) {
 			return null;
 		} else if (p.isExpectedStartObjectToken()) {
-			Long nodeId = null;
-			Instant created = null;
-			Instant updated = null;
 			Map<String, Object> m = null;
 			Map<String, Map<String, Object>> pm = null;
 			Set<String> tags = null;
@@ -56,21 +50,6 @@ public class NodeMetadataDeserializer extends StdDeserializer<NodeMetadata> {
 			String f;
 			while ((f = p.nextFieldName()) != null) {
 				switch (f) {
-				case "nodeId":
-					p.nextToken();
-					nodeId = p.getLongValue();
-					break;
-
-				case "created":
-					p.nextToken();
-					created = JsonDateUtils.InstantDeserializer.INSTANCE.deserialize(p, ctxt);
-					break;
-
-				case "updated":
-					p.nextToken();
-					updated = JsonDateUtils.InstantDeserializer.INSTANCE.deserialize(p, ctxt);
-					break;
-
 				case "m":
 					p.nextToken();
 					m = p.getCodec().readValue(p, JsonUtils.STRING_MAP_TYPE);
@@ -95,9 +74,9 @@ public class NodeMetadataDeserializer extends StdDeserializer<NodeMetadata> {
 
 			var gdm = new GeneralDatumMetadata(m, pm);
 			gdm.setTags(tags);
-			return new NodeMetadata(nodeId, created, updated, gdm);
+			return gdm;
 		}
-		throw new JsonParseException(p, "Unable to parse NodeMetadats (not an object)");
+		throw new JsonParseException(p, "Unable to parse GeneralDatumMetadata (not an object)");
 	}
 
 }

@@ -58,6 +58,7 @@ public class SetOperatingState extends BaseSubCmd<ControlsCmd> implements Callab
 								.formatted(parentCmd.controlId, value, status.getInstructionState(),
 										status.getInstructionId())));
 			}
+			return 0;
 		} catch (Exception e) {
 			System.err.println(Ansi.AUTO.string("Error setting operating state: %s".formatted(e.getMessage())));
 		}

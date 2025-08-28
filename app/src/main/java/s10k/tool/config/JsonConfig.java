@@ -10,7 +10,8 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import net.solarnetwork.codec.JsonUtils;
 import net.solarnetwork.domain.datum.GeneralDatumMetadata;
-import s10k.tool.nodes.codec.GeneralDatumMetadataSerializer;
+import s10k.tool.common.codec.GeneralDatumMetadataDeserializer;
+import s10k.tool.common.codec.GeneralDatumMetadataSerializer;
 import s10k.tool.nodes.codec.NodeMetadataDeserializer;
 import s10k.tool.nodes.domain.NodeMetadata;
 
@@ -26,6 +27,7 @@ public class JsonConfig {
 		ObjectMapper mapper = JsonUtils.newDatumObjectMapper();
 
 		SimpleModule toolModule = new SimpleModule("s10k");
+		toolModule.addDeserializer(GeneralDatumMetadata.class, GeneralDatumMetadataDeserializer.INSTANCE);
 		toolModule.addDeserializer(NodeMetadata.class, NodeMetadataDeserializer.INSTANCE);
 
 		toolModule.addSerializer(GeneralDatumMetadata.class, GeneralDatumMetadataSerializer.INSTANCE);

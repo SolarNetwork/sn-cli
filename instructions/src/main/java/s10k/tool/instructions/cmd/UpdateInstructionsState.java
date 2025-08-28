@@ -80,13 +80,14 @@ public class UpdateInstructionsState extends BaseSubCmd<InstructionsCmd> impleme
 		final RestClient restClient = restClient();
 
 		try {
-			Collection<Long> updatedIds = updateInstructionState(restClient, objectMapper, filter, desiredState);
+			Collection<Long> updatedIds = updateInstructionState(restClient, filter, desiredState);
 			if (updatedIds.isEmpty()) {
 				System.out.println("No instructions matched your criteria.");
 			} else {
 				System.out.println(Ansi.AUTO.string("Updated @|bold %d|@ instructions to @|bold %s|@: %s".formatted(
 						updatedIds.size(), desiredState, StringUtils.collectionToCommaDelimitedString(updatedIds))));
 			}
+			return 0;
 		} catch (Exception e) {
 			System.err.println("Error updating instructions state: %s".formatted(e.getMessage()));
 		}
@@ -97,14 +98,13 @@ public class UpdateInstructionsState extends BaseSubCmd<InstructionsCmd> impleme
 	 * Execute an instruction given a request map.
 	 * 
 	 * @param restClient   the REST client
-	 * @param objectMapper the object mapper
 	 * @param filter       the query filter
 	 * @param desiredState the state to update instructions to
 	 * @return the IDs of all updated instructions
 	 * @throws IllegalStateException if the instruction listing is not available
 	 */
-	private static Collection<Long> updateInstructionState(RestClient restClient, ObjectMapper objectMapper,
-			InstructionsFilter filter, InstructionState desiredState) {
+	private static Collection<Long> updateInstructionState(RestClient restClient, InstructionsFilter filter,
+			InstructionState desiredState) {
 		assert filter != null;
 
 		MultiValueMap<String, Object> postBody = filter.toRequestMap();

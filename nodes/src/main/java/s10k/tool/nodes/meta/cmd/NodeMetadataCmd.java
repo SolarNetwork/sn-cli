@@ -7,7 +7,13 @@ import s10k.tool.nodes.cmd.NodesCmd;
 /**
  * Node commands.
  */
-@Command(name = "meta", subcommands = { ListNodeMetadataCmd.class })
+// @formatter:off
+@Command(name = "meta", subcommands = {
+		DeleteNodeMetadataCmd.class,
+		ListNodeMetadataCmd.class,
+		SaveNodeMetadataCmd.class
+})
+// @formatter:on
 public class NodeMetadataCmd extends BaseSubCmd<NodesCmd> {
 
 }

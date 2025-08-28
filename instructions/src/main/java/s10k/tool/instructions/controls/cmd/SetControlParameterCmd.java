@@ -58,6 +58,7 @@ public class SetControlParameterCmd extends BaseSubCmd<ControlsCmd> implements C
 								.formatted(parentCmd.controlId, value, status.getInstructionState(),
 										status.getInstructionId())));
 			}
+			return 0;
 		} catch (Exception e) {
 			System.err.println(Ansi.AUTO.string("Error setting control parameter: %s".formatted(e.getMessage())));
 		}

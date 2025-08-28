@@ -72,6 +72,10 @@ public class ListInstructionsCmd extends BaseSubCmd<InstructionsCmd> implements 
 		// @formatter:on
 		try {
 			Collection<Instruction> instrs = listInstructions(restClient, objectMapper, filter);
+			if (instrs == null) {
+				System.out.println("No instructions matched your criteria.");
+				return 0;
+			}
 			boolean multi = false;
 			for (Instruction instr : instrs) {
 				if (multi) {
@@ -99,6 +103,7 @@ public class ListInstructionsCmd extends BaseSubCmd<InstructionsCmd> implements 
 				System.out.print(basicTable(tableData, "Property", "Value", false));
 				// @formatter:on
 			}
+			return 0;
 		} catch (Exception e) {
 			System.err.println("Error listing instructions: %s".formatted(e.getMessage()));
 		}
