@@ -1,6 +1,7 @@
 package s10k.tool.instructions.util;
 
 import static net.solarnetwork.util.StringUtils.commaDelimitedStringFromCollection;
+import static s10k.tool.common.util.RestUtils.checkSuccess;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -60,13 +61,6 @@ public final class InstructionsUtils {
 		return Map.of("nodeId", nodeId, "params", Map.of(key, val));
 	}
 
-	private static void checkSuccess(JsonNode response) {
-		if (!response.path("success").booleanValue()) {
-			throw new IllegalStateException(
-					"Non-success response returned: " + response.path("message").asText("Unknown reason."));
-		}
-	}
-
 	/**
 	 * Execute an instruction given a request map.
 	 * 
@@ -122,7 +116,7 @@ public final class InstructionsUtils {
 	}
 
 	/**
-	 * Execute an instruction given a request map.
+	 * List instructions matching a search filter.
 	 * 
 	 * @param restClient   the REST client
 	 * @param objectMapper the object mapper

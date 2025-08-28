@@ -9,6 +9,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.solarnetwork.web.jakarta.security.AuthorizationCredentialsProvider;
@@ -72,4 +73,17 @@ public final class RestUtils {
 		return RestClient.builder(template).baseUrl(baseUrl).build();
 	}
 
+	/**
+	 * Validate the success response property.
+	 * 
+	 * @param response the response to validate
+	 * @throws IllegalStateException if the response does not have a {@code true}
+	 *                               success value
+	 */
+	public static void checkSuccess(JsonNode response) {
+		if (!response.path("success").booleanValue()) {
+			throw new IllegalStateException(
+					"Non-success response returned: " + response.path("message").asText("Unknown reason."));
+		}
+	}
 }
