@@ -53,7 +53,7 @@ Then you can run:
 .\gradlew.bat nativeCompile
 ```
 
-The native binary will be built to `build/native/nativeCompile/s10k`.
+The native binary will be built to `app/build/native/nativeCompile/s10k`.
 
 [graalvm]: https://www.graalvm.org/
 [logging-conf]: https://docs.spring.io/spring-boot/reference/features/logging.html
