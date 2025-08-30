@@ -3,6 +3,7 @@ package s10k.tool.instructions.util;
 import static net.solarnetwork.util.StringUtils.commaDelimitedStringFromCollection;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -23,6 +24,9 @@ import s10k.tool.instructions.cmd.InstructionsFilter;
  * Helper methods for instructions.
  */
 public final class InstructionsUtils {
+
+	/** The default maximum time to wait for instruction results. */
+	public static final Duration DEFAULT_INSTRUCTION_RESULT_MAX_WAIT = Duration.ofSeconds(30);
 
 	private InstructionsUtils() {
 		// not available
@@ -62,6 +66,23 @@ public final class InstructionsUtils {
 	}
 
 	/**
+	 * Execute an instruction given a request map with the default maximum wait
+	 * time.
+	 * 
+	 * @param restClient      the REST client
+	 * @param objectMapper    the object mapper
+	 * @param instructionName the name of the instruction to execute
+	 * @param request         the instruction request (must include a {@code nodeId}
+	 *                        key) used
+	 * @return the instruction status
+	 * @throws IllegalStateException if the instruction result is not available
+	 */
+	public static InstructionStatus executeInstruction(RestClient restClient, ObjectMapper objectMapper,
+			String instructionName, Map<String, ?> request) {
+		return executeInstruction(restClient, objectMapper, instructionName, request, null);
+	}
+
+	/**
 	 * Execute an instruction given a request map.
 	 * 
 	 * @param restClient      the REST client
@@ -69,14 +90,20 @@ public final class InstructionsUtils {
 	 * @param instructionName the name of the instruction to execute
 	 * @param request         the instruction request (must include a {@code nodeId}
 	 *                        key)
+	 * @param maxWait         the maximum amount of time to wait for the instruction
+	 *                        result; if {@code null} then
+	 *                        {@link #DEFAULT_INSTRUCTION_RESULT_MAX_WAIT} will be
+	 *                        used
 	 * @return the instruction status
 	 * @throws IllegalStateException if the instruction result is not available
 	 */
 	public static InstructionStatus executeInstruction(RestClient restClient, ObjectMapper objectMapper,
-			String instructionName, Map<String, ?> request) {
+			String instructionName, Map<String, ?> request, Duration maxWait) {
 		// @formatter:off
 		JsonNode response = restClient.post()
-			.uri("/solaruser/api/v1/sec/instr/exec/%s?resultMaxWait=%d".formatted(instructionName, 30000))
+			.uri("/solaruser/api/v1/sec/instr/exec/%s?resultMaxWait=%d".formatted(
+					instructionName, 
+					(maxWait != null ? maxWait : DEFAULT_INSTRUCTION_RESULT_MAX_WAIT).toMillis()))
 			.contentType(MediaType.APPLICATION_JSON)
 			.body(request)
 			.accept(MediaType.APPLICATION_JSON)
