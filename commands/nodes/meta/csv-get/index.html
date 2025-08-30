@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://solarnetwork.github.io/sn-cli/commands/nodes/meta/delete/">
+        <link rel="canonical" href="https://solarnetwork.github.io/sn-cli/commands/nodes/meta/csv-get/">
       
       
-        <link rel="prev" href="../csv-set/">
+        <link rel="prev" href="../">
       
       
-        <link rel="next" href="../list/">
+        <link rel="next" href="../csv-set/">
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>delete - SolarNetwork CLI</title>
+        <title>csv-get - SolarNetwork CLI</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#nodes-meta-delete" class="md-skip">
+        <a href="#nodes-meta-csv-get" class="md-skip">
           Skip to content
         </a>
       
@@ -111,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              delete
+              csv-get
             
           </span>
         </div>
@@ -496,10 +496,19 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../csv-get/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -510,6 +519,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -542,19 +552,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../delete/" class="md-nav__link">
         
   
   
@@ -565,7 +566,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -674,10 +674,12 @@
 
 
 
-<h1 id="nodes-meta-delete">Nodes Meta Delete<a class="headerlink" href="#nodes-meta-delete" title="Permanent link">&para;</a></h1>
-<p>Delete all metadata associated with a node.</p>
+<h1 id="nodes-meta-csv-get">Nodes Meta CSV-Get<a class="headerlink" href="#nodes-meta-csv-get" title="Permanent link">&para;</a></h1>
+<p>Extract CSV from node metadata at a specific metadata <a href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarNet-API-global-objects#metadata-filter-key-paths">key path</a>. CSV metadata
+is often used for tariff schedules in SolarNode, such as <a href="https://solarnetwork.github.io/solarnode-handbook/users/expressions/#tariff-schedule-functions">tariff schedule expressions</a>.</p>
 <h1 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h1>
-<div class="highlight"><pre><span></span><code>s10k nodes meta delete -node=&lt;nodeId&gt;
+<div class="highlight"><pre><span></span><code>s10k nodes meta csv-get [-mode=&lt;displayMode&gt;] -node=&lt;nodeId&gt;
+                        [-path=&lt;metadataPath&gt;]
 </code></pre></div>
 <h2 id="options">Options<a class="headerlink" href="#options" title="Permanent link">&para;</a></h2>
 <div class="options-explicit-col-widths">
@@ -693,16 +695,77 @@
 <tr>
 <td style="text-align: left;"><code>-node=</code></td>
 <td style="text-align: left;"><code>--node-id=</code></td>
-<td style="text-align: left;">the node ID to delete metadata from</td>
+<td style="text-align: left;">the node ID to get metadata from</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>-path=</code></td>
+<td style="text-align: left;"><code>--path=</code></td>
+<td style="text-align: left;">the <a href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarNet-API-global-objects#metadata-filter-key-paths">key path</a> with the CSV data to extract</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>-mode=</code></td>
+<td style="text-align: left;"><code>--display-mode=</code></td>
+<td style="text-align: left;">the format to display the data as, one of <code>CSV</code>, <code>JSON</code>, or <code>PRETTY</code>; defaults to <code>PRETTY</code></td>
 </tr>
 </tbody>
 </table>
 </div>
 <h2 id="output">Output<a class="headerlink" href="#output" title="Permanent link">&para;</a></h2>
-<p>A success message.</p>
+<p>The CSV data, formatted according to the <code>--display-mode</code> option.</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
-<div class="highlight"><span class="filename">Delete metadata</span><pre><span></span><code>s10k<span class="w"> </span>--profile<span class="w"> </span>demo<span class="w"> </span>nodes<span class="w"> </span>meta<span class="w"> </span>delete<span class="w"> </span>--node-id<span class="w"> </span><span class="m">101</span>
+<p>Show CSV data in the default formatting:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Show CSV with pretty formatting</label><label for="__tabbed_1_2">Output</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>--profile<span class="w"> </span>demo<span class="w"> </span>nodes<span class="w"> </span>meta<span class="w"> </span>csv-get<span class="w"> </span>--node-id<span class="w"> </span><span class="m">101</span><span class="w"> </span>--path<span class="w"> </span>/pm/cpd/schedule
 </code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>+-----------------+-----+---------+------+-----------------+
+|           Month | Day | Weekday | Time | cpdPeriodActive |
++-----------------+-----+---------+------+-----------------+
+| Jan-Apr,Oct-Dec |     |         |      |               0 |
++-----------------+-----+---------+------+-----------------+
+|         May-Sep |     |         |      |               1 |
++-----------------+-----+---------+------+-----------------+
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>The same data can be output as CSV as well:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Show CSV with CSV formatting</label><label for="__tabbed_2_2">Output</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>--profile<span class="w"> </span>demo<span class="w"> </span>nodes<span class="w"> </span>meta<span class="w"> </span>csv-get<span class="w"> </span>--node-id<span class="w"> </span><span class="m">101</span><span class="w"> </span>--path<span class="w"> </span>/pm/cpd/schedule<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>--display-mode<span class="w"> </span>CSV
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>Month,Day,Weekday,Time,cpdPeriodActive
+&quot;Jan-Apr,Oct-Dec&quot;,,,,0
+May-Sep,,,,1
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>The same data can be output as JSON as well:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Show CSV with JSON formatting</label><label for="__tabbed_3_2">Output</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>--profile<span class="w"> </span>demo<span class="w"> </span>nodes<span class="w"> </span>meta<span class="w"> </span>csv-get<span class="w"> </span>--node-id<span class="w"> </span><span class="m">101</span><span class="w"> </span>--path<span class="w"> </span>/pm/cpd/schedule<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>--display-mode<span class="w"> </span>JSON
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>[
+  [ &quot;Month&quot;, &quot;Day&quot;, &quot;Weekday&quot;, &quot;Time&quot;, &quot;cpdPeriodActive&quot; ],
+  [ &quot;Jan-Apr,Oct-Dec&quot;, null, null, null, &quot;0&quot; ],
+  [ &quot;May-Sep&quot;, null, null, null, &quot;1&quot; ]
+]
+</code></pre></div>
+</div>
+</div>
+</div>
 
 
 
