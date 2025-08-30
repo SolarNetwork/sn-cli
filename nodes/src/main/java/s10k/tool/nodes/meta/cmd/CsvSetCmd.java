@@ -32,7 +32,9 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import s10k.tool.common.cmd.BaseSubCmd;
+import s10k.tool.common.domain.TableDisplayMode;
 import s10k.tool.common.util.SystemUtils;
+import s10k.tool.common.util.TableUtils;
 
 /**
  * Write a CSV table to metadata.
@@ -46,6 +48,10 @@ public class CsvSetCmd extends BaseSubCmd<NodeMetadataCmd> implements Callable<I
 
 	@Option(names = { "-path", "--path" }, description = "metadata path to CSV data to read")
 	String metadataPath;
+
+	@Option(names = { "-mode",
+			"--display-mode" }, description = "how to display the CSV data", required = false, defaultValue = "PRETTY")
+	TableDisplayMode displayMode = TableDisplayMode.PRETTY;
 
 	@Option(names = { "-s", "--string" }, description = "encode the CSV as a JSON string, intead of JSON arrays")
 	boolean encodeAsString;
@@ -84,11 +90,12 @@ public class CsvSetCmd extends BaseSubCmd<NodeMetadataCmd> implements Callable<I
 			return 1;
 		}
 
-		GeneralDatumMetadata gdm = new GeneralDatumMetadata();
+		final GeneralDatumMetadata gdm = new GeneralDatumMetadata();
 		gdm.populate(new KeyValuePair[] { new KeyValuePair(metadataPath, value) });
+
+		final List<List<String>> data = (!encodeAsString || verbosity() > 0 ? csvData(value) : null);
 		if (!encodeAsString) {
 			// convert CSV string into String[][]-like structure
-			List<List<String>> data = csvData(value);
 			int lastSepIdx = metadataPath.lastIndexOf('/');
 			String parentMetadataPath = metadataPath.substring(0, lastSepIdx);
 			String csvPropertyKey = metadataPath.substring(lastSepIdx + 1);
@@ -104,6 +111,9 @@ public class CsvSetCmd extends BaseSubCmd<NodeMetadataCmd> implements Callable<I
 		try {
 			SaveNodeMetadataCmd.saveMetadata(restClient, nodeId, gdm, false);
 			System.out.println("CSV saved to to path [%s].".formatted(metadataPath));
+			if (verbosity() > 0) {
+				TableUtils.renderTableData(data, displayMode, objectMapper, System.out);
+			}
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error listing node metadata: %s".formatted(e.getMessage()));

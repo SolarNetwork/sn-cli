@@ -181,12 +181,14 @@ public class TableUtils {
 			}
 		} else if (mode == TableDisplayMode.JSON) {
 			objectMapper.writer(TableDataJsonPrettyPrinter.INSTANCE).writeValue(out, data);
+			out.write(System.lineSeparator().getBytes());
 		} else {
 			// @formatter:off
 			AsciiTable.builder()
 				.data(data.stream().map(l -> l.toArray(Object[]::new)).toArray(Object[][]::new))
 				.writeTo(out);
 				;
+			out.write(System.lineSeparator().getBytes());
 			// @formatter:on			
 		}
 	}

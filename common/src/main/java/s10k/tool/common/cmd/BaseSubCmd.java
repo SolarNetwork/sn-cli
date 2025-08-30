@@ -78,6 +78,16 @@ public abstract class BaseSubCmd<P extends ProfileProvider> implements ProfilePr
 	}
 
 	/**
+	 * Get the verbosity level.
+	 * 
+	 * @return the verbosity level, with {@code 0} for "not verbose"
+	 */
+	protected int verbosity() {
+		ToolCmd cmd = toolCmd();
+		return (cmd != null ? cmd.verbosity() : 0);
+	}
+
+	/**
 	 * Get the "trace HTTP" mode.
 	 * 
 	 * @return {@code true} if HTTP trace should be enabled
