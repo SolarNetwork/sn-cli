@@ -6,6 +6,7 @@ import static org.supercsv.prefs.CsvPreference.STANDARD_PREFERENCE;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.SequencedCollection;
@@ -181,14 +182,14 @@ public class TableUtils {
 			}
 		} else if (mode == TableDisplayMode.JSON) {
 			objectMapper.writer(TableDataJsonPrettyPrinter.INSTANCE).writeValue(out, data);
-			out.write(System.lineSeparator().getBytes());
+			out.write(System.lineSeparator().getBytes(Charset.defaultCharset()));
 		} else {
 			// @formatter:off
 			AsciiTable.builder()
 				.data(data.stream().map(l -> l.toArray(Object[]::new)).toArray(Object[][]::new))
 				.writeTo(out);
 				;
-			out.write(System.lineSeparator().getBytes());
+			out.write(System.lineSeparator().getBytes(Charset.defaultCharset()));
 			// @formatter:on			
 		}
 	}
