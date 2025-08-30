@@ -67,7 +67,7 @@ s10k --profile demo nodes meta save --node-id 101 @@/path/to/metadata.json
 The metadata content can be read from standard input, like this:
 
 ```sh title="Metadata read from standard input"
-s10k --profile=demo nodes meta save -node 1011 </path/to/metadata.json
+s10k --profile demo nodes meta save --node-id 101 </path/to/metadata.json
 ```
 
 Similarly, the metadata content can be piped to the command, like this:
