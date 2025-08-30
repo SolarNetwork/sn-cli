@@ -11,7 +11,6 @@ apply plugin: 'net.ltgt.errorprone'
 apply plugin: 'org.graalvm.buildtools.native'
 
 description = 'SolarNetwork Command Line Tool'
-version = '0.1.0'
 
 base {
 	archivesName = 's10k'
