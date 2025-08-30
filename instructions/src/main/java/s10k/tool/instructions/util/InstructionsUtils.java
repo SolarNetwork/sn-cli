@@ -76,7 +76,7 @@ public final class InstructionsUtils {
 			String instructionName, Map<String, ?> request) {
 		// @formatter:off
 		JsonNode response = restClient.post()
-			.uri("/solaruser/api/v1/sec/instr/exec/%s?resultMaxWait=%d".formatted(instructionName, 10))
+			.uri("/solaruser/api/v1/sec/instr/exec/%s?resultMaxWait=%d".formatted(instructionName, 30000))
 			.contentType(MediaType.APPLICATION_JSON)
 			.body(request)
 			.accept(MediaType.APPLICATION_JSON)
