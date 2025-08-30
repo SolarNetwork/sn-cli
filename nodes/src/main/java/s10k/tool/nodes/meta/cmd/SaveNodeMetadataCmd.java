@@ -105,7 +105,7 @@ public class SaveNodeMetadataCmd extends BaseSubCmd<NodeMetadataCmd> implements 
 	 *                   existing metadata
 	 * @throws IllegalStateException if the metadata fails to save
 	 */
-	private static void saveMetadata(RestClient restClient, Long nodeId, GeneralDatumMetadata metadata,
+	public static void saveMetadata(RestClient restClient, Long nodeId, GeneralDatumMetadata metadata,
 			boolean replace) {
 		assert nodeId != null;
 

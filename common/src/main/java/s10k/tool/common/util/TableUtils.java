@@ -1,7 +1,26 @@
 package s10k.tool.common.util;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.supercsv.prefs.CsvPreference.STANDARD_PREFERENCE;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.SequencedCollection;
+
+import org.supercsv.io.CsvListWriter;
+import org.supercsv.io.ICsvListWriter;
+
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.PrettyPrinter;
+import com.fasterxml.jackson.core.util.DefaultIndenter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.freva.asciitable.AsciiTable;
+
+import s10k.tool.common.domain.TableDisplayMode;
 
 /**
  * Helper methods for generating formatted tables.
@@ -70,6 +89,106 @@ public class TableUtils {
 			}
 		}
 		return buf.toString();
+	}
+
+	/**
+	 * Custom {@link PrettyPrinter} to print table data with rows on individual
+	 * lines.
+	 */
+	public static final class TableDataJsonPrettyPrinter extends DefaultPrettyPrinter {
+
+		private static final long serialVersionUID = -6875910774013342642L;
+
+		/** A default instance. */
+		public static final TableDataJsonPrettyPrinter INSTANCE = new TableDataJsonPrettyPrinter();
+
+		private int arrayNestingLevel = 0;
+
+		public TableDataJsonPrettyPrinter() {
+			super();
+			// indentArraysWith(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE);
+		}
+
+		@Override
+		public DefaultPrettyPrinter createInstance() {
+			return new TableDataJsonPrettyPrinter();
+		}
+
+		@Override
+		public void beforeArrayValues(JsonGenerator g) throws IOException {
+			if (arrayNestingLevel > 1) {
+				super.beforeArrayValues(g);
+			}
+		}
+
+		@Override
+		public void writeStartArray(JsonGenerator g) throws IOException {
+			arrayNestingLevel++;
+			if (arrayNestingLevel == 1) {
+				g.writeRaw('[');
+				g.writeRaw(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE.getEol());
+			} else {
+				if (arrayNestingLevel == 2) {
+					g.writeRaw("  ");
+				}
+				super.writeStartArray(g);
+			}
+		}
+
+		@Override
+		public void writeEndArray(JsonGenerator g, int nrOfValues) throws IOException {
+			arrayNestingLevel--;
+			if (arrayNestingLevel == 0) {
+				g.writeRaw(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE.getEol());
+				g.writeRaw(']');
+			} else {
+				super.writeEndArray(g, nrOfValues);
+			}
+		}
+
+		@Override
+		public void writeArrayValueSeparator(JsonGenerator g) throws IOException {
+			if (arrayNestingLevel == 1) {
+				g.writeRaw(',');
+				g.writeRaw(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE.getEol());
+			} else {
+				super.writeArrayValueSeparator(g);
+			}
+		}
+	}
+
+	/**
+	 * Render tabular data to an output stream.
+	 * 
+	 * @param data         the data to render
+	 * @param mode         the output mode
+	 * @param objectMapper the JSON mapper to use (only required for if {@code mode}
+	 *                     is {@code JSON})
+	 * @param out          the output stream
+	 * @throws IOException if any IO error occurs
+	 */
+	public static void renderTableData(SequencedCollection<? extends SequencedCollection<?>> data,
+			TableDisplayMode mode, ObjectMapper objectMapper, OutputStream out) throws IOException {
+		if (data == null || data.isEmpty()) {
+			return;
+		}
+		if (mode == TableDisplayMode.CSV) {
+			try (ICsvListWriter csvWriter = new CsvListWriter(new OutputStreamWriter(out, UTF_8),
+					STANDARD_PREFERENCE)) {
+				for (SequencedCollection<?> row : data) {
+					csvWriter.write(row.toArray(Object[]::new));
+				}
+			}
+		} else if (mode == TableDisplayMode.JSON) {
+			objectMapper.writer(TableDataJsonPrettyPrinter.INSTANCE).writeValue(out, data);
+		} else {
+			// @formatter:off
+			AsciiTable.builder()
+				.data(data.stream().map(l -> l.toArray(Object[]::new)).toArray(Object[][]::new))
+				.writeTo(out);
+				;
+			// @formatter:on			
+		}
 	}
 
 }

@@ -9,6 +9,8 @@ import s10k.tool.nodes.cmd.NodesCmd;
  */
 // @formatter:off
 @Command(name = "meta", subcommands = {
+		CsvGetCmd.class,
+		CsvSetCmd.class,
 		DeleteNodeMetadataCmd.class,
 		ListNodeMetadataCmd.class,
 		SaveNodeMetadataCmd.class

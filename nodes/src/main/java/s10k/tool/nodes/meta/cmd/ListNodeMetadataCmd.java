@@ -6,7 +6,6 @@ import static s10k.tool.common.util.TableUtils.basicTable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +58,7 @@ public class ListNodeMetadataCmd extends BaseSubCmd<NodeMetadataCmd> implements 
 		ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
 
 		try {
-			Collection<NodeMetadata> metas = listNodeMetadata(restClient, objectMapper, nodeIds, filter);
+			List<NodeMetadata> metas = listNodeMetadata(restClient, objectMapper, nodeIds, filter);
 			if (metas.isEmpty()) {
 				System.out.println("No metadata matched your criteria.");
 				return 0;
@@ -104,8 +103,8 @@ public class ListNodeMetadataCmd extends BaseSubCmd<NodeMetadataCmd> implements 
 	 * @return the instruction statuses
 	 * @throws IllegalStateException if the instruction listing is not available
 	 */
-	public static Collection<NodeMetadata> listNodeMetadata(RestClient restClient, ObjectMapper objectMapper,
-			Long[] nodeIds, String filter) {
+	public static List<NodeMetadata> listNodeMetadata(RestClient restClient, ObjectMapper objectMapper, Long[] nodeIds,
+			String filter) {
 		assert filter != null;
 		// @formatter:off
 		JsonNode response = restClient.get()

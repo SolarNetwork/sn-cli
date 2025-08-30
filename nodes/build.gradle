@@ -22,15 +22,19 @@ base {
 dependencies {
 	implementation project(':sn-cli-common')
 	
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-
+	// Core
 	implementation "info.picocli:picocli:${picoCliVersion}"
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 
 	// JSON
 	implementation 'com.fasterxml.jackson.core:jackson-annotations'
 	implementation 'com.fasterxml.jackson.core:jackson-core'
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+	// Utilities
+	implementation "net.sf.supercsv:super-csv:${superCsvVersion}"
 	
+	// Annotations
 	annotationProcessor "info.picocli:picocli-codegen:${picoCliVersion}"
 	
 	// Testing
