@@ -1,4 +1,3 @@
 # Nodes Commands
 
-TODO
-
+The `nodes` group of commands deal with SolarNode related actions.
