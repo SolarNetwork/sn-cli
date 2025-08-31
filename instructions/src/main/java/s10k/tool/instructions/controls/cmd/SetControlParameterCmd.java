@@ -26,7 +26,7 @@ import s10k.tool.common.cmd.BaseSubCmd;
 @Command(name = "set")
 public class SetControlParameterCmd extends BaseSubCmd<ControlsCmd> implements Callable<Integer> {
 
-	@Parameters(index = "0", description = "the value to set the control to")
+	@Parameters(index = "0", description = "the value to set the control to", paramLabel = "desiredValue")
 	String value;
 
 	/**
