@@ -1,11 +1,12 @@
 package s10k.tool.instructions.cmd;
 
-import static java.time.temporal.ChronoUnit.SECONDS;
 import static java.util.Arrays.asList;
 import static s10k.tool.common.util.TableUtils.basicTable;
 import static s10k.tool.instructions.util.InstructionsUtils.listInstructions;
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -23,6 +24,7 @@ import net.solarnetwork.domain.InstructionStatus.InstructionState;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
+import s10k.tool.common.util.LocalDateTimeConverter;
 
 /**
  * List instruction status.
@@ -31,17 +33,43 @@ import s10k.tool.common.cmd.BaseSubCmd;
 @Command(name = "list")
 public class ListInstructionsCmd extends BaseSubCmd<InstructionsCmd> implements Callable<Integer> {
 
-	@Option(names = { "-instruction",
-			"--instruction-id" }, description = "an instruction ID to validate", split = "\\s*,\\s*", splitSynopsisLabel = ",", paramLabel = "instructionId")
+	// @formatter:off
+	@Option(names = { "-id", "--instruction-id" },
+		description = "an instruction ID to validate",
+		split = "\\s*,\\s*",
+		splitSynopsisLabel = ",",
+		paramLabel = "instructionId")
 	Long[] instructionIds;
 
-	@Option(names = { "-node",
-			"--node-id" }, description = "a node ID to return instructions for", split = "\\s*,\\s*", splitSynopsisLabel = ",", paramLabel = "nodeId")
+	@Option(names = { "-node", "--node-id" },
+		description = "a node ID to return instructions for",
+		split = "\\s*,\\s*",
+		splitSynopsisLabel = ",",
+		paramLabel = "nodeId")
 	Long[] nodeIds;
 
-	@Option(names = { "-state",
-			"--state" }, description = "an instruction state to match", split = "\\s*,\\s*", splitSynopsisLabel = ",", paramLabel = "state")
+	@Option(names = { "-state", "--state" },
+		description = "an instruction state to match",
+		split = "\\s*,\\s*",
+		splitSynopsisLabel = ",",
+		paramLabel = "state")
 	InstructionState[] instructionStates;
+
+	@Option(names = { "-min", "--min-date" },
+		description = "a minimum instruction creation date to match",
+		converter = LocalDateTimeConverter.class)
+	LocalDateTime minDate;
+
+	@Option(names = { "-max", "--max-date" },
+		description = "a maximum instruction creation date (exclusive) to match",
+		converter = LocalDateTimeConverter.class)
+	LocalDateTime maxDate;
+
+	@Option(names = { "-tz", "--time-zone" },
+		description = "a time zone to interpret the min and max dates as, instead of the local time zone"
+	)
+	ZoneId zone;
+	// @formatter:on
 
 	/**
 	 * Constructor.
@@ -56,7 +84,7 @@ public class ListInstructionsCmd extends BaseSubCmd<InstructionsCmd> implements 
 	@Override
 	public Integer call() throws Exception {
 		if ((instructionIds == null || instructionIds.length < 1) && (nodeIds == null || nodeIds.length < 1)
-				&& (instructionStates == null || instructionStates.length < 1)) {
+				&& (instructionStates == null || instructionStates.length < 1) && minDate == null && maxDate == null) {
 			System.err.println("Must provide at least one query filter option.");
 			return 1;
 		}
@@ -67,8 +95,8 @@ public class ListInstructionsCmd extends BaseSubCmd<InstructionsCmd> implements 
 				instructionIds != null ? asList(instructionIds) : null,
 				nodeIds != null ? asList(nodeIds) : null,
 				instructionStates != null ? asList(instructionStates) : null,
-				null,
-				null);
+				zonedDate(minDate),
+				zonedDate(maxDate));
 		// @formatter:on
 		try {
 			Collection<Instruction> instrs = listInstructions(restClient, objectMapper, filter);
@@ -88,8 +116,7 @@ public class ListInstructionsCmd extends BaseSubCmd<InstructionsCmd> implements 
 				tableData.put("id", instr.getId());
 				tableData.put("topic", instr.getTopic());
 				tableData.put("state", instr.getInstructionState());
-				tableData.put("date",
-						status.getStatusDate().atZone(ZoneId.systemDefault()).toLocalDateTime().truncatedTo(SECONDS));
+				tableData.put("date", status.getStatusDate().atZone(zone != null ? zone : ZoneId.systemDefault()));
 
 				Map<String, String> parameters = instr.getParameterMap();
 				if (parameters != null && !parameters.isEmpty()) {
@@ -99,15 +126,20 @@ public class ListInstructionsCmd extends BaseSubCmd<InstructionsCmd> implements 
 				if (status.getResultParameters() != null && !status.getResultParameters().isEmpty()) {
 					tableData.put("result", basicTable(status.getResultParameters(), "Result", "Value", false));
 				}
-				// @formatter:off
 				System.out.print(basicTable(tableData, "Property", "Value", false));
-				// @formatter:on
 			}
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error listing instructions: %s".formatted(e.getMessage()));
 		}
 		return 1;
+	}
+
+	private ZonedDateTime zonedDate(LocalDateTime date) {
+		if (date == null) {
+			return null;
+		}
+		return date.atZone(zone != null ? zone : ZoneId.systemDefault());
 	}
 
 }

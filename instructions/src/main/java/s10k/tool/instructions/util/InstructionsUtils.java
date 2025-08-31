@@ -1,6 +1,5 @@
 package s10k.tool.instructions.util;
 
-import static net.solarnetwork.util.StringUtils.commaDelimitedStringFromCollection;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 
 import java.time.Duration;
@@ -8,8 +7,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.http.MediaType;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -158,20 +159,9 @@ public final class InstructionsUtils {
 		JsonNode response = restClient.get()
 			.uri(b -> {
 				b.path("/solaruser/api/v1/sec/instr");
-				if (filter.instructionIds() != null && !filter.instructionIds().isEmpty()) {
-					b.queryParam("instructionIds", commaDelimitedStringFromCollection(filter.instructionIds()));
-				}
-				if (filter.nodeIds() != null && !filter.nodeIds().isEmpty()) {
-					b.queryParam("nodeIds", commaDelimitedStringFromCollection(filter.nodeIds()));
-				}
-				if (filter.states() != null && !filter.states().isEmpty() ) {
-					b.queryParam("states", commaDelimitedStringFromCollection(filter.states()));
-				}
-				if (filter.startDate() != null) {
-					b.queryParam("startDate", filter.startDate());
-				}
-				if (filter.endDate() != null) {
-					b.queryParam("endDate", filter.endDate());
+				MultiValueMap<String, Object> params = filter.toRequestMap();
+				for ( Entry<String, List<Object>> e : params.entrySet() ) {
+					b.queryParam(e.getKey(), e.getValue());
 				}
 				return b.build();
 			})
