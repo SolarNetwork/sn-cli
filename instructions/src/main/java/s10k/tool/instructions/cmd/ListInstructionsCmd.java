@@ -66,8 +66,7 @@ public class ListInstructionsCmd extends BaseSubCmd<InstructionsCmd> implements 
 	LocalDateTime maxDate;
 
 	@Option(names = { "-tz", "--time-zone" },
-		description = "a time zone to interpret the min and max dates as, instead of the local time zone"
-	)
+		description = "a time zone to interpret the min and max dates as, instead of the local time zone")
 	ZoneId zone;
 	// @formatter:on
 
@@ -95,8 +94,8 @@ public class ListInstructionsCmd extends BaseSubCmd<InstructionsCmd> implements 
 				instructionIds != null ? asList(instructionIds) : null,
 				nodeIds != null ? asList(nodeIds) : null,
 				instructionStates != null ? asList(instructionStates) : null,
-				zonedDate(minDate),
-				zonedDate(maxDate));
+				zonedDate(minDate, zone),
+				zonedDate(maxDate, zone));
 		// @formatter:on
 		try {
 			Collection<Instruction> instrs = listInstructions(restClient, objectMapper, filter);
@@ -135,7 +134,14 @@ public class ListInstructionsCmd extends BaseSubCmd<InstructionsCmd> implements 
 		return 1;
 	}
 
-	private ZonedDateTime zonedDate(LocalDateTime date) {
+	/**
+	 * Get a zoned date time from a local date time and optional time zone.
+	 * 
+	 * @param date the local date
+	 * @param zone the time zone, or {@code null} to use the system default
+	 * @return the zoned date time, or {@code null} if {@code date} is {@code null}
+	 */
+	public static ZonedDateTime zonedDate(LocalDateTime date, ZoneId zone) {
 		if (date == null) {
 			return null;
 		}
