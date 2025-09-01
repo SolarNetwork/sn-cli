@@ -3,6 +3,7 @@ package s10k.tool.config;
 import org.apache.hc.client5.http.config.ConnectionConfig;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.ContentCompressionExec;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
 import org.apache.hc.client5.http.io.HttpClientConnectionManager;
@@ -58,6 +59,8 @@ public class HttpClientConfig {
         		.setDefaultRequestConfig(requestConfig)
         		.useSystemProperties()
                 .setConnectionManager(connectionManager)
+                // add transparent gzip compression support
+                .addExecInterceptorLast("compression", new ContentCompressionExec())
                 .build();
         // @formatter:on
 	}

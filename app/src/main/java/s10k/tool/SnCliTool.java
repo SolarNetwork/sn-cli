@@ -1,5 +1,7 @@
 package s10k.tool;
 
+import java.time.LocalDateTime;
+
 import org.springframework.boot.Banner.Mode;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
@@ -12,6 +14,8 @@ import org.springframework.context.annotation.ReflectiveScan;
 import picocli.CommandLine;
 import picocli.CommandLine.IFactory;
 import s10k.tool.common.cmd.ToolCmd;
+import s10k.tool.common.util.StringUtils;
+import s10k.tool.datum.cmd.DatumCmd;
 import s10k.tool.instructions.cmd.InstructionsCmd;
 import s10k.tool.nodes.cmd.NodesCmd;
 
@@ -39,9 +43,12 @@ public class SnCliTool implements CommandLineRunner, ExitCodeGenerator {
 	@Override
 	public void run(String... args) throws Exception {
 		final var app = new ToolCmd();
+		System.setProperty("picocli.converters.excludes", "java.time.LocalDateTime");
 		// @formatter:off
 		exitCode = new CommandLine(app, factory)
 				.setExecutionStrategy(app::globalInit)
+				.registerConverter(LocalDateTime.class, StringUtils::parseLocalDateTime)
+				.addSubcommand(new DatumCmd())
 				.addSubcommand(new InstructionsCmd())
 				.addSubcommand(new NodesCmd())
 				.execute(args);

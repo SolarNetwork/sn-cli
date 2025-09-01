@@ -12,10 +12,10 @@ dependencyManagement {
 	}
 }
 
-description = 'sn-cli: Nodes'
+description = 'sn-cli: Datum'
 
 base {
-	archivesName = 'sn-cli-nodes'
+	archivesName = 'sn-cli-datum'
 }
 
 dependencies {
@@ -31,6 +31,7 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 
 	// Utilities
+	implementation "com.github.freva:ascii-table:${asciiTableVersion}"
 	implementation "net.sf.supercsv:super-csv:${superCsvVersion}"
 	
 	// Annotations

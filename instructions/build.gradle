@@ -13,7 +13,6 @@ dependencyManagement {
 }
 
 description = 'sn-cli: Instructions'
-version = '0.1.0'
 
 base {
 	archivesName = 'sn-cli-instructions'

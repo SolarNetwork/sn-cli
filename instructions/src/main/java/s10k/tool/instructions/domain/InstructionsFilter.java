@@ -1,8 +1,9 @@
-package s10k.tool.instructions.cmd;
+package s10k.tool.instructions.domain;
 
+import static java.time.ZoneOffset.UTC;
 import static net.solarnetwork.util.StringUtils.commaDelimitedStringFromCollection;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Collection;
 
 import org.springframework.util.LinkedMultiValueMap;
@@ -14,7 +15,7 @@ import net.solarnetwork.domain.InstructionStatus.InstructionState;
  * An instruction filter.
  */
 public record InstructionsFilter(Collection<Long> instructionIds, Collection<Long> nodeIds,
-		Collection<InstructionState> states, LocalDateTime startDate, LocalDateTime endDate) {
+		Collection<InstructionState> states, ZonedDateTime startDate, ZonedDateTime endDate) {
 
 	/**
 	 * Get a multi-value map from this filter.
@@ -33,10 +34,10 @@ public record InstructionsFilter(Collection<Long> instructionIds, Collection<Lon
 			postBody.set("states", commaDelimitedStringFromCollection(states));
 		}
 		if (startDate != null) {
-			postBody.set("startDate", startDate);
+			postBody.set("startDate", startDate.withZoneSameInstant(UTC).toLocalDateTime());
 		}
 		if (endDate != null) {
-			postBody.set("endDate", endDate);
+			postBody.set("endDate", endDate.withZoneSameInstant(UTC).toLocalDateTime());
 		}
 		return postBody;
 	}

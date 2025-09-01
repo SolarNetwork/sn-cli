@@ -11,7 +11,6 @@ apply plugin: 'net.ltgt.errorprone'
 apply plugin: 'org.graalvm.buildtools.native'
 
 description = 'SolarNetwork Command Line Tool'
-version = '0.1.0'
 
 base {
 	archivesName = 's10k'
@@ -35,6 +34,7 @@ dependencyManagement {
 
 dependencies {
 	implementation project(':sn-cli-common')
+	implementation project(':sn-cli-datum')
 	implementation project(':sn-cli-instructions')
 	implementation project(':sn-cli-nodes')
 

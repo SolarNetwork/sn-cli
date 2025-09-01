@@ -1,11 +1,14 @@
 package s10k.tool.common.util;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.springframework.util.StreamUtils.nonClosing;
 import static org.supercsv.prefs.CsvPreference.STANDARD_PREFERENCE;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.SequencedCollection;
@@ -160,35 +163,47 @@ public class TableUtils {
 	/**
 	 * Render tabular data to an output stream.
 	 * 
-	 * @param data         the data to render
+	 * @param data         the data to render; the collection value type can be
+	 *                     {@code Object[]} or {@code Collection<?>}
 	 * @param mode         the output mode
 	 * @param objectMapper the JSON mapper to use (only required for if {@code mode}
 	 *                     is {@code JSON})
 	 * @param out          the output stream
 	 * @throws IOException if any IO error occurs
 	 */
-	public static void renderTableData(SequencedCollection<? extends SequencedCollection<?>> data,
-			TableDisplayMode mode, ObjectMapper objectMapper, OutputStream out) throws IOException {
+	public static void renderTableData(SequencedCollection<?> data, TableDisplayMode mode, ObjectMapper objectMapper,
+			OutputStream out) throws IOException {
 		if (data == null || data.isEmpty()) {
 			return;
 		}
 		if (mode == TableDisplayMode.CSV) {
-			try (ICsvListWriter csvWriter = new CsvListWriter(new OutputStreamWriter(out, UTF_8),
+			try (ICsvListWriter csvWriter = new CsvListWriter(new OutputStreamWriter(nonClosing(out), UTF_8),
 					STANDARD_PREFERENCE)) {
-				for (SequencedCollection<?> row : data) {
-					csvWriter.write(row.toArray(Object[]::new));
+				for (Object row : data) {
+					if (row instanceof Object[] a) {
+						csvWriter.write(a);
+					} else if (row instanceof Collection<?> l) {
+						csvWriter.write(l);
+					}
 				}
 			}
 		} else if (mode == TableDisplayMode.JSON) {
-			objectMapper.writer(TableDataJsonPrettyPrinter.INSTANCE).writeValue(out, data);
-			out.write(System.lineSeparator().getBytes());
+			objectMapper.writer(TableDataJsonPrettyPrinter.INSTANCE).writeValue(nonClosing(out), data);
+			out.write(System.lineSeparator().getBytes(Charset.defaultCharset()));
 		} else {
 			// @formatter:off
 			AsciiTable.builder()
-				.data(data.stream().map(l -> l.toArray(Object[]::new)).toArray(Object[][]::new))
+				.data(data.stream().map(row -> {
+					if (row instanceof Object[] a) {
+						return a;
+					} else if (row instanceof Collection<?> l) {
+						return l.toArray(Object[]::new);
+					}
+					return new Object[0];
+				}).toArray(Object[][]::new))
 				.writeTo(out);
 				;
-			out.write(System.lineSeparator().getBytes());
+			out.write(System.lineSeparator().getBytes(Charset.defaultCharset()));
 			// @formatter:on			
 		}
 	}

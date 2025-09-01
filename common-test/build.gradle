@@ -14,7 +14,6 @@ dependencyManagement {
 }
 
 description = 'sn-cli: Common Test'
-version = '0.1.0'
 
 base {
 	archivesName = 'sn-cli-common-test'

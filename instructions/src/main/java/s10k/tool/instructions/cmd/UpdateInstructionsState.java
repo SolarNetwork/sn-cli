@@ -6,6 +6,8 @@ package s10k.tool.instructions.cmd;
 import static java.util.Arrays.asList;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -27,6 +29,9 @@ import picocli.CommandLine.Help.Ansi;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import s10k.tool.common.cmd.BaseSubCmd;
+import s10k.tool.common.util.DateUtils;
+import s10k.tool.common.util.LocalDateTimeConverter;
+import s10k.tool.instructions.domain.InstructionsFilter;
 
 /**
  * Update the state of a set of instructions matching a search filter.
@@ -35,20 +40,45 @@ import s10k.tool.common.cmd.BaseSubCmd;
 @Command(name = "update-state")
 public class UpdateInstructionsState extends BaseSubCmd<InstructionsCmd> implements Callable<Integer> {
 
-	@Option(names = { "-instruction",
-			"--instruction-id" }, description = "an instruction ID to validate", split = "\\s*,\\s*", splitSynopsisLabel = ",", paramLabel = "instructionId")
+	// @formatter:off
+	@Option(names = { "-id", "--instruction-id" },
+		description = "an instruction ID to validate",
+		split = "\\s*,\\s*",
+		splitSynopsisLabel = ",",
+		paramLabel = "instructionId")
 	Long[] instructionIds;
 
-	@Option(names = { "-node",
-			"--node-id" }, description = "a node ID to return instructions for", split = "\\s*,\\s*", splitSynopsisLabel = ",", paramLabel = "nodeId")
+	@Option(names = { "-node", "--node-id" },
+		description = "a node ID to return instructions for",
+		split = "\\s*,\\s*",
+		splitSynopsisLabel = ",",
+		paramLabel = "nodeId")
 	Long[] nodeIds;
 
-	@Option(names = { "-state",
-			"--state" }, description = "an instruction state to match", split = "\\s*,\\s*", splitSynopsisLabel = ",", paramLabel = "state")
+	@Option(names = { "-state", "--state" },
+		description = "an instruction state to match",
+		split = "\\s*,\\s*",
+		splitSynopsisLabel = ",",
+		paramLabel = "state")
 	InstructionState[] instructionStates;
+
+	@Option(names = { "-min", "--min-date" },
+		description = "a minimum instruction creation date to match",
+		converter = LocalDateTimeConverter.class)
+	LocalDateTime minDate;
+
+	@Option(names = { "-max", "--max-date" },
+		description = "a maximum instruction creation date (exclusive) to match",
+		converter = LocalDateTimeConverter.class)
+	LocalDateTime maxDate;
+
+	@Option(names = { "-tz", "--time-zone" },
+		description = "a time zone to interpret the min and max dates as, instead of the local time zone")
+	ZoneId zone;
 
 	@Parameters(index = "0", description = "the desired state to set the matching instructions to")
 	InstructionState desiredState;
+	// @formatter:on
 
 	/**
 	 * Constructor.
@@ -63,7 +93,7 @@ public class UpdateInstructionsState extends BaseSubCmd<InstructionsCmd> impleme
 	@Override
 	public Integer call() throws Exception {
 		if ((instructionIds == null || instructionIds.length < 1) && (nodeIds == null || nodeIds.length < 1)
-				&& (instructionStates == null || instructionStates.length < 1)) {
+				&& (instructionStates == null || instructionStates.length < 1) && minDate == null && maxDate == null) {
 			System.err.println("Must provide at least one query filter option.");
 			return 1;
 		}
@@ -73,8 +103,8 @@ public class UpdateInstructionsState extends BaseSubCmd<InstructionsCmd> impleme
 				instructionIds != null ? asList(instructionIds) : null,
 				nodeIds != null ? asList(nodeIds) : null,
 				instructionStates != null ? asList(instructionStates) : null,
-				null,
-				null);
+				DateUtils.zonedDate(minDate, zone),
+				DateUtils.zonedDate(maxDate, zone));
 		// @formatter:on
 
 		final RestClient restClient = restClient();
