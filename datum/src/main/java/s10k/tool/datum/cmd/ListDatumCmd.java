@@ -213,9 +213,6 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 				// @formatter:on
 			} else {
 				listDatumDirect(restClient, objectMapper, filter, displayMode);
-				if (SystemUtils.systemConsoleIsTerminal()) {
-					System.out.println();
-				}
 			}
 			return 0;
 		} catch (Exception e) {
@@ -453,6 +450,9 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 					} else {
 						// convert CBOR to JSON
 						cborToJson(objectMapper, res.getBody(), nonClosing(System.out));
+						if (SystemUtils.systemConsoleIsTerminal()) {
+							System.out.println();
+						}
 					}
 				}
 				return null;
