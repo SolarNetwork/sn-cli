@@ -211,6 +211,7 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 					.writeTo(System.out)
 					;
 				// @formatter:on
+				System.out.println();
 			} else {
 				listDatumDirect(restClient, objectMapper, filter, displayMode);
 			}
