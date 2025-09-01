@@ -25,7 +25,7 @@ import s10k.tool.common.cmd.BaseSubCmd;
  */
 @Component
 @Command(name = "set-operating-state", aliases = "set-op-state")
-public class SetOperatingState extends BaseSubCmd<ControlsCmd> implements Callable<Integer> {
+public class SetOperatingStateCmd extends BaseSubCmd<ControlsCmd> implements Callable<Integer> {
 
 	@Parameters(index = "0", description = "the operating state to set", paramLabel = "desiredState")
 	DeviceOperatingState value;
@@ -36,7 +36,7 @@ public class SetOperatingState extends BaseSubCmd<ControlsCmd> implements Callab
 	 * @param reqFactory   the HTTP request factory to use
 	 * @param objectMapper the mapper to use
 	 */
-	public SetOperatingState(ClientHttpRequestFactory reqFactory, ObjectMapper objectMapper) {
+	public SetOperatingStateCmd(ClientHttpRequestFactory reqFactory, ObjectMapper objectMapper) {
 		super(reqFactory, objectMapper);
 	}
 

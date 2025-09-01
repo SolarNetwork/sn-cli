@@ -5,7 +5,6 @@ package s10k.tool.instructions.cmd;
 
 import static java.util.Arrays.asList;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
-import static s10k.tool.instructions.cmd.ListInstructionsCmd.zonedDate;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -30,7 +29,9 @@ import picocli.CommandLine.Help.Ansi;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import s10k.tool.common.cmd.BaseSubCmd;
+import s10k.tool.common.util.DateUtils;
 import s10k.tool.common.util.LocalDateTimeConverter;
+import s10k.tool.instructions.domain.InstructionsFilter;
 
 /**
  * Update the state of a set of instructions matching a search filter.
@@ -102,8 +103,8 @@ public class UpdateInstructionsState extends BaseSubCmd<InstructionsCmd> impleme
 				instructionIds != null ? asList(instructionIds) : null,
 				nodeIds != null ? asList(nodeIds) : null,
 				instructionStates != null ? asList(instructionStates) : null,
-				zonedDate(minDate, zone),
-				zonedDate(maxDate, zone));
+				DateUtils.zonedDate(minDate, zone),
+				DateUtils.zonedDate(maxDate, zone));
 		// @formatter:on
 
 		final RestClient restClient = restClient();

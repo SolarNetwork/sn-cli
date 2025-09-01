@@ -9,7 +9,7 @@ import s10k.tool.instructions.cmd.InstructionsCmd;
 /**
  * Control commands.
  */
-@Command(name = "controls", subcommands = { SetControlParameterCmd.class, SetOperatingState.class })
+@Command(name = "controls", subcommands = { SetControlParameterCmd.class, SetOperatingStateCmd.class })
 public class ControlsCmd extends BaseSubCmd<InstructionsCmd> {
 
 	// @formatter:off

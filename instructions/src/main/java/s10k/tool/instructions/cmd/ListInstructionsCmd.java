@@ -6,7 +6,6 @@ import static s10k.tool.instructions.util.InstructionsUtils.listInstructions;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -24,7 +23,9 @@ import net.solarnetwork.domain.InstructionStatus.InstructionState;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
+import s10k.tool.common.util.DateUtils;
 import s10k.tool.common.util.LocalDateTimeConverter;
+import s10k.tool.instructions.domain.InstructionsFilter;
 
 /**
  * List instruction status.
@@ -94,8 +95,8 @@ public class ListInstructionsCmd extends BaseSubCmd<InstructionsCmd> implements 
 				instructionIds != null ? asList(instructionIds) : null,
 				nodeIds != null ? asList(nodeIds) : null,
 				instructionStates != null ? asList(instructionStates) : null,
-				zonedDate(minDate, zone),
-				zonedDate(maxDate, zone));
+				DateUtils.zonedDate(minDate, zone),
+				DateUtils.zonedDate(maxDate, zone));
 		// @formatter:on
 		try {
 			Collection<Instruction> instrs = listInstructions(restClient, objectMapper, filter);
@@ -132,20 +133,6 @@ public class ListInstructionsCmd extends BaseSubCmd<InstructionsCmd> implements 
 			System.err.println("Error listing instructions: %s".formatted(e.getMessage()));
 		}
 		return 1;
-	}
-
-	/**
-	 * Get a zoned date time from a local date time and optional time zone.
-	 * 
-	 * @param date the local date
-	 * @param zone the time zone, or {@code null} to use the system default
-	 * @return the zoned date time, or {@code null} if {@code date} is {@code null}
-	 */
-	public static ZonedDateTime zonedDate(LocalDateTime date, ZoneId zone) {
-		if (date == null) {
-			return null;
-		}
-		return date.atZone(zone != null ? zone : ZoneId.systemDefault());
 	}
 
 }

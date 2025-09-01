@@ -1,4 +1,4 @@
-package s10k.tool.instructions.cmd;
+package s10k.tool.instructions.domain;
 
 import static java.time.ZoneOffset.UTC;
 import static net.solarnetwork.util.StringUtils.commaDelimitedStringFromCollection;

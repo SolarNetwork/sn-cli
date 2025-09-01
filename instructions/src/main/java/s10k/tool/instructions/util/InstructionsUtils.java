@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.solarnetwork.domain.Instruction;
 import net.solarnetwork.domain.InstructionStatus;
-import s10k.tool.instructions.cmd.InstructionsFilter;
+import s10k.tool.instructions.domain.InstructionsFilter;
 
 /**
  * Helper methods for instructions.
