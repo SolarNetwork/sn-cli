@@ -10,7 +10,13 @@ import s10k.tool.datum.cmd.DatumCmd;
 /**
  * Datum stream commands.
  */
-@Command(name = "stream", subcommands = { ListDatumStreamMetadataCmd.class, ViewDatumStreamMetadataCmd.class })
+// @formatter:off
+@Command(name = "stream", subcommands = { 
+		ListDatumStreamMetadataCmd.class,
+		ListDatumStreamMetadataIdsCmd.class,
+		ViewDatumStreamMetadataCmd.class
+})
+// @formatter:on
 public class DatumStreamCmd extends BaseSubCmd<DatumCmd> {
 
 }

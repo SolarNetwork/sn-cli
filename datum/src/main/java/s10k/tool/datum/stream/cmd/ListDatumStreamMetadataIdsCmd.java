@@ -2,12 +2,7 @@ package s10k.tool.datum.stream.cmd;
 
 import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
-import static net.solarnetwork.domain.datum.DatumSamplesType.Accumulating;
-import static net.solarnetwork.domain.datum.DatumSamplesType.Instantaneous;
-import static net.solarnetwork.domain.datum.DatumSamplesType.Status;
-import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
-import static s10k.tool.common.util.StringUtils.naturallyCaseInsensitiveSorted;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +34,11 @@ import s10k.tool.common.util.TableUtils;
 import s10k.tool.datum.domain.DatumStreamFilter;
 
 /**
- * View datum stream metadata matching a search criteria.
+ * View datum stream metadata IDs matching a search criteria.
  */
 @Component
-@Command(name = "list")
-public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> implements Callable<Integer> {
+@Command(name = "ids")
+public class ListDatumStreamMetadataIdsCmd extends BaseSubCmd<DatumStreamCmd> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-stream", "--stream-id" },
@@ -136,7 +131,7 @@ public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 	 * @param reqFactory   the HTTP request factory to use
 	 * @param objectMapper the mapper to use
 	 */
-	public ListDatumStreamMetadataCmd(ClientHttpRequestFactory reqFactory, ObjectMapper objectMapper) {
+	public ListDatumStreamMetadataIdsCmd(ClientHttpRequestFactory reqFactory, ObjectMapper objectMapper) {
 		super(reqFactory, objectMapper);
 	}
 
@@ -157,7 +152,7 @@ public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 		final RestClient restClient = restClient();
 
 		try {
-			List<ObjectDatumStreamMetadata> metas = listStreamMetadata(restClient, objectMapper,
+			List<ObjectDatumStreamMetadata> metas = listStreamMetadataIds(restClient, objectMapper,
 					nodeOrLocationIds != null && nodeOrLocationIds.isLocation() ? ObjectDatumKind.Location
 							: ObjectDatumKind.Node,
 					filter);
@@ -174,11 +169,7 @@ public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 							new Column().header("Kind").dataAlign(LEFT),
 							new Column().header("ID").dataAlign(RIGHT),
 							new Column().header("Source ID").dataAlign(LEFT),
-							new Column().header("Time Zone").dataAlign(LEFT),
-							new Column().header("Instantaneous").dataAlign(LEFT),
-							new Column().header("Accumulating").dataAlign(LEFT),
-							new Column().header("Status").dataAlign(LEFT),	
-						}, metas.stream().map(ListDatumStreamMetadataCmd::metadataRow).toArray(Object[][]::new))
+						}, metas.stream().map(ListDatumStreamMetadataIdsCmd::metadataRow).toArray(Object[][]::new))
 					.writeTo(System.out)
 					;
 				// @formatter:on
@@ -186,7 +177,7 @@ public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 			} else if (displayMode == ResultDisplayMode.CSV) {
 				List<Object[]> tableData = new ArrayList<>();
 				tableData.add(metadataHeaderRow());
-				tableData.addAll(metas.stream().map(ListDatumStreamMetadataCmd::metadataRow).toList());
+				tableData.addAll(metas.stream().map(ListDatumStreamMetadataIdsCmd::metadataRow).toList());
 				TableUtils.renderTableData(tableData, TableDisplayMode.CSV, null, System.out);
 			} else {
 				// JSON
@@ -212,10 +203,6 @@ public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 				"Kind",
 				"ID",
 				"Source ID",
-				"Time Zone",
-				"Instantaneous",
-				"Accumulating",
-				"Status"
 		};
 		// @formatter:on
 	}
@@ -233,10 +220,6 @@ public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 				m.getKind().name(),
 				m.getObjectId(),
 				m.getSourceId(),
-				m.getTimeZoneId(),
-				arrayToCommaDelimitedString(naturallyCaseInsensitiveSorted(m.propertyNamesForType(Instantaneous))),
-				arrayToCommaDelimitedString(naturallyCaseInsensitiveSorted(m.propertyNamesForType(Accumulating))),
-				arrayToCommaDelimitedString(naturallyCaseInsensitiveSorted(m.propertyNamesForType(Status)))
 			};
 		// @formatter:on
 	}
@@ -251,17 +234,17 @@ public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 	 * @return the metadata
 	 * @throws IllegalStateException if the stream metadata is not available
 	 */
-	public static List<ObjectDatumStreamMetadata> listStreamMetadata(RestClient restClient, ObjectMapper objectMapper,
-			ObjectDatumKind kind, DatumStreamFilter filter) {
+	public static List<ObjectDatumStreamMetadata> listStreamMetadataIds(RestClient restClient,
+			ObjectMapper objectMapper, ObjectDatumKind kind, DatumStreamFilter filter) {
 		// @formatter:off
 		JsonNode response = restClient.get()
 			.uri(b -> {
-				b.path("/solarquery/api/v1/sec/datum/stream/meta/" + (kind == ObjectDatumKind.Location ? "loc" : "node"));
+				b.path("/solarquery/api/v1/sec/datum/stream/meta/{kind}/ids");
 				MultiValueMap<String, Object> params = filter.toRequestMap(kind);
 				for ( Entry<String, List<Object>> e : params.entrySet() ) {
 					b.queryParam(e.getKey(), e.getValue());
 				}
-				return b.build();
+				return b.build(kind == ObjectDatumKind.Location ? "loc" : "node");
 			})
 			.accept(MediaType.APPLICATION_JSON)
 			.retrieve()

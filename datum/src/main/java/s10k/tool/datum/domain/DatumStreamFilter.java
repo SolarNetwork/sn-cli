@@ -14,24 +14,61 @@ import net.solarnetwork.domain.datum.ObjectDatumKind;
 /**
  * Search filter for datum stream metadata.
  */
-public record DatumStreamFilter(Collection<UUID> streamIds, Collection<Long> objectIds, Collection<String> sourceIds) {
+public record DatumStreamFilter(Collection<UUID> streamIds, Collection<Long> objectIds, Collection<String> sourceIds,
+		Collection<String> propertyNames, Collection<String> instantaneousPropertyNames,
+		Collection<String> accumulatingPropertyNames, Collection<String> statusPropertyNames) {
 
 	/**
 	 * Create a filter from array parameters.
 	 * 
-	 * @param streamIds the stream IDs, or {@code null}
-	 * @param objectIds the object (node/location) IDs, or {@code null}
-	 * @param sourceIds the source IDs, or {@code null}
+	 * @param streamIds                  the stream IDs, or {@code null}
+	 * @param objectIds                  the object (node/location) IDs, or
+	 *                                   {@code null}
+	 * @param sourceIds                  the source IDs, or {@code null}
+	 * @param propertyNames              the property names, or {@code null}
+	 * @param instantaneousPropertyNames the instantaneous property names, or
+	 *                                   {@code null}
+	 * @param accumulatingPropertyNames  the accumulating property names, or
+	 *                                   {@code null}
+	 * @param statusPropertyNames        the status property names, or {@code null}
 	 * @return the new filter instance
 	 */
-	public static DatumStreamFilter datumStreamFilter(UUID[] streamIds, Long[] objectIds, String[] sourceIds) {
+	public static DatumStreamFilter datumStreamFilter(UUID[] streamIds, Long[] objectIds, String[] sourceIds,
+			String[] propertyNames, String[] instantaneousPropertyNames, String[] accumulatingPropertyNames,
+			String[] statusPropertyNames) {
 		// @formatter:off
 		return new DatumStreamFilter(
 				streamIds != null && streamIds.length > 0 ? Arrays.asList(streamIds) : null,
 				objectIds != null && objectIds.length > 0 ? Arrays.asList(objectIds) : null,
-				sourceIds != null && sourceIds.length > 0 ? Arrays.asList(sourceIds) : null
+				sourceIds != null && sourceIds.length > 0 ? Arrays.asList(sourceIds) : null,
+				propertyNames != null && propertyNames.length > 0 ? Arrays.asList(propertyNames) : null,
+				instantaneousPropertyNames != null && instantaneousPropertyNames.length > 0 ? Arrays.asList(instantaneousPropertyNames) : null,
+				accumulatingPropertyNames != null && accumulatingPropertyNames.length > 0 ? Arrays.asList(accumulatingPropertyNames) : null,
+				statusPropertyNames != null && statusPropertyNames.length > 0 ? Arrays.asList(statusPropertyNames) : null
 				);
 		// @formatter:on
+	}
+
+	/**
+	 * Test if some property is non-empty.
+	 * 
+	 * @return {@code true} if at least one property is non-empty
+	 */
+	public boolean hasAnyCriteria() {
+		if (
+		// @formatter:off
+				   (streamIds == null || streamIds.isEmpty())
+				&& (objectIds == null || objectIds.isEmpty())
+				&& (sourceIds == null || sourceIds.isEmpty())
+				&& (propertyNames == null || propertyNames.isEmpty())
+				&& (instantaneousPropertyNames == null || instantaneousPropertyNames.isEmpty())
+				&& (accumulatingPropertyNames == null || accumulatingPropertyNames.isEmpty())
+				&& (statusPropertyNames == null || statusPropertyNames.isEmpty())
+				// @formatter:on
+		) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -70,6 +107,18 @@ public record DatumStreamFilter(Collection<UUID> streamIds, Collection<Long> obj
 		}
 		if (sourceIds != null && !sourceIds.isEmpty()) {
 			postBody.set("sourceIds", commaDelimitedStringFromCollection(sourceIds));
+		}
+		if (propertyNames != null && !propertyNames.isEmpty()) {
+			postBody.set("propertyNames", commaDelimitedStringFromCollection(propertyNames));
+		}
+		if (instantaneousPropertyNames != null && !instantaneousPropertyNames.isEmpty()) {
+			postBody.set("instantaneousPropertyNames", commaDelimitedStringFromCollection(instantaneousPropertyNames));
+		}
+		if (accumulatingPropertyNames != null && !accumulatingPropertyNames.isEmpty()) {
+			postBody.set("accumulatingPropertyNames", commaDelimitedStringFromCollection(accumulatingPropertyNames));
+		}
+		if (statusPropertyNames != null && !statusPropertyNames.isEmpty()) {
+			postBody.set("statusPropertyNames", commaDelimitedStringFromCollection(statusPropertyNames));
 		}
 		return postBody;
 	}
