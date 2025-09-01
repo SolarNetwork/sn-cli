@@ -108,7 +108,52 @@ public final class DatumFilter extends SimplePagination {
 				postBody.add("sourceIdMaps", mappingsParameter(mapping.getKey(), mapping.getValue()));
 			}
 		}
+		if (readingType != null) {
+			postBody.set("readingType", readingType.name());
+		}
+		if (getMax() != null && getMax() > 0) {
+			postBody.set("max", getMax());
+		}
+		if (getOffset() != null && getOffset() > 0) {
+			postBody.set("offset", getOffset());
+		}
 		return postBody;
+	}
+
+	/**
+	 * Test if the query style is for aggregate results.
+	 * 
+	 * @return {@code true} if aggregate results are returned
+	 */
+	public boolean isAggregateStyle() {
+		return (aggregation != null && aggregation != Aggregation.None);
+	}
+
+	/**
+	 * Test if the query style is for reading results.
+	 * 
+	 * @return {@code true} if reading results are returned
+	 */
+	public boolean isReadingStyle() {
+		return (readingType != null);
+	}
+
+	/**
+	 * Test if the query style is for a single "reading" record result.
+	 * 
+	 * @return {@code true} if a single reading record result is returned
+	 */
+	public boolean isReadingRecordStyle() {
+		return (isReadingStyle() && !isAggregateStyle());
+	}
+
+	/**
+	 * Test if the query style is for reading aggregate results.
+	 * 
+	 * @return {@code true} if reading aggregates results are returned
+	 */
+	public boolean isReadingAggregateStyle() {
+		return (isReadingStyle() && isAggregateStyle());
 	}
 
 	@Override
@@ -234,7 +279,7 @@ public final class DatumFilter extends SimplePagination {
 	/**
 	 * Get the end date.
 	 * 
-	 * @return
+	 * @return the end date
 	 */
 	public ZonedDateTime getEndDate() {
 		return endDate;
@@ -465,7 +510,7 @@ public final class DatumFilter extends SimplePagination {
 	/**
 	 * Get the time tolerance.
 	 * 
-	 * @return
+	 * @return the period
 	 */
 	public Period getTimeTolerance() {
 		return timeTolerance;
@@ -574,7 +619,8 @@ public final class DatumFilter extends SimplePagination {
 	/**
 	 * Get a mappings entry as a query parameter value.
 	 * 
-	 * @param mappingEntry the mappings parameter
+	 * @param key    the mapping key
+	 * @param values the mapping value
 	 * @return the query parameter value
 	 */
 	public static String mappingsParameter(Object key, Set<?> values) {

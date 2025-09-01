@@ -2,19 +2,23 @@ package s10k.tool.datum.cmd;
 
 import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
+import static java.util.Arrays.asList;
+import static net.solarnetwork.domain.datum.DatumSamplesType.Accumulating;
 import static net.solarnetwork.util.NumberUtils.bigDecimalForNumber;
 import static net.solarnetwork.util.NumberUtils.narrow;
 import static net.solarnetwork.util.NumberUtils.round;
+import static org.springframework.util.StreamUtils.nonClosing;
 import static s10k.tool.common.util.RestUtils.cborToJson;
 
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SequencedSet;
 import java.util.Set;
@@ -34,8 +38,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.freva.asciitable.AsciiTable;
 import com.github.freva.asciitable.Column;
 
+import net.solarnetwork.domain.datum.AggregateStreamDatum;
 import net.solarnetwork.domain.datum.Aggregation;
 import net.solarnetwork.domain.datum.DatumProperties;
+import net.solarnetwork.domain.datum.DatumPropertiesStatistics;
 import net.solarnetwork.domain.datum.DatumReadingType;
 import net.solarnetwork.domain.datum.DatumSamplesType;
 import net.solarnetwork.domain.datum.ObjectDatumKind;
@@ -49,6 +55,7 @@ import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.DateUtils;
 import s10k.tool.common.util.LocalDateTimeConverter;
+import s10k.tool.common.util.SystemUtils;
 import s10k.tool.datum.domain.DatumFilter;
 
 /**
@@ -129,6 +136,18 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 			description = "how to display the CSV data",
 			defaultValue = "PRETTY")
 	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+
+	@Option(names = {"-S", "--show-stream-ids"},
+			description = "show stream IDs in PRETTY results")
+	boolean showStreamIds;
+	
+	@Option(names = {"-M", "--max"},
+			description = "return at most this many results", paramLabel = "max")
+	int maxResults;
+
+	@Option(names = {"-O", "--offset"},
+			description = "start returning results from this offset, 0 being the first result")
+	long resultOffset;
 	// @formatter:on
 
 	/**
@@ -174,9 +193,6 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 		super(reqFactory, objectMapper);
 	}
 
-	private static final Set<DatumSamplesType> PROP_TYPES = EnumSet.of(DatumSamplesType.Instantaneous,
-			DatumSamplesType.Accumulating, DatumSamplesType.Status);
-
 	@Override
 	public Integer call() throws Exception {
 		final DatumFilter filter = datumFilter();
@@ -186,67 +202,20 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 		try {
 			if (displayMode == ResultDisplayMode.PRETTY) {
 				ObjectDatumStreamDataSet<StreamDatum> result = listDatum(restClient, filter);
-				SequencedSet<String> propertyColumns = new LinkedHashSet<String>();
-				if (propertyNames != null && propertyNames.length > 0) {
-					propertyColumns.addAll(Arrays.asList(propertyNames));
-				} else {
-					// generate stable list from all stream properties
-					for (UUID streamId : result.metadataStreamIds()) {
-						ObjectDatumStreamMetadata meta = result.metadataForStreamId(streamId);
-						propertyColumns.addAll(Arrays.asList(meta.getPropertyNames()));
-					}
-				}
-				List<Column> columns = new ArrayList<>();
-				columns.add(new Column().header("Timestmp").dataAlign(LEFT));
-				columns.add(new Column().header("Stream ID").dataAlign(LEFT));
-				columns.add(new Column().header("Object ID").dataAlign(LEFT));
-				columns.add(new Column().header("Source ID").dataAlign(LEFT));
-				final int rowSize = (propertyColumns.size() + 4);
-				List<Object[]> data = new ArrayList<>();
-				for (StreamDatum d : result) {
-					ObjectDatumStreamMetadata meta = result.metadataForStreamId(d.getStreamId());
-					Object[] row = new Object[rowSize];
-					row[0] = d.getTimestamp();
-					row[1] = d.getStreamId();
-					row[2] = meta.getObjectId();
-					row[3] = meta.getSourceId();
-					int idx = 4;
-					for (String propName : propertyColumns) {
-						DatumProperties props = d.getProperties();
-						for (DatumSamplesType type : PROP_TYPES) {
-							int propIdx = meta.propertyIndex(type, propName);
-							if (propIdx >= 0) {
-								Object propVal = switch (type) {
-								case Instantaneous -> props.instantaneousValue(propIdx);
-								case Accumulating -> props.accumulatingValue(propIdx);
-								case Status -> props.statusValue(propIdx);
-								default -> null;
-								};
-								if (propVal instanceof Number n) {
-									propVal = bigDecimalForNumber(narrow(round(n, 3), 2)).toPlainString();
-								}
-								if (data.size() == 0) {
-									// populate Column
-									columns.add(new Column().header(propName)
-											.dataAlign(type == DatumSamplesType.Status ? LEFT : RIGHT));
-								}
-								row[idx++] = propVal;
-								break;
-							}
-						}
-					}
-					data.add(row);
-				}
+				SequencedSet<String> propertyColumns = prettyProperties(filter, result);
+				List<Column> columns = prettyColumns(filter);
+				List<Object[]> data = prettyRows(filter, result, propertyColumns, columns);
 				// @formatter:off
 				AsciiTable.builder()
 					.data(columns.toArray(Column[]::new), data.toArray(Object[][]::new))
 					.writeTo(System.out)
 					;
 				// @formatter:on
-				System.out.println();
 			} else {
 				listDatumDirect(restClient, objectMapper, filter, displayMode);
-				System.out.println();
+				if (SystemUtils.systemConsoleIsTerminal()) {
+					System.out.println();
+				}
 			}
 			return 0;
 		} catch (Exception e) {
@@ -258,19 +227,19 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 	private DatumFilter datumFilter() {
 		final DatumFilter filter = new DatumFilter();
 		if (streamIds != null && streamIds.length > 0) {
-			filter.setStreamIds(Arrays.asList(streamIds));
+			filter.setStreamIds(asList(streamIds));
 		}
 		if (nodeOrLocationIds != null) {
 			if (nodeOrLocationIds.isLocation()) {
 				filter.setObjectKind(ObjectDatumKind.Location);
-				filter.setObjectIds(Arrays.asList(nodeOrLocationIds.locationIds));
+				filter.setObjectIds(asList(nodeOrLocationIds.locationIds));
 			} else {
 				filter.setObjectKind(ObjectDatumKind.Node);
-				filter.setObjectIds(Arrays.asList(nodeOrLocationIds.nodeIds));
+				filter.setObjectIds(asList(nodeOrLocationIds.nodeIds));
 			}
 		}
 		if (sourceIds != null && sourceIds.length > 0) {
-			filter.setSourceIds(Arrays.asList(sourceIds));
+			filter.setSourceIds(asList(sourceIds));
 		}
 		if (minDate != null) {
 			if (useLocalDates) {
@@ -292,7 +261,136 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 		filter.setPartialAggregation(partialAggregation);
 		filter.setReadingType(readingType);
 		filter.setTimeTolerance(timeTolerance);
+		if (maxResults > 0) {
+			filter.setMax(maxResults);
+		}
+		if (resultOffset > 0) {
+			filter.setOffset(resultOffset);
+		}
 		return filter;
+	}
+
+	private static final Set<DatumSamplesType> PROP_TYPES = EnumSet.of(DatumSamplesType.Instantaneous,
+			DatumSamplesType.Accumulating, DatumSamplesType.Status);
+
+	/**
+	 * Generate a set of datum property names to render in tabular form for pretty
+	 * output.
+	 * 
+	 * @param filter the query filter
+	 * @param result the results
+	 * @return the set of property names
+	 */
+	private SequencedSet<String> prettyProperties(DatumFilter filter, ObjectDatumStreamDataSet<StreamDatum> result) {
+		SequencedSet<String> properties = new LinkedHashSet<String>();
+		if (propertyNames != null && propertyNames.length > 0) {
+			properties.addAll(asList(propertyNames));
+		} else {
+			// generate stable list from all stream properties
+			for (UUID streamId : result.metadataStreamIds()) {
+				ObjectDatumStreamMetadata meta = result.metadataForStreamId(streamId);
+				properties.addAll(asList(filter.isReadingRecordStyle() ? meta.propertyNamesForType(Accumulating)
+						: meta.getPropertyNames()));
+			}
+		}
+		return properties;
+	}
+
+	/**
+	 * Generate the initial set of tabular {@code Column} instances for pretty
+	 * output.
+	 * 
+	 * @param filter the query filter
+	 * @return the initial list of column definitions, to be updated with values for
+	 *         individual property columns later
+	 */
+	private List<Column> prettyColumns(DatumFilter filter) {
+		List<Column> columns = new ArrayList<>();
+		columns.add(new Column().header(filter.isAggregateStyle() ? "Timestamp Start" : "Timestamp").dataAlign(LEFT));
+		if (filter.isReadingRecordStyle()) {
+			columns.add(new Column().header("Timestamp End").dataAlign(LEFT));
+		}
+		if (showStreamIds) {
+			columns.add(new Column().header("Stream ID").dataAlign(LEFT));
+		}
+		columns.add(new Column().header("Object ID").dataAlign(LEFT));
+		columns.add(new Column().header("Source ID").dataAlign(LEFT));
+		return columns;
+	}
+
+	/**
+	 * Generate tabular data rows for pretty output.
+	 * 
+	 * @param filter    the query filter
+	 * @param result    the results
+	 * @param propNames the set of property names to include in the results
+	 * @param columns   the set of column definitions, to add {@code Column}
+	 *                  instances to for each property name in {@code propertyNames}
+	 * @return the data rows
+	 */
+	private List<Object[]> prettyRows(DatumFilter filter, ObjectDatumStreamDataSet<StreamDatum> result,
+			SequencedSet<String> propNames, List<Column> columns) {
+		final Map<String, DatumSamplesType> propTypes = new HashMap<>(propNames.size());
+		final int rowSize = (propNames.size() + columns.size());
+		List<Object[]> data = new ArrayList<>();
+		for (StreamDatum d : result) {
+			final AggregateStreamDatum agg = (d instanceof AggregateStreamDatum a ? a : null);
+			final ObjectDatumStreamMetadata meta = result.metadataForStreamId(d.getStreamId());
+			final Object[] row = new Object[rowSize];
+			int idx = 0;
+			row[idx++] = d.getTimestamp();
+			if (filter.isReadingRecordStyle()) {
+				row[idx++] = (agg != null ? agg.getEndTimestamp() : null);
+			}
+			if (showStreamIds) {
+				row[idx++] = d.getStreamId();
+			}
+			row[idx++] = meta.getObjectId();
+			row[idx++] = meta.getSourceId();
+			for (String propName : propNames) {
+				final DatumSamplesType propType = propTypes.computeIfAbsent(propName, p -> {
+					for (DatumSamplesType type : PROP_TYPES) {
+						if (meta.propertyIndex(type, propName) >= 0) {
+							return type;
+						}
+					}
+					return null;
+				});
+				if (data.size() == 0) {
+					// populate Column
+					columns.add(new Column().header(propName)
+							.dataAlign(propType == DatumSamplesType.Status ? LEFT : RIGHT));
+				}
+				if (propType == null) {
+					continue;
+				}
+				DatumProperties props = d.getProperties();
+				final int propIdx = meta.propertyIndex(propType, propName);
+				if (propIdx < 0) {
+					continue;
+				}
+				Object propVal = switch (propType) {
+				case Instantaneous -> props.instantaneousValue(propIdx);
+				case Accumulating -> {
+					if (filter.isReadingAggregateStyle() && agg != null) {
+						DatumPropertiesStatistics stats = agg.getStatistics();
+						yield stats.getAccumulatingDifference(propIdx);
+					} else {
+						yield props.accumulatingValue(propIdx);
+					}
+				}
+				case Status -> props.statusValue(propIdx);
+				default -> null;
+				};
+
+				if (propVal instanceof Number n) {
+					propVal = bigDecimalForNumber(narrow(round(n, 3), 2)).toPlainString();
+				}
+				row[idx++] = propVal;
+			}
+			data.add(row);
+		}
+		return data;
 	}
 
 	private static final ParameterizedTypeReference<ObjectDatumStreamDataSet<StreamDatum>> STREAM_DATUM_SET_TYPEREF = new ParameterizedTypeReference<ObjectDatumStreamDataSet<StreamDatum>>() {
@@ -310,12 +408,12 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 		// @formatter:off
 		return restClient.get()
 			.uri(b -> {
-				b.path("/solarquery/api/v1/sec/datum/stream/datum");
+				b.path("/solarquery/api/v1/sec/datum/stream/{style}");
 				MultiValueMap<String, Object> params = filter.toRequestMap();
 				for ( Entry<String, List<Object>> e : params.entrySet() ) {
 					b.queryParam(e.getKey(), e.getValue());
 				}
-				return b.build();
+				return b.build(filter.getReadingType() != null ? "reading" : "datum");
 			})
 			.accept(MediaType.APPLICATION_CBOR)
 			.retrieve()
@@ -338,12 +436,12 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 		// @formatter:off
 		restClient.get()
 			.uri(b -> {
-				b.path("/solarquery/api/v1/sec/datum/stream/datum");
+				b.path("/solarquery/api/v1/sec/datum/stream/{style}");
 				MultiValueMap<String, Object> params = filter.toRequestMap();
 				for ( Entry<String, List<Object>> e : params.entrySet() ) {
 					b.queryParam(e.getKey(), e.getValue());
 				}
-				return b.build();
+				return b.build(filter.getReadingType() != null ? "reading" : "datum");
 			})
 			.accept(displayMode == ResultDisplayMode.CSV
 					? MediaType.valueOf("text/csv")
@@ -354,7 +452,7 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 						StreamUtils.copy(res.getBody(), System.out);						
 					} else {
 						// convert CBOR to JSON
-						cborToJson(objectMapper, res.getBody(), System.out);
+						cborToJson(objectMapper, res.getBody(), nonClosing(System.out));
 					}
 				}
 				return null;

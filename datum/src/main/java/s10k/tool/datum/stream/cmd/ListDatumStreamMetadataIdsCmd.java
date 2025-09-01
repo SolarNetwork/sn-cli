@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.client.RestClient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,6 +31,7 @@ import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.domain.TableDisplayMode;
+import s10k.tool.common.util.SystemUtils;
 import s10k.tool.common.util.TableUtils;
 import s10k.tool.datum.domain.DatumStreamFilter;
 
@@ -181,8 +183,10 @@ public class ListDatumStreamMetadataIdsCmd extends BaseSubCmd<DatumStreamCmd> im
 				TableUtils.renderTableData(tableData, TableDisplayMode.CSV, null, System.out);
 			} else {
 				// JSON
-				objectMapper.writerWithDefaultPrettyPrinter().writeValue(System.out, metas);
-				System.out.println();
+				objectMapper.writerWithDefaultPrettyPrinter().writeValue(StreamUtils.nonClosing(System.out), metas);
+				if (SystemUtils.systemConsoleIsTerminal()) {
+					System.out.println();
+				}
 			}
 			return 0;
 		} catch (Exception e) {

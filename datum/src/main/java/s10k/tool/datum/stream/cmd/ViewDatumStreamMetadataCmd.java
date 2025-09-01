@@ -6,6 +6,7 @@ import static net.solarnetwork.domain.datum.DatumSamplesType.Instantaneous;
 import static net.solarnetwork.domain.datum.DatumSamplesType.Status;
 import static net.solarnetwork.domain.datum.ObjectDatumKind.Location;
 import static net.solarnetwork.domain.datum.ObjectDatumKind.Node;
+import static org.springframework.util.StreamUtils.nonClosing;
 import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 
@@ -32,6 +33,7 @@ import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.domain.TableDisplayMode;
+import s10k.tool.common.util.SystemUtils;
 import s10k.tool.common.util.TableUtils;
 
 /**
@@ -102,9 +104,11 @@ public class ViewDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 				TableUtils.renderTableData(tableData, TableDisplayMode.CSV, null, System.out);
 			} else {
 				// JSON
-				objectMapper.writerWithDefaultPrettyPrinter().writeValue(System.out, meta);
+				objectMapper.writerWithDefaultPrettyPrinter().writeValue(nonClosing(System.out), meta);
+				if (SystemUtils.systemConsoleIsTerminal()) {
+					System.out.println();
+				}
 			}
-			System.out.println();
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error viewing datum stream metadata: %s".formatted(e.getMessage()));

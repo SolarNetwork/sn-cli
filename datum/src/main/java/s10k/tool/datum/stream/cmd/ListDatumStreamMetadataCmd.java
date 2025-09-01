@@ -5,6 +5,7 @@ import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
 import static net.solarnetwork.domain.datum.DatumSamplesType.Accumulating;
 import static net.solarnetwork.domain.datum.DatumSamplesType.Instantaneous;
 import static net.solarnetwork.domain.datum.DatumSamplesType.Status;
+import static org.springframework.util.StreamUtils.nonClosing;
 import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 import static s10k.tool.common.util.StringUtils.naturallyCaseInsensitiveSorted;
@@ -35,6 +36,7 @@ import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.domain.TableDisplayMode;
+import s10k.tool.common.util.SystemUtils;
 import s10k.tool.common.util.TableUtils;
 import s10k.tool.datum.domain.DatumStreamFilter;
 
@@ -190,8 +192,10 @@ public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 				TableUtils.renderTableData(tableData, TableDisplayMode.CSV, null, System.out);
 			} else {
 				// JSON
-				objectMapper.writerWithDefaultPrettyPrinter().writeValue(System.out, metas);
-				System.out.println();
+				objectMapper.writerWithDefaultPrettyPrinter().writeValue(nonClosing(System.out), metas);
+				if (SystemUtils.systemConsoleIsTerminal()) {
+					System.out.println();
+				}
 			}
 			return 0;
 		} catch (Exception e) {
