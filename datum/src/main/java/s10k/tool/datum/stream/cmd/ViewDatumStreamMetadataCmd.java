@@ -97,8 +97,8 @@ public class ViewDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 				// @formatter:on
 			} else if (displayMode == ResultDisplayMode.CSV) {
 				List<Object[]> tableData = new ArrayList<>();
-				tableData.add(ListNodeDatumStreamMetadataCmd.metadataHeaderRow());
-				tableData.add(ListNodeDatumStreamMetadataCmd.metadataRow(meta));
+				tableData.add(ListDatumStreamMetadataCmd.metadataHeaderRow());
+				tableData.add(ListDatumStreamMetadataCmd.metadataRow(meta));
 				TableUtils.renderTableData(tableData, TableDisplayMode.CSV, null, System.out);
 			} else {
 				// JSON

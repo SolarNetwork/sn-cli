@@ -43,7 +43,7 @@ import s10k.tool.datum.domain.DatumStreamFilter;
  */
 @Component
 @Command(name = "list")
-public class ListNodeDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> implements Callable<Integer> {
+public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-stream", "--stream-id" },
@@ -108,7 +108,7 @@ public class ListNodeDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> i
 	 * @param reqFactory   the HTTP request factory to use
 	 * @param objectMapper the mapper to use
 	 */
-	public ListNodeDatumStreamMetadataCmd(ClientHttpRequestFactory reqFactory, ObjectMapper objectMapper) {
+	public ListDatumStreamMetadataCmd(ClientHttpRequestFactory reqFactory, ObjectMapper objectMapper) {
 		super(reqFactory, objectMapper);
 	}
 
@@ -151,7 +151,7 @@ public class ListNodeDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> i
 							new Column().header("Instantaneous").dataAlign(LEFT),
 							new Column().header("Accumulating").dataAlign(LEFT),
 							new Column().header("Status").dataAlign(LEFT),	
-						}, metas.stream().map(ListNodeDatumStreamMetadataCmd::metadataRow).toArray(Object[][]::new))
+						}, metas.stream().map(ListDatumStreamMetadataCmd::metadataRow).toArray(Object[][]::new))
 					.writeTo(System.out)
 					;
 				// @formatter:on
@@ -159,7 +159,7 @@ public class ListNodeDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> i
 			} else if (displayMode == ResultDisplayMode.CSV) {
 				List<Object[]> tableData = new ArrayList<>();
 				tableData.add(metadataHeaderRow());
-				tableData.addAll(metas.stream().map(ListNodeDatumStreamMetadataCmd::metadataRow).toList());
+				tableData.addAll(metas.stream().map(ListDatumStreamMetadataCmd::metadataRow).toList());
 				TableUtils.renderTableData(tableData, TableDisplayMode.CSV, null, System.out);
 			} else {
 				// JSON
