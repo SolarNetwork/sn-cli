@@ -4,6 +4,7 @@
 .project
 .settings
 .vscode
+*.args
 *.log
 *.orig
 *.swp
