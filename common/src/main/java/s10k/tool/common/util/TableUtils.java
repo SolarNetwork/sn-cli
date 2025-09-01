@@ -1,6 +1,7 @@
 package s10k.tool.common.util;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.springframework.util.StreamUtils.nonClosing;
 import static org.supercsv.prefs.CsvPreference.STANDARD_PREFERENCE;
 
 import java.io.IOException;
@@ -176,7 +177,7 @@ public class TableUtils {
 			return;
 		}
 		if (mode == TableDisplayMode.CSV) {
-			try (ICsvListWriter csvWriter = new CsvListWriter(new OutputStreamWriter(out, UTF_8),
+			try (ICsvListWriter csvWriter = new CsvListWriter(new OutputStreamWriter(nonClosing(out), UTF_8),
 					STANDARD_PREFERENCE)) {
 				for (Object row : data) {
 					if (row instanceof Object[] a) {
@@ -187,7 +188,7 @@ public class TableUtils {
 				}
 			}
 		} else if (mode == TableDisplayMode.JSON) {
-			objectMapper.writer(TableDataJsonPrettyPrinter.INSTANCE).writeValue(out, data);
+			objectMapper.writer(TableDataJsonPrettyPrinter.INSTANCE).writeValue(nonClosing(out), data);
 			out.write(System.lineSeparator().getBytes(Charset.defaultCharset()));
 		} else {
 			// @formatter:off
