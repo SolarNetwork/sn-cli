@@ -7,11 +7,13 @@ rootProject.name = 'sn-cli'
 include "app"
 include "common"
 include "common-test"
+include "datum"
 include "instructions"
 include "nodes"
 
 project(':app').name = "sn-cli-app"
 project(':common').name = "sn-cli-common"
+project(':datum').name = "sn-cli-datum"
 project(':common-test').name = "sn-cli-common-test"
 project(':instructions').name = "sn-cli-instructions"
 project(':nodes').name = "sn-cli-nodes"

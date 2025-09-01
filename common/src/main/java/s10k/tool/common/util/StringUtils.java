@@ -1,11 +1,14 @@
 package s10k.tool.common.util;
 
+import static net.solarnetwork.util.StringNaturalSortComparator.CASE_INSENSITIVE_NATURAL_SORT;
+
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAccessor;
+import java.util.Arrays;
 
 import net.solarnetwork.util.DateUtils;
 
@@ -48,6 +51,20 @@ public final class StringUtils {
 		} catch (DateTimeException e) {
 			return LocalDate.from(ta).atStartOfDay(ZoneId.from(ta)).toLocalDateTime();
 		}
+	}
+
+	/**
+	 * Naturally sort an array of strings <b>in-place</b>.
+	 * 
+	 * @param array the array to sort, in place
+	 * @return the {@code array} argument, for method chaining
+	 */
+	public static String[] naturallyCaseInsensitiveSorted(String[] array) {
+		if (array == null) {
+			return null;
+		}
+		Arrays.sort(array, CASE_INSENSITIVE_NATURAL_SORT);
+		return array;
 	}
 
 }
