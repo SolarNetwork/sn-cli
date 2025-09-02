@@ -3,7 +3,6 @@ package s10k.tool.nodes.cmd;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.SequencedCollection;
 import java.util.SequencedSet;
 import java.util.concurrent.Callable;
@@ -59,11 +58,10 @@ public class ListNodeIdsCmd extends BaseSubCmd<NodesCmd> implements Callable<Int
 				System.err.println("No node IDs matched your criteria.");
 				return 1;
 			}
-			List<Object[]> tableData = nodeIds.stream().map(n -> new Object[] { n }).toList();
 			// @formatter:off
 			TableUtils.renderTableData(new Column[] {
 					new Column().header("Node ID"),
-			}, tableData, displayMode, objectMapper, System.out);
+			}, nodeIds, displayMode, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			// @formatter:on
 			return 0;
 		} catch (Exception e) {

@@ -167,7 +167,8 @@ public class TableUtils {
 	 * Render tabular data to an output stream.
 	 * 
 	 * @param data         the data to render; the collection value type can be
-	 *                     {@code Object[]} or {@code Collection<?>}
+	 *                     {@code Object[]} or {@code Collection<?>} or
+	 *                     {@code Object}
 	 * @param mode         the output mode
 	 * @param objectMapper the JSON mapper to use (only required for if {@code mode}
 	 *                     is {@code JSON})
@@ -184,7 +185,8 @@ public class TableUtils {
 	 * 
 	 * @param columns      optional column information; ignored for JSON output
 	 * @param data         the data to render; the collection value type can be
-	 *                     {@code Object[]} or {@code Collection<?>}
+	 *                     {@code Object[]} or {@code Collection<?>} or
+	 *                     {@code Object}
 	 * @param mode         the output mode
 	 * @param objectMapper the JSON mapper to use (only required for if {@code mode}
 	 *                     is {@code JSON})
@@ -202,7 +204,8 @@ public class TableUtils {
 	 * @param columns             optional column information; ignored for JSON
 	 *                            output
 	 * @param data                the data to render; the collection value type can
-	 *                            be {@code Object[]} or {@code Collection<?>}
+	 *                            be {@code Object[]} or {@code Collection<?>} or
+	 *                            {@code Object}
 	 * @param mode                the output mode
 	 * @param objectMapper        the JSON mapper to use (only required for if
 	 *                            {@code mode} is {@code JSON})
@@ -227,6 +230,8 @@ public class TableUtils {
 						csvWriter.write(a);
 					} else if (row instanceof Collection<?> l) {
 						csvWriter.write(l);
+					} else {
+						csvWriter.write(row);
 					}
 				}
 			}
@@ -248,7 +253,7 @@ public class TableUtils {
 				} else if (row instanceof Collection<?> l) {
 					return l.toArray(Object[]::new);
 				}
-				return new Object[0];
+				return new Object[] { row };
 			}).toArray(Object[][]::new);
 			AsciiTableBuilder atb = AsciiTable.builder();
 			if (columns != null) {
