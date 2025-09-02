@@ -48,7 +48,7 @@ public class ViewDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 	UUID streamId;
 	
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the CSV data",
+			description = "how to display the data",
 			defaultValue = "PRETTY")
 	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
 	// @formatter:on

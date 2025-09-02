@@ -89,7 +89,7 @@ public class ListDatumStreamMetadataIdsCmd extends BaseSubCmd<DatumStreamCmd> im
 	String[] statusPropertyNames;
 	
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the CSV data",
+			description = "how to display the data",
 			defaultValue = "PRETTY")
 	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
 	// @formatter:on
