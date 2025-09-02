@@ -1,9 +1,7 @@
 package s10k.tool.nodes.cmd;
 
-import static org.springframework.util.StreamUtils.nonClosing;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.SequencedCollection;
@@ -17,12 +15,12 @@ import org.springframework.web.client.RestClient;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.freva.asciitable.Column;
 
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
-import s10k.tool.common.util.SystemUtils;
 import s10k.tool.common.util.TableUtils;
 
 /**
@@ -61,20 +59,12 @@ public class ListNodeIdsCmd extends BaseSubCmd<NodesCmd> implements Callable<Int
 				System.err.println("No node IDs matched your criteria.");
 				return 1;
 			}
-			if (displayMode == ResultDisplayMode.JSON) {
-				if (SystemUtils.systemConsoleIsTerminal()) {
-					TableUtils.renderTableData(nodeIds, displayMode, objectMapper, System.out);
-				} else {
-					objectMapper.writeValue(nonClosing(System.out), nodeIds);
-				}
-			} else {
-				List<Object[]> tableData = new ArrayList<>(nodeIds.size() + 1);
-				tableData.add(new Object[] { "Node ID" });
-				for (Long nodeId : nodeIds) {
-					tableData.add(new Object[] { nodeId });
-				}
-				TableUtils.renderTableData(tableData, displayMode, objectMapper, System.out);
-			}
+			List<Object[]> tableData = nodeIds.stream().map(n -> new Object[] { n }).toList();
+			// @formatter:off
+			TableUtils.renderTableData(new Column[] {
+					new Column().header("Node ID"),
+			}, tableData, displayMode, objectMapper, System.out);
+			// @formatter:on
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error listing node metadata: %s".formatted(e.getMessage()));
@@ -107,7 +97,7 @@ public class ListNodeIdsCmd extends BaseSubCmd<NodesCmd> implements Callable<Int
 
 		checkSuccess(response);
 
-		SequencedSet<Long> result = new LinkedHashSet<Long>(response.path("data").size());
+		SequencedSet<Long> result = new LinkedHashSet<>(response.path("data").size());
 		for (JsonNode node : response.path("data")) {
 			if (node.isNumber()) {
 				result.add(node.longValue());

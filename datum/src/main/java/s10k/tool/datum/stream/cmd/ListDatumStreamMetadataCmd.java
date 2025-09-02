@@ -5,7 +5,6 @@ import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
 import static net.solarnetwork.domain.datum.DatumSamplesType.Accumulating;
 import static net.solarnetwork.domain.datum.DatumSamplesType.Instantaneous;
 import static net.solarnetwork.domain.datum.DatumSamplesType.Status;
-import static org.springframework.util.StreamUtils.nonClosing;
 import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 import static s10k.tool.common.util.StringUtils.naturallyCaseInsensitiveSorted;
@@ -25,7 +24,6 @@ import org.springframework.web.client.RestClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.freva.asciitable.AsciiTable;
 import com.github.freva.asciitable.Column;
 
 import net.solarnetwork.domain.datum.ObjectDatumKind;
@@ -35,7 +33,6 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
-import s10k.tool.common.util.SystemUtils;
 import s10k.tool.common.util.TableUtils;
 import s10k.tool.datum.domain.DatumStreamFilter;
 
@@ -162,60 +159,24 @@ public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 				return 0;
 			}
 
-			if (displayMode == ResultDisplayMode.PRETTY) {
-				// @formatter:off
-				AsciiTable.builder()
-					.data(new Column[] {
-							new Column().header("Stream ID").dataAlign(LEFT),
-							new Column().header("Kind").dataAlign(LEFT),
-							new Column().header("ID").dataAlign(RIGHT),
-							new Column().header("Source ID").dataAlign(LEFT),
-							new Column().header("Time Zone").dataAlign(LEFT),
-							new Column().header("Instantaneous").dataAlign(LEFT),
-							new Column().header("Accumulating").dataAlign(LEFT),
-							new Column().header("Status").dataAlign(LEFT),	
-						}, metas.stream().map(ListDatumStreamMetadataCmd::metadataRow).toArray(Object[][]::new))
-					.writeTo(System.out)
-					;
-				// @formatter:on
-				System.out.println();
-			} else if (displayMode == ResultDisplayMode.CSV) {
-				List<Object[]> tableData = new ArrayList<>();
-				tableData.add(metadataHeaderRow());
-				tableData.addAll(metas.stream().map(ListDatumStreamMetadataCmd::metadataRow).toList());
-				TableUtils.renderTableData(tableData, displayMode, null, System.out);
-			} else {
-				// JSON
-				objectMapper.writerWithDefaultPrettyPrinter().writeValue(nonClosing(System.out), metas);
-				if (SystemUtils.systemConsoleIsTerminal()) {
-					System.out.println();
-				}
-			}
+			List<Object[]> tableData = metas.stream().map(ListDatumStreamMetadataCmd::metadataRow).toList();
+			// @formatter:off
+			TableUtils.renderTableData(new Column[] {
+					new Column().header("Stream ID").dataAlign(LEFT),
+					new Column().header("Kind").dataAlign(LEFT),
+					new Column().header("ID").dataAlign(RIGHT),
+					new Column().header("Source ID").dataAlign(LEFT),
+					new Column().header("Time Zone").dataAlign(LEFT),
+					new Column().header("Instantaneous").dataAlign(LEFT),
+					new Column().header("Accumulating").dataAlign(LEFT),
+					new Column().header("Status").dataAlign(LEFT),	
+				}, tableData, displayMode, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			// @formatter:on
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error viewing datum stream metadata: %s".formatted(e.getMessage()));
 		}
 		return 1;
-	}
-
-	/**
-	 * Get a datum stream metadata tabular structure header row.
-	 * 
-	 * @return the header row
-	 */
-	public static String[] metadataHeaderRow() {
-		// @formatter:off
-		return new String[] {
-				"Stream ID",
-				"Kind",
-				"ID",
-				"Source ID",
-				"Time Zone",
-				"Instantaneous",
-				"Accumulating",
-				"Status"
-		};
-		// @formatter:on
 	}
 
 	/**

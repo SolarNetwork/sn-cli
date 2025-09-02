@@ -14,13 +14,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.client.RestClient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.freva.asciitable.AsciiTable;
 import com.github.freva.asciitable.Column;
 
 import net.solarnetwork.domain.datum.ObjectDatumKind;
@@ -30,7 +28,6 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
-import s10k.tool.common.util.SystemUtils;
 import s10k.tool.common.util.TableUtils;
 import s10k.tool.datum.domain.DatumStreamFilter;
 
@@ -157,52 +154,20 @@ public class ListDatumStreamMetadataIdsCmd extends BaseSubCmd<DatumStreamCmd> im
 				return 0;
 			}
 
-			if (displayMode == ResultDisplayMode.PRETTY) {
-				// @formatter:off
-				AsciiTable.builder()
-					.data(new Column[] {
-							new Column().header("Stream ID").dataAlign(LEFT),
-							new Column().header("Kind").dataAlign(LEFT),
-							new Column().header("ID").dataAlign(RIGHT),
-							new Column().header("Source ID").dataAlign(LEFT),
-						}, metas.stream().map(ListDatumStreamMetadataIdsCmd::metadataRow).toArray(Object[][]::new))
-					.writeTo(System.out)
-					;
-				// @formatter:on
-				System.out.println();
-			} else if (displayMode == ResultDisplayMode.CSV) {
-				List<Object[]> tableData = new ArrayList<>();
-				tableData.add(metadataHeaderRow());
-				tableData.addAll(metas.stream().map(ListDatumStreamMetadataIdsCmd::metadataRow).toList());
-				TableUtils.renderTableData(tableData, displayMode, null, System.out);
-			} else {
-				// JSON
-				objectMapper.writerWithDefaultPrettyPrinter().writeValue(StreamUtils.nonClosing(System.out), metas);
-				if (SystemUtils.systemConsoleIsTerminal()) {
-					System.out.println();
-				}
-			}
+			List<Object[]> tableData = metas.stream().map(ListDatumStreamMetadataIdsCmd::metadataRow).toList();
+			// @formatter:off
+			TableUtils.renderTableData(new Column[] {
+					new Column().header("Stream ID").dataAlign(LEFT),
+					new Column().header("Kind").dataAlign(LEFT),
+					new Column().header("ID").dataAlign(RIGHT),
+					new Column().header("Source ID").dataAlign(LEFT),
+				}, tableData, displayMode, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			// @formatter:on
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error viewing datum stream metadata: %s".formatted(e.getMessage()));
 		}
 		return 1;
-	}
-
-	/**
-	 * Get a datum stream metadata tabular structure header row.
-	 * 
-	 * @return the header row
-	 */
-	public static String[] metadataHeaderRow() {
-		// @formatter:off
-		return new String[] {
-				"Stream ID",
-				"Kind",
-				"ID",
-				"Source ID",
-		};
-		// @formatter:on
 	}
 
 	/**

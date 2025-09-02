@@ -67,4 +67,14 @@ public final class StringUtils {
 		return array;
 	}
 
+	/**
+	 * Get a string for an optional object.
+	 * 
+	 * @param o the object to convert to a string, or {@code null}
+	 * @return the string or {@code null} if {@code o} is {@code null}
+	 */
+	public static String toStringOrNull(Object o) {
+		return (o != null ? o.toString() : null);
+	}
+
 }
