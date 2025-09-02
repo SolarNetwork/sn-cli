@@ -6,6 +6,7 @@ import static s10k.tool.common.util.RestUtils.checkSuccess;
 import static s10k.tool.common.util.RestUtils.populateQueryParameters;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -26,6 +27,7 @@ import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ObjectAndSource;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.domain.SourceFilter;
+import s10k.tool.common.util.DateUtils;
 import s10k.tool.common.util.LocalDateTimeConverter;
 import s10k.tool.common.util.TableUtils;
 
@@ -33,7 +35,7 @@ import s10k.tool.common.util.TableUtils;
  * View datum stream metadata IDs matching a search criteria.
  */
 @Component
-@Command(name = "sources")
+@Command(name = "sources", sortSynopsis = false)
 public class ListSourcesCmd extends BaseSubCmd<NodesCmd> implements Callable<Integer> {
 
 	// @formatter:off	
@@ -65,6 +67,10 @@ public class ListSourcesCmd extends BaseSubCmd<NodesCmd> implements Callable<Int
 			description = "treat the min/max dates as 'node local' dates, instead of UTC (or local time zone when -tz used)")
 	boolean useLocalDates;
 
+	@Option(names = { "-tz", "--time-zone" },
+			description = "a time zone to interpret the min and max dates as, instead of the local time zone")
+	ZoneId zone;
+	
 	@Option(names = { "-filter", "--filter" }, description = "a metadata filter")
 	String metadataFilter;
 
@@ -114,9 +120,20 @@ public class ListSourcesCmd extends BaseSubCmd<NodesCmd> implements Callable<Int
 
 	@Override
 	public Integer call() throws Exception {
-		final SourceFilter filter = SourceFilter.sourceFilter(nodeIds, sourceIds, minDate, maxDate, useLocalDates,
-				metadataFilter, propertyNames, instantaneousPropertyNames, accumulatingPropertyNames,
-				statusPropertyNames);
+		// @formatter:off
+		final SourceFilter filter = SourceFilter.sourceFilter(
+				nodeIds,
+				sourceIds,
+				DateUtils.zonedDate(maxDate, zone),
+				DateUtils.zonedDate(maxDate, zone),
+				useLocalDates,
+				metadataFilter,
+				propertyNames,
+				instantaneousPropertyNames,
+				accumulatingPropertyNames,
+				statusPropertyNames
+		);
+		// @formatter:on
 
 		final RestClient restClient = restClient();
 

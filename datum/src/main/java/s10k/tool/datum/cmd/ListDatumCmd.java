@@ -61,7 +61,7 @@ import s10k.tool.datum.domain.DatumFilter;
  * View stream information.
  */
 @Component
-@Command(name = "list")
+@Command(name = "list", sortSynopsis = false)
 public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integer> {
 
 	// @formatter:off
