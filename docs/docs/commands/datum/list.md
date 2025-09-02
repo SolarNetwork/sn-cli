@@ -44,8 +44,8 @@ s10k datum list [-local] [-recent] [--with-total-result-count]
 | `-tz=` | `--time-zone=` | a time zone ID to treat the min/max dates as, instead of the local time zone, like `Pacific/Auckland` or `-05:00` or `UTC` |
 | `-local` | `--local-dates` | treat the min/max dates as "node local" dates, instead of UTC (or the local time zone when `-tz` used) |
 | `-recent` | `--most-recent` | show just the most recently available data, within min/max dates if specified |
-| `-agg=` | `--aggregate=` | the [aggregation type][aggregation] to return |
-| `-pagg=` | `--partial-aggregate=` | a [partial aggregation][partial-aggregation] level to use |
+| `-agg=` | `--aggregation=` | the [aggregation type][aggregation] to return |
+| `-pagg=` | `--partial-aggregation=` | a [partial aggregation][partial-aggregation] level to use |
 | `-read=` | `--reading=` | return [reading][reading] aggregation results instead of listing results |
 | `-tol=` | `--tolerance` | a time tolerance to use with reading-style queries that support it, as an ISO period like `P7D` for 7 days |
 | `-S` | `--show-stream-ids` | show stream IDs in `PRETTY` results |
@@ -66,7 +66,7 @@ List hour-level aggregate datum over a date range:
 
 	```sh
 	s10k --profile demo datum list --node-id 101 --source-id con/1 \
-	  --min-date 2025-08-21 --max-date 2025-08-22 --aggregate Hour
+	  --min-date 2025-08-21 --max-date 2025-08-22 --aggregation Hour
 	```
 
 === "Pretty Output"
