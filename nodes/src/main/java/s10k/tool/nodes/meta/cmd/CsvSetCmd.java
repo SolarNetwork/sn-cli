@@ -32,7 +32,7 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import s10k.tool.common.cmd.BaseSubCmd;
-import s10k.tool.common.domain.TableDisplayMode;
+import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.SystemUtils;
 import s10k.tool.common.util.TableUtils;
 
@@ -51,7 +51,7 @@ public class CsvSetCmd extends BaseSubCmd<NodeMetadataCmd> implements Callable<I
 
 	@Option(names = { "-mode",
 			"--display-mode" }, description = "how to display the CSV data", required = false, defaultValue = "PRETTY")
-	TableDisplayMode displayMode = TableDisplayMode.PRETTY;
+	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
 
 	@Option(names = { "-s", "--string" }, description = "encode the CSV as a JSON string, intead of JSON arrays")
 	boolean encodeAsString;

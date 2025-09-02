@@ -23,7 +23,7 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.freva.asciitable.AsciiTable;
 
-import s10k.tool.common.domain.TableDisplayMode;
+import s10k.tool.common.domain.ResultDisplayMode;
 
 /**
  * Helper methods for generating formatted tables.
@@ -171,12 +171,12 @@ public class TableUtils {
 	 * @param out          the output stream
 	 * @throws IOException if any IO error occurs
 	 */
-	public static void renderTableData(SequencedCollection<?> data, TableDisplayMode mode, ObjectMapper objectMapper,
+	public static void renderTableData(SequencedCollection<?> data, ResultDisplayMode mode, ObjectMapper objectMapper,
 			OutputStream out) throws IOException {
 		if (data == null || data.isEmpty()) {
 			return;
 		}
-		if (mode == TableDisplayMode.CSV) {
+		if (mode == ResultDisplayMode.CSV) {
 			try (ICsvListWriter csvWriter = new CsvListWriter(new OutputStreamWriter(nonClosing(out), UTF_8),
 					STANDARD_PREFERENCE)) {
 				for (Object row : data) {
@@ -187,7 +187,7 @@ public class TableUtils {
 					}
 				}
 			}
-		} else if (mode == TableDisplayMode.JSON) {
+		} else if (mode == ResultDisplayMode.JSON) {
 			objectMapper.writer(TableDataJsonPrettyPrinter.INSTANCE).writeValue(nonClosing(out), data);
 			out.write(System.lineSeparator().getBytes(Charset.defaultCharset()));
 		} else {

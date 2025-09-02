@@ -25,7 +25,7 @@ import net.solarnetwork.domain.datum.GeneralDatumMetadata;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
-import s10k.tool.common.domain.TableDisplayMode;
+import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.TableUtils;
 import s10k.tool.nodes.domain.NodeMetadata;
 
@@ -44,7 +44,7 @@ public class CsvGetCmd extends BaseSubCmd<NodeMetadataCmd> implements Callable<I
 
 	@Option(names = { "-mode",
 			"--display-mode" }, description = "how to display the CSV data", required = false, defaultValue = "PRETTY")
-	TableDisplayMode displayMode = TableDisplayMode.PRETTY;
+	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
 
 	/**
 	 * Constructor.

@@ -30,7 +30,6 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
-import s10k.tool.common.domain.TableDisplayMode;
 import s10k.tool.common.util.SystemUtils;
 import s10k.tool.common.util.TableUtils;
 import s10k.tool.datum.domain.DatumStreamFilter;
@@ -175,7 +174,7 @@ public class ListDatumStreamMetadataIdsCmd extends BaseSubCmd<DatumStreamCmd> im
 				List<Object[]> tableData = new ArrayList<>();
 				tableData.add(metadataHeaderRow());
 				tableData.addAll(metas.stream().map(ListDatumStreamMetadataIdsCmd::metadataRow).toList());
-				TableUtils.renderTableData(tableData, TableDisplayMode.CSV, null, System.out);
+				TableUtils.renderTableData(tableData, displayMode, null, System.out);
 			} else {
 				// JSON
 				objectMapper.writerWithDefaultPrettyPrinter().writeValue(StreamUtils.nonClosing(System.out), metas);
