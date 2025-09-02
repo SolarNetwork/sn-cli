@@ -72,7 +72,7 @@ public class ListNodesCmd extends BaseSubCmd<NodesCmd> implements Callable<Integ
 					new Column().header("Public").dataAlign(LEFT),
 					new Column().header("Country").dataAlign(LEFT),
 					new Column().header("Time Zone").dataAlign(LEFT),
-				}, tableData, displayMode, objectMapper, System.out);
+				}, tableData, displayMode, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			// @formatter:on
 			return 0;
 		} catch (Exception e) {
