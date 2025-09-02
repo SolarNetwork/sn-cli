@@ -66,7 +66,7 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 
 	// @formatter:off
 	@Option(names = { "-stream", "--stream-id" },
-			description = "a stream ID to view metadata for",
+			description = "a stream ID to view datum for",
 			split = "\\s*,\\s*",
 			splitSynopsisLabel = ",",
 			paramLabel = "streamId")
@@ -76,11 +76,24 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 	NodeOrLocationIds nodeOrLocationIds;
 
 	@Option(names = { "-source", "--source-id" },
-			description = "a source ID to return metadata for",
+			description = "a source ID to return datum for",
 			split = "\\s*,\\s*",
 			splitSynopsisLabel = ",",
 			paramLabel = "sourceId")
 	String[] sourceIds;
+	
+	@Option(names = { "-ident", "--stream-ident" },
+			description = "an object:source stream identifier to return datum for; if provided then -node and -source are ignored",
+			split = "\\s*,\\s*",
+			splitSynopsisLabel = ",",
+			paramLabel = "identifier")
+	String[] streamIdentifiers;
+	
+	@Option(names = { "--stream-ident-kind" },
+			description = "the type of objects represented in the -ident option",
+			paramLabel = "kind",
+			defaultValue = "Node")
+	ObjectDatumKind streamIdentifierKind = ObjectDatumKind.Node;
 	
 	@Option(names = { "-min", "--min-date" },
 			description = "a minimum datum date to match",
@@ -95,10 +108,6 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 	@Option(names = {"-local", "--local-dates"},
 			description = "treat the min/max dates as 'node local' dates, instead of UTC (or local time zone when -tz used)")
 	boolean useLocalDates;
-
-	@Option(names = {"--with-total-result-count"},
-			description = "include a total result count in the results, if paged results are returned")
-	boolean totalResultsCount;
 
 	@Option(names = { "-tz", "--time-zone" },
 			description = "a time zone to interpret the min and max dates as, instead of the local time zone")
@@ -131,11 +140,6 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 			paramLabel = "propName")
 	String[] propertyNames;
 	
-	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the CSV data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
-
 	@Option(names = {"-S", "--show-stream-ids"},
 			description = "show stream IDs in PRETTY results")
 	boolean showStreamIds;
@@ -147,6 +151,11 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 	@Option(names = {"-O", "--offset"},
 			description = "start returning results from this offset, 0 being the first result")
 	long resultOffset;
+
+	@Option(names = { "-mode", "--display-mode" },
+			description = "how to display the CSV data",
+			defaultValue = "PRETTY")
+	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
 	// @formatter:on
 
 	/**
@@ -226,17 +235,22 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 		if (streamIds != null && streamIds.length > 0) {
 			filter.setStreamIds(asList(streamIds));
 		}
-		if (nodeOrLocationIds != null) {
-			if (nodeOrLocationIds.isLocation()) {
-				filter.setObjectKind(ObjectDatumKind.Location);
-				filter.setObjectIds(asList(nodeOrLocationIds.locationIds));
-			} else {
-				filter.setObjectKind(ObjectDatumKind.Node);
-				filter.setObjectIds(asList(nodeOrLocationIds.nodeIds));
+		if (streamIdentifiers != null && streamIdentifiers.length > 0) {
+			filter.setObjectKind(streamIdentifierKind);
+			filter.populateIdsFromStreamIdentifiers(asList(streamIdentifiers));
+		} else {
+			if (nodeOrLocationIds != null) {
+				if (nodeOrLocationIds.isLocation()) {
+					filter.setObjectKind(ObjectDatumKind.Location);
+					filter.setObjectIds(asList(nodeOrLocationIds.locationIds));
+				} else {
+					filter.setObjectKind(ObjectDatumKind.Node);
+					filter.setObjectIds(asList(nodeOrLocationIds.nodeIds));
+				}
 			}
-		}
-		if (sourceIds != null && sourceIds.length > 0) {
-			filter.setSourceIds(asList(sourceIds));
+			if (sourceIds != null && sourceIds.length > 0) {
+				filter.setSourceIds(asList(sourceIds));
+			}
 		}
 		if (minDate != null) {
 			if (useLocalDates) {
@@ -252,7 +266,7 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 				filter.setEndDate(DateUtils.zonedDate(maxDate, zone));
 			}
 		}
-		filter.setWithoutTotalResultsCount(!totalResultsCount);
+		filter.setWithoutTotalResultsCount(true);
 		filter.setMostRecent(mostRecent);
 		filter.setAggregation(aggregation);
 		filter.setPartialAggregation(partialAggregation);

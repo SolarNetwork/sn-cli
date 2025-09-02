@@ -9,6 +9,11 @@ import java.time.ZoneId;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAccessor;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.NavigableMap;
+import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import net.solarnetwork.util.DateUtils;
 
@@ -75,6 +80,38 @@ public final class StringUtils {
 	 */
 	public static String toStringOrNull(Object o) {
 		return (o != null ? o.toString() : null);
+	}
+
+	/**
+	 * Parse a set of steam identifiers into a mapping of object ID to associated
+	 * source IDs.
+	 * 
+	 * @param identifiers the stream identifiers to parse, each in the form of
+	 *                    {@code OBJECT_ID:SOURCE_ID}
+	 * @return the parsed stream ID mappings
+	 */
+	public static NavigableMap<Long, SortedSet<String>> parseStreamIdentifiers(Collection<String> identifiers) {
+		NavigableMap<Long, SortedSet<String>> result = new TreeMap<Long, SortedSet<String>>();
+		if (identifiers != null && !identifiers.isEmpty()) {
+			for (String identifier : identifiers) {
+				if (identifier == null) {
+					continue;
+				}
+				int idx = identifier.indexOf(':');
+				if (idx < 1 || idx >= (identifier.length() - 2)) {
+					continue;
+				}
+				String key = identifier.substring(0, idx);
+				try {
+					Long objId = Long.parseLong(key);
+					String sourceId = identifier.substring(idx + 1);
+					result.computeIfAbsent(objId, k -> new TreeSet<>(CASE_INSENSITIVE_NATURAL_SORT)).add(sourceId);
+				} catch (NumberFormatException e) {
+					// ignore and continue
+				}
+			}
+		}
+		return result;
 	}
 
 }

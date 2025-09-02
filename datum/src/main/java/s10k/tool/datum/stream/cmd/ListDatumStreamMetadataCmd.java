@@ -158,7 +158,8 @@ public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 				return 0;
 			}
 
-			List<Object[]> tableData = metas.stream().map(ListDatumStreamMetadataCmd::metadataRow).toList();
+			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? metas
+					: metas.stream().map(ListDatumStreamMetadataCmd::metadataRow).toList());
 			// @formatter:off
 			TableUtils.renderTableData(new Column[] {
 					new Column().header("Stream ID").dataAlign(LEFT),
