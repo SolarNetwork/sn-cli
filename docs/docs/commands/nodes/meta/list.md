@@ -34,7 +34,7 @@ You can show exactly the metadata for a single node like this:
 === "Show metadata for one node"
 
 	```sh
-	s10k --profile demo nodes meta list --node-id 101
+	s10k nodes meta list --node-id 101
 	```
 
 === "Output"
@@ -59,10 +59,10 @@ You can show multiple node metadatas by providing multiple `--node-id` options
 
 	```sh
 	# using multiple options
-	s10k --profile demo nodes meta list --node-id 101 --node-id 102
+	s10k nodes meta list --node-id 101 --node-id 102
 
 	# or the same thing, using a comma-delimited list
-	s10k --profile demo nodes meta list --node-id 101,102
+	s10k nodes meta list --node-id 101,102
 	```
 
 === "Output"
@@ -97,7 +97,7 @@ to show only the metadata where `limit` is greater than `200`:
 === "Show metadata for one node"
 
 	```sh
-	s10k --profile demo nodes meta list --node-id 101,102 --filter '(m/limit>200)'
+	s10k nodes meta list --node-id 101,102 --filter '(m/limit>200)'
 	```
 
 === "Output"

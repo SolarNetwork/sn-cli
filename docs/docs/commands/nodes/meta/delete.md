@@ -28,5 +28,5 @@ A success message.
 ## Examples
 
 ```sh title="Delete metadata"
-s10k --profile demo nodes meta delete --node-id 101
+s10k nodes meta delete --node-id 101
 ```

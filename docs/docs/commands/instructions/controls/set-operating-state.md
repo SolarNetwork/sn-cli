@@ -35,7 +35,7 @@ Update a component to "standby" mode:
 === "Set component operating state"
 
 	```sh
-	s10k --profile demo instructions controls set-operating-state --node-id 101 \
+	s10k instructions controls set-operating-state --node-id 101 \
 	  --control-id pump/1 Standby
 	```
 

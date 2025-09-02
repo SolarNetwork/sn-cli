@@ -9,7 +9,7 @@ Here is an example of running `s10k` to display the metadata associated with a S
 `nodes meta list` command:
 
 ```sh
-s10k --profile demo nodes meta list --node-id 101
+s10k nodes meta list --node-id 101
 
 Property Value
 ------------------------------------

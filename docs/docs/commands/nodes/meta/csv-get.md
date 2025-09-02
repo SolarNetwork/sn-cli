@@ -36,7 +36,7 @@ Show CSV data in the default formatting:
 === "Show CSV with pretty formatting"
 
 	```sh
-	s10k --profile demo nodes meta csv-get --node-id 101 --path /pm/cpd/schedule
+	s10k nodes meta csv-get --node-id 101 --path /pm/cpd/schedule
 	```
 
 === "Output"
@@ -56,7 +56,7 @@ The same data can be output as CSV as well:
 === "Show CSV with CSV formatting"
 
 	```sh
-	s10k --profile demo nodes meta csv-get --node-id 101 --path /pm/cpd/schedule \
+	s10k nodes meta csv-get --node-id 101 --path /pm/cpd/schedule \
 	     --display-mode CSV
 	```
 
@@ -73,7 +73,7 @@ The same data can be output as JSON as well:
 === "Show CSV with JSON formatting"
 
 	```sh
-	s10k --profile demo nodes meta csv-get --node-id 101 --path /pm/cpd/schedule \
+	s10k nodes meta csv-get --node-id 101 --path /pm/cpd/schedule \
 	     --display-mode JSON
 	```
 

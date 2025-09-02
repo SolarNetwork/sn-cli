@@ -65,7 +65,7 @@ List hour-level aggregate datum over a date range:
 === "List hourly datum"
 
 	```sh
-	s10k --profile demo datum list --node-id 101 --source-id con/1 \
+	s10k datum list --node-id 101 --source-id con/1 \
 	  --min-date 2025-08-21 --max-date 2025-08-22 --aggregation Hour
 	```
 
@@ -117,7 +117,7 @@ Show a reading difference between two dates:
 === "Show reading difference"
 
 	```sh
-	s10k --profile demo datum list --node-id 101 --source-id con/1 \
+	s10k datum list --node-id 101 --source-id con/1 \
 	  --min-date 2025-08-21 --max-date 2025-08-22  --reading Difference
 	```
 

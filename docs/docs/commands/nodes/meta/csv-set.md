@@ -78,21 +78,21 @@ Here is how it would be saved as metadata at the key path `/pm/cpd/schedule` nor
 The data to save can be provided directly as a command argument, for example:
 
 ```sh title="CSV as command argument"
-s10k --profile demo nodes meta csv-set --node-id 101 \
+s10k nodes meta csv-set --node-id 101 \
   --path /pm/cpd/schedule 'Key,Value\nA,B'
 ```
 
 A file with the data can be referenced using `@@` followed by the file path:
 
 ```sh title="CSV as a file"
-s10k --profile demo nodes meta csv-set --node-id 101 \
+s10k nodes meta csv-set --node-id 101 \
   --path /pm/cpd/schedule @@/path/to/data.csv
 ```
 
 The data can be read from standard input, like this:
 
 ```sh title="CSV read from standard input"
-s10k --profile demo nodes meta csv-set --node-id 101 \
+s10k nodes meta csv-set --node-id 101 \
   --path /pm/cpd/schedule </path/to/data.csv
 ```
 

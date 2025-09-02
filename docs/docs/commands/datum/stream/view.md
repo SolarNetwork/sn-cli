@@ -31,7 +31,7 @@ A table of datum stream metadata properties.
 === "View datum stream metadata"
 
 	```sh
-	s10k --profile demo datum stream view --stream-id cc114908-cc0f-4680-a92e-718690742ba9
+	s10k datum stream view --stream-id cc114908-cc0f-4680-a92e-718690742ba9
 	```
 
 === "Pretty Output"

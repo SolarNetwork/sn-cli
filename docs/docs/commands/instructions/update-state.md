@@ -42,7 +42,7 @@ Update a set of `Queued` instructions in a date range to `Declined`:
 === "Show instruction for ID"
 
 	```sh
-	s10k --profile demo instructions update-state --node-id 1011 --state Declined Received
+	s10k instructions update-state --node-id 1011 --state Declined Received
 	```
 
 === "Output"
