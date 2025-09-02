@@ -168,7 +168,10 @@ s10k datum list \
   --aggregation Hour \
   --property watts,wattHours \
   --stream-id $( \
-    s10k datum stream list --instantaneous watts --accumulating wattHours --display-mode JSON \
+    s10k datum stream ids \
+	  --instantaneous watts \
+	  --accumulating wattHours \
+	  --display-mode JSON \
     |jq -r 'map(.streamId) | join(",")' \
   )
 ```
