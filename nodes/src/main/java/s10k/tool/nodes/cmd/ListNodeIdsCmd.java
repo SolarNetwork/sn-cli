@@ -30,9 +30,6 @@ import s10k.tool.common.util.TableUtils;
 public class ListNodeIdsCmd extends BaseSubCmd<NodesCmd> implements Callable<Integer> {
 
 	// @formatter:off
-	@Option(names = { "-filter", "--filter" }, description = "a metadata filter")
-	String filter;
-
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data",
 			defaultValue = "PRETTY")
@@ -53,7 +50,7 @@ public class ListNodeIdsCmd extends BaseSubCmd<NodesCmd> implements Callable<Int
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
 		try {
-			SequencedCollection<Long> nodeIds = listNodeIds(restClient, filter);
+			SequencedCollection<Long> nodeIds = listNodeIds(restClient);
 			if (nodeIds.isEmpty()) {
 				System.err.println("No node IDs matched your criteria.");
 				return 1;
@@ -73,20 +70,13 @@ public class ListNodeIdsCmd extends BaseSubCmd<NodesCmd> implements Callable<Int
 	/**
 	 * List node IDs.
 	 * 
-	 * @param restClient     the REST client
-	 * @param metadataFilter the optional metadata filter
+	 * @param restClient the REST client
 	 * @return the node IDs
 	 */
-	public static SequencedCollection<Long> listNodeIds(RestClient restClient, String metadataFilter) {
+	public static SequencedCollection<Long> listNodeIds(RestClient restClient) {
 		// @formatter:off
 		JsonNode response = restClient.get()
-				.uri(b -> {
-					b.path("/solarquery/api/v1/sec/nodes");
-					if(metadataFilter != null ) {
-						b.queryParam("metadataFilter", metadataFilter);
-					}
-					return b.build();
-				})
+			.uri("/solarquery/api/v1/sec/nodes")
 			.accept(MediaType.APPLICATION_JSON)
 			.retrieve()
 			.body(JsonNode.class)
