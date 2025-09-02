@@ -113,17 +113,61 @@ List all available sources:
 
 	```json
 	[
-		[ 64, "/meter/1" ],
-		[ 64, "/meter/2" ],
-		[ 64, "/test/solcast" ],
-		[ 70, "meter/1" ],
-		[ 101, "con/1" ],
-		[ 101, "con/pcm" ],
-		[ 101, "dnp3/client/a" ],
-		[ 101, "gen/1" ],
-		[ 101, "pcm/limit" ],
-		[ 101, "power/limit" ],
-		[ 101, "switch/1" ]
+		{
+			"kind" : "n",
+			"objectId" : 64,
+			"sourceId" : "/meter/1"
+		},
+		{
+			"kind" : "n",
+			"objectId" : 64,
+			"sourceId" : "/meter/2"
+		},
+		{
+			"kind" : "n",
+			"objectId" : 64,
+			"sourceId" : "/test/solcast"
+		},
+		{
+			"kind" : "n",
+			"objectId" : 70,
+			"sourceId" : "meter/1"
+		},
+		{
+			"kind" : "n",
+			"objectId" : 101,
+			"sourceId" : "con/1"
+		},
+		{
+			"kind" : "n",
+			"objectId" : 101,
+			"sourceId" : "con/pcm"
+		},
+		{
+			"kind" : "n",
+			"objectId" : 101,
+			"sourceId" : "dnp3/client/a"
+		},
+		{
+			"kind" : "n",
+			"objectId" : 101,
+			"sourceId" : "gen/1"
+		},
+		{
+			"kind" : "n",
+			"objectId" : 101,
+			"sourceId" : "pcm/limit"
+		},
+		{
+			"kind" : "n",
+			"objectId" : 101,
+			"sourceId" : "power/limit"
+		},
+		{
+			"kind" : "n",
+			"objectId" : 101,
+			"sourceId" : "switch/1"
+		}
 	]
 	```
 

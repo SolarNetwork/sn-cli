@@ -144,7 +144,8 @@ public class ListSourcesCmd extends BaseSubCmd<NodesCmd> implements Callable<Int
 				return 0;
 			}
 
-			List<Object[]> tableData = sources.stream().map(ListSourcesCmd::tableDataRow).toList();
+			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? sources
+					: sources.stream().map(ListSourcesCmd::tableDataRow).toList());
 			// @formatter:off
 			TableUtils.renderTableData(new Column[] {
 					new Column().header("Node ID").dataAlign(RIGHT),

@@ -1,5 +1,9 @@
 package s10k.tool.common.domain;
 
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import net.solarnetwork.domain.datum.ObjectDatumKind;
 import net.solarnetwork.util.StringUtils;
 
@@ -10,6 +14,7 @@ import net.solarnetwork.util.StringUtils;
  * @param objectId the object ID
  * @param sourceId the source ID
  */
+@RegisterReflectionForBinding
 public record ObjectAndSource(ObjectDatumKind kind, Long objectId, String sourceId)
 		implements Comparable<ObjectAndSource> {
 
@@ -31,6 +36,7 @@ public record ObjectAndSource(ObjectDatumKind kind, Long objectId, String source
 	 * @return {@code true} if both {@code nodeId} and {@code sourceId} are not
 	 *         empty
 	 */
+	@JsonIgnore
 	public boolean isValid() {
 		return kind != null && objectId != null && objectId.longValue() != 0 && sourceId != null && !sourceId.isBlank();
 	}

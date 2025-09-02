@@ -157,6 +157,41 @@ Show a reading difference between two dates:
 	}
 	```
 
+Use the [datum stream ids](./stream/ids.md) command to generate a list of stream IDs that
+have `watts` and `wattHours` properties to list datum for, then list datum for those streams,
+showing just those properties:
+
+```sh title="List datum for dynamic stream IDs"
+s10k datum list \
+  --min-date 2025-08-21 \
+  --max-date 2025-08-22 \
+  --aggregation Hour \
+  --property watts,wattHours \
+  --stream-id $( \
+    s10k datum stream list --instantaneous watts --accumulating wattHours --display-mode JSON \
+    |jq -r 'map(.streamId) | join(",")' \
+  )
+```
+
+Use the [nodes sources](../nodes/sources.md) command to generate a list of stream IDs that
+have `watts` and `wattHours` properties and have posted datum after `2025-08-01` to list
+datum for, then list datum for those streams, showing just those properties:
+
+```sh title="List datum for dynamic sources"
+s10k datum list \
+  --min-date 2025-08-21 \
+  --max-date 2025-08-22 \
+  --aggregation Hour \
+  --property watts,wattHours \
+  --stream-ident $( \
+    s10k nodes sources \
+	  --instantaneous watts \
+	  --accumulating wattHours \
+	  --min-date 2025-08-01 \
+	  --display-mode JSON \
+    |jq -r 'map([.objectId, .sourceId] | join(":")) | join(",")' \
+  )
+```
 
 [aggregation]: https://github.com/SolarNetwork/solarnetwork/wiki/SolarQuery-API-enumerated-types#aggregation-types
 [partial-aggregation]: https://github.com/SolarNetwork/solarnetwork/wiki/SolarNet-aggregation#list-partial-aggregation
