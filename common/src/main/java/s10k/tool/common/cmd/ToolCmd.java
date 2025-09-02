@@ -49,8 +49,9 @@ public class ToolCmd implements ProfileProvider {
 	 * 
 	 * <p>
 	 * This will populate the {@code profile}, either via the profile settings for
-	 * {@code profileName}, the {@code tokenId} or {@code tokenSecret} options, or
-	 * the {@link #SN_TOKEN_ID_ENV} and {@link #SN_TOKEN_SECRET_ENV} environment
+	 * {@code profileName}, the default profile if no {@code profileName} provided,
+	 * the {@code tokenId} or {@code tokenSecret} options, or the
+	 * {@link #SN_TOKEN_ID_ENV} and {@link #SN_TOKEN_SECRET_ENV} environment
 	 * variables.
 	 * </p>
 	 * 
@@ -58,10 +59,8 @@ public class ToolCmd implements ProfileProvider {
 	 * @return the exit code result
 	 */
 	public int globalInit(ParseResult parseResult) {
-		if (profileName != null && !profileName.isBlank()) {
-			profile = ProfileUtils.profile(profileName);
-		}
-		if (profile == null) {
+		profile = ProfileUtils.profile(profileName);
+		if (profileName == null || profile == null) {
 			// use command options if available
 			if (tokenId != null && !tokenId.isEmpty() && tokenSecret != null && tokenSecret.length > 0) {
 				profile = new ProfileInfo("", new SnTokenCredentials(tokenId, tokenSecret));

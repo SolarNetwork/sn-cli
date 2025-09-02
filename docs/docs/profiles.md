@@ -7,6 +7,10 @@ named credential  _profiles_ that you can specify with the `--profile/-P` option
 s10k --profile=home ...
 ```
 
+You can also configure a **default profile** that will be used if no `--profile` option is provided.
+
+## Credential profiles location
+
 The profiles are stored in a `$HOME/.s10k/credentials` file, where `$HOME` is your system user's
 "home" directory. For example on macOS for a user `alice` this might look like
 `/Users/alice/.s10k/credentials` or on Linux `/home/alice/.s10k/credentials`.
@@ -32,12 +36,17 @@ permissions to the file:
 
 	TODO
 
-## Credential profile structure
+## Credential profiles structure
 
-The credentials profile file is a [TOML](https://toml.io) file, where each profile starts with a `[NAME]` line, where `NAME` is the name of the profile. Following that are `key = "value"` configuration lines.
-For example, here is a `credentials` file with two profiles named **home** and **work**:
+The credentials profile file is a [TOML](https://toml.io) file, where you can include **default**
+credentials followed by named profiles, each that start with a `[NAME]` line, where `NAME` is the
+name of the profile. Following that are `key = "value"` configuration lines. For example, here is a
+`credentials` file with default credentials followed by two profiles named **home** and **work**:
 
 ```toml
+sn_token_id = "DEFAULT_TOKEN_ID"
+sn_token_secret = "DEFAULT_TOKEN_SECRET"
+
 [home]
 sn_token_id = "HOME_TOKEN_ID"
 sn_token_secret = "HOME_TOKEN_SECRET"
@@ -49,7 +58,7 @@ sn_token_secret = "WORK_TOKEN_SECRET"
 
 ### Profile properties
 
-The following properties are supported in each profile:
+The following properties are supported in each profile (including the default profile):
 
 | Profile Property | Description |
 |:-----------------|:------------|
