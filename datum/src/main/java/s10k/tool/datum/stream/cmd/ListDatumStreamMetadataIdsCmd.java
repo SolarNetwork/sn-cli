@@ -146,11 +146,6 @@ public class ListDatumStreamMetadataIdsCmd extends BaseSubCmd<DatumStreamCmd> im
 						sourceIds, propertyNames, instantaneousPropertyNames, accumulatingPropertyNames,
 						statusPropertyNames);
 
-		if (!filter.hasAnyCriteria()) {
-			System.err.println("Must provide at least one query filter option.");
-			return 1;
-		}
-
 		final RestClient restClient = restClient();
 
 		try {
