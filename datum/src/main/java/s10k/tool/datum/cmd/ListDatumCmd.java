@@ -9,6 +9,7 @@ import static net.solarnetwork.util.NumberUtils.narrow;
 import static net.solarnetwork.util.NumberUtils.round;
 import static org.springframework.util.StreamUtils.nonClosing;
 import static s10k.tool.common.util.RestUtils.cborToJson;
+import static s10k.tool.common.util.RestUtils.populateQueryParameters;
 
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -19,7 +20,6 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.SequencedSet;
 import java.util.Set;
 import java.util.UUID;
@@ -29,7 +29,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.util.MultiValueMap;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
@@ -407,10 +406,7 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 		return restClient.get()
 			.uri(b -> {
 				b.path("/solarquery/api/v1/sec/datum/stream/{style}");
-				MultiValueMap<String, Object> params = filter.toRequestMap();
-				for ( Entry<String, List<Object>> e : params.entrySet() ) {
-					b.queryParam(e.getKey(), e.getValue());
-				}
+				populateQueryParameters(b, filter::toRequestMap);
 				return b.build(filter.getReadingType() != null ? "reading" : "datum");
 			})
 			.accept(MediaType.APPLICATION_CBOR)
@@ -435,10 +431,7 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 		restClient.get()
 			.uri(b -> {
 				b.path("/solarquery/api/v1/sec/datum/stream/{style}");
-				MultiValueMap<String, Object> params = filter.toRequestMap();
-				for ( Entry<String, List<Object>> e : params.entrySet() ) {
-					b.queryParam(e.getKey(), e.getValue());
-				}
+				populateQueryParameters(b, filter::toRequestMap);
 				return b.build(filter.getReadingType() != null ? "reading" : "datum");
 			})
 			.accept(displayMode == ResultDisplayMode.CSV

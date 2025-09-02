@@ -12,6 +12,7 @@ import s10k.tool.nodes.meta.cmd.NodeMetadataCmd;
 @Command(name = "nodes", subcommands = {
 		ListNodeIdsCmd.class,
 		ListNodesCmd.class,
+		ListSourcesCmd.class,
 		NodeMetadataCmd.class
 })
 // @formatter:on

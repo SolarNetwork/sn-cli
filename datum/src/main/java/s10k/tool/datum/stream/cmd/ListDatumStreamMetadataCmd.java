@@ -7,18 +7,17 @@ import static net.solarnetwork.domain.datum.DatumSamplesType.Instantaneous;
 import static net.solarnetwork.domain.datum.DatumSamplesType.Status;
 import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
+import static s10k.tool.common.util.RestUtils.populateQueryParameters;
 import static s10k.tool.common.util.StringUtils.naturallyCaseInsensitiveSorted;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -216,10 +215,7 @@ public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 		JsonNode response = restClient.get()
 			.uri(b -> {
 				b.path("/solarquery/api/v1/sec/datum/stream/meta/" + (kind == ObjectDatumKind.Location ? "loc" : "node"));
-				MultiValueMap<String, Object> params = filter.toRequestMap(kind);
-				for ( Entry<String, List<Object>> e : params.entrySet() ) {
-					b.queryParam(e.getKey(), e.getValue());
-				}
+				populateQueryParameters(b, () -> filter.toRequestMap(kind));
 				return b.build();
 			})
 			.accept(MediaType.APPLICATION_JSON)

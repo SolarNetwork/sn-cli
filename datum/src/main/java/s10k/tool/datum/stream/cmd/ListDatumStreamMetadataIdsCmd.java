@@ -3,17 +3,16 @@ package s10k.tool.datum.stream.cmd;
 import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
+import static s10k.tool.common.util.RestUtils.populateQueryParameters;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -203,10 +202,7 @@ public class ListDatumStreamMetadataIdsCmd extends BaseSubCmd<DatumStreamCmd> im
 		JsonNode response = restClient.get()
 			.uri(b -> {
 				b.path("/solarquery/api/v1/sec/datum/stream/meta/{kind}/ids");
-				MultiValueMap<String, Object> params = filter.toRequestMap(kind);
-				for ( Entry<String, List<Object>> e : params.entrySet() ) {
-					b.queryParam(e.getKey(), e.getValue());
-				}
+				populateQueryParameters(b, () -> filter.toRequestMap(kind));
 				return b.build(kind == ObjectDatumKind.Location ? "loc" : "node");
 			})
 			.accept(MediaType.APPLICATION_JSON)
