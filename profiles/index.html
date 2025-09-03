@@ -280,13 +280,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#credential-profile-structure" class="md-nav__link">
+  <a href="#credential-profiles-location" class="md-nav__link">
     <span class="md-ellipsis">
-      Credential profile structure
+      Credential profiles location
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Credential profile structure">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#credential-profiles-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Credential profiles structure
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Credential profiles structure">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -851,6 +860,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -897,6 +912,75 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../commands/nodes/ids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ids
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/nodes/list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    list
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/nodes/sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    sources
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
       
@@ -922,7 +1006,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4_5" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -939,14 +1023,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_4_2" id="__nav_4_4_2_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_4_4_5" id="__nav_4_4_5_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_4_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4_2">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4_5">
             <span class="md-nav__icon md-icon"></span>
             meta
           </label>
@@ -1119,13 +1203,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#credential-profile-structure" class="md-nav__link">
+  <a href="#credential-profiles-location" class="md-nav__link">
     <span class="md-ellipsis">
-      Credential profile structure
+      Credential profiles location
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Credential profile structure">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#credential-profiles-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Credential profiles structure
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Credential profiles structure">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1163,6 +1256,8 @@
 named credential  <em>profiles</em> that you can specify with the <code>--profile/-P</code> options, for example:</p>
 <div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>--profile<span class="o">=</span>home<span class="w"> </span>...
 </code></pre></div>
+<p>You can also configure a <strong>default profile</strong> that will be used if no <code>--profile</code> option is provided.</p>
+<h2 id="credential-profiles-location">Credential profiles location<a class="headerlink" href="#credential-profiles-location" title="Permanent link">&para;</a></h2>
 <p>The profiles are stored in a <code>$HOME/.s10k/credentials</code> file, where <code>$HOME</code> is your system user's
 "home" directory. For example on macOS for a user <code>alice</code> this might look like
 <code>/Users/alice/.s10k/credentials</code> or on Linux <code>/home/alice/.s10k/credentials</code>.</p>
@@ -1187,10 +1282,15 @@ chmod<span class="w"> </span><span class="m">600</span><span class="w"> </span>~
 </div>
 </div>
 </div>
-<h2 id="credential-profile-structure">Credential profile structure<a class="headerlink" href="#credential-profile-structure" title="Permanent link">&para;</a></h2>
-<p>The credentials profile file is a <a href="https://toml.io">TOML</a> file, where each profile starts with a <code>[NAME]</code> line, where <code>NAME</code> is the name of the profile. Following that are <code>key = "value"</code> configuration lines.
-For example, here is a <code>credentials</code> file with two profiles named <strong>home</strong> and <strong>work</strong>:</p>
-<div class="highlight"><pre><span></span><code><span class="k">[home]</span>
+<h2 id="credential-profiles-structure">Credential profiles structure<a class="headerlink" href="#credential-profiles-structure" title="Permanent link">&para;</a></h2>
+<p>The credentials profile file is a <a href="https://toml.io">TOML</a> file, where you can include <strong>default</strong>
+credentials followed by named profiles, each that start with a <code>[NAME]</code> line, where <code>NAME</code> is the
+name of the profile. Following that are <code>key = "value"</code> configuration lines. For example, here is a
+<code>credentials</code> file with default credentials followed by two profiles named <strong>home</strong> and <strong>work</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">sn_token_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;DEFAULT_TOKEN_ID&quot;</span>
+<span class="n">sn_token_secret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;DEFAULT_TOKEN_SECRET&quot;</span>
+
+<span class="k">[home]</span>
 <span class="n">sn_token_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;HOME_TOKEN_ID&quot;</span>
 <span class="n">sn_token_secret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;HOME_TOKEN_SECRET&quot;</span>
 
@@ -1199,7 +1299,7 @@ For example, here is a <code>credentials</code> file with two profiles named <st
 <span class="n">sn_token_secret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;WORK_TOKEN_SECRET&quot;</span>
 </code></pre></div>
 <h3 id="profile-properties">Profile properties<a class="headerlink" href="#profile-properties" title="Permanent link">&para;</a></h3>
-<p>The following properties are supported in each profile:</p>
+<p>The following properties are supported in each profile (including the default profile):</p>
 <table>
 <thead>
 <tr>

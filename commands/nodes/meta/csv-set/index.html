@@ -791,6 +791,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -835,6 +841,75 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ids
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    list
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    sources
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -864,7 +939,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4_5" checked>
         
           
           <div class="md-nav__link md-nav__container">
@@ -881,14 +956,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_4_2" id="__nav_4_4_2_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_4_4_5" id="__nav_4_4_5_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_4_2_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_4_2">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_4_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_4_5">
             <span class="md-nav__icon md-icon"></span>
             meta
           </label>
@@ -1161,15 +1236,15 @@ May-Sep,,,,1
 </div>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <p>The data to save can be provided directly as a command argument, for example:</p>
-<div class="highlight"><span class="filename">CSV as command argument</span><pre><span></span><code>s10k<span class="w"> </span>--profile<span class="w"> </span>demo<span class="w"> </span>nodes<span class="w"> </span>meta<span class="w"> </span>csv-set<span class="w"> </span>--node-id<span class="w"> </span><span class="m">101</span><span class="w"> </span><span class="se">\</span>
+<div class="highlight"><span class="filename">CSV as command argument</span><pre><span></span><code>s10k<span class="w"> </span>nodes<span class="w"> </span>meta<span class="w"> </span>csv-set<span class="w"> </span>--node-id<span class="w"> </span><span class="m">101</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--path<span class="w"> </span>/pm/cpd/schedule<span class="w"> </span><span class="s1">&#39;Key,Value\nA,B&#39;</span>
 </code></pre></div>
 <p>A file with the data can be referenced using <code>@@</code> followed by the file path:</p>
-<div class="highlight"><span class="filename">CSV as a file</span><pre><span></span><code>s10k<span class="w"> </span>--profile<span class="w"> </span>demo<span class="w"> </span>nodes<span class="w"> </span>meta<span class="w"> </span>csv-set<span class="w"> </span>--node-id<span class="w"> </span><span class="m">101</span><span class="w"> </span><span class="se">\</span>
+<div class="highlight"><span class="filename">CSV as a file</span><pre><span></span><code>s10k<span class="w"> </span>nodes<span class="w"> </span>meta<span class="w"> </span>csv-set<span class="w"> </span>--node-id<span class="w"> </span><span class="m">101</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--path<span class="w"> </span>/pm/cpd/schedule<span class="w"> </span>@@/path/to/data.csv
 </code></pre></div>
 <p>The data can be read from standard input, like this:</p>
-<div class="highlight"><span class="filename">CSV read from standard input</span><pre><span></span><code>s10k<span class="w"> </span>--profile<span class="w"> </span>demo<span class="w"> </span>nodes<span class="w"> </span>meta<span class="w"> </span>csv-set<span class="w"> </span>--node-id<span class="w"> </span><span class="m">101</span><span class="w"> </span><span class="se">\</span>
+<div class="highlight"><span class="filename">CSV read from standard input</span><pre><span></span><code>s10k<span class="w"> </span>nodes<span class="w"> </span>meta<span class="w"> </span>csv-set<span class="w"> </span>--node-id<span class="w"> </span><span class="m">101</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--path<span class="w"> </span>/pm/cpd/schedule<span class="w"> </span>&lt;/path/to/data.csv
 </code></pre></div>
 <p>Similarly, the metadata content can be piped to the command, like this:</p>

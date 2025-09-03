@@ -801,6 +801,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -847,6 +853,75 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../nodes/ids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ids
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../nodes/list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    list
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../nodes/sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    sources
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
       
@@ -872,7 +947,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4_5" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -889,14 +964,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_4_2" id="__nav_4_4_2_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_4_4_5" id="__nav_4_4_5_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_4_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4_2">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4_5">
             <span class="md-nav__icon md-icon"></span>
             meta
           </label>
@@ -1084,17 +1159,21 @@
 <a href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarQuery-Stream-API#datum-stream-datum-list">/datum/stream/datum</a> and <a href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarQuery-Stream-API#datum-stream-reading-list">/datum/stream/reading</a> endpoints.</p>
 </div>
 <h1 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h1>
-<div class="highlight"><pre><span></span><code>s10k datum list [-local] [-recent] [--with-total-result-count]
-                [-agg=&lt;aggregation&gt;] [-max=&lt;maxDate&gt;] [-min=&lt;minDate&gt;]
-                [-mode=&lt;displayMode&gt;] [-pagg=&lt;partialAggregation&gt;]
-                [-read=&lt;readingType&gt;] [-tol=&lt;timeTolerance&gt;]
-                [-tz=&lt;zone&gt;] [-prop=propName[,propName...]]...
-                [-source=sourceId[,sourceId...]]...
-                [-stream=streamId[,streamId...]]...
+<div class="highlight"><pre><span></span><code>s10k datum list [-S] [-stream=streamId[,streamId...]]...
                 [
                     -node=nodeId[,nodeId...] [-node=nodeId[,nodeId...]]... |
                     -loc=locId[,locId...] [-loc=locId[,locId...]]...
                 ]
+                [-source=sourceId[,sourceId...]]...
+                [-ident=identifier[,identifier...]]...
+                [--stream-ident-kind=kind]
+                [-min=&lt;minDate&gt;] [-max=&lt;maxDate&gt;] [-local] [-tz=&lt;zone&gt;]
+                [-recent]
+                [-agg=&lt;aggregation&gt;] [-pagg=&lt;partialAggregation&gt;]
+                [-read=&lt;readingType&gt;] [-tol=&lt;timeTolerance&gt;]
+                [-prop=propName[,propName...]]...
+                [-M=max] [-O=&lt;resultOffset&gt;]
+                [-mode=&lt;displayMode&gt;]
 </code></pre></div>
 <h2 id="options">Options<a class="headerlink" href="#options" title="Permanent link">&para;</a></h2>
 <div class="options-explicit-col-widths">
@@ -1108,6 +1187,11 @@
 </thead>
 <tbody>
 <tr>
+<td style="text-align: left;"><code>-S</code></td>
+<td style="text-align: left;"><code>--show-stream-ids</code></td>
+<td style="text-align: left;">show stream IDs in <code>PRETTY</code> results</td>
+</tr>
+<tr>
 <td style="text-align: left;"><code>-stream=</code></td>
 <td style="text-align: left;"><code>--stream-id=</code></td>
 <td style="text-align: left;">the stream ID(s) to show</td>
@@ -1115,32 +1199,27 @@
 <tr>
 <td style="text-align: left;"><code>-node=</code></td>
 <td style="text-align: left;"><code>--node-id=</code></td>
-<td style="text-align: left;">the node ID(s) to show metadata for</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>-node=</code></td>
-<td style="text-align: left;"><code>--node-id=</code></td>
-<td style="text-align: left;">the node ID(s) to show stream metadata for (exclusive to <code>-loc</code>)</td>
+<td style="text-align: left;">the node ID(s) to show datum for (exclusive to <code>-loc</code>)</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-loc=</code></td>
 <td style="text-align: left;"><code>--location-id=</code></td>
-<td style="text-align: left;">the location ID(s) to show stream metadata for (exclusive to <code>-node</code>)</td>
+<td style="text-align: left;">the location ID(s) to show datum for (exclusive to <code>-node</code>)</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-source=</code></td>
 <td style="text-align: left;"><code>--source=</code></td>
-<td style="text-align: left;">the source ID(s) to show stream metadata for</td>
+<td style="text-align: left;">the source ID(s) to show datum for</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>-mode=</code></td>
-<td style="text-align: left;"><code>--display-mode=</code></td>
-<td style="text-align: left;">the format to display the data as, one of <code>CSV</code>, <code>JSON</code>, or <code>PRETTY</code>; defaults to <code>PRETTY</code>; <strong>note</strong> that <code>PRETTY</code> is not suitable for large result sets</td>
+<td style="text-align: left;"><code>-ident=</code></td>
+<td style="text-align: left;"><code>--stream-ident=</code></td>
+<td style="text-align: left;">an <code>object:source</code> stream identifier to return datum for; if provided then <code>-node</code> and <code>-source</code> are ignored</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>-prop=</code></td>
-<td style="text-align: left;"><code>--property=</code></td>
-<td style="text-align: left;">restrict results to metadata that has this property (instantaneous, accumulating, <strong>or</strong> status); multiple properties combine with logical "or"</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>--stream-ident-kind=</code></td>
+<td style="text-align: left;">the type of objects represented in the <code>-ident</code> option</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-min=</code></td>
@@ -1153,14 +1232,14 @@
 <td style="text-align: left;">a maximum date (exclusive) to limit results to, in same form as <code>-min</code></td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>-tz=</code></td>
-<td style="text-align: left;"><code>--time-zone=</code></td>
-<td style="text-align: left;">a time zone ID to treat the min/max dates as, instead of the local time zone, like <code>Pacific/Auckland</code> or <code>-05:00</code> or <code>UTC</code></td>
-</tr>
-<tr>
 <td style="text-align: left;"><code>-local</code></td>
 <td style="text-align: left;"><code>--local-dates</code></td>
 <td style="text-align: left;">treat the min/max dates as "node local" dates, instead of UTC (or the local time zone when <code>-tz</code> used)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>-tz=</code></td>
+<td style="text-align: left;"><code>--time-zone=</code></td>
+<td style="text-align: left;">a time zone ID to treat the min/max dates as, instead of the local time zone, like <code>Pacific/Auckland</code> or <code>-05:00</code> or <code>UTC</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-recent</code></td>
@@ -1169,12 +1248,12 @@
 </tr>
 <tr>
 <td style="text-align: left;"><code>-agg=</code></td>
-<td style="text-align: left;"><code>--aggregate=</code></td>
+<td style="text-align: left;"><code>--aggregation=</code></td>
 <td style="text-align: left;">the <a href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarQuery-API-enumerated-types#aggregation-types">aggregation type</a> to return</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-pagg=</code></td>
-<td style="text-align: left;"><code>--partial-aggregate=</code></td>
+<td style="text-align: left;"><code>--partial-aggregation=</code></td>
 <td style="text-align: left;">a <a href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarNet-aggregation#list-partial-aggregation">partial aggregation</a> level to use</td>
 </tr>
 <tr>
@@ -1188,9 +1267,9 @@
 <td style="text-align: left;">a time tolerance to use with reading-style queries that support it, as an ISO period like <code>P7D</code> for 7 days</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>-S</code></td>
-<td style="text-align: left;"><code>--show-stream-ids</code></td>
-<td style="text-align: left;">show stream IDs in <code>PRETTY</code> results</td>
+<td style="text-align: left;"><code>-prop=</code></td>
+<td style="text-align: left;"><code>--property=</code></td>
+<td style="text-align: left;">restrict results to metadata that has this property (instantaneous, accumulating, <strong>or</strong> status); multiple properties combine with logical "or"</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-M=</code></td>
@@ -1202,6 +1281,11 @@
 <td style="text-align: left;"><code>--offset=</code></td>
 <td style="text-align: left;">start returning results from this offset, <code>0</code> being the first result</td>
 </tr>
+<tr>
+<td style="text-align: left;"><code>-mode=</code></td>
+<td style="text-align: left;"><code>--display-mode=</code></td>
+<td style="text-align: left;">the format to display the data as, one of <code>CSV</code>, <code>JSON</code>, or <code>PRETTY</code>; defaults to <code>PRETTY</code>; <strong>note</strong> that <code>PRETTY</code> is not suitable for large result sets</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1212,8 +1296,8 @@
 <div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">List hourly datum</label><label for="__tabbed_1_2">Pretty Output</label><label for="__tabbed_1_3">CSV Output</label><label for="__tabbed_1_4">JSON Output</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>--profile<span class="w"> </span>demo<span class="w"> </span>datum<span class="w"> </span>list<span class="w"> </span>--node-id<span class="w"> </span><span class="m">101</span><span class="w"> </span>--source-id<span class="w"> </span>con/1<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--min-date<span class="w"> </span><span class="m">2025</span>-08-21<span class="w"> </span>--max-date<span class="w"> </span><span class="m">2025</span>-08-22<span class="w"> </span>--aggregate<span class="w"> </span>Hour
+<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>datum<span class="w"> </span>list<span class="w"> </span>--node-id<span class="w"> </span><span class="m">101</span><span class="w"> </span>--source-id<span class="w"> </span>con/1<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--min-date<span class="w"> </span><span class="m">2025</span>-08-21<span class="w"> </span>--max-date<span class="w"> </span><span class="m">2025</span>-08-22<span class="w"> </span>--aggregation<span class="w"> </span>Hour
 </code></pre></div>
 </div>
 <div class="tabbed-block">
@@ -1259,7 +1343,7 @@
 <div class="tabbed-set tabbed-alternate" data-tabs="2:4"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><input id="__tabbed_2_4" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Show reading difference</label><label for="__tabbed_2_2">Pretty Output</label><label for="__tabbed_2_3">CSV Output</label><label for="__tabbed_2_4">JSON Output</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>--profile<span class="w"> </span>demo<span class="w"> </span>datum<span class="w"> </span>list<span class="w"> </span>--node-id<span class="w"> </span><span class="m">101</span><span class="w"> </span>--source-id<span class="w"> </span>con/1<span class="w"> </span><span class="se">\</span>
+<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>datum<span class="w"> </span>list<span class="w"> </span>--node-id<span class="w"> </span><span class="m">101</span><span class="w"> </span>--source-id<span class="w"> </span>con/1<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--min-date<span class="w"> </span><span class="m">2025</span>-08-21<span class="w"> </span>--max-date<span class="w"> </span><span class="m">2025</span>-08-22<span class="w">  </span>--reading<span class="w"> </span>Difference
 </code></pre></div>
 </div>
@@ -1290,6 +1374,39 @@
 </div>
 </div>
 </div>
+<p>Use the <a href="../stream/ids/">datum stream ids</a> command to generate a list of stream IDs that
+have <code>watts</code> and <code>wattHours</code> properties to list datum for, then list datum for those streams,
+showing just those properties:</p>
+<div class="highlight"><span class="filename">List datum for dynamic stream IDs</span><pre><span></span><code>s10k<span class="w"> </span>datum<span class="w"> </span>list<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--min-date<span class="w"> </span><span class="m">2025</span>-08-21<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--max-date<span class="w"> </span><span class="m">2025</span>-08-22<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--aggregation<span class="w"> </span>Hour<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--property<span class="w"> </span>watts,wattHours<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--stream-id<span class="w"> </span><span class="k">$(</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>s10k<span class="w"> </span>datum<span class="w"> </span>stream<span class="w"> </span>ids<span class="w"> </span><span class="se">\</span>
+<span class="w">      </span>--instantaneous<span class="w"> </span>watts<span class="w"> </span><span class="se">\</span>
+<span class="w">      </span>--accumulating<span class="w"> </span>wattHours<span class="w"> </span><span class="se">\</span>
+<span class="w">      </span>--display-mode<span class="w"> </span>JSON<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="p">|</span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">&#39;map(.streamId) | join(&quot;,&quot;)&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="k">)</span>
+</code></pre></div>
+<p>Use the <a href="../../nodes/sources/">nodes sources</a> command to generate a list of stream IDs that
+have <code>watts</code> and <code>wattHours</code> properties and have posted datum after <code>2025-08-01</code> to list
+datum for, then list datum for those streams, showing just those properties:</p>
+<div class="highlight"><span class="filename">List datum for dynamic sources</span><pre><span></span><code>s10k<span class="w"> </span>datum<span class="w"> </span>list<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--min-date<span class="w"> </span><span class="m">2025</span>-08-21<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--max-date<span class="w"> </span><span class="m">2025</span>-08-22<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--aggregation<span class="w"> </span>Hour<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--property<span class="w"> </span>watts,wattHours<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--stream-ident<span class="w"> </span><span class="k">$(</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>s10k<span class="w"> </span>nodes<span class="w"> </span>sources<span class="w"> </span><span class="se">\</span>
+<span class="w">      </span>--instantaneous<span class="w"> </span>watts<span class="w"> </span><span class="se">\</span>
+<span class="w">      </span>--accumulating<span class="w"> </span>wattHours<span class="w"> </span><span class="se">\</span>
+<span class="w">      </span>--min-date<span class="w"> </span><span class="m">2025</span>-08-01<span class="w"> </span><span class="se">\</span>
+<span class="w">      </span>--display-mode<span class="w"> </span>JSON<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="p">|</span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">&#39;map([.objectId, .sourceId] | join(&quot;:&quot;)) | join(&quot;,&quot;)&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="k">)</span>
+</code></pre></div>
 
 
 
