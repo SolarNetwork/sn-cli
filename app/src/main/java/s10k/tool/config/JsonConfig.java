@@ -12,6 +12,8 @@ import net.solarnetwork.codec.JsonUtils;
 import net.solarnetwork.domain.datum.GeneralDatumMetadata;
 import s10k.tool.common.codec.GeneralDatumMetadataDeserializer;
 import s10k.tool.common.codec.GeneralDatumMetadataSerializer;
+import s10k.tool.instructions.codec.InstructionRequestSerializer;
+import s10k.tool.instructions.domain.InstructionRequest;
 import s10k.tool.nodes.codec.NodeMetadataDeserializer;
 import s10k.tool.nodes.domain.NodeMetadata;
 
@@ -31,6 +33,7 @@ public class JsonConfig {
 		toolModule.addDeserializer(NodeMetadata.class, NodeMetadataDeserializer.INSTANCE);
 
 		toolModule.addSerializer(GeneralDatumMetadata.class, GeneralDatumMetadataSerializer.INSTANCE);
+		toolModule.addSerializer(InstructionRequest.class, InstructionRequestSerializer.INSTANCE);
 
 		mapper.registerModule(toolModule);
 

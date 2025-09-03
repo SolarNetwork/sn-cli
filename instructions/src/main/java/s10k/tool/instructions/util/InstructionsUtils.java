@@ -4,6 +4,7 @@ import static s10k.tool.common.util.RestUtils.checkSuccess;
 import static s10k.tool.common.util.RestUtils.populateQueryParameters;
 
 import java.time.Duration;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -16,8 +17,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import net.solarnetwork.domain.BasicInstruction;
 import net.solarnetwork.domain.Instruction;
 import net.solarnetwork.domain.InstructionStatus;
+import s10k.tool.instructions.domain.InstructionRequest;
 import s10k.tool.instructions.domain.InstructionsFilter;
 
 /**
@@ -27,6 +30,9 @@ public final class InstructionsUtils {
 
 	/** The default maximum time to wait for instruction results. */
 	public static final Duration DEFAULT_INSTRUCTION_RESULT_MAX_WAIT = Duration.ofSeconds(30);
+
+	/** The execution date parameter. */
+	public static final String EXECUTION_DATE_PARAM = "executionDate";
 
 	private InstructionsUtils() {
 		// not available
@@ -83,7 +89,7 @@ public final class InstructionsUtils {
 	}
 
 	/**
-	 * Execute an instruction given a request map.
+	 * Execute an instruction given an instruction request.
 	 * 
 	 * @param restClient      the REST client
 	 * @param objectMapper    the object mapper
@@ -110,11 +116,73 @@ public final class InstructionsUtils {
 			.retrieve()
 			.body(JsonNode.class)
 			;
-		
-		checkSuccess(response);
-		
 		// @formatter:on
-		InstructionStatus status = InstructionsUtils.parseInstructionStatus(objectMapper, response.path("data"));
+
+		checkSuccess(response);
+
+		InstructionStatus status = parseInstructionStatus(objectMapper, response.path("data"));
+		if (status != null) {
+			return status;
+		}
+		throw new IllegalStateException("No instruction result available.");
+	}
+
+	/**
+	 * Execute an instruction given an instruction request, with a default maximum
+	 * wait.
+	 * 
+	 * @param restClient   the REST client
+	 * @param objectMapper the object mapper
+	 * @param request      the instruction to execute
+	 * @return the instruction status
+	 * @throws IllegalStateException if the instruction result is not available
+	 */
+	public static InstructionStatus executeInstruction(RestClient restClient, ObjectMapper objectMapper,
+			InstructionRequest request) {
+		return executeInstruction(restClient, objectMapper, request, null);
+	}
+
+	/**
+	 * Execute an instruction.
+	 * 
+	 * @param restClient   the REST client
+	 * @param objectMapper the object mapper
+	 * @param request      the instruction to execute
+	 * @param maxWait      the maximum amount of time to wait for the instruction
+	 *                     result; if {@code null} then
+	 *                     {@link #DEFAULT_INSTRUCTION_RESULT_MAX_WAIT} will be
+	 *                     used; if {@code 0} then this method will return
+	 *                     immediately without waiting
+	 * @return the instruction status
+	 * @throws IllegalStateException if the instruction result is not available
+	 */
+	public static InstructionStatus executeInstruction(RestClient restClient, ObjectMapper objectMapper,
+			InstructionRequest request, Duration maxWait) {
+		// force this to "add" instead of "exec" if instruction is deferred
+		final Duration wait = (maxWait == null && request.hasExecutionDate() ? Duration.ZERO : maxWait);
+		// @formatter:off
+		JsonNode response = restClient.post()
+			.uri(b -> {
+				return b.path("/solaruser/api/v1/sec/instr/{fn}/{topic}")
+						.queryParam("resultMaxWait", (wait != null 
+							? wait
+							: DEFAULT_INSTRUCTION_RESULT_MAX_WAIT).toMillis())
+						.build(
+							wait != null && !wait.isPositive() ? "add" : "exec",
+							request.topic()
+						);
+			})
+			.contentType(MediaType.APPLICATION_JSON)
+			.body(request)
+			.accept(MediaType.APPLICATION_JSON)
+			.retrieve()
+			.body(JsonNode.class)
+			;
+		// @formatter:on
+
+		checkSuccess(response);
+
+		InstructionStatus status = parseInstructionStatus(objectMapper, response.path("data"));
 		if (status != null) {
 			return status;
 		}
@@ -177,6 +245,19 @@ public final class InstructionsUtils {
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * Add an "execution date" parameter to an instruction.
+	 * 
+	 * @param instr         the instruction
+	 * @param executionDate the date to add (may be {@code null} to do nothing)
+	 */
+	public static void populateExecutionDateParameter(BasicInstruction instr, ZonedDateTime executionDate) {
+		if (instr == null || executionDate == null) {
+			return;
+		}
+		instr.addParameter(EXECUTION_DATE_PARAM, executionDate.toInstant().toString());
 	}
 
 }
