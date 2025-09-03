@@ -6,11 +6,10 @@ import static net.solarnetwork.domain.datum.DatumSamplesType.Instantaneous;
 import static net.solarnetwork.domain.datum.DatumSamplesType.Status;
 import static net.solarnetwork.domain.datum.ObjectDatumKind.Location;
 import static net.solarnetwork.domain.datum.ObjectDatumKind.Node;
-import static org.springframework.util.StreamUtils.nonClosing;
 import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Callable;
@@ -23,7 +22,6 @@ import org.springframework.web.client.RestClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.freva.asciitable.AsciiTable;
 import com.github.freva.asciitable.Column;
 
 import net.solarnetwork.domain.datum.ObjectDatumKind;
@@ -32,8 +30,6 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
-import s10k.tool.common.domain.TableDisplayMode;
-import s10k.tool.common.util.SystemUtils;
 import s10k.tool.common.util.TableUtils;
 
 /**
@@ -48,7 +44,7 @@ public class ViewDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 	UUID streamId;
 	
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the CSV data",
+			description = "how to display the data",
 			defaultValue = "PRETTY")
 	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
 	// @formatter:on
@@ -78,37 +74,22 @@ public class ViewDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 				}
 			}
 
-			if (displayMode == ResultDisplayMode.PRETTY) {
-				// @formatter:off
-				AsciiTable.builder()
-					.data(new Column[] {
-							new Column().header("Property").dataAlign(LEFT),
-							new Column().header("Value").dataAlign(LEFT),
-						}, new Object[][] {
-						new Object[] { "Stream ID", meta.getStreamId() },
-						new Object[] { "Kind", meta.getKind().name() },
-						new Object[] { "ID", meta.getObjectId() },
-						new Object[] { "Source ID", meta.getSourceId() },
-						new Object[] { "Time Zone", meta.getTimeZoneId() },
-						new Object[] { "Instantaneous", arrayToCommaDelimitedString(meta.propertyNamesForType(Instantaneous)) },
-						new Object[] { "Accumulating", arrayToCommaDelimitedString(meta.propertyNamesForType(Accumulating)) },
-						new Object[] { "Status", arrayToCommaDelimitedString(meta.propertyNamesForType(Status)) },
-					})
-					.writeTo(System.out)
-					;
-				// @formatter:on
-			} else if (displayMode == ResultDisplayMode.CSV) {
-				List<Object[]> tableData = new ArrayList<>();
-				tableData.add(ListDatumStreamMetadataCmd.metadataHeaderRow());
-				tableData.add(ListDatumStreamMetadataCmd.metadataRow(meta));
-				TableUtils.renderTableData(tableData, TableDisplayMode.CSV, null, System.out);
-			} else {
-				// JSON
-				objectMapper.writerWithDefaultPrettyPrinter().writeValue(nonClosing(System.out), meta);
-				if (SystemUtils.systemConsoleIsTerminal()) {
-					System.out.println();
-				}
-			}
+			// @formatter:off
+			List<Object[]> tableData = Arrays.asList(
+					new Object[] { "Stream ID", meta.getStreamId() },
+					new Object[] { "Kind", meta.getKind().name() },
+					new Object[] { "ID", meta.getObjectId() },
+					new Object[] { "Source ID", meta.getSourceId() },
+					new Object[] { "Time Zone", meta.getTimeZoneId() },
+					new Object[] { "Instantaneous", arrayToCommaDelimitedString(meta.propertyNamesForType(Instantaneous)) },
+					new Object[] { "Accumulating", arrayToCommaDelimitedString(meta.propertyNamesForType(Accumulating)) },
+					new Object[] { "Status", arrayToCommaDelimitedString(meta.propertyNamesForType(Status)) }
+					);
+			TableUtils.renderTableData(new Column[] {
+					new Column().header("Property").dataAlign(LEFT),
+					new Column().header("Value").dataAlign(LEFT),
+				}, tableData, displayMode, objectMapper, System.out);
+			// @formatter:on
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error viewing datum stream metadata: %s".formatted(e.getMessage()));

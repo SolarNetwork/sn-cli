@@ -5,27 +5,24 @@ import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
 import static net.solarnetwork.domain.datum.DatumSamplesType.Accumulating;
 import static net.solarnetwork.domain.datum.DatumSamplesType.Instantaneous;
 import static net.solarnetwork.domain.datum.DatumSamplesType.Status;
-import static org.springframework.util.StreamUtils.nonClosing;
 import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
+import static s10k.tool.common.util.RestUtils.populateQueryParameters;
 import static s10k.tool.common.util.StringUtils.naturallyCaseInsensitiveSorted;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.freva.asciitable.AsciiTable;
 import com.github.freva.asciitable.Column;
 
 import net.solarnetwork.domain.datum.ObjectDatumKind;
@@ -35,8 +32,6 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
-import s10k.tool.common.domain.TableDisplayMode;
-import s10k.tool.common.util.SystemUtils;
 import s10k.tool.common.util.TableUtils;
 import s10k.tool.datum.domain.DatumStreamFilter;
 
@@ -44,7 +39,7 @@ import s10k.tool.datum.domain.DatumStreamFilter;
  * View datum stream metadata matching a search criteria.
  */
 @Component
-@Command(name = "list")
+@Command(name = "list", sortSynopsis = false)
 public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> implements Callable<Integer> {
 
 	// @formatter:off
@@ -94,7 +89,7 @@ public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 	String[] statusPropertyNames;
 	
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the CSV data",
+			description = "how to display the data",
 			defaultValue = "PRETTY")
 	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
 	// @formatter:on
@@ -163,60 +158,25 @@ public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 				return 0;
 			}
 
-			if (displayMode == ResultDisplayMode.PRETTY) {
-				// @formatter:off
-				AsciiTable.builder()
-					.data(new Column[] {
-							new Column().header("Stream ID").dataAlign(LEFT),
-							new Column().header("Kind").dataAlign(LEFT),
-							new Column().header("ID").dataAlign(RIGHT),
-							new Column().header("Source ID").dataAlign(LEFT),
-							new Column().header("Time Zone").dataAlign(LEFT),
-							new Column().header("Instantaneous").dataAlign(LEFT),
-							new Column().header("Accumulating").dataAlign(LEFT),
-							new Column().header("Status").dataAlign(LEFT),	
-						}, metas.stream().map(ListDatumStreamMetadataCmd::metadataRow).toArray(Object[][]::new))
-					.writeTo(System.out)
-					;
-				// @formatter:on
-				System.out.println();
-			} else if (displayMode == ResultDisplayMode.CSV) {
-				List<Object[]> tableData = new ArrayList<>();
-				tableData.add(metadataHeaderRow());
-				tableData.addAll(metas.stream().map(ListDatumStreamMetadataCmd::metadataRow).toList());
-				TableUtils.renderTableData(tableData, TableDisplayMode.CSV, null, System.out);
-			} else {
-				// JSON
-				objectMapper.writerWithDefaultPrettyPrinter().writeValue(nonClosing(System.out), metas);
-				if (SystemUtils.systemConsoleIsTerminal()) {
-					System.out.println();
-				}
-			}
+			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? metas
+					: metas.stream().map(ListDatumStreamMetadataCmd::metadataRow).toList());
+			// @formatter:off
+			TableUtils.renderTableData(new Column[] {
+					new Column().header("Stream ID").dataAlign(LEFT),
+					new Column().header("Kind").dataAlign(LEFT),
+					new Column().header("ID").dataAlign(RIGHT),
+					new Column().header("Source ID").dataAlign(LEFT),
+					new Column().header("Time Zone").dataAlign(LEFT),
+					new Column().header("Instantaneous").dataAlign(LEFT),
+					new Column().header("Accumulating").dataAlign(LEFT),
+					new Column().header("Status").dataAlign(LEFT),	
+				}, tableData, displayMode, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			// @formatter:on
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error viewing datum stream metadata: %s".formatted(e.getMessage()));
 		}
 		return 1;
-	}
-
-	/**
-	 * Get a datum stream metadata tabular structure header row.
-	 * 
-	 * @return the header row
-	 */
-	public static String[] metadataHeaderRow() {
-		// @formatter:off
-		return new String[] {
-				"Stream ID",
-				"Kind",
-				"ID",
-				"Source ID",
-				"Time Zone",
-				"Instantaneous",
-				"Accumulating",
-				"Status"
-		};
-		// @formatter:on
 	}
 
 	/**
@@ -256,10 +216,7 @@ public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 		JsonNode response = restClient.get()
 			.uri(b -> {
 				b.path("/solarquery/api/v1/sec/datum/stream/meta/" + (kind == ObjectDatumKind.Location ? "loc" : "node"));
-				MultiValueMap<String, Object> params = filter.toRequestMap(kind);
-				for ( Entry<String, List<Object>> e : params.entrySet() ) {
-					b.queryParam(e.getKey(), e.getValue());
-				}
+				populateQueryParameters(b, () -> filter.toRequestMap(kind));
 				return b.build();
 			})
 			.accept(MediaType.APPLICATION_JSON)

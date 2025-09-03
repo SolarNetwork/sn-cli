@@ -1,16 +1,15 @@
 package s10k.tool.instructions.util;
 
 import static s10k.tool.common.util.RestUtils.checkSuccess;
+import static s10k.tool.common.util.RestUtils.populateQueryParameters;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.springframework.http.MediaType;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -159,10 +158,7 @@ public final class InstructionsUtils {
 		JsonNode response = restClient.get()
 			.uri(b -> {
 				b.path("/solaruser/api/v1/sec/instr");
-				MultiValueMap<String, Object> params = filter.toRequestMap();
-				for ( Entry<String, List<Object>> e : params.entrySet() ) {
-					b.queryParam(e.getKey(), e.getValue());
-				}
+				populateQueryParameters(b, filter::toRequestMap);
 				return b.build();
 			})
 			.accept(MediaType.APPLICATION_JSON)

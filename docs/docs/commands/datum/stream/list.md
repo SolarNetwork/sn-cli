@@ -50,7 +50,7 @@ View all datum stream metadata for a node:
 === "Show datum stream metadata for node"
 
 	```sh
-	s10k --profile demo datum stream list --node-id 101
+	s10k datum stream list --node-id 101
 	```
 
 === "Pretty Output"
@@ -110,7 +110,7 @@ View all datum stream metadata for a node that has some property named `watts`:
 === "Show datum stream metadata for node with _watts_ property"
 
 	```sh
-	s10k --profile demo datum stream list --node-id 101 --property watts
+	s10k datum stream list --node-id 101 --property watts
 	```
 
 === "Pretty Output"
@@ -172,7 +172,7 @@ and an accumulating property named `wattHours`:
 === "Show datum stream metadata with _pcmLimit_, _wattHours_ properties"
 
 	```sh
-	s10k --profile demo datum stream list --instantaneous pcmLimit \
+	s10k datum stream list --instantaneous pcmLimit \
 	  --accumulating wattHours
 	```
 

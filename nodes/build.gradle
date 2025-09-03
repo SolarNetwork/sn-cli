@@ -31,6 +31,7 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 
 	// Utilities
+	implementation "com.github.freva:ascii-table:${asciiTableVersion}"
 	implementation "net.sf.supercsv:super-csv:${superCsvVersion}"
 	
 	// Annotations

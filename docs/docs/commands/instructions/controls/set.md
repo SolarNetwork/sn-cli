@@ -34,7 +34,7 @@ Update a switch-type boolean control to "on" (using `1` to represent "on"):
 === "Set boolean control to 'on'"
 
 	```sh
-	s10k --profile demo instructions controls set --node-id 101 \
+	s10k instructions controls set --node-id 101 \
 	  --control-id switch/1 1
 	```
 

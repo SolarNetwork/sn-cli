@@ -43,7 +43,8 @@ public final class ProfileUtils {
 	/**
 	 * Load a profile.
 	 * 
-	 * @param name the name of the profile to load
+	 * @param name the name of the profile to load, or {@code null} for the
+	 *             "default" profile
 	 * @return the profile, or {@code null} if the profile does not exist
 	 */
 	public static ProfileInfo profile(String name) {
@@ -54,10 +55,17 @@ public final class ProfileUtils {
 				TomlMapper mapper = new TomlMapper();
 				try (InputStream in = Files.newInputStream(credPath)) {
 					JsonNode root = mapper.readTree(in);
-					JsonNode credsNode = root.findValue(name);
+					JsonNode credsNode = null;
+					if (name == null || name.isBlank()) {
+						credsNode = root;
+					} else {
+						credsNode = root.findValue(name);
+					}
 					if (credsNode != null) {
 						SnTokenCredentials creds = mapper.treeToValue(credsNode, SnTokenCredentials.class);
-						return new ProfileInfo(name, creds);
+						if (creds.hasCredentials()) {
+							return new ProfileInfo(name, creds);
+						}
 					}
 				}
 			} catch (Exception e) {

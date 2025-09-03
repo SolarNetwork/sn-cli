@@ -4,14 +4,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.cbor.MappingJackson2CborHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriBuilder;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -110,6 +113,19 @@ public final class RestUtils {
 			while (p.nextToken() != null) {
 				g.copyCurrentEvent(p);
 			}
+		}
+	}
+
+	/**
+	 * Helper to populate URI query parameters from a map provider.
+	 * 
+	 * @param uriBuilder  the builder
+	 * @param mapProvider the map provider
+	 */
+	public static void populateQueryParameters(UriBuilder uriBuilder, Supplier<MultiValueMap<String, ?>> mapProvider) {
+		MultiValueMap<String, ?> params = mapProvider.get();
+		for (var e : params.entrySet()) {
+			uriBuilder.queryParam(e.getKey(), e.getValue());
 		}
 	}
 

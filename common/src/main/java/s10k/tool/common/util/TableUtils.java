@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -22,8 +23,10 @@ import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.freva.asciitable.AsciiTable;
+import com.github.freva.asciitable.AsciiTableBuilder;
+import com.github.freva.asciitable.Column;
 
-import s10k.tool.common.domain.TableDisplayMode;
+import s10k.tool.common.domain.ResultDisplayMode;
 
 /**
  * Helper methods for generating formatted tables.
@@ -164,48 +167,100 @@ public class TableUtils {
 	 * Render tabular data to an output stream.
 	 * 
 	 * @param data         the data to render; the collection value type can be
-	 *                     {@code Object[]} or {@code Collection<?>}
+	 *                     {@code Object[]} or {@code Collection<?>} or
+	 *                     {@code Object}
 	 * @param mode         the output mode
 	 * @param objectMapper the JSON mapper to use (only required for if {@code mode}
 	 *                     is {@code JSON})
 	 * @param out          the output stream
 	 * @throws IOException if any IO error occurs
 	 */
-	public static void renderTableData(SequencedCollection<?> data, TableDisplayMode mode, ObjectMapper objectMapper,
+	public static void renderTableData(SequencedCollection<?> data, ResultDisplayMode mode, ObjectMapper objectMapper,
 			OutputStream out) throws IOException {
+		renderTableData(null, data, mode, objectMapper, null, out);
+	}
+
+	/**
+	 * Render tabular data to an output stream.
+	 * 
+	 * @param columns      optional column information; ignored for JSON output
+	 * @param data         the data to render; the collection value type can be
+	 *                     {@code Object[]} or {@code Collection<?>} or
+	 *                     {@code Object}
+	 * @param mode         the output mode
+	 * @param objectMapper the JSON mapper to use (only required for if {@code mode}
+	 *                     is {@code JSON})
+	 * @param out          the output stream
+	 * @throws IOException if any IO error occurs
+	 */
+	public static void renderTableData(Column[] columns, SequencedCollection<?> data, ResultDisplayMode mode,
+			ObjectMapper objectMapper, OutputStream out) throws IOException {
+		renderTableData(columns, data, mode, objectMapper, null, out);
+	}
+
+	/**
+	 * Render tabular data to an output stream.
+	 * 
+	 * @param columns             optional column information; ignored for JSON
+	 *                            output
+	 * @param data                the data to render; the collection value type can
+	 *                            be {@code Object[]} or {@code Collection<?>} or
+	 *                            {@code Object}
+	 * @param mode                the output mode
+	 * @param objectMapper        the JSON mapper to use (only required for if
+	 *                            {@code mode} is {@code JSON})
+	 * @param customJsonFormatter an optional formatter to use, or {@code null} for
+	 *                            default
+	 * @param out                 the output stream
+	 * @throws IOException if any IO error occurs
+	 */
+	public static void renderTableData(Column[] columns, SequencedCollection<?> data, ResultDisplayMode mode,
+			ObjectMapper objectMapper, PrettyPrinter customJsonFormatter, OutputStream out) throws IOException {
 		if (data == null || data.isEmpty()) {
 			return;
 		}
-		if (mode == TableDisplayMode.CSV) {
+		if (mode == ResultDisplayMode.CSV) {
 			try (ICsvListWriter csvWriter = new CsvListWriter(new OutputStreamWriter(nonClosing(out), UTF_8),
 					STANDARD_PREFERENCE)) {
+				if (columns != null) {
+					csvWriter.write(Arrays.stream(columns).map(Column::getHeader).toArray(String[]::new));
+				}
 				for (Object row : data) {
 					if (row instanceof Object[] a) {
 						csvWriter.write(a);
 					} else if (row instanceof Collection<?> l) {
 						csvWriter.write(l);
+					} else {
+						csvWriter.write(row);
 					}
 				}
 			}
-		} else if (mode == TableDisplayMode.JSON) {
-			objectMapper.writer(TableDataJsonPrettyPrinter.INSTANCE).writeValue(nonClosing(out), data);
-			out.write(System.lineSeparator().getBytes(Charset.defaultCharset()));
+		} else if (mode == ResultDisplayMode.JSON) {
+			if (SystemUtils.systemConsoleIsTerminal()) {
+				if (customJsonFormatter != null) {
+					objectMapper.writer(TableDataJsonPrettyPrinter.INSTANCE).writeValue(nonClosing(out), data);
+				} else {
+					objectMapper.writerWithDefaultPrettyPrinter().writeValue(nonClosing(System.out), data);
+				}
+				out.write(System.lineSeparator().getBytes(Charset.defaultCharset()));
+			} else {
+				objectMapper.writeValue(nonClosing(System.out), data);
+			}
 		} else {
-			// @formatter:off
-			AsciiTable.builder()
-				.data(data.stream().map(row -> {
-					if (row instanceof Object[] a) {
-						return a;
-					} else if (row instanceof Collection<?> l) {
-						return l.toArray(Object[]::new);
-					}
-					return new Object[0];
-				}).toArray(Object[][]::new))
-				.writeTo(out);
-				;
+			Object[][] tableData = data.stream().map(row -> {
+				if (row instanceof Object[] a) {
+					return a;
+				} else if (row instanceof Collection<?> l) {
+					return l.toArray(Object[]::new);
+				}
+				return new Object[] { row };
+			}).toArray(Object[][]::new);
+			AsciiTableBuilder atb = AsciiTable.builder();
+			if (columns != null) {
+				atb.data(columns, tableData);
+			}
+			atb.writeTo(out);
 			out.write(System.lineSeparator().getBytes(Charset.defaultCharset()));
-			// @formatter:on			
 		}
 	}
-
 }

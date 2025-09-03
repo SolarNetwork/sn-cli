@@ -8,7 +8,14 @@ import s10k.tool.nodes.meta.cmd.NodeMetadataCmd;
 /**
  * Node commands.
  */
-@Command(name = "nodes", subcommands = { NodeMetadataCmd.class })
+// @formatter:off
+@Command(name = "nodes", subcommands = {
+		ListNodeIdsCmd.class,
+		ListNodesCmd.class,
+		ListSourcesCmd.class,
+		NodeMetadataCmd.class
+})
+// @formatter:on
 public class NodesCmd extends BaseSubCmd<ToolCmd> {
 
 }

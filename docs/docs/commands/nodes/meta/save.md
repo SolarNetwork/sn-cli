@@ -55,19 +55,19 @@ tree structure. Then there is the `t` set of tags. An example looks like this:
 The metadata to save can be provided directly as a command argument, for example:
 
 ```sh title="Metadata as command argument"
-s10k --profile demo nodes meta save --node-id 101 '{"m":{"limit":123}}'
+s10k nodes meta save --node-id 101 '{"m":{"limit":123}}'
 ```
 
 A file with the metadata can be referenced using `@@` followed by the file path:
 
 ```sh title="Metadata as a file"
-s10k --profile demo nodes meta save --node-id 101 @@/path/to/metadata.json
+s10k nodes meta save --node-id 101 @@/path/to/metadata.json
 ```
 
 The metadata content can be read from standard input, like this:
 
 ```sh title="Metadata read from standard input"
-s10k --profile demo nodes meta save --node-id 101 </path/to/metadata.json
+s10k nodes meta save --node-id 101 </path/to/metadata.json
 ```
 
 Similarly, the metadata content can be piped to the command, like this:
@@ -76,7 +76,7 @@ Similarly, the metadata content can be piped to the command, like this:
 
 	```sh title="Metadata piped from standard input"
 	jq -n --argjson  limit 123 '{"m":{"limit":$limit}}' \
-	  |s10k --profile demo nodes meta save --node-id 101
+	  |s10k nodes meta save --node-id 101
 	```
 
 === "Output"

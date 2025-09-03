@@ -31,7 +31,7 @@ A table of datum stream metadata properties.
 === "View datum stream metadata"
 
 	```sh
-	s10k --profile demo datum stream view --stream-id cc114908-cc0f-4680-a92e-718690742ba9
+	s10k datum stream view --stream-id cc114908-cc0f-4680-a92e-718690742ba9
 	```
 
 === "Pretty Output"
@@ -61,21 +61,28 @@ A table of datum stream metadata properties.
 === "CSV Output"
 
 	```csv
-	Stream ID,Kind,ID,Source ID,Time Zone,Instantaneous,Accumulating,Status
-	cc114908-cc0f-4680-a92e-718690742ba9,Node,101,gen/1,Pacific/Auckland,"current,frequency,voltage,watts",wattHours,
+	Property,Value
+	Stream ID,cc114908-cc0f-4680-a92e-718690742ba9
+	Kind,Node
+	ID,1011
+	Source ID,test/gen/1
+	Time Zone,Pacific/Auckland
+	Instantaneous,"watts,current,voltage,frequency"
+	Accumulating,wattHours
+	Status,
 	```
 
 === "JSON Output"
 
 	```json
 	{
-	"streamId" : "cc114908-cc0f-4680-a92e-718690742ba9",
-	"zone" : "Pacific/Auckland",
-	"kind" : "n",
-	"objectId" : 101,
-	"sourceId" : "gen/1",
-	"i" : [ "watts", "current", "voltage", "frequency" ],
-	"a" : [ "wattHours" ]
+		"streamId" : "cc114908-cc0f-4680-a92e-718690742ba9",
+		"zone" : "Pacific/Auckland",
+		"kind" : "n",
+		"objectId" : 101,
+		"sourceId" : "gen/1",
+		"i" : [ "watts", "current", "voltage", "frequency" ],
+		"a" : [ "wattHours" ]
 	}
 	```
 

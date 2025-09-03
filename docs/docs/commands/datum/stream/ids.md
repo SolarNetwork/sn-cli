@@ -50,7 +50,7 @@ View all datum stream metadata IDs for a node:
 === "Show datum stream metadata IDs for node"
 
 	```sh
-	s10k --profile demo datum stream ids --node-id 101
+	s10k datum stream ids --node-id 101
 	```
 
 === "Pretty Output"
@@ -105,7 +105,7 @@ View all datum stream metadata IDs for a node that has some property named `watt
 === "Show datum stream metadata IDs for node with _watts_ property"
 
 	```sh
-	s10k --profile demo datum stream ids --node-id 101 --property watts
+	s10k datum stream ids --node-id 101 --property watts
 	```
 
 === "Pretty Output"
@@ -161,7 +161,7 @@ and an accumulating property named `wattHours`:
 === "Find source IDs with _voltage_, _wattHours_ properties"
 
 	```sh
-	s10k --profile demo datum stream ids --instantaneous voltage \
+	s10k datum stream ids --instantaneous voltage \
 	  --accumulating wattHours --mode JSON \
 	  |jq -r 'map(.sourceId) | join(",")'
 	```
@@ -178,7 +178,7 @@ and an accumulating property named `wattHours`:
 === "Show datum stream metadata IDs with _pcmLimit_, _wattHours_ properties"
 
 	```sh
-	s10k --profile demo datum stream ids --instantaneous pcmLimit \
+	s10k datum stream ids --instantaneous pcmLimit \
 	  --accumulating wattHours
 	```
 

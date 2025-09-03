@@ -13,17 +13,21 @@ List datum matching a search filter.
 # Usage
 
 ```
-s10k datum list [-local] [-recent] [--with-total-result-count]
-                [-agg=<aggregation>] [-max=<maxDate>] [-min=<minDate>]
-                [-mode=<displayMode>] [-pagg=<partialAggregation>]
-                [-read=<readingType>] [-tol=<timeTolerance>]
-                [-tz=<zone>] [-prop=propName[,propName...]]...
-                [-source=sourceId[,sourceId...]]...
-				[-stream=streamId[,streamId...]]...
+s10k datum list [-S] [-stream=streamId[,streamId...]]...
 				[
 					-node=nodeId[,nodeId...] [-node=nodeId[,nodeId...]]... |
 					-loc=locId[,locId...] [-loc=locId[,locId...]]...
 				]
+				[-source=sourceId[,sourceId...]]...
+				[-ident=identifier[,identifier...]]...
+				[--stream-ident-kind=kind]
+				[-min=<minDate>] [-max=<maxDate>] [-local] [-tz=<zone>]
+				[-recent]
+				[-agg=<aggregation>] [-pagg=<partialAggregation>]
+				[-read=<readingType>] [-tol=<timeTolerance>]
+				[-prop=propName[,propName...]]...
+				[-M=max] [-O=<resultOffset>]
+				[-mode=<displayMode>]
 ```
 
 ## Options
@@ -32,25 +36,26 @@ s10k datum list [-local] [-recent] [--with-total-result-count]
 
 | Option | Long Version | Description |
 |:-------|:-------------|:------------|
+| `-S` | `--show-stream-ids` | show stream IDs in `PRETTY` results |
 | `-stream=` | `--stream-id=` | the stream ID(s) to show |
-| `-node=` | `--node-id=` | the node ID(s) to show metadata for |
-| `-node=` | `--node-id=` | the node ID(s) to show stream metadata for (exclusive to `-loc`) |
-| `-loc=` | `--location-id=` | the location ID(s) to show stream metadata for (exclusive to `-node`) |
-| `-source=` | `--source=` | the source ID(s) to show stream metadata for |
-| `-mode=` | `--display-mode=` | the format to display the data as, one of `CSV`, `JSON`, or `PRETTY`; defaults to `PRETTY`; **note** that `PRETTY` is not suitable for large result sets |
-| `-prop=` | `--property=` | restrict results to metadata that has this property (instantaneous, accumulating, **or** status); multiple properties combine with logical "or" |
+| `-node=` | `--node-id=` | the node ID(s) to show datum for (exclusive to `-loc`) |
+| `-loc=` | `--location-id=` | the location ID(s) to show datum for (exclusive to `-node`) |
+| `-source=` | `--source=` | the source ID(s) to show datum for |
+| `-ident=` | `--stream-ident=` | an `object:source` stream identifier to return datum for; if provided then `-node` and `-source` are ignored |
+|  | `--stream-ident-kind=` | the type of objects represented in the `-ident` option |
 | `-min=` | `--min-date=` | a minimum date to limit results to, like `2020-10-30` or `2020-10-30T12:45` |
 | `-max=` | `--max-date=` | a maximum date (exclusive) to limit results to, in same form as `-min` |
-| `-tz=` | `--time-zone=` | a time zone ID to treat the min/max dates as, instead of the local time zone, like `Pacific/Auckland` or `-05:00` or `UTC` |
 | `-local` | `--local-dates` | treat the min/max dates as "node local" dates, instead of UTC (or the local time zone when `-tz` used) |
+| `-tz=` | `--time-zone=` | a time zone ID to treat the min/max dates as, instead of the local time zone, like `Pacific/Auckland` or `-05:00` or `UTC` |
 | `-recent` | `--most-recent` | show just the most recently available data, within min/max dates if specified |
-| `-agg=` | `--aggregate=` | the [aggregation type][aggregation] to return |
-| `-pagg=` | `--partial-aggregate=` | a [partial aggregation][partial-aggregation] level to use |
+| `-agg=` | `--aggregation=` | the [aggregation type][aggregation] to return |
+| `-pagg=` | `--partial-aggregation=` | a [partial aggregation][partial-aggregation] level to use |
 | `-read=` | `--reading=` | return [reading][reading] aggregation results instead of listing results |
 | `-tol=` | `--tolerance` | a time tolerance to use with reading-style queries that support it, as an ISO period like `P7D` for 7 days |
-| `-S` | `--show-stream-ids` | show stream IDs in `PRETTY` results |
+| `-prop=` | `--property=` | restrict results to metadata that has this property (instantaneous, accumulating, **or** status); multiple properties combine with logical "or" |
 | `-M=` | `--max=` | the maximum number of results to return |
 | `-O=` | `--offset=` | start returning results from this offset, `0` being the first result |
+| `-mode=` | `--display-mode=` | the format to display the data as, one of `CSV`, `JSON`, or `PRETTY`; defaults to `PRETTY`; **note** that `PRETTY` is not suitable for large result sets |
 
 </div>
 
@@ -65,8 +70,8 @@ List hour-level aggregate datum over a date range:
 === "List hourly datum"
 
 	```sh
-	s10k --profile demo datum list --node-id 101 --source-id con/1 \
-	  --min-date 2025-08-21 --max-date 2025-08-22 --aggregate Hour
+	s10k datum list --node-id 101 --source-id con/1 \
+	  --min-date 2025-08-21 --max-date 2025-08-22 --aggregation Hour
 	```
 
 === "Pretty Output"
@@ -117,7 +122,7 @@ Show a reading difference between two dates:
 === "Show reading difference"
 
 	```sh
-	s10k --profile demo datum list --node-id 101 --source-id con/1 \
+	s10k datum list --node-id 101 --source-id con/1 \
 	  --min-date 2025-08-21 --max-date 2025-08-22  --reading Difference
 	```
 
@@ -152,6 +157,44 @@ Show a reading difference between two dates:
 	}
 	```
 
+Use the [datum stream ids](./stream/ids.md) command to generate a list of stream IDs that
+have `watts` and `wattHours` properties to list datum for, then list datum for those streams,
+showing just those properties:
+
+```sh title="List datum for dynamic stream IDs"
+s10k datum list \
+  --min-date 2025-08-21 \
+  --max-date 2025-08-22 \
+  --aggregation Hour \
+  --property watts,wattHours \
+  --stream-id $( \
+    s10k datum stream ids \
+	  --instantaneous watts \
+	  --accumulating wattHours \
+	  --display-mode JSON \
+    |jq -r 'map(.streamId) | join(",")' \
+  )
+```
+
+Use the [nodes sources](../nodes/sources.md) command to generate a list of stream IDs that
+have `watts` and `wattHours` properties and have posted datum after `2025-08-01` to list
+datum for, then list datum for those streams, showing just those properties:
+
+```sh title="List datum for dynamic sources"
+s10k datum list \
+  --min-date 2025-08-21 \
+  --max-date 2025-08-22 \
+  --aggregation Hour \
+  --property watts,wattHours \
+  --stream-ident $( \
+    s10k nodes sources \
+	  --instantaneous watts \
+	  --accumulating wattHours \
+	  --min-date 2025-08-01 \
+	  --display-mode JSON \
+    |jq -r 'map([.objectId, .sourceId] | join(":")) | join(",")' \
+  )
+```
 
 [aggregation]: https://github.com/SolarNetwork/solarnetwork/wiki/SolarQuery-API-enumerated-types#aggregation-types
 [partial-aggregation]: https://github.com/SolarNetwork/solarnetwork/wiki/SolarNet-aggregation#list-partial-aggregation

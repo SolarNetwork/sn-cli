@@ -40,7 +40,7 @@ You can show one exact instruction using its ID like this:
 === "Show instruction for ID"
 
 	```sh
-	s10k --profile demo instructions list --node-id 101 --instruction-id 123
+	s10k instructions list --node-id 101 --instruction-id 123
 	```
 
 === "Output"
@@ -63,7 +63,7 @@ You can show all instructions
 
 	```sh
 	# using multiple options
-	s10k --profile demo instructions list --node-id 101 --state Completed
+	s10k instructions list --node-id 101 --state Completed
 	```
 
 === "Output"

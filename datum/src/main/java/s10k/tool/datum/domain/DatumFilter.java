@@ -3,6 +3,7 @@ package s10k.tool.datum.domain;
 import static java.time.ZoneOffset.UTC;
 import static net.solarnetwork.util.StringUtils.commaDelimitedStringFromCollection;
 import static s10k.tool.common.util.DateUtils.isMidnight;
+import static s10k.tool.common.util.StringUtils.parseStreamIdentifiers;
 
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -12,8 +13,10 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NavigableMap;
 import java.util.SequencedCollection;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.UUID;
 
 import org.springframework.util.LinkedMultiValueMap;
@@ -118,6 +121,19 @@ public final class DatumFilter extends SimplePagination {
 			postBody.set("offset", getOffset());
 		}
 		return postBody;
+	}
+
+	/**
+	 * Set node and source IDs via a collection of stream identifiers.
+	 * 
+	 * @param identifiers the collection of identifiers, each like
+	 *                    {@code OBJECT_ID:SOURCE_ID}
+	 * @see s10k.tool.common.util.StringUtils#parseStreamIdentifiers(java.util.Collection)
+	 */
+	public void populateIdsFromStreamIdentifiers(SequencedCollection<String> identifiers) {
+		NavigableMap<Long, SortedSet<String>> mappings = parseStreamIdentifiers(identifiers);
+		setObjectIds(mappings.sequencedKeySet());
+		setSourceIds(mappings.sequencedValues().stream().flatMap(c -> c.stream()).toList());
 	}
 
 	/**

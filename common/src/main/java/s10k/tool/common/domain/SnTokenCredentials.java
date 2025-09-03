@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.solarnetwork.security.Snws2AuthorizationBuilder;
@@ -16,6 +17,7 @@ import net.solarnetwork.web.jakarta.support.StaticAuthorizationCredentialsProvid
  */
 @SuppressWarnings("ArrayRecordComponent")
 @RegisterReflectionForBinding
+@JsonIgnoreProperties(ignoreUnknown = true)
 public record SnTokenCredentials(
 // @formatter:off
 		@JsonProperty("sn_token_id")
@@ -25,6 +27,15 @@ public record SnTokenCredentials(
 		char[] tokenSecret
 		// @formatter:on
 ) {
+
+	/**
+	 * Test if credentials are available.
+	 * 
+	 * @return {@code true} if credentials are available
+	 */
+	public boolean hasCredentials() {
+		return (tokenId != null && !tokenId.isBlank() && tokenSecret != null && tokenSecret.length > 0);
+	}
 
 	@Override
 	public String toString() {
