@@ -33,13 +33,13 @@ s10k nodes sources [-node=nodeId[,nodeId...]]...
 | Option | Long Version | Description |
 |:-------|:-------------|:------------|
 | `-node=` | `--node-id=` | the node ID(s) to show metadata for |
-| `-node=` | `--node-id=` | the node ID(s) to show stream metadata for (exclusive to `-loc`) |
-| `-source=` | `--source=` | the source ID(s) to show stream metadata for |
+| `-node=` | `--node-id=` | the node ID(s) to show sources for (exclusive to `-loc`) |
+| `-source=` | `--source=` | the source ID(s) to show sources for |
 | `-min=` | `--min-date=` | a minimum date to limit results to, like `2020-10-30` or `2020-10-30T12:45` |
 | `-max=` | `--max-date=` | a maximum date (exclusive) to limit results to, in same form as `-min` |
 | `-local` | `--local-dates` | treat the min/max dates as "node local" dates, instead of UTC (or the local time zone when `-tz` used) |
 | `-tz=` | `--time-zone=` | a time zone ID to treat the min/max dates as, instead of the local time zone, like `Pacific/Auckland` or `-05:00` or `UTC` |
-| `-filter=` | `--filter=` | an optional [metadata filter][metadata-filter] to limit results to |
+| `-filter=` | `--filter=` | an optional datum stream [metadata filter][metadata-filter] to limit results to |
 | `-prop=` | `--property=` | restrict results to metadata that has this property (instantaneous, accumulating, **or** status); multiple properties combine with logical "or" |
 | `-i=` | `--instantaneous=` | restrict results to metadata that has this **instantaneous** property; multiple properties combine with logical "and" |
 | `-a=` | `--accumulating=` | restrict results to metadata that has this **accumulating** property; multiple properties combine with logical "and" |
