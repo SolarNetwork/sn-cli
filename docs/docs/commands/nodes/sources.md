@@ -11,7 +11,7 @@ List node sources matching a search filter.
 	[/nodes/sources](https://github.com/SolarNetwork/solarnetwork/wiki/SolarQuery-API#reportable-node-sources)
 	endpoint.
 
-# Usage
+## Usage
 
 ```
 s10k nodes sources [-node=nodeId[,nodeId...]]...

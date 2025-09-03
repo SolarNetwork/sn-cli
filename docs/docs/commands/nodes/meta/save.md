@@ -5,7 +5,7 @@ title: save
 
 Save metadata associated with a node.
 
-# Usage
+## Usage
 
 ```
 s10k nodes meta save [-r] -node=<nodeId> [<metadata>]

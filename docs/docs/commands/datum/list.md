@@ -10,7 +10,7 @@ List datum matching a search filter.
 	For more details on the SolarNetwork APIs used by this command, see the documentation for the
 	[/datum/stream/datum][stream-list] and [/datum/stream/reading][stream-reading] endpoints.
 
-# Usage
+## Usage
 
 ```
 s10k datum list [-S] [-stream=streamId[,streamId...]]...

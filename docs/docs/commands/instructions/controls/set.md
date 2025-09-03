@@ -6,7 +6,7 @@ title: set
 Update the value of a SolarNode control. Pass the desired control value as the first (and only)
 parameter.
 
-# Usage
+## Usage
 
 ```
 s10k instructions controls set -control=<controlId> -node=<nodeId> desiredValue

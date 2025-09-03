@@ -5,7 +5,7 @@ title: list
 
 List node information for the active credentials.
 
-# Usage
+## Usage
 
 ```
 s10k nodes list [-mode=<displayMode>]

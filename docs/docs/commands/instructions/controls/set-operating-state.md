@@ -6,7 +6,7 @@ title: set-operating-state
 Update the [operating state][operating-states] of a SolarNode component. Pass the desired operating
 state as the first (and only) parameter.
 
-# Usage
+## Usage
 
 ```
 s10k instructions controls set-operating-state -control=<controlId>

@@ -5,7 +5,7 @@ title: view
 
 View a specific [datum stream metadata][datum-stream-meta].
 
-# Usage
+## Usage
 
 ```
 s10k datum stream view [-mode=<displayMode>] -stream=streamId

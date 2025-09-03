@@ -6,7 +6,7 @@ title: csv-set
 Save CSV data to node metadata at a specific metadata [key path][metadata-key-path]. CSV metadata
 is often used for tariff schedules in SolarNode, such as [tariff schedule expressions][tariff-expr].
 
-# Usage
+## Usage
 
 ```
 s10k nodes meta csv-set [-s] [-mode=<displayMode>] -node=<nodeId>

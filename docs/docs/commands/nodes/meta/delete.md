@@ -5,7 +5,7 @@ title: delete
 
 Delete all metadata associated with a node.
 
-# Usage
+## Usage
 
 ```
 s10k nodes meta delete -node=<nodeId>

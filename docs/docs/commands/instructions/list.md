@@ -5,7 +5,7 @@ title: list
 
 Show instructions matching a search filter.
 
-# Usage
+## Usage
 
 ```
 s10k instructions list [-max=<maxDate>] [-min=<minDate>] [-tz=<zone>]
