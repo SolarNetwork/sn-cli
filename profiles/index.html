@@ -1268,7 +1268,7 @@ take care to configure limited permissions to the file.</p>
 </div>
 <p>Here is how you could set up the <code>credentials</code> file the first time, ensuring limited
 permissions to the file:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">macOS/Linux</label><label for="__tabbed_1_2">Windows</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">macOS/Linux</label><label for="__tabbed_1_2">Windows PowerShell</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>~/.s10k
@@ -1278,7 +1278,13 @@ chmod<span class="w"> </span><span class="m">600</span><span class="w"> </span>~
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<p>TODO</p>
+<div class="highlight"><pre><span></span><code><span class="nb">New-Item</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Path</span> <span class="s2">&quot;$HOME\.s10k&quot;</span> <span class="n">-Force</span> <span class="p">|</span> <span class="nb">Out-Null</span>
+<span class="n">icacls</span> <span class="s2">&quot;$HOME\.s10k&quot;</span> <span class="p">/</span><span class="n">inheritance</span><span class="p">:</span><span class="nb">r </span><span class="p">|</span> <span class="nb">Out-Null</span>
+<span class="n">icacls</span> <span class="s2">&quot;$HOME\.s10k&quot;</span> <span class="p">/</span><span class="n">grant</span><span class="p">:</span><span class="nb">r </span><span class="s2">&quot;${env:USERNAME}:(OI)(CI)F&quot;</span> <span class="p">|</span> <span class="nb">Out-Null</span>
+<span class="nb">New-Item</span> <span class="n">-ItemType</span> <span class="n">File</span> <span class="n">-Path</span> <span class="s2">&quot;$HOME\.s10k\credentials&quot;</span> <span class="n">-Force</span> <span class="p">|</span> <span class="nb">Out-Null</span>
+<span class="n">icacls</span> <span class="s2">&quot;$HOME\.s10k\credentials&quot;</span> <span class="p">/</span><span class="n">inheritance</span><span class="p">:</span><span class="nb">r </span><span class="p">|</span> <span class="nb">Out-Null</span>
+<span class="n">icacls</span> <span class="s2">&quot;$HOME\.s10k\credentials&quot;</span> <span class="p">/</span><span class="n">grant</span><span class="p">:</span><span class="nb">r </span><span class="s2">&quot;${env:USERNAME}:(R,W)&quot;</span> <span class="p">|</span> <span class="nb">Out-Null</span>
+</code></pre></div>
 </div>
 </div>
 </div>
