@@ -32,9 +32,16 @@ permissions to the file:
 	chmod 600 ~/.s10k/credentials
 	```
 
-=== "Windows"
+=== "Windows PowerShell"
 
-	TODO
+	```pwsh
+	New-Item -ItemType Directory -Path "$HOME\.s10k" -Force | Out-Null
+	icacls "$HOME\.s10k" /inheritance:r | Out-Null
+	icacls "$HOME\.s10k" /grant:r "${env:USERNAME}:(OI)(CI)F" | Out-Null
+	New-Item -ItemType File -Path "$HOME\.s10k\credentials" -Force | Out-Null
+	icacls "$HOME\.s10k\credentials" /inheritance:r | Out-Null
+	icacls "$HOME\.s10k\credentials" /grant:r "${env:USERNAME}:(R,W)" | Out-Null
+	```
 
 ## Credential profiles structure
 
