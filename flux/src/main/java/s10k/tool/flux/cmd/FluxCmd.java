@@ -9,7 +9,7 @@ import s10k.tool.common.cmd.ToolCmd;
  */
 // @formatter:off
 @Command(name = "flux", subcommands = {
-		StreamFluxCmd.class
+		TailFluxCmd.class
 })
 // @formatter:on
 public class FluxCmd extends BaseSubCmd<ToolCmd> {

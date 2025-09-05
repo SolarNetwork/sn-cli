@@ -153,7 +153,7 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 	long resultOffset;
 
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the CSV data",
+			description = "how to display the datum",
 			defaultValue = "PRETTY")
 	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
 	// @formatter:on
