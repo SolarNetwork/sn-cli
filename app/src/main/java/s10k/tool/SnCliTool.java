@@ -16,6 +16,7 @@ import picocli.CommandLine.IFactory;
 import s10k.tool.common.cmd.ToolCmd;
 import s10k.tool.common.util.StringUtils;
 import s10k.tool.datum.cmd.DatumCmd;
+import s10k.tool.flux.cmd.FluxCmd;
 import s10k.tool.instructions.cmd.InstructionsCmd;
 import s10k.tool.nodes.cmd.NodesCmd;
 
@@ -49,6 +50,7 @@ public class SnCliTool implements CommandLineRunner, ExitCodeGenerator {
 				.setExecutionStrategy(app::globalInit)
 				.registerConverter(LocalDateTime.class, StringUtils::parseLocalDateTime)
 				.addSubcommand(new DatumCmd())
+				.addSubcommand(new FluxCmd())
 				.addSubcommand(new InstructionsCmd())
 				.addSubcommand(new NodesCmd())
 				.execute(args);

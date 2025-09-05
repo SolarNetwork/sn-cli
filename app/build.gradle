@@ -35,6 +35,7 @@ dependencyManagement {
 dependencies {
 	implementation project(':sn-cli-common')
 	implementation project(':sn-cli-datum')
+	implementation project(':sn-cli-flux')
 	implementation project(':sn-cli-instructions')
 	implementation project(':sn-cli-nodes')
 

@@ -83,6 +83,8 @@ subprojects {
 			mockitoJupiter: 'org.mockito:mockito-junit-jupiter'
 		]
 	}
+	
+	ext['netty.version'] = '4.2.3.Final'	
 
 	dependencies {
 		testImplementation libraries.mockito,
