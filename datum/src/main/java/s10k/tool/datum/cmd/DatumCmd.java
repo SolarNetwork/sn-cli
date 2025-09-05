@@ -1,6 +1,3 @@
-/**
- * 
- */
 package s10k.tool.datum.cmd;
 
 import picocli.CommandLine.Command;
