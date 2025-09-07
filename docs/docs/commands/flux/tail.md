@@ -107,3 +107,54 @@ applies to the `CSV` output:
 		"topic" : "user/123/node/101/datum/0/con/1"
 	}
 	```
+
+Monitor OCPP inbound message events for charger:
+
+=== "Tail OCPP charger events"
+
+	```sh
+	s10k flux tail --display-mode JSON \
+	  --topic user/123/event/ocpp/message/received \
+	  |jq --unbuffered 'select(.body.data.cp == "chgr123") | .body.data'
+	```
+
+=== "JSON Output"
+
+	```json
+	{
+		"cp": "chgr123",
+		"messageId": "3ed43c9f-7fc2-4ed8-ac51-70e1987e8e80",
+		"action": "MeterValues",
+		"message": {
+			"connectorId": 2,
+			"transactionId": 257979,
+			"meterValue": [
+				{
+					"timestamp": "2025-09-07T04:51:43.000+00:00",
+					"sampledValue": [
+					{
+						"value": "289314130",
+						"context": "Sample.Periodic",
+						"format": "Raw",
+						"measurand": "Energy.Active.Import.Register",
+						"location": "Outlet",
+						"unit": "Wh"
+					}
+					{
+						"value": "3498.0",
+						"context": "Sample.Periodic",
+						"measurand": "Power.Active.Import",
+						"location": "Outlet",
+						"unit": "W"
+					}
+					]
+				}
+			]
+		}
+	}
+	{
+		"cp": "chgr123",
+		"messageId": "d8551a59-4cf5-4958-8487-ca2dedfcb21a",
+		"action": "Heartbeat"
+	}
+	```
