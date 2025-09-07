@@ -1511,7 +1511,7 @@ applies to the <code>CSV</code> output:</p>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>flux<span class="w"> </span>tail<span class="w"> </span>--display-mode<span class="w"> </span>JSON<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--topic<span class="w"> </span>user/123/event/ocpp/message/received<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="p">|</span>jq<span class="w"> </span>--unbuffered<span class="w"> </span><span class="s1">&#39;select(.body.data.cp == &quot;chgr123&quot;) | .body.data&#39;</span>
+<span class="w">  </span><span class="p">|</span>jq<span class="w"> </span><span class="s1">&#39;select(.body.data.cp == &quot;chgr123&quot;) | .body.data&#39;</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
