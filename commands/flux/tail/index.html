@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://solarnetwork.github.io/sn-cli/commands/nodes/sources/">
+        <link rel="canonical" href="https://solarnetwork.github.io/sn-cli/commands/flux/tail/">
       
       
-        <link rel="prev" href="../list/">
+        <link rel="prev" href="../">
       
       
-        <link rel="next" href="../meta/">
+        <link rel="next" href="../../instructions/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>sources - SolarNetwork CLI</title>
+        <title>tail - SolarNetwork CLI</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#node-sources" class="md-skip">
+        <a href="#flux-tail" class="md-skip">
           Skip to content
         </a>
       
@@ -111,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              sources
+              tail
             
           </span>
         </div>
@@ -569,6 +569,8 @@
                 
   
   
+    
+  
   
   
     
@@ -584,15 +586,15 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../flux/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   
@@ -611,7 +613,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_3">
             <span class="md-nav__icon md-icon"></span>
             flux
@@ -624,10 +626,32 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../flux/tail/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    tail
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -638,6 +662,62 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Options
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Output
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -891,8 +971,6 @@
                 
   
   
-    
-  
   
   
     
@@ -914,15 +992,15 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../nodes/" class="md-nav__link ">
               
   
   
@@ -941,7 +1019,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             nodes
@@ -957,7 +1035,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ids/" class="md-nav__link">
+      <a href="../../nodes/ids/" class="md-nav__link">
         
   
   
@@ -980,7 +1058,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../list/" class="md-nav__link">
+      <a href="../../nodes/list/" class="md-nav__link">
         
   
   
@@ -1000,32 +1078,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    sources
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../nodes/sources/" class="md-nav__link">
         
   
   
@@ -1036,62 +1092,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      Usage
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#options" class="md-nav__link">
-    <span class="md-ellipsis">
-      Options
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#output" class="md-nav__link">
-    <span class="md-ellipsis">
-      Output
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      Examples
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1132,7 +1132,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../meta/" class="md-nav__link ">
+            <a href="../../nodes/meta/" class="md-nav__link ">
               
   
   
@@ -1167,7 +1167,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../meta/csv-get/" class="md-nav__link">
+      <a href="../../nodes/meta/csv-get/" class="md-nav__link">
         
   
   
@@ -1190,7 +1190,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../meta/csv-set/" class="md-nav__link">
+      <a href="../../nodes/meta/csv-set/" class="md-nav__link">
         
   
   
@@ -1213,7 +1213,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../meta/delete/" class="md-nav__link">
+      <a href="../../nodes/meta/delete/" class="md-nav__link">
         
   
   
@@ -1236,7 +1236,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../meta/list/" class="md-nav__link">
+      <a href="../../nodes/meta/list/" class="md-nav__link">
         
   
   
@@ -1259,7 +1259,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../meta/save/" class="md-nav__link">
+      <a href="../../nodes/meta/save/" class="md-nav__link">
         
   
   
@@ -1376,25 +1376,22 @@
 
 
 
-<h1 id="node-sources">Node Sources<a class="headerlink" href="#node-sources" title="Permanent link">&para;</a></h1>
-<p>List node sources matching a search filter.</p>
-<div class="admonition info">
-<p class="admonition-title">Info</p>
-<p>For more details on the SolarNetwork APIs used by this command, see the documentation for the
-<a href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarQuery-API#reportable-node-sources">/nodes/sources</a>
-endpoint.</p>
+<h1 id="flux-tail">Flux Tail<a class="headerlink" href="#flux-tail" title="Permanent link">&para;</a></h1>
+<p>Subscribe to a SolarFlux topic and display received messages.</p>
+<div class="admonition bug">
+<p class="admonition-title">Bug</p>
+<p>This command might print some scary looking <code>WARNING</code> messages to standard error when it starts
+up. These can be ignored by redirecting standard error, for example <code>2&gt;/dev/null</code> in macOS or
+Linux.</p>
 </div>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>s10k nodes sources [-node=nodeId[,nodeId...]]...
-                    [-source=sourceId[,sourceId...]]...
-                    [-min=&lt;minDate&gt;] [-max=&lt;maxDate&gt;]
-                    [-local] [-tz=&lt;zone&gt;]
-                    [-filter=&lt;metadataFilter&gt;]
-                    [-prop=propName[,propName...]]...
-                    [-i=propName[,propName...]]...
-                    [-a=propName[,propName...]]...
-                    [-s=propName[, propName...]]...
-                    [-mode=&lt;displayMode&gt;]
+<div class="highlight"><pre><span></span><code>s10k flux tail [-G] [-prop=propName[,propName...]]...
+                [-R=&lt;maxPrecision&gt;] [--client-id=&lt;clientIdSuffix&gt;]
+                (
+                    -t=filter
+                    [[-node=&lt;nodeId&gt;] [-source=&lt;sourceId&gt;]]
+                )
+                [-mode=&lt;displayMode&gt;]
 </code></pre></div>
 <h2 id="options">Options<a class="headerlink" href="#options" title="Permanent link">&para;</a></h2>
 <div class="options-explicit-col-widths">
@@ -1408,64 +1405,39 @@ endpoint.</p>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><code>-node=</code></td>
-<td style="text-align: left;"><code>--node-id=</code></td>
-<td style="text-align: left;">the node ID(s) to show metadata for</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>-node=</code></td>
-<td style="text-align: left;"><code>--node-id=</code></td>
-<td style="text-align: left;">the node ID(s) to show sources for (exclusive to <code>-loc</code>)</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>-source=</code></td>
-<td style="text-align: left;"><code>--source=</code></td>
-<td style="text-align: left;">the source ID(s) to show sources for</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>-min=</code></td>
-<td style="text-align: left;"><code>--min-date=</code></td>
-<td style="text-align: left;">a minimum date to limit results to, like <code>2020-10-30</code> or <code>2020-10-30T12:45</code></td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>-max=</code></td>
-<td style="text-align: left;"><code>--max-date=</code></td>
-<td style="text-align: left;">a maximum date (exclusive) to limit results to, in same form as <code>-min</code></td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>-local</code></td>
-<td style="text-align: left;"><code>--local-dates</code></td>
-<td style="text-align: left;">treat the min/max dates as "node local" dates, instead of UTC (or the local time zone when <code>-tz</code> used)</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>-tz=</code></td>
-<td style="text-align: left;"><code>--time-zone=</code></td>
-<td style="text-align: left;">a time zone ID to treat the min/max dates as, instead of the local time zone, like <code>Pacific/Auckland</code> or <code>-05:00</code> or <code>UTC</code></td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>-filter=</code></td>
-<td style="text-align: left;"><code>--filter=</code></td>
-<td style="text-align: left;">an optional datum stream <a href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarNet-API-global-objects#metadata-filter">metadata filter</a> to limit results to</td>
+<td style="text-align: left;"><code>-G</code></td>
+<td style="text-align: left;"><code>--csv-global-header</code></td>
+<td style="text-align: left;">display just one CSV header row, based either on the <code>-prop</code> values or the first message properties</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-prop=</code></td>
 <td style="text-align: left;"><code>--property=</code></td>
-<td style="text-align: left;">restrict results to metadata that has this property (instantaneous, accumulating, <strong>or</strong> status); multiple properties combine with logical "or"</td>
+<td style="text-align: left;">restrict the results to this property (or properties for multiple)</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>-i=</code></td>
-<td style="text-align: left;"><code>--instantaneous=</code></td>
-<td style="text-align: left;">restrict results to metadata that has this <strong>instantaneous</strong> property; multiple properties combine with logical "and"</td>
+<td style="text-align: left;"><code>-R=</code></td>
+<td style="text-align: left;"><code>--max-precision=</code></td>
+<td style="text-align: left;">maximum number of decimal digits to display, or <code>-1</code> for no rounding; defaults to <code>3</code></td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>-a=</code></td>
-<td style="text-align: left;"><code>--accumulating=</code></td>
-<td style="text-align: left;">restrict results to metadata that has this <strong>accumulating</strong> property; multiple properties combine with logical "and"</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>--client-id</code></td>
+<td style="text-align: left;">a specific client ID to use, instead of a random default</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>-s=</code></td>
-<td style="text-align: left;"><code>--status=</code></td>
-<td style="text-align: left;">restrict results to metadata that has this <strong>status</strong> property; multiple properties combine with logical "and"</td>
+<td style="text-align: left;"><code>-t=</code></td>
+<td style="text-align: left;"><code>--topic=</code></td>
+<td style="text-align: left;">the MQTT topic filter to subscribe to (exclusive to <code>-node</code> and <code>-source</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>-node=</code></td>
+<td style="text-align: left;"><code>--node-id=</code></td>
+<td style="text-align: left;">the node ID (or <code>+</code> wildcard) to show datum for (exclusive to <code>-topic</code>, requires <code>-source</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>-source=</code></td>
+<td style="text-align: left;"><code>--source=</code></td>
+<td style="text-align: left;">the source ID topic pattern to show datum for (exclusive to <code>-topic</code>, requires <code>-node</code>)</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-mode=</code></td>
@@ -1476,127 +1448,113 @@ endpoint.</p>
 </table>
 </div>
 <h2 id="output">Output<a class="headerlink" href="#output" title="Permanent link">&para;</a></h2>
-<p>A listing of all matching node sources.</p>
+<p>All matching messages. To stop receiving messages type <span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-c">C</kbd></span> on macOS or Linux.</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
-<p>List all available sources:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">List all sources</label><label for="__tabbed_1_2">Pretty Output</label><label for="__tabbed_1_3">CSV Output</label><label for="__tabbed_1_4">JSON Output</label></div>
+<p>Subscribe to all node <code>101</code> datum sources starting with <code>con/</code>, showing just the <code>created</code>,
+<code>sourceId</code>, <code>watts</code>, and <code>wattHours</code> properties. <strong>Note</strong> the <code>--csv-global-header</code> only
+applies to the <code>CSV</code> output:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Tail datum showing just <em>watts</em> and <em>wattHours</em></label><label for="__tabbed_1_2">Pretty Output</label><label for="__tabbed_1_3">CSV Output</label><label for="__tabbed_1_4">JSON Output</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>nodes<span class="w"> </span>sources
+<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>flux<span class="w"> </span>tail<span class="w"> </span>--node-id<span class="w"> </span><span class="m">101</span><span class="w"> </span>--source-id<span class="w"> </span>con/<span class="se">\#</span><span class="w">  </span><span class="se">\</span>
+<span class="w">  </span>--csv-global-header<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--property<span class="w"> </span>created,sourceId,watts,wattHours
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>+---------+---------------+
-| Node ID | Source ID     |
-+---------+---------------+
-|      64 | /meter/1      |
-+---------+---------------+
-|      64 | /meter/2      |
-+---------+---------------+
-|      64 | /test/solcast |
-+---------+---------------+
-|      70 | meter/1       |
-+---------+---------------+
-|     101 | con/1         |
-+---------+---------------+
-|     101 | con/pcm       |
-+---------+---------------+
-|     101 | dnp3/client/a |
-+---------+---------------+
-|     101 | gen/1         |
-+---------+---------------+
-|     101 | pcm/limit     |
-+---------+---------------+
-|     101 | power/limit   |
-+---------+---------------+
-|     101 | switch/1      |
-+---------+---------------+
+<div class="highlight"><pre><span></span><code>+--------------------------+----------+-------+-----------+
+| created                  | sourceId | watts | wattHours |
++--------------------------+----------+-------+-----------+
+| 2025-09-05T06:24:55.227Z | con/pcm  |  2408 |   8259102 |
++--------------------------+----------+-------+-----------+
++----------------------+----------+-------+-----------+
+| created              | sourceId | watts | wattHours |
++----------------------+----------+-------+-----------+
+| 2025-09-05T06:26:35Z | con/1    |  1252 |   8258876 |
++----------------------+----------+-------+-----------+
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>Node ID,Source ID
-64,/meter/1
-64,/meter/2
-64,/test/solcast
-70,meter/1
-101,con/1
-101,con/pcm
-101,dnp3/client/a
-101,gen/1
-101,pcm/limit
-101,power/limit
-101,switch/1
+<div class="highlight"><pre><span></span><code>created,sourceId,watts,wattHours
+2025-09-05T06:39:35Z,con/1,3087,8259410
+2025-09-05T06:39:55.227Z,con/pcm,3270,8259700
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="p">[</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;kind&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;n&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;objectId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">64</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;sourceId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/meter/1&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;ts&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-09-05 06:40:25.732246Z&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;body&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;created&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-09-05 06:40:25.227Z&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;sourceId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;con/pcm&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;watts&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2653&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;wattHours&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;8259722&quot;</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;kind&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;n&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;objectId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">64</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;sourceId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/meter/2&quot;</span>
+<span class="w">    </span><span class="nt">&quot;topic&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user/123/node/101/datum/0/con/pcm&quot;</span>
+<span class="p">}</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;ts&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-09-05 06:40:35.511049Z&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;body&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;created&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-09-05 06:40:35Z&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;sourceId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;con/1&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;watts&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3363&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;wattHours&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;8259466&quot;</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;kind&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;n&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;objectId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">64</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;sourceId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/test/solcast&quot;</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;kind&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;n&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;objectId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">70</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;sourceId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;meter/1&quot;</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;kind&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;n&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;objectId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;sourceId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;con/1&quot;</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;kind&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;n&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;objectId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;sourceId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;con/pcm&quot;</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;kind&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;n&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;objectId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;sourceId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dnp3/client/a&quot;</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;kind&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;n&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;objectId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;sourceId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gen/1&quot;</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;kind&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;n&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;objectId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;sourceId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pcm/limit&quot;</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;kind&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;n&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;objectId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;sourceId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;power/limit&quot;</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;kind&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;n&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;objectId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;sourceId&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;switch/1&quot;</span>
+<span class="w">    </span><span class="nt">&quot;topic&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user/123/node/101/datum/0/con/1&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>Monitor OCPP inbound message events for charger:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Tail OCPP charger events</label><label for="__tabbed_2_2">JSON Output</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>flux<span class="w"> </span>tail<span class="w"> </span>--display-mode<span class="w"> </span>JSON<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--topic<span class="w"> </span>user/123/event/ocpp/message/received<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span>jq<span class="w"> </span>--unbuffered<span class="w"> </span><span class="s1">&#39;select(.body.data.cp == &quot;chgr123&quot;) | .body.data&#39;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;cp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chgr123&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;messageId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3ed43c9f-7fc2-4ed8-ac51-70e1987e8e80&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MeterValues&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;connectorId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;transactionId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">257979</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;meterValue&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-09-07T04:51:43.000+00:00&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;sampledValue&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;289314130&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;context&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sample.Periodic&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Raw&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;measurand&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Energy.Active.Import.Register&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;location&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Outlet&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;unit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Wh&quot;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3498.0&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;context&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sample.Periodic&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;measurand&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Power.Active.Import&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;location&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Outlet&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;unit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;W&quot;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="p">]</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">]</span>
 <span class="w">    </span><span class="p">}</span>
-<span class="p">]</span>
+<span class="p">}</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;cp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chgr123&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;messageId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;d8551a59-4cf5-4958-8487-ca2dedfcb21a&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Heartbeat&quot;</span>
+<span class="p">}</span>
 </code></pre></div>
 </div>
 </div>
 </div>
-<p>Show sources that have both <code>watts</code> instantaneous and <code>wattHours</code> accumulating properties
-and have posted datum since <code>2025-08-01</code>:</p>
-<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>datum<span class="w"> </span>sources<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--instantaneous<span class="w"> </span>watts<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--accumulating<span class="w"> </span>wattHours<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--min-date<span class="w"> </span><span class="m">2025</span>-08-01
-</code></pre></div>
 
 
 

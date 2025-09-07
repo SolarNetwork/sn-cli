@@ -2,106 +2,118 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/global-options/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/install/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/logging/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/profiles/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/commands/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/commands/datum/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/commands/datum/list/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/commands/datum/stream/ids/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/commands/datum/stream/list/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/commands/datum/stream/view/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://solarnetwork.github.io/sn-cli/commands/flux/</loc>
+         <lastmod>2025-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://solarnetwork.github.io/sn-cli/commands/flux/tail/</loc>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/commands/instructions/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/commands/instructions/list/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://solarnetwork.github.io/sn-cli/commands/instructions/toggle-op-mode/</loc>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/commands/instructions/update-state/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/commands/instructions/controls/set-operating-state/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/commands/instructions/controls/set/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/commands/nodes/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/commands/nodes/ids/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/commands/nodes/list/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/commands/nodes/sources/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/commands/nodes/meta/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/commands/nodes/meta/csv-get/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/commands/nodes/meta/csv-set/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/commands/nodes/meta/delete/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/commands/nodes/meta/list/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
     <url>
          <loc>https://solarnetwork.github.io/sn-cli/commands/nodes/meta/save/</loc>
-         <lastmod>2025-09-03</lastmod>
+         <lastmod>2025-09-07</lastmod>
     </url>
 </urlset>
