@@ -5,7 +5,7 @@ title: ids
 
 Show [datum stream metadata][datum-stream-meta] IDs matching a search filter.
 
-# Usage
+## Usage
 
 ```
 s10k datum stream ids [-mode=<displayMode>]

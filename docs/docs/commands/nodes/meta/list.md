@@ -5,7 +5,7 @@ title: list
 
 Show metadata matching a search filter.
 
-# Usage
+## Usage
 
 ```
 s10k nodes meta list [-filter=<filter>] -node=nodeId[,nodeId...]

@@ -6,7 +6,7 @@ title: update-state
 Change the state of instructions matching a search filter. Pass the desired [instruction
 state][instruction-states] as the first (and only) parameter.
 
-# Usage
+## Usage
 
 ```
 s10k instructions update-state [-max=<maxDate>] [-min=<minDate>] [-tz=<zone>]

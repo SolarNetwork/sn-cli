@@ -5,7 +5,7 @@ title: ids
 
 List node IDs for the active credentials.
 
-# Usage
+## Usage
 
 ```
 s10k nodes ids [-mode=<displayMode>]

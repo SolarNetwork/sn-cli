@@ -5,7 +5,7 @@ title: list
 
 Show [datum stream metadata][datum-stream-meta] matching a search filter.
 
-# Usage
+## Usage
 
 ```
 s10k datum stream list [-mode=<displayMode>]

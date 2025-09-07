@@ -229,7 +229,7 @@ public class TableUtils {
 					if (row instanceof Object[] a) {
 						csvWriter.write(a);
 					} else if (row instanceof Collection<?> l) {
-						csvWriter.write(l);
+						csvWriter.write(l.toArray(Object[]::new));
 					} else {
 						csvWriter.write(row);
 					}
