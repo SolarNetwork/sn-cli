@@ -8,6 +8,7 @@ allows you to do things like:
  * list persisted datum
  * update SolarNode control values
  * toggle SolarNode operating modes
+ * manage SolarNode metadata
  * stream datum from SolarFlux
  * and more! See the [documentation](https://solarnetwork.github.io/sn-cli/) for more information.
 
