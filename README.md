@@ -1,6 +1,15 @@
 # SolarNetwork Command Line Tool
 
-This project contains a command line (CLI) tool for interacting with the SolarNetwork API.
+This project contains a command line (CLI) tool for interacting with the SolarNetwork API. The tool
+allows you to do things like:
+
+ * discover available nodes
+ * discover available datum streams
+ * list persisted datum
+ * update SolarNode control values
+ * toggle SolarNode operating modes
+ * stream datum from SolarFlux
+ * and more! See the [documentation](https://solarnetwork.github.io/sn-cli/) for more information.
 
 # Logging
 
@@ -11,7 +20,7 @@ something like this:
 
 ```yaml
 logging:
-  file.name: "/var/tmp/sn-reading-aggregate-validator.log"
+  file.name: "/var/tmp/s10k.log"
   level:
     net.solarnetwork.http: "TRACE"
   threshold:
