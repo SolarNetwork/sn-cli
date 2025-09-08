@@ -12,6 +12,12 @@ allows you to do things like:
  * stream datum from SolarFlux
  * and more! See the [documentation](https://solarnetwork.github.io/sn-cli/) for more information.
 
+# Get
+
+Download the [latest release](https://github.com/SolarNetwork/sn-cli/releases), either as an
+executable binary for your operating system or an executable Java JAR you can run anywhere you have
+Java 21+ installed.
+
 # Logging
 
 Logging can be enabled by creating an `application.yml` file in your working directory. You can then
