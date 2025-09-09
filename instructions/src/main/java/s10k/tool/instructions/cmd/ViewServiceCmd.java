@@ -36,7 +36,7 @@ import s10k.tool.instructions.domain.InstructionRequest;
  */
 @Component
 @Command(name = "view-service", sortSynopsis = false)
-public class ViewServiceSettingsCmd extends BaseSubCmd<InstructionsCmd> implements Callable<Integer> {
+public class ViewServiceCmd extends BaseSubCmd<InstructionsCmd> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-node", "--node-id" },
@@ -73,7 +73,7 @@ public class ViewServiceSettingsCmd extends BaseSubCmd<InstructionsCmd> implemen
 	 * @param reqFactory   the HTTP request factory to use
 	 * @param objectMapper the mapper to use
 	 */
-	public ViewServiceSettingsCmd(ClientHttpRequestFactory reqFactory, ObjectMapper objectMapper) {
+	public ViewServiceCmd(ClientHttpRequestFactory reqFactory, ObjectMapper objectMapper) {
 		super(reqFactory, objectMapper);
 	}
 

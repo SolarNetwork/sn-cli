@@ -18,7 +18,7 @@ import s10k.tool.instructions.controls.cmd.ControlsCmd;
 		ListServicesCmd.class,
 		ToggleOperationalModeCmd.class,
 		UpdateInstructionsState.class,
-		ViewServiceSettingsCmd.class
+		ViewServiceCmd.class
 })
 // @formatter:on
 public class InstructionsCmd extends BaseSubCmd<ToolCmd> {
