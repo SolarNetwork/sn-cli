@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://solarnetwork.github.io/sn-cli/commands/instructions/update-state/">
+        <link rel="canonical" href="https://solarnetwork.github.io/sn-cli/commands/instructions/list-services/">
       
       
-        <link rel="prev" href="../toggle-op-mode/">
+        <link rel="prev" href="../list-packages/">
       
       
-        <link rel="next" href="../controls/set-operating-state/">
+        <link rel="next" href="../list/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>update-state - SolarNetwork CLI</title>
+        <title>list-services - SolarNetwork CLI</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#instructions-update-state" class="md-skip">
+        <a href="#instructions-list-services" class="md-skip">
           Skip to content
         </a>
       
@@ -111,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              update-state
+              list-services
             
           </span>
         </div>
@@ -797,75 +797,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../list-services/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    list-services
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../list/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    list
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../toggle-op-mode/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    toggle-op-mode
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -883,7 +814,7 @@
   
   
   <span class="md-ellipsis">
-    update-state
+    list-services
     
   </span>
   
@@ -896,7 +827,7 @@
   
   
   <span class="md-ellipsis">
-    update-state
+    list-services
     
   </span>
   
@@ -958,6 +889,75 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    list
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../toggle-op-mode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    toggle-op-mode
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../update-state/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    update-state
+    
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1601,15 +1601,11 @@
 
 
 
-<h1 id="instructions-update-state">Instructions Update-State<a class="headerlink" href="#instructions-update-state" title="Permanent link">&para;</a></h1>
-<p>Change the state of instructions matching a search filter. Pass the desired <a href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarUser-API-enumerated-types#node-instruction-state-type">instruction
-state</a> as the first (and only) parameter.</p>
+<h1 id="instructions-list-services">Instructions List-Services<a class="headerlink" href="#instructions-list-services" title="Permanent link">&para;</a></h1>
+<p>List the available <a href="https://solarnetwork.github.io/solarnode-handbook/users/setup-app/settings/services/">services</a> or <a href="https://solarnetwork.github.io/solarnode-handbook/users/setup-app/settings/components/">component instances</a> on a node.</p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>s10k instructions update-state [-max=&lt;maxDate&gt;] [-min=&lt;minDate&gt;] [-tz=&lt;zone&gt;]
-                       [-id=instructionId[,instructionId...]]...
-                       [-node=nodeId[,nodeId...]]...
-                       [-state=state[,state...]]...
-                       &lt;desiredState&gt;
+<div class="highlight"><pre><span></span><code>s10k instructions list-services -node=&lt;nodeId&gt; [-c=&lt;componentId&gt;]
+                                [-mode=&lt;displayMode&gt;]
 </code></pre></div>
 <h2 id="options">Options<a class="headerlink" href="#options" title="Permanent link">&para;</a></h2>
 <div class="options-explicit-col-widths">
@@ -1623,50 +1619,232 @@ state</a> as the first (and only) parameter.</p>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><code>-id=</code></td>
-<td style="text-align: left;"><code>--instruction-id=</code></td>
-<td style="text-align: left;">the instruction ID(s) to show</td>
-</tr>
-<tr>
 <td style="text-align: left;"><code>-node=</code></td>
 <td style="text-align: left;"><code>--node-id=</code></td>
-<td style="text-align: left;">the node ID to show instructions for</td>
+<td style="text-align: left;">the node ID to list the control IDs for</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>-state=</code></td>
-<td style="text-align: left;"><code>--state=</code></td>
-<td style="text-align: left;">an <a href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarUser-API-enumerated-types#node-instruction-state-type">instruction state</a> to limit results to</td>
+<td style="text-align: left;"><code>-c=</code></td>
+<td style="text-align: left;"><code>--component-id=</code></td>
+<td style="text-align: left;">a component ID to list the available service instances for</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>-min=</code></td>
-<td style="text-align: left;"><code>--min-date=</code></td>
-<td style="text-align: left;">a minimum date to limit results to, like <code>2020-10-30</code> or <code>2020-10-30T12:45</code></td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>-max=</code></td>
-<td style="text-align: left;"><code>--max-date=</code></td>
-<td style="text-align: left;">a maximum date (exclusive) to limit results to, in same form as <code>-min</code></td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>-tz=</code></td>
-<td style="text-align: left;"><code>--time-zone=</code></td>
-<td style="text-align: left;">a time zone ID to treat the min/max dates as, instead of the local time zone, like <code>Pacific/Auckland</code> or <code>-05:00</code> or <code>UTC</code></td>
+<td style="text-align: left;"><code>-mode=</code></td>
+<td style="text-align: left;"><code>--display-mode=</code></td>
+<td style="text-align: left;">the format to display the data as, one of <code>CSV</code>, <code>JSON</code>, or <code>PRETTY</code>; defaults to <code>PRETTY</code></td>
 </tr>
 </tbody>
 </table>
 </div>
 <h2 id="output">Output<a class="headerlink" href="#output" title="Permanent link">&para;</a></h2>
-<p>A listing of all matching instruction records.</p>
+<p>A listing of available service records.</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
-<p>Update a set of <code>Queued</code> instructions in a date range to <code>Declined</code>:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Show instruction for ID</label><label for="__tabbed_1_2">Output</label></div>
+<p>You can list all available services on a node like this:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Show available services</label><label for="__tabbed_1_2">Pretty output</label><label for="__tabbed_1_3">CSV output</label><label for="__tabbed_1_4">JSON output</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>instructions<span class="w"> </span>update-state<span class="w"> </span>--node-id<span class="w"> </span><span class="m">1011</span><span class="w"> </span>--state<span class="w"> </span>Declined<span class="w"> </span>Received
+<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>instructions<span class="w"> </span>list-services<span class="w"> </span>--node-id<span class="w"> </span><span class="m">101</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>Updated 6 instructions to Declined: 123,124,125,126,127,128
+<div class="highlight"><pre><span></span><code>+---------------------------------------------------------------------------+------------------------------------+
+| ID                                                                        | Title                              |
++---------------------------------------------------------------------------+------------------------------------+
+| net.solarnetwork.node.backup.DefaultBackupManager                         | Backup Manager                     |
++---------------------------------------------------------------------------+------------------------------------+
+| net.solarnetwork.node.backup.s3.S3BackupService                           | S3 Backup Service                  |
++---------------------------------------------------------------------------+------------------------------------+
+| net.solarnetwork.node.control.modbus.csv                                  | Modbus Control CSV Configurer      |
++---------------------------------------------------------------------------+------------------------------------+
+| net.solarnetwork.node.dao.jdbc.general.datum                              | Datum Persistence (JDBC)           |
++---------------------------------------------------------------------------+------------------------------------+
+| net.solarnetwork.node.dao.jdbc.h2.backup                                  | Database Backup                    |
++---------------------------------------------------------------------------+------------------------------------+
+| net.solarnetwork.node.dao.jdbc.locstate                                   | Local State Persistence (JDBC)     |
++---------------------------------------------------------------------------+------------------------------------+
+| net.solarnetwork.node.dao.jdbc.trim                                       | General Datum Jobs                 |
++---------------------------------------------------------------------------+------------------------------------+
+| net.solarnetwork.node.datum.modbus.csv                                    | Modbus Device CSV Configurer       |
++---------------------------------------------------------------------------+------------------------------------+
+| net.solarnetwork.node.datum.xform.solarin                                 | Global Datum Filter Chain          |
++---------------------------------------------------------------------------+------------------------------------+
+| net.solarnetwork.node.job.BackupJob                                       | Core Jobs                          |
++---------------------------------------------------------------------------+------------------------------------+
+| net.solarnetwork.node.location.ws                                         | Location Service (SolarNet)        |
++---------------------------------------------------------------------------+------------------------------------+
+| net.solarnetwork.node.metadata.json                                       | Node Metadata Service (SolarNet)   |
++---------------------------------------------------------------------------+------------------------------------+
+| net.solarnetwork.node.metadata.json.JsonDatumMetadataService              | Source Metadata Service (SolarNet) |
++---------------------------------------------------------------------------+------------------------------------+
+| net.solarnetwork.node.reactor.simple                                      | Reactor Jobs                       |
++---------------------------------------------------------------------------+------------------------------------+
+| net.solarnetwork.node.runtime.DefaultOperationalModesService              | Operational Modes Service          |
++---------------------------------------------------------------------------+------------------------------------+
+| net.solarnetwork.node.runtime.dq                                          | Datum Queue                        |
++---------------------------------------------------------------------------+------------------------------------+
+| net.solarnetwork.node.settings.ca.backup                                  | Settings Local Backup              |
++---------------------------------------------------------------------------+------------------------------------+
+| net.solarnetwork.node.system.cmdline.CmdlineSystemService                 | System Service                     |
++---------------------------------------------------------------------------+------------------------------------+
+| net.solarnetwork.node.system.ssh.RemoteSshService                         | Remote SSH Service                 |
++---------------------------------------------------------------------------+------------------------------------+
+| net.solarnetwork.node.upload.bulkjsonwebpost                              | SolarIn/HTTP Upload Service Jobs   |
++---------------------------------------------------------------------------+------------------------------------+
+| net.solarnetwork.node.upload.bulkjsonwebpost.BulkJsonWebPostUploadService | SolarIn/HTTP Upload Service        |
++---------------------------------------------------------------------------+------------------------------------+
+| net.solarnetwork.node.upload.mqtt                                         | SolarIn/MQTT Integration           |
++---------------------------------------------------------------------------+------------------------------------+
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>ID,Title
+net.solarnetwork.node.backup.DefaultBackupManager,Backup Manager
+net.solarnetwork.node.backup.s3.S3BackupService,S3 Backup Service
+net.solarnetwork.node.control.modbus.csv,Modbus Control CSV Configurer
+net.solarnetwork.node.dao.jdbc.general.datum,Datum Persistence (JDBC)
+net.solarnetwork.node.dao.jdbc.h2.backup,Database Backup
+net.solarnetwork.node.dao.jdbc.locstate,Local State Persistence (JDBC)
+net.solarnetwork.node.dao.jdbc.trim,General Datum Jobs
+net.solarnetwork.node.datum.modbus.csv,Modbus Device CSV Configurer
+net.solarnetwork.node.datum.xform.solarin,Global Datum Filter Chain
+net.solarnetwork.node.job.BackupJob,Core Jobs
+net.solarnetwork.node.location.ws,Location Service (SolarNet)
+net.solarnetwork.node.metadata.json,Node Metadata Service (SolarNet)
+net.solarnetwork.node.metadata.json.JsonDatumMetadataService,Source Metadata Service (SolarNet)
+net.solarnetwork.node.reactor.simple,Reactor Jobs
+net.solarnetwork.node.runtime.DefaultOperationalModesService,Operational Modes Service
+net.solarnetwork.node.runtime.dq,Datum Queue
+net.solarnetwork.node.settings.ca.backup,Settings Local Backup
+net.solarnetwork.node.system.cmdline.CmdlineSystemService,System Service
+net.solarnetwork.node.system.ssh.RemoteSshService,Remote SSH Service
+net.solarnetwork.node.upload.bulkjsonwebpost,SolarIn/HTTP Upload Service Jobs
+net.solarnetwork.node.upload.bulkjsonwebpost.BulkJsonWebPostUploadService,SolarIn/HTTP Upload Service
+net.solarnetwork.node.upload.mqtt,SolarIn/MQTT Integration
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.backup.DefaultBackupManager&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Backup Manager&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.backup.s3.S3BackupService&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;S3 Backup Service&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.control.modbus.csv&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Modbus Control CSV Configurer&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.dao.jdbc.general.datum&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Datum Persistence (JDBC)&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.dao.jdbc.h2.backup&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Database Backup&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.dao.jdbc.locstate&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Local State Persistence (JDBC)&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.dao.jdbc.trim&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;General Datum Jobs&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.datum.modbus.csv&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Modbus Device CSV Configurer&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.datum.xform.solarin&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Global Datum Filter Chain&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.job.BackupJob&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Core Jobs&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.location.ws&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Location Service (SolarNet)&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.metadata.json&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Node Metadata Service (SolarNet)&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.metadata.json.JsonDatumMetadataService&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Source Metadata Service (SolarNet)&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.reactor.simple&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Reactor Jobs&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.runtime.DefaultOperationalModesService&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Operational Modes Service&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.runtime.dq&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Datum Queue&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.settings.ca.backup&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Settings Local Backup&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.system.cmdline.CmdlineSystemService&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;System Service&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.system.ssh.RemoteSshService&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Remote SSH Service&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.upload.bulkjsonwebpost&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SolarIn/HTTP Upload Service Jobs&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.upload.bulkjsonwebpost.BulkJsonWebPostUploadService&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SolarIn/HTTP Upload Service&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.upload.mqtt&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SolarIn/MQTT Integration&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>You can show the avaialble component instances with the <code>--component-id</code> option:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:4"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><input id="__tabbed_2_4" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Show available component instances</label><label for="__tabbed_2_2">Pretty output</label><label for="__tabbed_2_3">CSV output</label><label for="__tabbed_2_4">JSON output</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>instructions<span class="w"> </span>list-services<span class="w"> </span>--node-id<span class="w"> </span><span class="m">101</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--component-id<span class="w"> </span>net.solarnetwork.node.datum.control
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>+-------------------------------------+----------+
+| ID                                  | Instance |
++-------------------------------------+----------+
+| net.solarnetwork.node.datum.control | 1        |
++-------------------------------------+----------+
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>ID,Title
+net.solarnetwork.node.datum.control,1
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.datum.control&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">]</span>
 </code></pre></div>
 </div>
 </div>

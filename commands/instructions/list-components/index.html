@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://solarnetwork.github.io/sn-cli/commands/instructions/update-state/">
+        <link rel="canonical" href="https://solarnetwork.github.io/sn-cli/commands/instructions/list-components/">
       
       
-        <link rel="prev" href="../toggle-op-mode/">
+        <link rel="prev" href="../">
       
       
-        <link rel="next" href="../controls/set-operating-state/">
+        <link rel="next" href="../list-controls/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>update-state - SolarNetwork CLI</title>
+        <title>list-components - SolarNetwork CLI</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#instructions-update-state" class="md-skip">
+        <a href="#instructions-list-components" class="md-skip">
           Skip to content
         </a>
       
@@ -111,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              update-state
+              list-components
             
           </span>
         </div>
@@ -728,10 +728,32 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../list-components/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    list-components
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -742,6 +764,62 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Options
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Output
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -866,32 +944,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    update-state
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../update-state/" class="md-nav__link">
         
   
   
@@ -902,62 +958,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      Usage
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#options" class="md-nav__link">
-    <span class="md-ellipsis">
-      Options
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#output" class="md-nav__link">
-    <span class="md-ellipsis">
-      Output
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      Examples
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1601,15 +1601,10 @@
 
 
 
-<h1 id="instructions-update-state">Instructions Update-State<a class="headerlink" href="#instructions-update-state" title="Permanent link">&para;</a></h1>
-<p>Change the state of instructions matching a search filter. Pass the desired <a href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarUser-API-enumerated-types#node-instruction-state-type">instruction
-state</a> as the first (and only) parameter.</p>
+<h1 id="instructions-list-components">Instructions List-Components<a class="headerlink" href="#instructions-list-components" title="Permanent link">&para;</a></h1>
+<p>List the available <a href="https://solarnetwork.github.io/solarnode-handbook/users/setup-app/settings/components/">components</a> on a node.</p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>s10k instructions update-state [-max=&lt;maxDate&gt;] [-min=&lt;minDate&gt;] [-tz=&lt;zone&gt;]
-                       [-id=instructionId[,instructionId...]]...
-                       [-node=nodeId[,nodeId...]]...
-                       [-state=state[,state...]]...
-                       &lt;desiredState&gt;
+<div class="highlight"><pre><span></span><code>s10k instructions list-components -node=&lt;nodeId&gt; [-mode=&lt;displayMode&gt;]
 </code></pre></div>
 <h2 id="options">Options<a class="headerlink" href="#options" title="Permanent link">&para;</a></h2>
 <div class="options-explicit-col-widths">
@@ -1623,50 +1618,223 @@ state</a> as the first (and only) parameter.</p>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><code>-id=</code></td>
-<td style="text-align: left;"><code>--instruction-id=</code></td>
-<td style="text-align: left;">the instruction ID(s) to show</td>
-</tr>
-<tr>
 <td style="text-align: left;"><code>-node=</code></td>
 <td style="text-align: left;"><code>--node-id=</code></td>
-<td style="text-align: left;">the node ID to show instructions for</td>
+<td style="text-align: left;">the node ID to list the control IDs for</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>-state=</code></td>
-<td style="text-align: left;"><code>--state=</code></td>
-<td style="text-align: left;">an <a href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarUser-API-enumerated-types#node-instruction-state-type">instruction state</a> to limit results to</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>-min=</code></td>
-<td style="text-align: left;"><code>--min-date=</code></td>
-<td style="text-align: left;">a minimum date to limit results to, like <code>2020-10-30</code> or <code>2020-10-30T12:45</code></td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>-max=</code></td>
-<td style="text-align: left;"><code>--max-date=</code></td>
-<td style="text-align: left;">a maximum date (exclusive) to limit results to, in same form as <code>-min</code></td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>-tz=</code></td>
-<td style="text-align: left;"><code>--time-zone=</code></td>
-<td style="text-align: left;">a time zone ID to treat the min/max dates as, instead of the local time zone, like <code>Pacific/Auckland</code> or <code>-05:00</code> or <code>UTC</code></td>
+<td style="text-align: left;"><code>-mode=</code></td>
+<td style="text-align: left;"><code>--display-mode=</code></td>
+<td style="text-align: left;">the format to display the data as, one of <code>CSV</code>, <code>JSON</code>, or <code>PRETTY</code>; defaults to <code>PRETTY</code></td>
 </tr>
 </tbody>
 </table>
 </div>
 <h2 id="output">Output<a class="headerlink" href="#output" title="Permanent link">&para;</a></h2>
-<p>A listing of all matching instruction records.</p>
+<p>A listing of available component records.</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
-<p>Update a set of <code>Queued</code> instructions in a date range to <code>Declined</code>:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Show instruction for ID</label><label for="__tabbed_1_2">Output</label></div>
+<p>You can list all available components on a node like this:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Show available components</label><label for="__tabbed_1_2">Pretty output</label><label for="__tabbed_1_3">CSV output</label><label for="__tabbed_1_4">JSON output</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>instructions<span class="w"> </span>update-state<span class="w"> </span>--node-id<span class="w"> </span><span class="m">1011</span><span class="w"> </span>--state<span class="w"> </span>Declined<span class="w"> </span>Received
+<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>instructions<span class="w"> </span>list-components<span class="w"> </span>--node-id<span class="w"> </span><span class="m">101</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>Updated 6 instructions to Declined: 123,124,125,126,127,128
+<div class="highlight"><pre><span></span><code>+------------------------------------------------------+--------------------------------------------+
+| ID                                                   | Title                                      |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.control.modbus                 | Modbus Control                             |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.control.opmode.opstatemgr      | Operational State Manager                  |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.control.opmode.switch          | Operational Mode Switch                    |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.datum.control                  | Control Datum Source                       |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.datum.filter.control.update    | Control Updater Datum Filter               |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.datum.filter.std.join          | Join Datum Filter                          |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.datum.filter.std.param         | Parameter Expression Datum Filter          |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.datum.filter.std.split         | Split Datum Filter                         |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.datum.filter.std.unchanged     | Unchanged Datum Filter                     |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.datum.filter.std.unchangedprop | Unchanged Property Filter                  |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.datum.filter.tariff            | Time-based Tariff Datum Filter             |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.datum.modbus                   | Modbus Device                              |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.datum.opmode.invoker           | Datum Data Source Operational Mode Invoker |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.datum.samplefilter.downsample  | Downsample Datum Filter                    |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.datum.samplefilter.expression  | Expression Datum Filter                    |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.datum.samplefilter.limiter     | Throttle Datum Filter                      |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.datum.samplefilter.opmode      | Operational Mode Datum Filter              |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.datum.samplefilter.prop        | Property Datum Filter                      |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.datum.samplefilter.simple      | Datum Property Global Filter               |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.datum.samplefilter.throttle    | Datum Throttle Global Filter               |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.datum.samplefilter.virtmeter   | Virtual Meter Datum Filter                 |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.datum.xform.user               | Datum Filter Chain                         |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.io.modbus                      | Modbus serial connection                   |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.io.modbus.tcp                  | Modbus TCP connection                      |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.metadata.user                  | User Metadata Service                      |
++------------------------------------------------------+--------------------------------------------+
+| net.solarnetwork.node.upload.flux                    | SolarFlux Upload Service                   |
++------------------------------------------------------+--------------------------------------------+
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>ID,Title
+net.solarnetwork.node.control.modbus,Modbus Control
+net.solarnetwork.node.control.opmode.opstatemgr,Operational State Manager
+net.solarnetwork.node.control.opmode.switch,Operational Mode Switch
+net.solarnetwork.node.datum.control,Control Datum Source
+net.solarnetwork.node.datum.filter.control.update,Control Updater Datum Filter
+net.solarnetwork.node.datum.filter.std.join,Join Datum Filter
+net.solarnetwork.node.datum.filter.std.param,Parameter Expression Datum Filter
+net.solarnetwork.node.datum.filter.std.split,Split Datum Filter
+net.solarnetwork.node.datum.filter.std.unchanged,Unchanged Datum Filter
+net.solarnetwork.node.datum.filter.std.unchangedprop,Unchanged Property Filter
+net.solarnetwork.node.datum.filter.tariff,Time-based Tariff Datum Filter
+net.solarnetwork.node.datum.modbus,Modbus Device
+net.solarnetwork.node.datum.opmode.invoker,Datum Data Source Operational Mode Invoker
+net.solarnetwork.node.datum.samplefilter.downsample,Downsample Datum Filter
+net.solarnetwork.node.datum.samplefilter.expression,Expression Datum Filter
+net.solarnetwork.node.datum.samplefilter.limiter,Throttle Datum Filter
+net.solarnetwork.node.datum.samplefilter.opmode,Operational Mode Datum Filter
+net.solarnetwork.node.datum.samplefilter.prop,Property Datum Filter
+net.solarnetwork.node.datum.samplefilter.simple,Datum Property Global Filter
+net.solarnetwork.node.datum.samplefilter.throttle,Datum Throttle Global Filter
+net.solarnetwork.node.datum.samplefilter.virtmeter,Virtual Meter Datum Filter
+net.solarnetwork.node.datum.xform.user,Datum Filter Chain
+net.solarnetwork.node.io.modbus,Modbus serial connection
+net.solarnetwork.node.io.modbus.tcp,Modbus TCP connection
+net.solarnetwork.node.metadata.user,User Metadata Service
+net.solarnetwork.node.upload.flux,SolarFlux Upload Service
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.control.modbus&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Modbus Control&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.control.opmode.opstatemgr&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Operational State Manager&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.control.opmode.switch&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Operational Mode Switch&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.datum.control&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Control Datum Source&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.datum.filter.control.update&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Control Updater Datum Filter&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.datum.filter.std.join&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Join Datum Filter&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.datum.filter.std.param&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Parameter Expression Datum Filter&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.datum.filter.std.split&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Split Datum Filter&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.datum.filter.std.unchanged&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Unchanged Datum Filter&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.datum.filter.std.unchangedprop&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Unchanged Property Filter&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.datum.filter.tariff&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Time-based Tariff Datum Filter&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.datum.modbus&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Modbus Device&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.datum.opmode.invoker&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Datum Data Source Operational Mode Invoker&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.datum.samplefilter.downsample&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Downsample Datum Filter&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.datum.samplefilter.expression&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Expression Datum Filter&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.datum.samplefilter.limiter&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Throttle Datum Filter&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.datum.samplefilter.opmode&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Operational Mode Datum Filter&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.datum.samplefilter.prop&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Property Datum Filter&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.datum.samplefilter.simple&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Datum Property Global Filter&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.datum.samplefilter.throttle&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Datum Throttle Global Filter&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.datum.samplefilter.virtmeter&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Virtual Meter Datum Filter&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.datum.xform.user&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Datum Filter Chain&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.io.modbus&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Modbus serial connection&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.io.modbus.tcp&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Modbus TCP connection&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.metadata.user&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;User Metadata Service&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;net.solarnetwork.node.upload.flux&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SolarFlux Upload Service&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">]</span>
 </code></pre></div>
 </div>
 </div>
