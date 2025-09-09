@@ -12,6 +12,7 @@ import s10k.tool.instructions.controls.cmd.ControlsCmd;
 @Command(name = "instructions", aliases = "instr", subcommands = {
 		ControlsCmd.class,
 		ListControlsCmd.class,
+		ListPackagesCmd.class,
 		ListInstructionsCmd.class,
 		ToggleOperationalModeCmd.class,
 		UpdateInstructionsState.class 
