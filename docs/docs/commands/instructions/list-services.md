@@ -3,12 +3,13 @@ title: list-services
 ---
 # Instructions List-Services
 
-List the available [services][services] on a node.
+List the available [services][services] or [component instances][components] on a node.
 
 ## Usage
 
 ```
-s10k instructions list-services -node=<nodeId> [-mode=<displayMode>]
+s10k instructions list-services -node=<nodeId> [-c=<componentId>]
+								[-mode=<displayMode>]
 ```
 
 ## Options
@@ -18,6 +19,7 @@ s10k instructions list-services -node=<nodeId> [-mode=<displayMode>]
 | Option | Long Version | Description |
 |:-------|:-------------|:------------|
 | `-node=` | `--node-id=` | the node ID to list the control IDs for |
+| `-c=` | `--component-id=` | a component ID to list the available service instances for |
 | `-mode=` | `--display-mode=` | the format to display the data as, one of `CSV`, `JSON`, or `PRETTY`; defaults to `PRETTY` |
 
 </div>
@@ -211,4 +213,42 @@ You can list all available services on a node like this:
 	]
 	```
 
+You can show the avaialble component instances with the `--component-id` option:
+
+=== "Show available component instances"
+
+	```sh
+	s10k instructions list-services --node-id 101 \
+	  --component-id net.solarnetwork.node.datum.control
+	```
+
+=== "Pretty output"
+
+	```
+	+-------------------------------------+----------+
+	| ID                                  | Instance |
+	+-------------------------------------+----------+
+	| net.solarnetwork.node.datum.control | 1        |
+	+-------------------------------------+----------+
+	```
+
+=== "CSV output"
+
+	```csv
+	ID,Title
+	net.solarnetwork.node.datum.control,1
+	```
+
+=== "JSON output"
+
+	```json
+	[
+		{
+			"id": "net.solarnetwork.node.datum.control",
+			"title": "1"
+		}
+	]
+	```
+
+[components]: https://solarnetwork.github.io/solarnode-handbook/users/setup-app/settings/components/
 [services]: https://solarnetwork.github.io/solarnode-handbook/users/setup-app/settings/services/

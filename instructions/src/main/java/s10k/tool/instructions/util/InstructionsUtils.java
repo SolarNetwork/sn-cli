@@ -278,7 +278,7 @@ public final class InstructionsUtils {
 	}
 
 	/**
-	 * Parse a compressed service result.
+	 * Parse a (possibly) compressed service result.
 	 * 
 	 * @param <T>          the result type
 	 * @param resultParams the instruction result parameter map with the
@@ -297,6 +297,10 @@ public final class InstructionsUtils {
 		try (InputStream in = new GZIPInputStream(
 				Base64.getDecoder().wrap(new ByteArrayInputStream(base64JsonResult.toString().getBytes(UTF_8))))) {
 			T[] infos = objectMapper.readValue(in, clazz);
+			return Arrays.asList(infos);
+		} catch (Exception e) {
+			// perhaps not Base64; parse as JSON
+			T[] infos = objectMapper.readValue(base64JsonResult.toString(), clazz);
 			return Arrays.asList(infos);
 		}
 	}
