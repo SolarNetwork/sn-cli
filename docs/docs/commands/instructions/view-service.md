@@ -7,6 +7,9 @@ List the settings for a [component][components] instance or [service][services] 
 Use the [list-components](./list-components.md) and [list-services](./list-services.md) commands
 to discover the available services.
 
+When generating `CSV` output, the `--full-csv` option will cause valid [Settings CSV][settings-csv]
+to be generated, which can be directly imported into SolarNode.
+
 Additionally the **specification** for a service can be shown, which is useful for applications
 dynamically discovering how to configure the settings.
 
@@ -18,7 +21,7 @@ dynamically discovering how to configure the settings.
 ## Usage
 
 ```
-s10k instructions view-service [-S] -node=<nodeId> -s=<serviceId>
+s10k instructions view-service [-FS] -node=<nodeId> -s=<serviceId>
                                 [-c=<componentId>] [-mode=<displayMode>]
 ```
 
@@ -28,6 +31,7 @@ s10k instructions view-service [-S] -node=<nodeId> -s=<serviceId>
 
 | Option | Long Version | Description |
 |:-------|:-------------|:------------|
+| `-F` | `--full-csv` | when `CSV` output is specified, output full [Settings CSV][settings-csv] suitable for importing into SolarNode |
 | `-S` | `--specification` | show setting specifications instead of the current setting values; `JSON` output is implied |
 | `-node=` | `--node-id=` | the node ID to list the control IDs for |
 | `-s=` | `--service-id=` | a service ID, or if `-c` provided the component instance ID, to view the settings for |
@@ -169,6 +173,37 @@ You can view the settings for a component instance with the `--component-id` opt
 	]
 	```
 
+When generating `CSV` output, the `--full-csv` option will cause valid [Settings CSV][settings-csv]
+to be generated, which can be directly imported into SolarNode:
+
+=== "General full Settings CSV"
+
+	```sh
+	s10k instructions view-service --node-id 101 \
+	  --component-id net.solarnetwork.node.datum.control \
+	  --service-id 1 \
+	  --display-mode CSV --full-csv
+	```
+
+=== "Output"
+
+	!!! note
+
+		Any settings that are set to a system default value will be commented out with a leading
+		`#` character. If you want to change that setting value, be sure to un-comment the line
+		by removing the leading `#`.
+
+	```csv
+	Key,Type,Value
+	#net.solarnetwork.node.datum.control.1,schedule,0 * * * * ?
+	#net.solarnetwork.node.datum.control.1,jobService.multiDatumDataSource.uid,
+	#net.solarnetwork.node.datum.control.1,jobService.multiDatumDataSource.groupUid,
+	#net.solarnetwork.node.datum.control.1,jobService.multiDatumDataSource.controlIdRegexValue,
+	#net.solarnetwork.node.datum.control.1,jobService.multiDatumDataSource.eventModeValue,Change
+	net.solarnetwork.node.datum.control.1,jobService.multiDatumDataSource.persistModeValue,PollAndEvent
+	net.solarnetwork.node.datum.control.FACTORY,1,1
+	```
+
 You can view the setting specification for a service with the `--specification` option,
 to understand more about how each setting is configured:
 
@@ -237,3 +272,4 @@ to understand more about how each setting is configured:
 [components]: https://solarnetwork.github.io/solarnode-handbook/users/setup-app/settings/components/
 [dev-specs]: https://solarnetwork.github.io/solarnode-handbook/developers/settings/specifier/
 [services]: https://solarnetwork.github.io/solarnode-handbook/users/setup-app/settings/services/
+[settings-csv]: https://solarnetwork.github.io/solarnode-handbook/users/settings/

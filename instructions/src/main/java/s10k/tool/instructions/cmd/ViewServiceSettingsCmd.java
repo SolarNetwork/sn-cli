@@ -4,6 +4,7 @@ import static s10k.tool.instructions.cmd.InstructionsCmd.TOPIC_SYSTEM_CONFIGURAT
 import static s10k.tool.instructions.util.InstructionsUtils.executeInstruction;
 import static s10k.tool.instructions.util.InstructionsUtils.parseCompressedResultList;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -52,6 +53,10 @@ public class ViewServiceSettingsCmd extends BaseSubCmd<InstructionsCmd> implemen
 			description = "the ID of the component to view the service instance settings for")
 	String componentId;
 	
+	@Option(names = { "-F", "--full-csv" },
+			description = "output CSV suitable for importing as SolarNode settings")
+	boolean fullCsv;
+
 	@Option(names = { "-S", "--specification" },
 			description = "get setting specifications instead of setting values")
 	boolean specification;
@@ -111,18 +116,61 @@ public class ViewServiceSettingsCmd extends BaseSubCmd<InstructionsCmd> implemen
 					List<ServiceSettingInfo> services = parseCompressedResultList(resultParams, objectMapper,
 							ServiceSettingInfo[].class);
 					// @formatter:off
-					List<?> data = (displayMode == ResultDisplayMode.JSON ? List.of(services) : 
-							services.stream().map(p -> new Object[] {
-									p.key(),
-									p.value(),
-									p.systemDefault()
-							}).toList()
+					Column[] cols = (displayMode == ResultDisplayMode.CSV && fullCsv
+							? new Column[] {
+									new Column().header("Key").dataAlign(HorizontalAlign.LEFT),
+									new Column().header("Type").dataAlign(HorizontalAlign.LEFT),
+									new Column().header("Value").dataAlign(HorizontalAlign.RIGHT)
+									}
+							: new Column[] {
+									new Column().header("Key").dataAlign(HorizontalAlign.LEFT),
+									new Column().header("Value").dataAlign(HorizontalAlign.LEFT),
+									new Column().header("Default").dataAlign(HorizontalAlign.RIGHT)
+									}
 						);
-					TableUtils.renderTableData(new Column[] {
-							new Column().header("Key").dataAlign(HorizontalAlign.LEFT),
-							new Column().header("Value").dataAlign(HorizontalAlign.LEFT),
-							new Column().header("Default").dataAlign(HorizontalAlign.RIGHT),
-					}, data, displayMode, objectMapper, System.out);
+					if (displayMode == ResultDisplayMode.JSON) {
+
+					}
+					List<?> data = switch(displayMode) {
+						case JSON -> List.of(services);
+						case CSV ->  {
+							if (fullCsv ) {
+								yield services.stream().map(p -> new Object[] {
+										viewComponentInstance
+											? "%s%s.%s".formatted(p.systemDefault() ? "#" : "", componentId, serviceId)
+											: serviceId,
+										p.key(),
+										p.value(),
+								}).toList(); 
+							} else {
+								yield services.stream().map(p -> new Object[] {
+										p.key(),
+										p.value(),
+										p.systemDefault()
+								}).toList();
+							}
+						}
+						default -> services.stream().map(p -> new Object[] {
+										p.key(),
+										p.value(),
+										p.systemDefault()
+								}).toList();
+					};
+					
+					if (viewComponentInstance && displayMode == ResultDisplayMode.CSV && fullCsv ) {
+						// add factory instance row
+						List<Object> newData = new ArrayList<Object>(data);
+						// @formatter:off
+						newData.add(new Object[] {
+								"%s.FACTORY".formatted(componentId),
+								serviceId,
+								serviceId
+						});
+						// @formatter:on
+						data = newData;
+					}
+
+					TableUtils.renderTableData(cols, data, displayMode, objectMapper, System.out);
 				}
 				// @formatter:on
 				return 0;
