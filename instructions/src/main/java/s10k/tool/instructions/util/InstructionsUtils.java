@@ -1,15 +1,27 @@
 package s10k.tool.instructions.util;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 import static s10k.tool.common.util.RestUtils.populateQueryParameters;
+import static s10k.tool.instructions.cmd.InstructionsCmd.PARAM_ERROR_CODE_RESULT;
+import static s10k.tool.instructions.cmd.InstructionsCmd.PARAM_MESSAGE_RESULT;
+import static s10k.tool.instructions.cmd.InstructionsCmd.PARAM_SERVICE_RESULT;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
 
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 
@@ -20,6 +32,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.solarnetwork.domain.BasicInstruction;
 import net.solarnetwork.domain.Instruction;
 import net.solarnetwork.domain.InstructionStatus;
+import picocli.CommandLine.Help.Ansi;
 import s10k.tool.instructions.domain.InstructionRequest;
 import s10k.tool.instructions.domain.InstructionsFilter;
 
@@ -36,6 +49,14 @@ public final class InstructionsUtils {
 
 	private InstructionsUtils() {
 		// not available
+	}
+
+	/**
+	 * A service info result item.
+	 */
+	@RegisterReflectionForBinding
+	public static record ServiceInfo(String id, String title) {
+		// nothing
 	}
 
 	/**
@@ -258,6 +279,55 @@ public final class InstructionsUtils {
 			return;
 		}
 		instr.addParameter(EXECUTION_DATE_PARAM, executionDate.toInstant().toString());
+	}
+
+	/**
+	 * Parse a (possibly) compressed service result.
+	 * 
+	 * @param <T>          the result type
+	 * @param resultParams the instruction result parameter map with the
+	 *                     {@code result} property
+	 * @param objectMapper the object mapper to use
+	 * @param clazz        the expected object type
+	 * @return the list of results
+	 * @throws IOException if any IO error occurs
+	 */
+	public static <T> List<T> parseCompressedResultList(Map<String, ?> resultParams, ObjectMapper objectMapper,
+			Class<T[]> clazz) throws IOException {
+		Object base64JsonResult = (resultParams != null ? resultParams.get(PARAM_SERVICE_RESULT) : null);
+		if (base64JsonResult == null) {
+			return List.of();
+		}
+		try (InputStream in = new GZIPInputStream(
+				Base64.getDecoder().wrap(new ByteArrayInputStream(base64JsonResult.toString().getBytes(UTF_8))))) {
+			T[] infos = objectMapper.readValue(in, clazz);
+			return Arrays.asList(infos);
+		} catch (Exception e) {
+			// perhaps not Base64; parse as JSON
+			T[] infos = objectMapper.readValue(base64JsonResult.toString(), clazz);
+			return Arrays.asList(infos);
+		}
+	}
+
+	/**
+	 * Print an instruction result error message.
+	 * 
+	 * @param msg    the core message
+	 * @param status the instruction status
+	 * @param out    the output stream to print to
+	 */
+	public static void printErrorMessageResult(String msg, InstructionStatus status, PrintStream out) {
+		StringBuilder buf = new StringBuilder("@|red Updating settings was refused.|@");
+		Map<String, ?> resultParams = status.getResultParameters();
+		if (resultParams != null) {
+			if (resultParams.containsKey(PARAM_MESSAGE_RESULT)) {
+				buf.append(" ").append(resultParams.get(PARAM_MESSAGE_RESULT));
+			}
+			if (resultParams.containsKey(PARAM_ERROR_CODE_RESULT)) {
+				buf.append(" (Error code ").append(resultParams.get(PARAM_ERROR_CODE_RESULT)).append(")");
+			}
+		}
+		out.println(Ansi.AUTO.string(buf.toString()));
 	}
 
 }

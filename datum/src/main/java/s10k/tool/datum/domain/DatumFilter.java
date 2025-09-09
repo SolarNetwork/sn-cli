@@ -91,6 +91,9 @@ public final class DatumFilter extends SimplePagination {
 				postBody.set("endDate", isMidnight(utcDate) ? utcDate.toLocalDate() : utcDate);
 			}
 		}
+		if (mostRecent) {
+			postBody.set("mostRecent", mostRecent);
+		}
 		if (aggregation != null) {
 			postBody.set("aggregation", aggregation.name());
 		}

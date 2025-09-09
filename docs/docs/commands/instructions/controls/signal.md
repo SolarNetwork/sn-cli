@@ -1,17 +1,18 @@
 ---
-title: set
+title: signal
 ---
-# Instructions Controls Set
+# Instructions Controls Signal
 
-Update the value of a SolarNode control. Pass the desired control value as the first (and only)
+Send a named "signal" to a SolarNode control. Pass the desired signal name as the first (and only)
 parameter.
 
 ## Usage
 
 ```
-s10k instructions controls set -node=<nodeId> -control=<controlId>
+s10k instructions controls signal -node=<nodeId>
+							-control=<controlId>
 							[-x=<expiration>] [-X=<executionDate>]
-							[-tz=<zone>] desiredValue
+							[-tz=<zone>] signal
 ```
 
 ## Options
@@ -28,23 +29,29 @@ s10k instructions controls set -node=<nodeId> -control=<controlId>
 
 </div>
 
+## Parameters
+
+Pass the signal name to send as the one and only parameter.
+
 ## Output
 
 A status message about the result of the instruction.
 
 ## Examples
 
-Update a switch-type boolean control to "on" (using `1` to represent "on"):
+Request a [camera][cam-signal] to take a snapshot:
 
-=== "Set boolean control to 'on'"
+=== "Set component operating state"
 
 	```sh
-	s10k instructions controls set --node-id 101 \
-	  --control-id switch/1 1
+	s10k instructions controls signal --node-id 101 \
+	  --control-id camera/1 snapshot
 	```
 
 === "Output"
 
 	```
-	Control [switch/1] set to [1]
+	Control [camera/1] received [snapshot] signal.
 	```
+
+[cam-signal]: https://github.com/SolarNetwork/solarnetwork-node/tree/develop/net.solarnetwork.node.control.camera.ffmpeg#instruction-support

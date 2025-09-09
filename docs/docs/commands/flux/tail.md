@@ -115,7 +115,7 @@ Monitor OCPP inbound message events for charger:
 	```sh
 	s10k flux tail --display-mode JSON \
 	  --topic user/123/event/ocpp/message/received \
-	  |jq --unbuffered 'select(.body.data.cp == "chgr123") | .body.data'
+	  |jq 'select(.body.data.cp == "chgr123") | .body.data'
 	```
 
 === "JSON Output"

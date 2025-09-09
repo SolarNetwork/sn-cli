@@ -1,6 +1,22 @@
 # SolarNetwork Command Line Tool
 
-This project contains a command line (CLI) tool for interacting with the SolarNetwork API.
+This project contains a command line (CLI) tool for interacting with the SolarNetwork API. The tool
+allows you to do things like:
+
+ * discover available nodes
+ * discover available datum streams
+ * list persisted datum
+ * update SolarNode control values
+ * toggle SolarNode operating modes
+ * manage SolarNode metadata
+ * stream datum from SolarFlux
+ * and more! See the [documentation](https://solarnetwork.github.io/sn-cli/) for more information.
+
+# Get
+
+Download the [latest release](https://github.com/SolarNetwork/sn-cli/releases), either as an
+executable binary for your operating system or an executable Java JAR you can run anywhere you have
+Java 21+ installed.
 
 # Logging
 
@@ -11,7 +27,7 @@ something like this:
 
 ```yaml
 logging:
-  file.name: "/var/tmp/sn-reading-aggregate-validator.log"
+  file.name: "/var/tmp/s10k.log"
   level:
     net.solarnetwork.http: "TRACE"
   threshold:
@@ -35,7 +51,7 @@ The application will be built to `build/libs/s10k-VERSION.jar`.
 
 ## Building the native binary
 
-To build the native binary, you must have the [GraalVM][graalvm] version 21+ or later installed.
+To build the native binary, you must have the [GraalVM][graalvm] version 24+ or later installed.
 Then add `GRAALVM_HOME` to your environment. For example in `sh`:
 
 ```sh
