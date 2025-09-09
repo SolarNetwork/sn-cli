@@ -31,7 +31,8 @@ s10k instructions settings update [-s=<serviceId>] [-c=<componentId>]
 Provide either key and value setting pairs (requires the `--service-id` and optionally `--component-id` options)
 or the path to a CSV file, prefixed by `@@`.
 
-Alternatively you can provide CSV via standard input.
+Alternatively you can provide CSV via standard input. When using CSV a setting can be removed by
+specifying an empty value for that setting key.
 
 ## Output
 
@@ -93,6 +94,25 @@ example updates settings on two different components:
 	net.solarnetwork.node.control.mock.Limit,controlTypeValue,f
 	net.solarnetwork.node.control.mock.Limit,initialControlValue,0
 	net.solarnetwork.node.control.mock.FACTORY,Limit,Limit
+	```
+
+
+ The following example **deletes** some settings, by providing empty values in a CSV resource:
+
+=== "Update multiple services from CSV"
+
+	```sh
+	s10k instructions settings update --node-id 101 @@my-settings.csv
+	```
+
+=== "CSV input"
+
+	```csv title="my-settings.csv"
+	key,type,value
+	net.solarnetwork.node.control.mock.Limit,controlId,
+	net.solarnetwork.node.control.mock.Limit,controlTypeValue,
+	net.solarnetwork.node.control.mock.Limit,initialControlValue,
+	net.solarnetwork.node.control.mock.FACTORY,Limit,
 	```
 
 

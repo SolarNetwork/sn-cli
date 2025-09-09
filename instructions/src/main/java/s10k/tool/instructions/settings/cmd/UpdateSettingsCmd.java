@@ -123,7 +123,7 @@ public class UpdateSettingsCmd extends BaseSubCmd<SettingsCmd> implements Callab
 			final RestClient restClient = restClient();
 			InstructionStatus status = executeInstruction(restClient, objectMapper, req);
 			if (status.getInstructionState() == InstructionState.Completed) {
-				System.out.print("Settings applied.");
+				System.out.println("Settings applied.");
 				return 0;
 			} else if (status.getInstructionState() == InstructionState.Declined) {
 				InstructionsUtils.printErrorMessageResult("@|red Updating settings was refused.|@", status, System.err);
