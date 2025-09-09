@@ -1,14 +1,22 @@
 package s10k.tool.instructions.util;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 import static s10k.tool.common.util.RestUtils.populateQueryParameters;
+import static s10k.tool.instructions.cmd.InstructionsCmd.PARAM_SERVICE_RESULT;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
@@ -258,6 +266,30 @@ public final class InstructionsUtils {
 			return;
 		}
 		instr.addParameter(EXECUTION_DATE_PARAM, executionDate.toInstant().toString());
+	}
+
+	/**
+	 * Parse a compressed service result.
+	 * 
+	 * @param <T>          the result type
+	 * @param resultParams the instruction result parameter map with the
+	 *                     {@code result} property
+	 * @param objectMapper the object mapper to use
+	 * @param clazz        the expected object type
+	 * @return the list of results
+	 * @throws IOException if any IO error occurs
+	 */
+	public static <T> List<T> parseCompressedResultList(Map<String, ?> resultParams, ObjectMapper objectMapper,
+			Class<T[]> clazz) throws IOException {
+		Object base64JsonResult = (resultParams != null ? resultParams.get(PARAM_SERVICE_RESULT) : null);
+		if (base64JsonResult == null) {
+			return List.of();
+		}
+		try (InputStream in = new GZIPInputStream(
+				Base64.getDecoder().wrap(new ByteArrayInputStream(base64JsonResult.toString().getBytes(UTF_8))))) {
+			T[] infos = objectMapper.readValue(in, clazz);
+			return Arrays.asList(infos);
+		}
 	}
 
 }

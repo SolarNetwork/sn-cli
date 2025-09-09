@@ -29,30 +29,17 @@ import s10k.tool.common.util.TableUtils;
 import s10k.tool.instructions.domain.InstructionRequest;
 
 /**
- * List installed packages.
+ * List available components.
  */
 @Component
-@Command(name = "list-packages", sortSynopsis = false)
-public class ListPackagesCmd extends BaseSubCmd<InstructionsCmd> implements Callable<Integer> {
-
-	/** The service name for listing packages. */
-	public static final String PACKAGES_SERVICE = "net.solarnetwork.node.packages";
+@Command(name = "list-components", sortSynopsis = false)
+public class ListComponents extends BaseSubCmd<InstructionsCmd> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-node", "--node-id" },
 			description = "a node ID to set the control value on",
 			required = true)
 	Long nodeId;
-
-	@Option(names = { "-filter", "--filter" },
-			description = "a regular expression filter to restrict the results to",
-			defaultValue = "^(sn-|solarnode)")
-	String filter = "^(sn-|solarnode)";
-	
-	@Option(names = { "-s", "--status" },
-			description = "the type of packages to list",
-			defaultValue = "Installed")
-	PackageStatus packageStatus = PackageStatus.Installed;
 
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data",
@@ -61,24 +48,10 @@ public class ListPackagesCmd extends BaseSubCmd<InstructionsCmd> implements Call
 	// @formatter:on
 
 	/**
-	 * Package status.
-	 */
-	public static enum PackageStatus {
-		/** Only installed packages. */
-		Installed,
-
-		/** Only available (not installed) packages. */
-		Available,
-
-		/** Installed and available packages. */
-		All,
-	}
-
-	/**
-	 * A package status result item.
+	 * A service info result item.
 	 */
 	@RegisterReflectionForBinding
-	public static record PackageInfo(String name, String version, boolean installed) {
+	public static record ServiceInfo(String id, String title) {
 
 	}
 
@@ -88,7 +61,7 @@ public class ListPackagesCmd extends BaseSubCmd<InstructionsCmd> implements Call
 	 * @param reqFactory   the HTTP request factory to use
 	 * @param objectMapper the mapper to use
 	 */
-	public ListPackagesCmd(ClientHttpRequestFactory reqFactory, ObjectMapper objectMapper) {
+	public ListComponents(ClientHttpRequestFactory reqFactory, ObjectMapper objectMapper) {
 		super(reqFactory, objectMapper);
 	}
 
@@ -97,15 +70,10 @@ public class ListPackagesCmd extends BaseSubCmd<InstructionsCmd> implements Call
 		final RestClient restClient = restClient();
 
 		final BasicInstruction instr = new BasicInstruction(null, TOPIC_SYSTEM_CONFIGURATION, null, null);
-		instr.addParameter(InstructionsCmd.PARAM_SERVICE, PACKAGES_SERVICE);
+		instr.addParameter(InstructionsCmd.PARAM_SERVICE, InstructionsCmd.SYSTEM_CONFIGURATION_SETTINGS_SERVICE);
 		instr.addParameter("compress", "true");
-
-		if (filter != null && !filter.isBlank()) {
-			instr.addParameter("filter", filter);
-		}
-		if (packageStatus != null) {
-			instr.addParameter("status", packageStatus.name());
-		}
+		instr.addParameter("uid", "*");
+		instr.addParameter("id", "*");
 
 		final InstructionRequest req = new InstructionRequest(nodeId, instr, null);
 
@@ -113,34 +81,32 @@ public class ListPackagesCmd extends BaseSubCmd<InstructionsCmd> implements Call
 			InstructionStatus status = executeInstruction(restClient, objectMapper, req);
 			Map<String, ?> resultParams = status.getResultParameters();
 			if (status.getInstructionState() == InstructionState.Completed) {
-				List<PackageInfo> packages = parseCompressedResultList(resultParams, objectMapper, PackageInfo[].class);
+				List<ServiceInfo> services = parseCompressedResultList(resultParams, objectMapper, ServiceInfo[].class);
 				// @formatter:off
-				List<?> data = (displayMode == ResultDisplayMode.JSON ? packages : 
-						packages.stream().map(p -> new Object[] {
-								p.name(),
-								p.version,
-								p.installed
+				List<?> data = (displayMode == ResultDisplayMode.JSON ? services : 
+						services.stream().map(p -> new Object[] {
+								p.id(),
+								p.title(),
 						}).toList()
 					);
 				TableUtils.renderTableData(new Column[] {
-						new Column().header("Name").dataAlign(HorizontalAlign.LEFT),
-						new Column().header("Version").dataAlign(HorizontalAlign.RIGHT),
-						new Column().header("Installed").dataAlign(HorizontalAlign.RIGHT)
+						new Column().header("ID").dataAlign(HorizontalAlign.LEFT),
+						new Column().header("Title").dataAlign(HorizontalAlign.LEFT),
 				}, data, displayMode, objectMapper, System.out);
 				// @formatter:on
 				return 0;
 			} else if (status.getInstructionState() == InstructionState.Declined) {
-				System.err.println(Ansi.AUTO.string("@|red Listing packages was refused.|@"));
+				System.err.println(Ansi.AUTO.string("@|red Listing components was refused.|@"));
 				return 2;
 			}
 			System.out.print(Ansi.AUTO
 					.string("""
-							@|yellow Listing packages instruction is %s.|@ You can manually check its status using instruction ID @|bold %d|@.
+							@|yellow Listing components instruction is %s.|@ You can manually check its status using instruction ID @|bold %d|@.
 							"""
 							.formatted(status.getInstructionState(), status.getInstructionId())));
 			return 3;
 		} catch (Exception e) {
-			System.err.println(Ansi.AUTO.string("Error listing packages: %s".formatted(e.getMessage())));
+			System.err.println(Ansi.AUTO.string("Error listing components: %s".formatted(e.getMessage())));
 		}
 		return 1;
 	}

@@ -11,6 +11,7 @@ import s10k.tool.instructions.controls.cmd.ControlsCmd;
 // @formatter:off
 @Command(name = "instructions", aliases = "instr", subcommands = {
 		ControlsCmd.class,
+		ListComponents.class,
 		ListControlsCmd.class,
 		ListPackagesCmd.class,
 		ListInstructionsCmd.class,
@@ -74,5 +75,8 @@ public class InstructionsCmd extends BaseSubCmd<ToolCmd> {
 	 * </p>
 	 */
 	public static final String PARAM_SERVICE_RESULT = "result";
+
+	/** The service name for settings operations. */
+	public static final String SYSTEM_CONFIGURATION_SETTINGS_SERVICE = "net.solarnetwork.node.settings";
 
 }
