@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -27,6 +26,7 @@ import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.TableUtils;
 import s10k.tool.instructions.domain.InstructionRequest;
+import s10k.tool.instructions.util.InstructionsUtils.ServiceInfo;
 
 /**
  * List available components.
@@ -37,7 +37,7 @@ public class ListComponents extends BaseSubCmd<InstructionsCmd> implements Calla
 
 	// @formatter:off
 	@Option(names = { "-node", "--node-id" },
-			description = "a node ID to set the control value on",
+			description = "a node ID to list the components for",
 			required = true)
 	Long nodeId;
 
@@ -46,14 +46,6 @@ public class ListComponents extends BaseSubCmd<InstructionsCmd> implements Calla
 			defaultValue = "PRETTY")
 	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
 	// @formatter:on
-
-	/**
-	 * A service info result item.
-	 */
-	@RegisterReflectionForBinding
-	public static record ServiceInfo(String id, String title) {
-
-	}
 
 	/**
 	 * Constructor.
@@ -99,7 +91,7 @@ public class ListComponents extends BaseSubCmd<InstructionsCmd> implements Calla
 				System.err.println(Ansi.AUTO.string("@|red Listing components was refused.|@"));
 				return 2;
 			}
-			System.out.print(Ansi.AUTO
+			System.err.print(Ansi.AUTO
 					.string("""
 							@|yellow Listing components instruction is %s.|@ You can manually check its status using instruction ID @|bold %d|@.
 							"""

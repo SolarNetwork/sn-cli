@@ -40,7 +40,7 @@ public class ListControlsCmd extends BaseSubCmd<InstructionsCmd> implements Call
 
 	// @formatter:off
 	@Option(names = { "-node", "--node-id" },
-			description = "a node ID to set the control value on",
+			description = "a node ID to list the controls for",
 			required = true)
 	Long nodeId;
 
@@ -94,7 +94,7 @@ public class ListControlsCmd extends BaseSubCmd<InstructionsCmd> implements Call
 				System.err.println(Ansi.AUTO.string("@|red Listing controls was refused.|@"));
 				return 2;
 			}
-			System.out.print(Ansi.AUTO
+			System.err.print(Ansi.AUTO
 					.string("""
 							@|yellow Listing controls instruction is %s.|@ You can manually check its status using instruction ID @|bold %d|@.
 							"""

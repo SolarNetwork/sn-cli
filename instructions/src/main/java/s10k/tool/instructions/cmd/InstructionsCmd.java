@@ -15,6 +15,7 @@ import s10k.tool.instructions.controls.cmd.ControlsCmd;
 		ListControlsCmd.class,
 		ListPackagesCmd.class,
 		ListInstructionsCmd.class,
+		ListServicesCmd.class,
 		ToggleOperationalModeCmd.class,
 		UpdateInstructionsState.class 
 })

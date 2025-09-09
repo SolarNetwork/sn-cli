@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 
@@ -44,6 +45,14 @@ public final class InstructionsUtils {
 
 	private InstructionsUtils() {
 		// not available
+	}
+
+	/**
+	 * A service info result item.
+	 */
+	@RegisterReflectionForBinding
+	public static record ServiceInfo(String id, String title) {
+		// nothing
 	}
 
 	/**
