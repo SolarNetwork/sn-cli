@@ -16,7 +16,8 @@ import s10k.tool.instructions.cmd.InstructionsCmd;
 // @formatter:off
 @Command(name = "controls", subcommands = {
 		SetControlParameterCmd.class,
-		SetOperatingStateCmd.class 
+		SetOperatingStateCmd.class,
+		SignalCmd.class,
 })
 // @formatter:on
 public class ControlsCmd extends BaseSubCmd<InstructionsCmd> {
