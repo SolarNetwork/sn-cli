@@ -26,7 +26,7 @@ s10k instructions list-controls -node=<nodeId> [-filter=<filter>]
 
 ## Output
 
-A listing of all matching instruction records.
+A listing of all matching control IDs.
 
 ## Examples
 
