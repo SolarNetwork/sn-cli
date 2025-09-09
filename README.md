@@ -51,7 +51,7 @@ The application will be built to `build/libs/s10k-VERSION.jar`.
 
 ## Building the native binary
 
-To build the native binary, you must have the [GraalVM][graalvm] version 21+ or later installed.
+To build the native binary, you must have the [GraalVM][graalvm] version 24+ or later installed.
 Then add `GRAALVM_HOME` to your environment. For example in `sh`:
 
 ```sh
