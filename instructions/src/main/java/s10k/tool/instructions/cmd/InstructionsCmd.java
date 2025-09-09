@@ -4,6 +4,7 @@ import picocli.CommandLine.Command;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.cmd.ToolCmd;
 import s10k.tool.instructions.controls.cmd.ControlsCmd;
+import s10k.tool.instructions.settings.cmd.SettingsCmd;
 
 /**
  * Instruction commands.
@@ -16,9 +17,9 @@ import s10k.tool.instructions.controls.cmd.ControlsCmd;
 		ListPackagesCmd.class,
 		ListInstructionsCmd.class,
 		ListServicesCmd.class,
+		SettingsCmd.class,
 		ToggleOperationalModeCmd.class,
 		UpdateInstructionsState.class,
-		ViewServiceCmd.class
 })
 // @formatter:on
 public class InstructionsCmd extends BaseSubCmd<ToolCmd> {
@@ -77,6 +78,14 @@ public class InstructionsCmd extends BaseSubCmd<ToolCmd> {
 	 * </p>
 	 */
 	public static final String PARAM_SERVICE_RESULT = "result";
+
+	/**
+	 * A standard result parameter key for a message (typically an error message).
+	 */
+	public static final String PARAM_MESSAGE_RESULT = "message";
+
+	/** A standard result parameter key for an error code. */
+	public static final String PARAM_ERROR_CODE_RESULT = "code";
 
 	/** The service name for settings operations. */
 	public static final String SYSTEM_CONFIGURATION_SETTINGS_SERVICE = "net.solarnetwork.node.settings";

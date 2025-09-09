@@ -1,4 +1,4 @@
-package s10k.tool.instructions.cmd;
+package s10k.tool.instructions.settings.cmd;
 
 import static s10k.tool.instructions.cmd.InstructionsCmd.TOPIC_SYSTEM_CONFIGURATION;
 import static s10k.tool.instructions.util.InstructionsUtils.executeInstruction;
@@ -29,21 +29,17 @@ import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.TableUtils;
+import s10k.tool.instructions.cmd.InstructionsCmd;
 import s10k.tool.instructions.domain.InstructionRequest;
 
 /**
- * List available (non-component) services.
+ * View settings.
  */
 @Component
-@Command(name = "view-service", sortSynopsis = false)
-public class ViewServiceCmd extends BaseSubCmd<InstructionsCmd> implements Callable<Integer> {
+@Command(name = "view", sortSynopsis = false)
+public class ViewSettingsCmd extends BaseSubCmd<SettingsCmd> implements Callable<Integer> {
 
 	// @formatter:off
-	@Option(names = { "-node", "--node-id" },
-			description = "a node ID to list the services for",
-			required = true)
-	Long nodeId;
-	
 	@Option(names = { "-s", "--service-id" },
 			description = "the ID of the service to view",
 			required = true)
@@ -73,7 +69,7 @@ public class ViewServiceCmd extends BaseSubCmd<InstructionsCmd> implements Calla
 	 * @param reqFactory   the HTTP request factory to use
 	 * @param objectMapper the mapper to use
 	 */
-	public ViewServiceCmd(ClientHttpRequestFactory reqFactory, ObjectMapper objectMapper) {
+	public ViewSettingsCmd(ClientHttpRequestFactory reqFactory, ObjectMapper objectMapper) {
 		super(reqFactory, objectMapper);
 	}
 
@@ -103,7 +99,7 @@ public class ViewServiceCmd extends BaseSubCmd<InstructionsCmd> implements Calla
 			instr.addParameter("spec", "true");
 		}
 
-		final InstructionRequest req = new InstructionRequest(nodeId, instr, null);
+		final InstructionRequest req = new InstructionRequest(parentCmd.nodeId, instr, null);
 
 		try {
 			InstructionStatus status = executeInstruction(restClient, objectMapper, req);

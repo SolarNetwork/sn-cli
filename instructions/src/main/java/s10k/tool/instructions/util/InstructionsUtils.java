@@ -3,11 +3,14 @@ package s10k.tool.instructions.util;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 import static s10k.tool.common.util.RestUtils.populateQueryParameters;
+import static s10k.tool.instructions.cmd.InstructionsCmd.PARAM_ERROR_CODE_RESULT;
+import static s10k.tool.instructions.cmd.InstructionsCmd.PARAM_MESSAGE_RESULT;
 import static s10k.tool.instructions.cmd.InstructionsCmd.PARAM_SERVICE_RESULT;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -29,6 +32,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.solarnetwork.domain.BasicInstruction;
 import net.solarnetwork.domain.Instruction;
 import net.solarnetwork.domain.InstructionStatus;
+import picocli.CommandLine.Help.Ansi;
 import s10k.tool.instructions.domain.InstructionRequest;
 import s10k.tool.instructions.domain.InstructionsFilter;
 
@@ -303,6 +307,27 @@ public final class InstructionsUtils {
 			T[] infos = objectMapper.readValue(base64JsonResult.toString(), clazz);
 			return Arrays.asList(infos);
 		}
+	}
+
+	/**
+	 * Print an instruction result error message.
+	 * 
+	 * @param msg    the core message
+	 * @param status the instruction status
+	 * @param out    the output stream to print to
+	 */
+	public static void printErrorMessageResult(String msg, InstructionStatus status, PrintStream out) {
+		StringBuilder buf = new StringBuilder("@|red Updating settings was refused.|@");
+		Map<String, ?> resultParams = status.getResultParameters();
+		if (resultParams != null) {
+			if (resultParams.containsKey(PARAM_MESSAGE_RESULT)) {
+				buf.append(" ").append(resultParams.get(PARAM_MESSAGE_RESULT));
+			}
+			if (resultParams.containsKey(PARAM_ERROR_CODE_RESULT)) {
+				buf.append(" (Error code ").append(resultParams.get(PARAM_ERROR_CODE_RESULT)).append(")");
+			}
+		}
+		out.println(Ansi.AUTO.string(buf.toString()));
 	}
 
 }

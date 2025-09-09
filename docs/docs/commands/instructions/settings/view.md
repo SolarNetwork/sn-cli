@@ -1,10 +1,10 @@
 ---
-title: view-service
+title: view
 ---
-# Instructions List-Services
+# Instructions Settings View
 
 List the settings for a [component][components] instance or [service][services] on a node.
-Use the [list-components](./list-components.md) and [list-services](./list-services.md) commands
+Use the [list-components](../list-components.md) and [list-services](../list-services.md) commands
 to discover the available services.
 
 When generating `CSV` output, the `--full-csv` option will cause valid [Settings CSV][settings-csv]
@@ -21,7 +21,7 @@ dynamically discovering how to configure the settings.
 ## Usage
 
 ```
-s10k instructions view-service [-FS] -node=<nodeId> -s=<serviceId>
+s10k instructions settings view [-FS] -node=<nodeId> -s=<serviceId>
                                 [-c=<componentId>] [-mode=<displayMode>]
 ```
 
@@ -51,7 +51,7 @@ You can view the settings for a service on a node like this:
 === "View service settings"
 
 	```sh
-	s10k instructions view-service --node-id 101 \
+	s10k instructions settings view --node-id 101 \
 	  --service-id net.solarnetwork.node.metadata.json.JsonDatumMetadataService
 	```
 
@@ -97,7 +97,7 @@ You can view the settings for a component instance with the `--component-id` opt
 === "View component instance settings"
 
 	```sh
-	s10k instructions view-service --node-id 101 \
+	s10k instructions settings view --node-id 101 \
 	  --component-id net.solarnetwork.node.datum.control \
 	  --service-id 1
 	```
@@ -179,7 +179,7 @@ to be generated, which can be directly imported into SolarNode:
 === "General full Settings CSV"
 
 	```sh
-	s10k instructions view-service --node-id 101 \
+	s10k instructions settings view --node-id 101 \
 	  --component-id net.solarnetwork.node.datum.control \
 	  --service-id 1 \
 	  --display-mode CSV --full-csv
@@ -210,7 +210,7 @@ to understand more about how each setting is configured:
 === "View component instance setting specification"
 
 	```sh
-	s10k instructions view-service --node-id 101 \
+	s10k instructions settings view --node-id 101 \
 	  --component-id net.solarnetwork.node.datum.control \
 	  --service-id 1 \
 	  --specification
