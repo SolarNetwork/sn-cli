@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.function.Supplier;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -25,6 +26,7 @@ import com.fasterxml.jackson.dataformat.cbor.CBORFactory;
 import net.solarnetwork.web.jakarta.security.AuthorizationCredentialsProvider;
 import net.solarnetwork.web.jakarta.support.AuthorizationV2RequestInterceptor;
 import net.solarnetwork.web.jakarta.support.LoggingHttpRequestInterceptor;
+import s10k.tool.common.domain.SnTokenCredentialsInfo;
 
 /**
  * Helper utilities for REST operations.
@@ -127,6 +129,39 @@ public final class RestUtils {
 		for (var e : params.entrySet()) {
 			uriBuilder.queryParam(e.getKey(), e.getValue());
 		}
+	}
+
+	/**
+	 * Get the active credentials information.
+	 * 
+	 * <p>
+	 * This can be used to discover the user ID associated with the active
+	 * credentials.
+	 * </p>
+	 * 
+	 * @param restClient the REST client
+	 * @return the credentials information
+	 */
+	public static SnTokenCredentialsInfo credentialsInfo(RestClient restClient) {
+		assert restClient != null;
+		// @formatter:off
+		JsonNode response = restClient.get()
+			.uri("/solarquery/api/v1/sec/whoami")
+			.accept(MediaType.APPLICATION_JSON)
+			.retrieve()
+			.body(JsonNode.class)
+			;		
+		// @formatter:on
+
+		checkSuccess(response);
+
+		JsonNode node = response.path("data");
+		String token = node.path("token").textValue();
+		String tokenType = node.path("tokenType").textValue();
+
+		JsonNode userIdNode = node.path("userId");
+		Long userId = (userIdNode.isNumber() ? userIdNode.longValue() : null);
+		return new SnTokenCredentialsInfo(token, tokenType, userId);
 	}
 
 }

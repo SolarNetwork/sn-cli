@@ -26,6 +26,7 @@ import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
+import org.springframework.web.client.RestClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -48,11 +49,12 @@ import net.solarnetwork.common.mqtt.netty.NettyMqttConnectionFactory;
 import net.solarnetwork.util.StatTracker;
 import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Command;
-import picocli.CommandLine.Help.Ansi;
 import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ProfileInfo;
 import s10k.tool.common.domain.ResultDisplayMode;
+import s10k.tool.common.domain.SnTokenCredentialsInfo;
+import s10k.tool.common.util.RestUtils;
 import s10k.tool.common.util.TableUtils;
 
 /**
@@ -94,14 +96,17 @@ public class TailFluxCmd extends BaseSubCmd<FluxCmd> implements Callable<Integer
 	String serverUri = "mqtts://fluxion.solarnetwork.net:8885";
 	
 	@Option(names = "--mqtt-version",
-			description = "the MQTT version to use")
-	MqttVersion mqttVersion;
+			description = "the MQTT version to use",
+			defaultValue = "Mqtt5")
+	MqttVersion mqttVersion = MqttVersion.Mqtt5;
 
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the results",
 			defaultValue = "PRETTY")
 	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
 	// @formatter:on
+
+	private String mqttTopicFilter;
 
 	/**
 	 * Grouping of node/source IDs, where both must be provided.
@@ -170,26 +175,6 @@ public class TailFluxCmd extends BaseSubCmd<FluxCmd> implements Callable<Integer
 
 	@Override
 	public Integer call() throws Exception {
-		// bug in SolarFlux MQTTv5 where topic rewriting of "node/X" to "user/U/node/X"
-		// prevents delivery of messages
-		if (mqttVersion != null && mqttVersion.compareTo(MqttVersion.Mqtt5) >= 0) {
-			StringBuilder buf = new StringBuilder();
-			if (topicOrNodeSource.isNodeAndSource()) {
-				mqttVersion = MqttVersion.Mqtt311;
-				buf.append("Switching to MQTT v3.1.1; use --topic option for MQTTv5 support.\nUse a topic style like ");
-			} else if (!topicOrNodeSource.isUserTopic()) {
-				mqttVersion = MqttVersion.Mqtt311;
-				buf.append("Switching to MQTT v3.1.1; for MQTTv5 support use a topic style like ");
-			}
-			if (!buf.isEmpty()) {
-				buf.append(
-						"@|bold user/|@@|bold,yellow USER_ID|@@|bold /node/|@@|bold,yellow NODE_ID|@@|bold /datum/0/|@@|bold,yellow SOURCE_ID|@.");
-				System.err.println(Ansi.AUTO.string(buf.toString()));
-			}
-		} else if (mqttVersion == null) {
-			mqttVersion = topicOrNodeSource.isUserTopic() ? MqttVersion.Mqtt5 : MqttVersion.Mqtt311;
-		}
-
 		final ProfileInfo profile = profileWithCredentials();
 
 		try (final var executor = Executors.newCachedThreadPool();
@@ -217,6 +202,11 @@ public class TailFluxCmd extends BaseSubCmd<FluxCmd> implements Callable<Integer
 			if (mqttVersion.compareTo(MqttVersion.Mqtt5) >= 0) {
 				mqttConfig.setProperty(new BasicMqttProperty<>(MqttPropertyType.TOPIC_ALIAS_MAXIMUM, 255));
 			}
+
+			// bug in SolarFlux MQTTv5 where topic rewriting of "node/X" to "user/U/node/X"
+			// prevents delivery of messages, so force topic to "user/X" if not already
+			mqttTopicFilter = mqttTopicFilter();
+
 			Future<?> startFuture = client.startup();
 			startFuture.get();
 			closeFuture.get();
@@ -230,11 +220,13 @@ public class TailFluxCmd extends BaseSubCmd<FluxCmd> implements Callable<Integer
 
 	private String mqttTopicFilter() {
 		assert topicOrNodeSource != null;
-		if (topicOrNodeSource.isNodeAndSource()) {
-			return "node/%s/datum/0/%s".formatted(topicOrNodeSource.nodeAndSource.nodeId,
-					topicOrNodeSource.nodeAndSource.sourceId);
+		if (topicOrNodeSource.isUserTopic()) {
+			return topicOrNodeSource.topicFilter;
 		}
-		return topicOrNodeSource.topicFilter;
+		RestClient restClient = restClient();
+		SnTokenCredentialsInfo tokenInfo = RestUtils.credentialsInfo(restClient);
+		return "user/%d/node/%s/datum/0/%s".formatted(tokenInfo.userId(), topicOrNodeSource.nodeAndSource.nodeId,
+				topicOrNodeSource.nodeAndSource.sourceId);
 	}
 
 	private final class MqttConnectionService extends BaseMqttConnectionService
@@ -343,7 +335,9 @@ public class TailFluxCmd extends BaseSubCmd<FluxCmd> implements Callable<Integer
 		@SuppressWarnings("FutureReturnValueIgnored")
 		@Override
 		public void onMqttServerConnectionEstablished(MqttConnection connection, boolean reconnected) {
-			connection.subscribe(mqttTopicFilter(), MqttQos.AtMostOnce, null);
+			if (mqttTopicFilter != null) {
+				connection.subscribe(mqttTopicFilter, MqttQos.AtMostOnce, null);
+			}
 		}
 
 	}
