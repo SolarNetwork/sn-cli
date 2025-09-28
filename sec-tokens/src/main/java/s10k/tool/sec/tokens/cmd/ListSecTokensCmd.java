@@ -28,6 +28,7 @@ import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.TableUtils;
 import s10k.tool.sec.tokens.domain.SecurityTokenFilter;
 import s10k.tool.sec.tokens.domain.SecurityTokenInfo;
+import s10k.tool.sec.tokens.domain.SecurityTokenType;
 
 /**
  * List security tokens.
@@ -49,7 +50,7 @@ public class ListSecTokensCmd extends BaseSubCmd<SecTokensCmd> implements Callab
 	
 	@Option(names = { "-t", "--type" },
 			description = "the type of token")
-	TokenType tokenType;
+	SecurityTokenType tokenType;
 	
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data",
@@ -71,17 +72,6 @@ public class ListSecTokensCmd extends BaseSubCmd<SecTokensCmd> implements Callab
 		boolean disabled;
     	// @formatter:on
 
-	}
-
-	/** Token type enumeration. */
-	enum TokenType {
-		/** Read node data. */
-		ReadNodeData,
-
-		/** User. */
-		User,
-
-		;
 	}
 
 	/**
@@ -112,19 +102,9 @@ public class ListSecTokensCmd extends BaseSubCmd<SecTokensCmd> implements Callab
 			}
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? infos
-					: infos.stream().map(info -> metadataRow(info, pretty)).toList());
-			// @formatter:off
-			TableUtils.renderTableData(new Column[] {
-					new Column().header("Token ID").dataAlign(LEFT),
-					new Column().header("Created").dataAlign(LEFT),
-					new Column().header("User ID").dataAlign(RIGHT),
-					new Column().header("Type").dataAlign(LEFT),
-					new Column().header("Status").dataAlign(LEFT),
-					new Column().header("Name").dataAlign(LEFT),
-					new Column().header("Description").dataAlign(LEFT),
-					new Column().header("Policy").dataAlign(LEFT),	
-				}, tableData, displayMode, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
-			// @formatter:on
+					: infos.stream().map(info -> tokenRow(info, pretty)).toList());
+			TableUtils.renderTableData(tokenColumns(), tableData, displayMode, objectMapper,
+					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error viewing security tokens: %s".formatted(e.getMessage()));
@@ -133,12 +113,32 @@ public class ListSecTokensCmd extends BaseSubCmd<SecTokensCmd> implements Callab
 	}
 
 	/**
-	 * Convert datum stream metadata into a tabular structure.
+	 * Get token info tabular structure columns.
+	 * 
+	 * @return the columns
+	 */
+	public static Column[] tokenColumns() {
+		// @formatter:off
+		return new Column[] {
+				new Column().header("Token ID").dataAlign(LEFT),
+				new Column().header("Created").dataAlign(LEFT),
+				new Column().header("User ID").dataAlign(RIGHT),
+				new Column().header("Type").dataAlign(LEFT),
+				new Column().header("Status").dataAlign(LEFT),
+				new Column().header("Name").dataAlign(LEFT),
+				new Column().header("Description").dataAlign(LEFT),
+				new Column().header("Policy").dataAlign(LEFT),	
+			};
+		// @formatter:on
+	}
+
+	/**
+	 * Convert token info into a tabular structure.
 	 * 
 	 * @param m the metadata to convert
 	 * @return the metadata data
 	 */
-	public static Object[] metadataRow(SecurityTokenInfo m, ObjectWriter policyWriter) {
+	public static Object[] tokenRow(SecurityTokenInfo m, ObjectWriter policyWriter) {
 		String policy = null;
 		try {
 			policy = m.policy() != null ? policyWriter.writeValueAsString(m.policy()) : null;

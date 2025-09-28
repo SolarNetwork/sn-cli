@@ -9,7 +9,8 @@ import s10k.tool.common.cmd.ToolCmd;
  */
 //@formatter:off
 @Command(name = "sec-tokens", aliases = "tokens", subcommands = {
-		ListSecTokensCmd.class
+		CreateSecTokenCmd.class,
+		ListSecTokensCmd.class,
 })
 //@formatter:on
 public class SecTokensCmd extends BaseSubCmd<ToolCmd> {
