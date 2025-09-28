@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.5.5'
+    id 'org.springframework.boot' version '3.5.6'
 	id 'org.graalvm.buildtools.native' version '0.11.0'
 }
 
@@ -38,6 +38,7 @@ dependencies {
 	implementation project(':sn-cli-flux')
 	implementation project(':sn-cli-instructions')
 	implementation project(':sn-cli-nodes')
+	implementation project(':sn-cli-sec-tokens')
 
 	implementation "info.picocli:picocli-spring-boot-starter:${picoCliVersion}"
 	implementation 'org.springframework.boot:spring-boot-starter'
