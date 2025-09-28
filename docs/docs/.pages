@@ -1,4 +1,5 @@
 nav:
+  - install.md
   - profiles.md
   - global-options.md
   - logging.md

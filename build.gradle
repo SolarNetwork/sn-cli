@@ -14,9 +14,10 @@ subprojects {
 	apply plugin: 'net.ltgt.errorprone'
 	
 	group = 's10k.tool'
-	version = '0.5.0'
+	version = '0.7.0'
 	
 	repositories {
+		mavenLocal()
 		mavenCentral()
 	}
 	
@@ -73,7 +74,7 @@ subprojects {
 		asciiTableVersion = '1.8.0'
 		commonsIoVersion = '2.20.0'
 		picoCliVersion = '4.7.7'
-		snCommonVersion = '4.4.1'
+		snCommonVersion = '4.6.0'
 		snCommonWebJakartaVersion = '2.1.1'
 		superCsvVersion = '2.4.0'
 		threetenExtraVersion = '1.8.0'
@@ -84,7 +85,7 @@ subprojects {
 		]
 	}
 	
-	ext['netty.version'] = '4.2.5.Final'	
+	ext['netty.version'] = '4.2.6.Final'	
 
 	dependencies {
 		testImplementation libraries.mockito,

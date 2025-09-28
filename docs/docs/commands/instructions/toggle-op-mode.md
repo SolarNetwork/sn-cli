@@ -28,7 +28,7 @@ s10k instructions toggle-op-mode [-d] -node=<nodeId>
 |:-------|:-------------|:------------|
 | `-d` | `--disable` | disable the given operating modes, intead of enabling |
 | `-node=` | `--node-id=` | the node ID with the control to update |
-|  | `----mode-expiration=` | when **enabling** operating modes, a date to automatically disable the mode at, like `2020-10-30` or `2020-10-30T12:45` |
+|  | `--mode-expiration=` | when **enabling** operating modes, a date to automatically disable the mode at, like `2020-10-30` or `2020-10-30T12:45` |
 | `-x=` | `--expiration=` | a date to automatically transition the instruction to `Declined` if not already completed, like `2020-10-30` or `2020-10-30T12:45` |
 | `-X=` | `--exec-at=` | a date to defer instruction execution until, like `2020-10-30` or `2020-10-30T12:45` |
 | `-tz=` | `--time-zone=` | a time zone ID to treat all date options as, instead of the local time zone, like `Pacific/Auckland` or `-05:00` or `UTC` |

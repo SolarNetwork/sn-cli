@@ -19,6 +19,7 @@ import s10k.tool.datum.cmd.DatumCmd;
 import s10k.tool.flux.cmd.FluxCmd;
 import s10k.tool.instructions.cmd.InstructionsCmd;
 import s10k.tool.nodes.cmd.NodesCmd;
+import s10k.tool.sec.tokens.cmd.SecTokensCmd;
 
 /**
  * SolarNetwork command-line tool.
@@ -53,6 +54,7 @@ public class SnCliTool implements CommandLineRunner, ExitCodeGenerator {
 				.addSubcommand(new FluxCmd())
 				.addSubcommand(new InstructionsCmd())
 				.addSubcommand(new NodesCmd())
+				.addSubcommand(new SecTokensCmd())
 				.execute(args);
 		// @formatter:on
 	}

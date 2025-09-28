@@ -12,31 +12,28 @@ dependencyManagement {
 	}
 }
 
-description = 'sn-cli: SolarFlux'
+description = 'sn-cli: Security Tokens'
 
 base {
-	archivesName = 'sn-cli-flux'
+	archivesName = 'sn-cli-sec-tokens'
 }
 
 dependencies {
 	implementation project(':sn-cli-common')
 	
-	// Core
-	implementation "info.picocli:picocli:${picoCliVersion}"
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'net.solarnetwork.common:net.solarnetwork.common.mqtt.netty:5.0.0'
+
+	implementation "info.picocli:picocli:${picoCliVersion}"
 
 	// JSON
 	implementation 'com.fasterxml.jackson.core:jackson-annotations'
 	implementation 'com.fasterxml.jackson.core:jackson-core'
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
-	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-cbor'
-
+	
 	// Utilities
 	implementation "com.github.freva:ascii-table:${asciiTableVersion}"
 	implementation "net.sf.supercsv:super-csv:${superCsvVersion}"
-	
-	// Annotations
+
 	annotationProcessor "info.picocli:picocli-codegen:${picoCliVersion}"
 	
 	// Testing
