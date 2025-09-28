@@ -47,7 +47,7 @@ public class CreateSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Calla
 			description = "a name to give the token")
 	String name;
 	
-	@Option(names = { "-d", "--description" },
+	@Option(names = { "-D", "--description" },
 			description = "a description to give the token")
 	String description;
 	
@@ -91,7 +91,7 @@ public class CreateSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Calla
 	}
 
 	/**
-	 * Execute an instruction given a request map.
+	 * Create a new security token.
 	 * 
 	 * @param restClient   the REST client
 	 * @param objectMapper the mapper to use
