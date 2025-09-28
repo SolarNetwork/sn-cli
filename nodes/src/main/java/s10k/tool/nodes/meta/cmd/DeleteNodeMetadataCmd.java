@@ -48,7 +48,7 @@ public class DeleteNodeMetadataCmd extends BaseSubCmd<NodeMetadataCmd> implement
 			System.out.println("Node metadata deleted.");
 			return 0;
 		} catch (Exception e) {
-			System.err.println("Error saving node metadata: %s".formatted(e.getMessage()));
+			System.err.println("Error deleting node metadata: %s".formatted(e.getMessage()));
 		}
 		return 1;
 	}
