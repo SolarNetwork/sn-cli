@@ -14,7 +14,7 @@ subprojects {
 	apply plugin: 'net.ltgt.errorprone'
 	
 	group = 's10k.tool'
-	version = '0.6.0-dev.0'
+	version = '0.7.0'
 	
 	repositories {
 		mavenLocal()
