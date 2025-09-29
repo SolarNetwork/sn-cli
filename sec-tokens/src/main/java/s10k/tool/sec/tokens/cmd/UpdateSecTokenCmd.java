@@ -28,6 +28,7 @@ import picocli.CommandLine.Mixin;
 import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
+import s10k.tool.common.util.OutputUtils;
 import s10k.tool.common.util.TableUtils;
 import s10k.tool.sec.tokens.domain.SecurityTokenFilter;
 import s10k.tool.sec.tokens.domain.SecurityTokenInfo;
@@ -76,11 +77,11 @@ public class UpdateSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Calla
 	static class ActiveOrDisabled {
 		// @formatter:off
 		@Option(names = {"-a", "--active"},
-				description = "match only active tokens")
+				description = "make the token active")
 		boolean active;
 		
 		@Option(names = {"-d", "--disabled"},
-				description = "match only disabled tokens")
+				description = "make the token disabled")
 		boolean disabled;
     	// @formatter:on
 
@@ -114,10 +115,15 @@ public class UpdateSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Calla
 							? (activeOrDisabled.active ? "Active" : activeOrDisabled.disabled ? "Disabled" : null)
 							: null),
 					policy, replacePolicy);
-			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? Collections.singletonList(result)
-					: Collections.singletonList(tokenRow(result, pretty)));
-			TableUtils.renderTableData(tokenColumns(), tableData, displayMode, objectMapper,
-					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			if (result == null) {
+				System.err.println("Token not available.");
+			} else if (displayMode == ResultDisplayMode.JSON) {
+				OutputUtils.writeJsonObject(objectMapper, result);
+			} else {
+				List<?> tableData = Collections.singletonList(tokenRow(result, pretty));
+				TableUtils.renderTableData(tokenColumns(), tableData, displayMode, objectMapper,
+						TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			}
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error creating security token: %s".formatted(e.getMessage()));
@@ -212,7 +218,7 @@ public class UpdateSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Calla
 		// fetch the token to get all updated properties
 		var filter = new SecurityTokenFilter(null, Set.of(identifier), null);
 		List<SecurityTokenInfo> results = listSecurityTokens(restClient, objectMapper, filter);
-		return results.getFirst();
+		return (results != null && !results.isEmpty() ? results.getFirst() : null);
 	}
 
 }

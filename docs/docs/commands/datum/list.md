@@ -46,7 +46,7 @@ s10k datum list [-S] [-stream=streamId[,streamId...]]...
 | `-min=` | `--min-date=` | a minimum date to limit results to, like `2020-10-30` or `2020-10-30T12:45` |
 | `-max=` | `--max-date=` | a maximum date (exclusive) to limit results to, in same form as `-min` |
 | `-local` | `--local-dates` | treat the min/max dates as "node local" dates, instead of UTC (or the local time zone when `-tz` used) |
-| `-tz=` | `--time-zone=` | a time zone ID to treat the min/max dates as, instead of the local time zone, like `Pacific/Auckland` or `-05:00` or `UTC` |
+| `-tz=` | `--time-zone=` | a time zone ID to treat the min/max dates as instead of the local time zone, like `Pacific/Auckland` or `-05:00` or `UTC` |
 | `-recent` | `--most-recent` | show just the most recently available data, within min/max dates if specified |
 | `-agg=` | `--aggregation=` | the [aggregation type][aggregation] to return |
 | `-pagg=` | `--partial-aggregation=` | a [partial aggregation][partial-aggregation] level to use |
