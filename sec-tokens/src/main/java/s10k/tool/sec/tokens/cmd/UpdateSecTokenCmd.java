@@ -77,11 +77,11 @@ public class UpdateSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Calla
 	static class ActiveOrDisabled {
 		// @formatter:off
 		@Option(names = {"-a", "--active"},
-				description = "match only active tokens")
+				description = "make the token active")
 		boolean active;
 		
 		@Option(names = {"-d", "--disabled"},
-				description = "match only disabled tokens")
+				description = "make the token disabled")
 		boolean disabled;
     	// @formatter:on
 
@@ -115,7 +115,9 @@ public class UpdateSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Calla
 							? (activeOrDisabled.active ? "Active" : activeOrDisabled.disabled ? "Disabled" : null)
 							: null),
 					policy, replacePolicy);
-			if (displayMode == ResultDisplayMode.JSON) {
+			if (result == null) {
+				System.err.println("Token not available.");
+			} else if (displayMode == ResultDisplayMode.JSON) {
 				OutputUtils.writeJsonObject(objectMapper, result);
 			} else {
 				List<?> tableData = Collections.singletonList(tokenRow(result, pretty));
@@ -216,7 +218,7 @@ public class UpdateSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Calla
 		// fetch the token to get all updated properties
 		var filter = new SecurityTokenFilter(null, Set.of(identifier), null);
 		List<SecurityTokenInfo> results = listSecurityTokens(restClient, objectMapper, filter);
-		return results.getFirst();
+		return (results != null && !results.isEmpty() ? results.getFirst() : null);
 	}
 
 }
