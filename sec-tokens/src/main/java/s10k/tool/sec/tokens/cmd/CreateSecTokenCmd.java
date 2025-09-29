@@ -26,6 +26,7 @@ import picocli.CommandLine.Mixin;
 import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
+import s10k.tool.common.util.OutputUtils;
 import s10k.tool.common.util.TableUtils;
 import s10k.tool.sec.tokens.domain.SecurityTokenInfo;
 import s10k.tool.sec.tokens.domain.SecurityTokenType;
@@ -79,10 +80,13 @@ public class CreateSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Calla
 		try {
 			SecurityTokenInfo result = createSecurityToken(restClient, objectMapper, tokenType, name, description,
 					policy);
-			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? Collections.singletonList(result)
-					: Collections.singletonList(tokenRow(result, pretty)));
-			TableUtils.renderTableData(tokenColumns(), tableData, displayMode, objectMapper,
-					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			if (displayMode == ResultDisplayMode.JSON) {
+				OutputUtils.writeJsonObject(objectMapper, result);
+			} else {
+				List<?> tableData = Collections.singletonList(tokenRow(result, pretty));
+				TableUtils.renderTableData(tokenColumns(), tableData, displayMode, objectMapper,
+						TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			}
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error creating security token: %s".formatted(e.getMessage()));
