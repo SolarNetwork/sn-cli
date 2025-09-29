@@ -32,6 +32,7 @@ dependencies {
 
 	// Utilities
 	implementation "com.github.freva:ascii-table:${asciiTableVersion}"
+	implementation "me.tongfei:progressbar:${progressbarVersion}"
 	implementation "net.sf.supercsv:super-csv:${superCsvVersion}"
 	
 	// Annotations

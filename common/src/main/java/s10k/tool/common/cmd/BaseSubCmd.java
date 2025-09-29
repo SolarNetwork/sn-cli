@@ -78,6 +78,15 @@ public abstract class BaseSubCmd<P extends ProfileProvider> implements ProfilePr
 	}
 
 	/**
+	 * Set the parent command.
+	 * 
+	 * @param parentCmd the parent command to set
+	 */
+	public void setParentCmd(P parentCmd) {
+		this.parentCmd = parentCmd;
+	}
+
+	/**
 	 * Get the verbosity level.
 	 * 
 	 * @return the verbosity level, with {@code 0} for "not verbose"

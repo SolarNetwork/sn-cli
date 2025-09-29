@@ -11,6 +11,7 @@
 test.jpage
 bin/
 build/
+local/
 target/
 junit*.properties
 README-local*

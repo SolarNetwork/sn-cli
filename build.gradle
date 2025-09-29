@@ -74,6 +74,7 @@ subprojects {
 		asciiTableVersion = '1.8.0'
 		commonsIoVersion = '2.20.0'
 		picoCliVersion = '4.7.7'
+		progressbarVersion = '0.10.1'
 		snCommonVersion = '4.6.0'
 		snCommonWebJakartaVersion = '2.1.1'
 		superCsvVersion = '2.4.0'
