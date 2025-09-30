@@ -60,7 +60,7 @@ import s10k.tool.nodes.domain.NodeCertificateInfo;
 		Generate a report on node certificates, including their expiration dates.
 		
 		Passwords for each certificate must be provided as a table of node ID and
-		password pairs. The data can be provided as CSV or JSON. For CSV is must include
+		password pairs. The data can be provided as CSV or JSON. For CSV it must include
 		a header row and column names that match the --node-id-col and --password-col
 		options, or exactly two columns one of which has node ID number values and the
 		other assumed to be passwords.
