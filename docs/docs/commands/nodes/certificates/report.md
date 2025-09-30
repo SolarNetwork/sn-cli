@@ -186,3 +186,9 @@ A listing of all available node certificates.
 	  }
 	]
 	```
+
+The table file can also be referenced using `@@` followed by the file path:
+
+```sh title="CSV as a file argument"
+s10k nodes certificates report @@certificate-passwords.csv
+```
