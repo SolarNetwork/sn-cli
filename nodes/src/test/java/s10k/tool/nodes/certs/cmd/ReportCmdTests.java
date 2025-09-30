@@ -166,4 +166,90 @@ public class ReportCmdTests {
 		// @formatter:on
 	}
 
+	@Test
+	public void jsonArrayByName() throws Exception {
+		// GIVEN
+		cmd.certPasswordTable = new ClassPathResource("cert-passwords-01.json", getClass()).getContentAsString(UTF_8);
+		cmd.nodeIdColumnName = "nodeId";
+		cmd.passwordColumnName = "certificatePassword";
+
+		// list node IDs
+		final URI listNodesUri = listNodesUri();
+		MockClientHttpRequest listNodesReq = new MockClientHttpRequest(HttpMethod.GET, listNodesUri);
+		MockClientHttpResponse listNodesRes = new MockClientHttpResponse(
+				listNodesResponse(TEST_NODE_IDS).getBytes(UTF_8), HttpStatus.OK);
+		listNodesRes.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+		listNodesReq.setResponse(listNodesRes);
+		given(reqFactory.createRequest(listNodesUri, HttpMethod.GET)).willReturn(listNodesReq);
+
+		long serialNum = CommonTestUtils.randomLong();
+		ZonedDateTime from = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS);
+		ZonedDateTime to = from.plusDays(7);
+		ZonedDateTime renew = to.minusDays(1);
+
+		for (Long nodeId : TEST_NODE_IDS) {
+			URI uri = viewCertUri(nodeId);
+			MockClientHttpRequest req = new MockClientHttpRequest(HttpMethod.POST, uri);
+			MockClientHttpResponse res = new MockClientHttpResponse(
+					viewCertResponse(nodeId, serialNum++, from.toInstant(), to.toInstant(), renew.toInstant())
+							.getBytes(UTF_8),
+					HttpStatus.OK);
+			res.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+			req.setResponse(res);
+			given(reqFactory.createRequest(uri, HttpMethod.POST)).willReturn(req);
+		}
+
+		// WHEN
+		Integer res = cmd.call();
+
+		// @formatter:off
+		and.then(res)
+			.as("Result OK")
+			.isEqualTo(0)
+			;
+		// @formatter:on
+	}
+
+	@Test
+	public void jsonArrayNestedArray() throws Exception {
+		// GIVEN
+		cmd.certPasswordTable = new ClassPathResource("cert-passwords-02.json", getClass()).getContentAsString(UTF_8);
+
+		// list node IDs
+		final URI listNodesUri = listNodesUri();
+		MockClientHttpRequest listNodesReq = new MockClientHttpRequest(HttpMethod.GET, listNodesUri);
+		MockClientHttpResponse listNodesRes = new MockClientHttpResponse(
+				listNodesResponse(TEST_NODE_IDS).getBytes(UTF_8), HttpStatus.OK);
+		listNodesRes.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+		listNodesReq.setResponse(listNodesRes);
+		given(reqFactory.createRequest(listNodesUri, HttpMethod.GET)).willReturn(listNodesReq);
+
+		long serialNum = CommonTestUtils.randomLong();
+		ZonedDateTime from = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS);
+		ZonedDateTime to = from.plusDays(7);
+		ZonedDateTime renew = to.minusDays(1);
+
+		for (Long nodeId : TEST_NODE_IDS) {
+			URI uri = viewCertUri(nodeId);
+			MockClientHttpRequest req = new MockClientHttpRequest(HttpMethod.POST, uri);
+			MockClientHttpResponse res = new MockClientHttpResponse(
+					viewCertResponse(nodeId, serialNum++, from.toInstant(), to.toInstant(), renew.toInstant())
+							.getBytes(UTF_8),
+					HttpStatus.OK);
+			res.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+			req.setResponse(res);
+			given(reqFactory.createRequest(uri, HttpMethod.POST)).willReturn(req);
+		}
+
+		// WHEN
+		Integer res = cmd.call();
+
+		// @formatter:off
+		and.then(res)
+			.as("Result OK")
+			.isEqualTo(0)
+			;
+		// @formatter:on
+	}
+
 }
