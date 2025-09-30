@@ -9,6 +9,7 @@ import s10k.tool.common.cmd.ToolCmd;
  */
 //@formatter:off
 @Command(name = "certificates", aliases = "certs", subcommands = {
+		DownloadCmd.class,
 		ReportCmd.class,
 })
 //@formatter:on
