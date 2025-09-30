@@ -5,9 +5,12 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
+
 /**
  * Information on a node certificate.
  */
+@RegisterReflectionForBinding
 public record NodeCertificateInfo(Long userId, Long nodeId, Long serialNumber, String issuerDN, String subjectDN,
 		Instant validFromDate, Instant validUntilDate, Instant renewAfterDate, String status) {
 
