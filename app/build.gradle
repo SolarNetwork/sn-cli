@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.6'
-	id 'org.graalvm.buildtools.native' version '0.11.0'
+	id 'org.graalvm.buildtools.native' version '0.11.1'
 }
 
 apply plugin: 'java'
@@ -17,6 +17,11 @@ base {
 }
 
 graalvmNative {
+	binaries.all {
+		buildArgs.add('--enable-native-access=ALL-UNNAMED')
+		buildArgs.add('-O3')
+	}
+	
 	binaries.main {
 		imageName = 's10k'
 	}
