@@ -89,7 +89,7 @@ public class ReportCmd extends BaseSubCmd<CertificatesCmd> implements Callable<I
 	String nodeIdRegex;
 	
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
+			description = "how to display the result",
 			defaultValue = "PRETTY")
 	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
 
