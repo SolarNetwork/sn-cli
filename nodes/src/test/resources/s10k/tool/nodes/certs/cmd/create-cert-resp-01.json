@@ -1,0 +1,36 @@
+{
+  "success": true,
+  "data": {
+    "created": "2019-02-27 18:34:16.550Z",
+    "requiresAuthorization": false,
+    "user": {
+      "id": 147,
+      "created": "2016-07-21 02:42:52.673Z",
+      "name": "Matt",
+      "email": "example@localhost",
+      "enabled": true,
+      "locationId": 11536819
+    },
+    "node": {
+      "id": 177,
+      "created": "2015-05-06 02:22:09.866Z",
+      "locationId": 11532079,
+      "timeZone": "Pacific/Auckland"
+    },
+    "certificate": {
+      "created": "2019-02-27 18:34:16.913Z",
+      "status": "v",
+      "requestId": "1a61eeda1a4ae637234adc0774904766",
+      "nodeId": 177,
+      "userId": 147
+    },
+    "userId": 147,
+    "nodeLocation": {
+      "id": 11532079,
+      "created": "2013-05-29 22:41:15.266Z",
+      "country": "NZ",
+      "timeZoneId": "Pacific/Auckland"
+    },
+    "idAndName": "177"
+  }
+}

@@ -14,7 +14,7 @@ subprojects {
 	apply plugin: 'net.ltgt.errorprone'
 	
 	group = 's10k.tool'
-	version = '0.7.0'
+	version = '0.8.0'
 	
 	repositories {
 		mavenLocal()
@@ -73,7 +73,9 @@ subprojects {
 	ext {
 		asciiTableVersion = '1.8.0'
 		commonsIoVersion = '2.20.0'
+		jlineVersion = '3.30.6'
 		picoCliVersion = '4.7.7'
+		progressbarVersion = '0.10.1'
 		snCommonVersion = '4.6.0'
 		snCommonWebJakartaVersion = '2.1.1'
 		superCsvVersion = '2.4.0'
@@ -101,8 +103,9 @@ subprojects {
 		all*.exclude group: 'commons-logging'
 		all {	
 			resolutionStrategy {
-				// the following are to pick up security fixes in transitive dependencies
+				// the following are to pick up bug/security fixes in transitive dependencies
 				force "commons-io:commons-io:${commonsIoVersion}"
+				force "org.jline:jline-terminal:${jlineVersion}"
 			}
 			resolutionStrategy.eachDependency { DependencyResolveDetails details ->
 				if (details.requested.group == 'software.amazon.awssdk') {

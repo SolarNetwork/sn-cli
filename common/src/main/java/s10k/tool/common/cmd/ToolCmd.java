@@ -45,6 +45,29 @@ public class ToolCmd implements ProfileProvider {
 	private ProfileInfo profile;
 
 	/**
+	 * Constructor.
+	 */
+	public ToolCmd() {
+		super();
+	}
+
+	/**
+	 * Construct with credentials.
+	 * 
+	 * <p>
+	 * This is designed for testing.
+	 * </p>
+	 * 
+	 * @param token  the token
+	 * @param secret the secret
+	 */
+	public ToolCmd(String token, String secret) {
+		super();
+		tokenId = token;
+		tokenSecret = secret.toCharArray();
+	}
+
+	/**
 	 * Globally initialize.
 	 * 
 	 * <p>
@@ -55,7 +78,7 @@ public class ToolCmd implements ProfileProvider {
 	 * variables.
 	 * </p>
 	 * 
-	 * @param parseResult the parse result
+	 * @param parseResult the parse result, or {@code null} for testing
 	 * @return the exit code result
 	 */
 	public int globalInit(ParseResult parseResult) {
@@ -73,7 +96,10 @@ public class ToolCmd implements ProfileProvider {
 				}
 			}
 		}
-		return new CommandLine.RunLast().execute(parseResult);
+		if (parseResult != null) {
+			return new CommandLine.RunLast().execute(parseResult);
+		}
+		return 0;
 	}
 
 	/**
