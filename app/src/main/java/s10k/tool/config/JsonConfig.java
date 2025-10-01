@@ -15,8 +15,10 @@ import s10k.tool.common.codec.GeneralDatumMetadataSerializer;
 import s10k.tool.instructions.codec.InstructionRequestSerializer;
 import s10k.tool.instructions.domain.InstructionRequest;
 import s10k.tool.nodes.codec.NodeCertificateInfoDeserializer;
+import s10k.tool.nodes.codec.NodeInfoDeserializer;
 import s10k.tool.nodes.codec.NodeMetadataDeserializer;
 import s10k.tool.nodes.domain.NodeCertificateInfo;
+import s10k.tool.nodes.domain.NodeInfo;
 import s10k.tool.nodes.domain.NodeMetadata;
 
 /**
@@ -32,8 +34,9 @@ public class JsonConfig {
 
 		SimpleModule toolModule = new SimpleModule("s10k");
 		toolModule.addDeserializer(GeneralDatumMetadata.class, GeneralDatumMetadataDeserializer.INSTANCE);
-		toolModule.addDeserializer(NodeMetadata.class, NodeMetadataDeserializer.INSTANCE);
 		toolModule.addDeserializer(NodeCertificateInfo.class, NodeCertificateInfoDeserializer.INSTANCE);
+		toolModule.addDeserializer(NodeInfo.class, NodeInfoDeserializer.INSTANCE);
+		toolModule.addDeserializer(NodeMetadata.class, NodeMetadataDeserializer.INSTANCE);
 
 		toolModule.addSerializer(GeneralDatumMetadata.class, GeneralDatumMetadataSerializer.INSTANCE);
 		toolModule.addSerializer(InstructionRequest.class, InstructionRequestSerializer.INSTANCE);

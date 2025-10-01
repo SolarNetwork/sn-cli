@@ -2,7 +2,6 @@ package s10k.tool.nodes.certs.cmd;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,9 +23,10 @@ import me.tongfei.progressbar.ProgressBar;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
+import s10k.tool.common.util.OutputUtils;
 
 /**
- * 
+ * Download node certificates.
  */
 @Component
 @Command(name = "download", sortSynopsis = false, header = {
@@ -69,16 +69,8 @@ public class DownloadCmd extends BaseSubCmd<CertificatesCmd> implements Callable
 			System.err.println("No node IDs provided.");
 			return 1;
 		}
-		final Path outputDir = Paths.get(outputDirectory != null ? outputDirectory : ".");
-		if (!Files.exists(outputDir)) {
-			try {
-				Files.createDirectories(outputDir);
-			} catch (Exception e) {
-				System.err.println("Error creating output directory [%s]: %s".formatted(outputDir, e.getMessage()));
-				return 1;
-			}
-		} else if (!Files.isDirectory(outputDir)) {
-			System.err.println("[%s] is not a directory.".formatted(outputDir));
+		final Path outputDir = OutputUtils.ensureDirectory(outputDirectory);
+		if (outputDir == null) {
 			return 1;
 		}
 
@@ -134,7 +126,7 @@ public class DownloadCmd extends BaseSubCmd<CertificatesCmd> implements Callable
 		// @formatter:off
 		return restClient.get()
 			.uri("/solaruser/api/v1/sec/nodes/cert/" +nodeId)
-			.accept(MediaType.APPLICATION_OCTET_STREAM)
+			.accept(MediaType.APPLICATION_OCTET_STREAM, MediaType.APPLICATION_JSON)
 			.exchange((req, res) -> {
 				if (res.getStatusCode().is2xxSuccessful()) {
 					ContentDisposition cd = res.getHeaders().getContentDisposition();

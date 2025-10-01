@@ -2,11 +2,8 @@ package s10k.tool.nodes.cmd;
 
 import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
-import static net.solarnetwork.codec.JsonUtils.parseDateAttribute;
-import static net.solarnetwork.util.DateUtils.ISO_DATE_TIME_ALT_UTC;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SequencedCollection;
@@ -22,8 +19,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.freva.asciitable.Column;
 
-import net.solarnetwork.domain.BasicIdentityLocation;
-import net.solarnetwork.domain.Location;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
@@ -64,16 +59,9 @@ public class ListNodesCmd extends BaseSubCmd<NodesCmd> implements Callable<Integ
 				System.err.println("No nodes available.");
 				return 1;
 			}
-			List<Object[]> tableData = nodes.stream().map(ListNodesCmd::tableDataRow).toList();
-			// @formatter:off
-			TableUtils.renderTableData(new Column[] {
-					new Column().header("Node ID").dataAlign(RIGHT),
-					new Column().header("Created").dataAlign(LEFT),
-					new Column().header("Public").dataAlign(LEFT),
-					new Column().header("Country").dataAlign(LEFT),
-					new Column().header("Time Zone").dataAlign(LEFT),
-				}, tableData, displayMode, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
-			// @formatter:on
+			List<Object[]> tableData = nodes.stream().map(ListNodesCmd::nodeInfoRow).toList();
+			TableUtils.renderTableData(nodeInfoColumns(), tableData, displayMode, objectMapper,
+					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error listing node metadata: %s".formatted(e.getMessage()));
@@ -82,12 +70,29 @@ public class ListNodesCmd extends BaseSubCmd<NodesCmd> implements Callable<Integ
 	}
 
 	/**
+	 * Get node info tabular structure columns.
+	 * 
+	 * @return the columns
+	 */
+	public static Column[] nodeInfoColumns() {
+		// @formatter:off
+		return new Column[] {
+				new Column().header("Node ID").dataAlign(RIGHT),
+				new Column().header("Created").dataAlign(LEFT),
+				new Column().header("Public").dataAlign(LEFT),
+				new Column().header("Country").dataAlign(LEFT),
+				new Column().header("Time Zone").dataAlign(LEFT),
+			};
+		// @formatter:on
+	}
+
+	/**
 	 * Convert node info into a tabular structure.
 	 * 
 	 * @param info the node info to convert
 	 * @return the tabular data
 	 */
-	public static Object[] tableDataRow(NodeInfo info) {
+	public static Object[] nodeInfoRow(NodeInfo info) {
 		// @formatter:off
 		return new Object[] {
 				info.nodeId(),
@@ -123,38 +128,14 @@ public class ListNodesCmd extends BaseSubCmd<NodesCmd> implements Callable<Integ
 
 		SequencedCollection<NodeInfo> result = new ArrayList<>(response.path("data").path("results").size());
 		for (JsonNode node : response.path("data").path("results")) {
-			JsonNode tmp = node.path("id");
-			if (!tmp.isNumber()) {
-				continue;
-			}
-
-			Long nodeId = tmp.longValue();
-			Instant created = parseDateAttribute(node, "created", ISO_DATE_TIME_ALT_UTC, Instant::from);
-			boolean reqAuth = node.path("requiresAuthorization").asBoolean();
-
-			Long ownerId = null;
-			tmp = node.path("userId");
-			if (tmp.isNumber()) {
-				ownerId = tmp.longValue();
-			}
-
-			String ownerEmail = null;
-			tmp = node.path("user").path("email");
-			if (tmp.isTextual()) {
-				ownerEmail = tmp.textValue();
-			}
-
-			Location loc = null;
-			tmp = node.path("nodeLocation");
-			if (tmp.isObject()) {
-				try {
-					loc = objectMapper.treeToValue(tmp, BasicIdentityLocation.class);
-				} catch (JsonProcessingException e) {
-					// ignore and continue
+			try {
+				NodeInfo info = objectMapper.treeToValue(node, NodeInfo.class);
+				if (info != null) {
+					result.add(info);
 				}
+			} catch (JsonProcessingException e) {
+				// ignore and move on
 			}
-
-			result.add(new NodeInfo(nodeId, created, reqAuth, ownerId, ownerEmail, loc));
 		}
 		return result;
 	}
