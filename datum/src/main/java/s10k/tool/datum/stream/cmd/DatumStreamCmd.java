@@ -14,6 +14,7 @@ import s10k.tool.datum.cmd.DatumCmd;
 @Command(name = "stream", subcommands = { 
 		ListDatumStreamMetadataCmd.class,
 		ListDatumStreamMetadataIdsCmd.class,
+		RenameDatumStreamMetadataCmd.class,
 		ViewDatumStreamMetadataCmd.class
 })
 // @formatter:on
