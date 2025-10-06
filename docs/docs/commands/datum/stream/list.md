@@ -8,9 +8,9 @@ Show [datum stream metadata][datum-stream-meta] matching a search filter.
 ## Usage
 
 ```
-s10k datum stream list [-mode=<displayMode>]
-                       [-source=sourceId[,sourceId...]]...
+s10k datum stream list [-U] [-mode=<displayMode>]
 					   [-stream=streamId[,streamId...]]...
+                       [-source=sourceId[,sourceId...]]...
 					   [
 						 -node=nodeId[,nodeId...][-node=nodeId[,nodeId...]]... |
 						 -loc=locId[,locId...] [-loc=locId[,locId...]]...
@@ -31,17 +31,22 @@ s10k datum stream list [-mode=<displayMode>]
 | `-node=` | `--node-id=` | the node ID(s) to show stream metadata for (exclusive to `-loc`) |
 | `-loc=` | `--location-id=` | the location ID(s) to show stream metadata for (exclusive to `-node`) |
 | `-source=` | `--source=` | the source ID(s) to show stream metadata for |
-| `-mode=` | `--display-mode=` | the format to display the data as, one of `CSV`, `JSON`, or `PRETTY`; defaults to `PRETTY` |
 | `-prop=` | `--property=` | restrict results to metadata that has this property (instantaneous, accumulating, **or** status); multiple properties combine with logical "or" |
 | `-i=` | `--instantaneous=` | restrict results to metadata that has this **instantaneous** property; multiple properties combine with logical "and" |
 | `-a=` | `--accumulating=` | restrict results to metadata that has this **accumulating** property; multiple properties combine with logical "and" |
 | `-s=` | `--status=` | restrict results to metadata that has this **status** property; multiple properties combine with logical "and" |
+| `-U` | `--unsorted-names` | do not sort the property names (preserve physical order); not used with `JSON` display mode |
+| `-mode=` | `--display-mode=` | the format to display the data as, one of `CSV`, `JSON`, or `PRETTY`; defaults to `PRETTY` |
 
 </div>
 
 ## Output
 
 A listing of all matching stream metadata.
+
+For `CSV` and `PRETTY` output the property names are sorted by default. Include the `--unsorted-names` option to
+preserve the physical order of the property names. That can be useful when renaming the properties with the
+[datum stream rename](./rename.md) command.
 
 ## Examples
 

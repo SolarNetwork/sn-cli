@@ -88,6 +88,10 @@ public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 			paramLabel = "propName")
 	String[] statusPropertyNames;
 	
+	@Option(names = { "-U", "--unsorted-names" },
+			description = "do not sort the property names")
+	boolean unsortedPropertyNames;
+	
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data",
 			defaultValue = "PRETTY")
@@ -159,19 +163,9 @@ public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 			}
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? metas
-					: metas.stream().map(ListDatumStreamMetadataCmd::metadataRow).toList());
-			// @formatter:off
-			TableUtils.renderTableData(new Column[] {
-					new Column().header("Stream ID").dataAlign(LEFT),
-					new Column().header("Kind").dataAlign(LEFT),
-					new Column().header("ID").dataAlign(RIGHT),
-					new Column().header("Source ID").dataAlign(LEFT),
-					new Column().header("Time Zone").dataAlign(LEFT),
-					new Column().header("Instantaneous").dataAlign(LEFT),
-					new Column().header("Accumulating").dataAlign(LEFT),
-					new Column().header("Status").dataAlign(LEFT),	
-				}, tableData, displayMode, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
-			// @formatter:on
+					: metas.stream().map(m -> metadataRow(m, unsortedPropertyNames)).toList());
+			TableUtils.renderTableData(metadataColumns(), tableData, displayMode, objectMapper,
+					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error viewing datum stream metadata: %s".formatted(e.getMessage()));
@@ -180,12 +174,33 @@ public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 	}
 
 	/**
+	 * Get certificate info tabular structure columns.
+	 * 
+	 * @return the columns
+	 */
+	public static Column[] metadataColumns() {
+		// @formatter:off
+		return new Column[] {
+				new Column().header("Stream ID").dataAlign(LEFT),
+				new Column().header("Kind").dataAlign(LEFT),
+				new Column().header("ID").dataAlign(RIGHT),
+				new Column().header("Source ID").dataAlign(LEFT),
+				new Column().header("Time Zone").dataAlign(LEFT),
+				new Column().header("Instantaneous").dataAlign(LEFT),
+				new Column().header("Accumulating").dataAlign(LEFT),
+				new Column().header("Status").dataAlign(LEFT),	
+			};
+		// @formatter:on
+	}
+
+	/**
 	 * Convert datum stream metadata into a tabular structure.
 	 * 
-	 * @param m the metadata to convert
+	 * @param m             the metadata to convert
+	 * @param unsortedNames {@code true} to <b>not</b> sort the property names
 	 * @return the metadata data
 	 */
-	public static Object[] metadataRow(ObjectDatumStreamMetadata m) {
+	public static Object[] metadataRow(ObjectDatumStreamMetadata m, boolean unsortedNames) {
 		// @formatter:off
 		return new Object[] {
 				m.getStreamId(),
@@ -193,11 +208,15 @@ public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 				m.getObjectId(),
 				m.getSourceId(),
 				m.getTimeZoneId(),
-				arrayToCommaDelimitedString(naturallyCaseInsensitiveSorted(m.propertyNamesForType(Instantaneous))),
-				arrayToCommaDelimitedString(naturallyCaseInsensitiveSorted(m.propertyNamesForType(Accumulating))),
-				arrayToCommaDelimitedString(naturallyCaseInsensitiveSorted(m.propertyNamesForType(Status)))
+				propertyNamesString(m.propertyNamesForType(Instantaneous), unsortedNames),
+				propertyNamesString(m.propertyNamesForType(Accumulating), unsortedNames),
+				propertyNamesString(m.propertyNamesForType(Status), unsortedNames)
 			};
 		// @formatter:on
+	}
+
+	private static final String propertyNamesString(String[] names, boolean unsorted) {
+		return arrayToCommaDelimitedString(unsorted ? names : naturallyCaseInsensitiveSorted(names));
 	}
 
 	/**
