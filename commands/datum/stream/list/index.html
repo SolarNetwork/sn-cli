@@ -14,7 +14,7 @@
         <link rel="prev" href="../ids/">
       
       
-        <link rel="next" href="../view/">
+        <link rel="next" href="../rename/">
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
@@ -477,6 +477,8 @@
       
         
       
+        
+      
     
     
     
@@ -627,6 +629,29 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rename/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    rename
+    
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1369,6 +1394,8 @@
       
         
       
+        
+      
     
     
     
@@ -1445,6 +1472,29 @@
   
   <span class="md-ellipsis">
     download
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../nodes/certificates/renew/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    renew
     
   </span>
   
@@ -1929,9 +1979,9 @@
 <h1 id="datum-stream-list">Datum Stream List<a class="headerlink" href="#datum-stream-list" title="Permanent link">&para;</a></h1>
 <p>Show <a href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarNet-API-global-objects#datum-stream-metadata">datum stream metadata</a> matching a search filter.</p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>s10k datum stream list [-mode=&lt;displayMode&gt;]
-                       [-source=sourceId[,sourceId...]]...
+<div class="highlight"><pre><span></span><code>s10k datum stream list [-U] [-mode=&lt;displayMode&gt;]
                        [-stream=streamId[,streamId...]]...
+                       [-source=sourceId[,sourceId...]]...
                        [
                          -node=nodeId[,nodeId...][-node=nodeId[,nodeId...]]... |
                          -loc=locId[,locId...] [-loc=locId[,locId...]]...
@@ -1973,11 +2023,6 @@
 <td style="text-align: left;">the source ID(s) to show stream metadata for</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>-mode=</code></td>
-<td style="text-align: left;"><code>--display-mode=</code></td>
-<td style="text-align: left;">the format to display the data as, one of <code>CSV</code>, <code>JSON</code>, or <code>PRETTY</code>; defaults to <code>PRETTY</code></td>
-</tr>
-<tr>
 <td style="text-align: left;"><code>-prop=</code></td>
 <td style="text-align: left;"><code>--property=</code></td>
 <td style="text-align: left;">restrict results to metadata that has this property (instantaneous, accumulating, <strong>or</strong> status); multiple properties combine with logical "or"</td>
@@ -1997,11 +2042,24 @@
 <td style="text-align: left;"><code>--status=</code></td>
 <td style="text-align: left;">restrict results to metadata that has this <strong>status</strong> property; multiple properties combine with logical "and"</td>
 </tr>
+<tr>
+<td style="text-align: left;"><code>-U</code></td>
+<td style="text-align: left;"><code>--unsorted-names</code></td>
+<td style="text-align: left;">do not sort the property names (preserve physical order); not used with <code>JSON</code> display mode</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>-mode=</code></td>
+<td style="text-align: left;"><code>--display-mode=</code></td>
+<td style="text-align: left;">the format to display the data as, one of <code>CSV</code>, <code>JSON</code>, or <code>PRETTY</code>; defaults to <code>PRETTY</code></td>
+</tr>
 </tbody>
 </table>
 </div>
 <h2 id="output">Output<a class="headerlink" href="#output" title="Permanent link">&para;</a></h2>
 <p>A listing of all matching stream metadata.</p>
+<p>For <code>CSV</code> and <code>PRETTY</code> output the property names are sorted by default. Include the <code>--unsorted-names</code> option to
+preserve the physical order of the property names. That can be useful when renaming the properties with the
+<a href="../rename/">datum stream rename</a> command.</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <p>View all datum stream metadata for a node:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Show datum stream metadata for node</label><label for="__tabbed_1_2">Pretty Output</label><label for="__tabbed_1_3">CSV Output</label><label for="__tabbed_1_4">JSON Output</label></div>
