@@ -1981,6 +1981,7 @@
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>s10k nodes meta list [-filter=&lt;filter&gt;] -node=nodeId[,nodeId...]
                      [-node=nodeId[,nodeId...]]...
+                     [-mode=&lt;displayMode&gt;]
 </code></pre></div>
 <h2 id="options">Options<a class="headerlink" href="#options" title="Permanent link">&para;</a></h2>
 <div class="options-explicit-col-widths">
@@ -2003,6 +2004,11 @@
 <td style="text-align: left;"><code>--filter=</code></td>
 <td style="text-align: left;">an optional <a href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarNet-API-global-objects#metadata-filter">metadata filter</a> to limit results to</td>
 </tr>
+<tr>
+<td style="text-align: left;"><code>-mode=</code></td>
+<td style="text-align: left;"><code>--display-mode=</code></td>
+<td style="text-align: left;">the format to display the data as, one of <code>CSV</code>, <code>JSON</code>, or <code>PRETTY</code>; defaults to <code>PRETTY</code></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -2017,16 +2023,15 @@
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>Property Value
-------------------------------------
-nodeId   101
-created  2025-08-28T23:22:00.237150Z
-updated  2025-08-29T05:20:06.322691Z
-{
-    &quot;m&quot; : {
-        &quot;limit&quot; : 123,
-    }
-}
+<div class="highlight"><pre><span></span><code>+---------+-----------------------------+-------------------+
+| Node ID | Updated                     | Metadata          |
++---------+-----------------------------+-------------------+
+|     101 | 2025-08-30T03:36:06.277076Z | {                 |
+|         |                             |   &quot;m&quot; : {         |
+|         |                             |     &quot;limit&quot; : 123 |
+|         |                             |   }               |
+|         |                             | }                 |
++---------+-----------------------------+-------------------+
 </code></pre></div>
 </div>
 </div>
@@ -2044,27 +2049,21 @@ s10k<span class="w"> </span>nodes<span class="w"> </span>meta<span class="w"> </
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>Property Value
-------------------------------------
-nodeId   101
-created  2025-08-28T23:22:00.237150Z
-updated  2025-08-29T05:20:06.322691Z
-{
-    &quot;m&quot; : {
-        &quot;limit&quot; : 123
-    }
-}
-
-Property Value
-------------------------------------
-nodeId   102
-created  2025-08-28T12:22:00.433152Z
-updated  2025-08-28T18:11:21.627128Z
-{
-    &quot;m&quot; : {
-        &quot;limit&quot; : 234
-    }
-}
+<div class="highlight"><pre><span></span><code>+---------+-----------------------------+-------------------+
+| Node ID | Updated                     | Metadata          |
++---------+-----------------------------+-------------------+
+|     101 | 2025-08-30T03:36:06.277076Z | {                 |
+|         |                             |   &quot;m&quot; : {         |
+|         |                             |     &quot;limit&quot; : 123 |
+|         |                             |   }               |
+|         |                             | }                 |
++---------+-----------------------------+-------------------+
+|     102 | 2025-08-30T03:36:06.277076Z | {                 |
+|         |                             |   &quot;m&quot; : {         |
+|         |                             |     &quot;limit&quot; : 234 |
+|         |                             |   }               |
+|         |                             | }                 |
++---------+-----------------------------+-------------------+
 </code></pre></div>
 </div>
 </div>
@@ -2078,16 +2077,15 @@ to show only the metadata where <code>limit</code> is greater than <code>200</co
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>Property Value
-------------------------------------
-nodeId   102
-created  2025-08-28T12:22:00.433152Z
-updated  2025-08-28T18:11:21.627128Z
-{
-    &quot;m&quot; : {
-        &quot;limit&quot; : 234
-    }
-}
+<div class="highlight"><pre><span></span><code>+---------+-----------------------------+-------------------+
+| Node ID | Updated                     | Metadata          |
++---------+-----------------------------+-------------------+
+|     102 | 2025-08-30T03:36:06.277076Z | {                 |
+|         |                             |   &quot;m&quot; : {         |
+|         |                             |     &quot;limit&quot; : 234 |
+|         |                             |   }               |
+|         |                             | }                 |
++---------+-----------------------------+-------------------+
 </code></pre></div>
 </div>
 </div>
