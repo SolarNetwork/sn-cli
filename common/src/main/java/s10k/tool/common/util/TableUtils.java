@@ -258,6 +258,8 @@ public class TableUtils {
 			AsciiTableBuilder atb = AsciiTable.builder();
 			if (columns != null) {
 				atb.data(columns, tableData);
+			} else {
+				atb.data(tableData);
 			}
 			atb.writeTo(out);
 			out.write(System.lineSeparator().getBytes(Charset.defaultCharset()));

@@ -1,14 +1,14 @@
 package s10k.tool.nodes.meta.cmd;
 
+import static com.github.freva.asciitable.HorizontalAlign.LEFT;
+import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
 import static net.solarnetwork.util.StringUtils.commaDelimitedStringFromCollection;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
-import static s10k.tool.common.util.TableUtils.basicTable;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 
 import org.springframework.http.MediaType;
@@ -20,11 +20,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.github.freva.asciitable.Column;
 
-import net.solarnetwork.domain.datum.GeneralDatumMetadata;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
+import s10k.tool.common.domain.ResultDisplayMode;
+import s10k.tool.common.util.TableUtils;
 import s10k.tool.nodes.domain.NodeMetadata;
 
 /**
@@ -34,12 +36,25 @@ import s10k.tool.nodes.domain.NodeMetadata;
 @Command(name = "list")
 public class ListNodeMetadataCmd extends BaseSubCmd<NodeMetadataCmd> implements Callable<Integer> {
 
-	@Option(names = { "-node",
-			"--node-id" }, description = "a node ID to return metadata for", split = "\\s*,\\s*", splitSynopsisLabel = ",", paramLabel = "nodeId", required = true)
+	// @formatter:off
+	
+	@Option(names = { "-node", "--node-id" },
+			description = "a node ID to return metadata for",
+			split = "\\s*,\\s*", splitSynopsisLabel = ",",
+			paramLabel = "nodeId",
+			required = true)
 	Long[] nodeIds;
 
-	@Option(names = { "-filter", "--filter" }, description = "a metadata filter")
+	@Option(names = { "-filter", "--filter" },
+			description = "a metadata filter")
 	String filter;
+
+	@Option(names = { "-mode", "--display-mode" },
+			description = "how to display the CSV data",
+			defaultValue = "PRETTY")
+	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+
+	// @formatter:on
 
 	/**
 	 * Constructor.
@@ -63,34 +78,44 @@ public class ListNodeMetadataCmd extends BaseSubCmd<NodeMetadataCmd> implements 
 				System.out.println("No metadata matched your criteria.");
 				return 0;
 			}
-			boolean multi = false;
-			for (NodeMetadata meta : metas) {
-				if (multi) {
-					System.out.println("");
-				} else {
-					multi = true;
-				}
-				Map<String, Object> tableData = new LinkedHashMap<String, Object>(4);
-				tableData.put("nodeId", meta.nodeId());
-				if (meta.created() != null) {
-					tableData.put("created", meta.created());
-				}
-				if (meta.updated() != null) {
-					tableData.put("updated", meta.updated());
-				}
 
-				GeneralDatumMetadata gdm = meta.metadata();
+			List<?> tableData = (displayMode == ResultDisplayMode.JSON
+					? metas.stream().map(NodeMetadata::metadata).toList()
+					: metas.stream().map(m -> metadataRow(m, pretty)).toList());
+			// @formatter:off
+			TableUtils.renderTableData(new Column[] {
+					new Column().header("Node ID").dataAlign(RIGHT),
+					new Column().header("Updated").dataAlign(LEFT),
+					new Column().header("Metadata").dataAlign(LEFT),
+				}, tableData, displayMode, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			// @formatter:on
 
-				System.out.print(basicTable(tableData, "Property", "Value", false));
-				if (gdm != null) {
-					System.out.println(pretty.writeValueAsString(gdm));
-				}
-			}
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error listing node metadata: %s".formatted(e.getMessage()));
 		}
 		return 1;
+	}
+
+	/**
+	 * Convert datum stream metadata into a tabular structure.
+	 * 
+	 * @param m          the metadata to convert
+	 * @param jsonWriter the writer to use for JSON metadata
+	 * @return the metadata data
+	 */
+	public static Object[] metadataRow(NodeMetadata m, ObjectWriter jsonWriter) {
+		try {
+			// @formatter:off
+			return new Object[] {
+					m.nodeId(),
+					m.updated(),
+					jsonWriter.writeValueAsString(m.metadata()),
+				};
+			// @formatter:on
+		} catch (IOException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 	/**

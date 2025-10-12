@@ -22,7 +22,7 @@ s10k datum stream rename -stream=<streamId>
 
 	The **order** of the property names is significant, and corresponds to the property _values_
 	within the datum stream. You can **rename** the property names, but you can **not reorder**
-	them. Use the `--unordered-names` option when using the [datum stream list](./list.md) command
+	them. Use the `--unsorted-names` option when using the [datum stream list](./list.md) command
 	to preserve the physical property name order.
 
 	You can **add** new property names at any time, but you can not remove names. When updating
