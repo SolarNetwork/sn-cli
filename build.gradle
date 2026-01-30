@@ -23,7 +23,7 @@ subprojects {
 	
 	java {
 		toolchain {
-			languageVersion = JavaLanguageVersion.of(21)
+			languageVersion = JavaLanguageVersion.of(25)
 		}
 	}
 
@@ -31,7 +31,7 @@ subprojects {
 		compileJava,
 		compileTestJava
 	].each() {
-		it.options.release = 21
+		it.options.release = 25
 		it.options.compilerArgs += [
 			"-Xlint:all",
 			"-Xlint:-options",
@@ -120,7 +120,7 @@ subprojects {
 	pluginManager.withPlugin('eclipse') { 
 		eclipse {
 			jdt {
-				javaRuntimeName = 'JavaSE-21'
+				javaRuntimeName = 'JavaSE-25'
 				file {
 					withProperties { properties ->
 						// set properties for the file org.eclipse.jdt.core.prefs to enable -parameters for Spring 6
