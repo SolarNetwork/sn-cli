@@ -49,7 +49,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	
-	implementation "net.sf.supercsv:super-csv:${superCsvVersion}"
+	implementation "de.siegmar:fastcsv:${fastCsvVersion}"
 	implementation "net.solarnetwork.common:net.solarnetwork.common:${snCommonVersion}"
 	implementation "net.solarnetwork.common:net.solarnetwork.common.web.jakarta:${snCommonWebJakartaVersion}"
 	implementation 'org.apache.httpcomponents.client5:httpclient5'

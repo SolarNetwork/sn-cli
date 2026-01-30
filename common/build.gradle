@@ -34,7 +34,7 @@ dependencies {
 	// Utilities
 	api 'org.slf4j:slf4j-api'
 	implementation "com.github.freva:ascii-table:${asciiTableVersion}"
-	implementation "net.sf.supercsv:super-csv:${superCsvVersion}"
+	implementation "de.siegmar:fastcsv:${fastCsvVersion}"
 	
 	// SolarNetwork
 	api "net.solarnetwork.common:net.solarnetwork.common:${snCommonVersion}"

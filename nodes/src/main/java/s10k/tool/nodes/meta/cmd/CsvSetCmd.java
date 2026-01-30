@@ -5,7 +5,6 @@ import static org.springframework.util.FileCopyUtils.copyToString;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -17,12 +16,14 @@ import java.util.concurrent.Callable;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
-import org.supercsv.io.CsvListReader;
-import org.supercsv.io.ICsvListReader;
-import org.supercsv.prefs.CsvPreference;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.siegmar.fastcsv.reader.CommentStrategy;
+import de.siegmar.fastcsv.reader.CsvReader;
+import de.siegmar.fastcsv.reader.CsvRecord;
+import de.siegmar.fastcsv.reader.CsvRecordHandler;
+import de.siegmar.fastcsv.reader.FieldModifiers;
 import net.solarnetwork.domain.KeyValuePair;
 import net.solarnetwork.domain.datum.GeneralDatumMetadata;
 import picocli.CommandLine.Command;
@@ -121,9 +122,11 @@ public class CsvSetCmd extends BaseSubCmd<NodeMetadataCmd> implements Callable<I
 
 	private List<List<String>> csvData(String csv) throws IOException {
 		List<List<String>> result = new ArrayList<>();
-		try (ICsvListReader csvReader = new CsvListReader(new StringReader(csv), CsvPreference.STANDARD_PREFERENCE)) {
-			for (List<String> row = csvReader.read(); row != null; row = csvReader.read()) {
-				result.add(row);
+		try (CsvReader<CsvRecord> in = CsvReader.builder().allowExtraFields(true).allowMissingFields(true)
+				.commentStrategy(CommentStrategy.SKIP)
+				.build(CsvRecordHandler.builder().fieldModifier(FieldModifiers.TRIM).build(), csv)) {
+			for (CsvRecord row : in) {
+				result.add(row.getFields());
 			}
 		}
 		return result;

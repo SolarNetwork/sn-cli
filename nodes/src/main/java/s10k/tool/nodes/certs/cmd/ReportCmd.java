@@ -8,7 +8,6 @@ import static s10k.tool.nodes.cmd.ListNodeIdsCmd.listNodeIds;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,14 +30,16 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
-import org.supercsv.io.CsvListReader;
-import org.supercsv.io.ICsvListReader;
-import org.supercsv.prefs.CsvPreference;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.freva.asciitable.Column;
 
+import de.siegmar.fastcsv.reader.CommentStrategy;
+import de.siegmar.fastcsv.reader.CsvReader;
+import de.siegmar.fastcsv.reader.CsvRecord;
+import de.siegmar.fastcsv.reader.CsvRecordHandler;
+import de.siegmar.fastcsv.reader.FieldModifiers;
 import me.tongfei.progressbar.ProgressBar;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -217,32 +218,36 @@ public class ReportCmd extends BaseSubCmd<CertificatesCmd> implements Callable<I
 
 	private SortedMap<Long, String> certPasswordsCsv(final String csv, Pattern nodeIdPattern) throws IOException {
 		final SortedMap<Long, String> result = new TreeMap<>();
-		try (ICsvListReader csvReader = new CsvListReader(new StringReader(csv), CsvPreference.STANDARD_PREFERENCE)) {
-			String[] header = csvReader.getHeader(true);
+		try (CsvReader<CsvRecord> in = CsvReader.builder().allowExtraFields(true).allowMissingFields(true)
+				.commentStrategy(CommentStrategy.SKIP)
+				.build(CsvRecordHandler.builder().fieldModifier(FieldModifiers.TRIM).build(), csv)) {
 			int nodeIdCol = -1;
 			int passCol = -1;
-			for (int i = 0; i < header.length && (nodeIdCol < 0 || passCol < 0); i++) {
-				String name = header[i];
-				if (name == null || name.isBlank()) {
-					continue;
+			int rowNum = 0;
+			for (CsvRecord row : in) {
+				if (++rowNum == 1) {
+					for (int i = 0; i < row.getFieldCount() && (nodeIdCol < 0 || passCol < 0); i++) {
+						String name = row.getField(i);
+						if (name == null || name.isBlank()) {
+							continue;
+						}
+						if (nodeIdCol < 0 && name.equalsIgnoreCase(nodeIdColumnName)) {
+							nodeIdCol = i;
+						} else if (passCol < 0 && name.equalsIgnoreCase(passwordColumnName)) {
+							passCol = i;
+						}
+					}
+					if (nodeIdCol < 0 && row.getFieldCount() != 2) {
+						throw new IllegalStateException(
+								"Node ID column [%s] not available in CSV data.".formatted(nodeIdColumnName));
+					} else if (passCol < 0 && row.getFieldCount() != 2) {
+						throw new IllegalStateException("Certificate password [%s] column not available in CSV data."
+								.formatted(passwordColumnName));
+					}
 				}
-				if (nodeIdCol < 0 && name.equalsIgnoreCase(nodeIdColumnName)) {
-					nodeIdCol = i;
-				} else if (passCol < 0 && name.equalsIgnoreCase(passwordColumnName)) {
-					passCol = i;
-				}
-			}
-			if (nodeIdCol < 0 && header.length != 2) {
-				throw new IllegalStateException(
-						"Node ID column [%s] not available in CSV data.".formatted(nodeIdColumnName));
-			} else if (passCol < 0 && header.length != 2) {
-				throw new IllegalStateException(
-						"Certificate password [%s] column not available in CSV data.".formatted(passwordColumnName));
-			}
-			for (List<String> row = csvReader.read(); row != null; row = csvReader.read()) {
 				if (nodeIdCol < 0 || passCol < 0) {
-					for (int i = 0; i < row.size(); i++) {
-						String val = row.get(i);
+					for (int i = 0; i < row.getFieldCount(); i++) {
+						String val = row.getField(i);
 						if (nodeIdCol < 0 && nodeIdValue(val, nodeIdPattern) != null) {
 							nodeIdCol = i;
 						}
@@ -256,8 +261,9 @@ public class ReportCmd extends BaseSubCmd<CertificatesCmd> implements Callable<I
 						throw new IllegalStateException("Certificate password column not discovered in CSV data.");
 					}
 				}
-				Long nodeId = (nodeIdCol < row.size() ? nodeIdValue(row.get(nodeIdCol), nodeIdPattern) : null);
-				String pass = (passCol < row.size() ? row.get(passCol) : null);
+				Long nodeId = (nodeIdCol < row.getFieldCount() ? nodeIdValue(row.getField(nodeIdCol), nodeIdPattern)
+						: null);
+				String pass = (passCol < row.getFieldCount() ? row.getField(passCol) : null);
 				if (nodeId != null && pass != null) {
 					result.put(nodeId, pass);
 				}

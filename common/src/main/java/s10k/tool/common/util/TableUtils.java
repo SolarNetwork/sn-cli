@@ -1,21 +1,16 @@
 package s10k.tool.common.util;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.util.StreamUtils.nonClosing;
-import static org.supercsv.prefs.CsvPreference.STANDARD_PREFERENCE;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.SequencedCollection;
-
-import org.supercsv.io.CsvListWriter;
-import org.supercsv.io.ICsvListWriter;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.PrettyPrinter;
@@ -26,6 +21,7 @@ import com.github.freva.asciitable.AsciiTable;
 import com.github.freva.asciitable.AsciiTableBuilder;
 import com.github.freva.asciitable.Column;
 
+import de.siegmar.fastcsv.writer.CsvWriter;
 import s10k.tool.common.domain.ResultDisplayMode;
 
 /**
@@ -220,18 +216,20 @@ public class TableUtils {
 			return;
 		}
 		if (mode == ResultDisplayMode.CSV) {
-			try (ICsvListWriter csvWriter = new CsvListWriter(new OutputStreamWriter(nonClosing(out), UTF_8),
-					STANDARD_PREFERENCE)) {
+			try (CsvWriter csv = CsvWriter.builder().build(nonClosing(out))) {
 				if (columns != null) {
-					csvWriter.write(Arrays.stream(columns).map(Column::getHeader).toArray(String[]::new));
+					csv.writeRecord(Arrays.stream(columns).map(Column::getHeader).toArray(String[]::new));
 				}
 				for (Object row : data) {
-					if (row instanceof Object[] a) {
-						csvWriter.write(a);
+					if (row instanceof String[] a) {
+						csv.writeRecord(a);
+					} else if (row instanceof Object[] a) {
+						String[] s = List.of(a).stream().map(Object::toString).toArray(String[]::new);
+						csv.writeRecord(s);
 					} else if (row instanceof Collection<?> l) {
-						csvWriter.write(l.toArray(Object[]::new));
+						csv.writeRecord(l.stream().map(Object::toString).toArray(String[]::new));
 					} else {
-						csvWriter.write(row);
+						csv.writeRecord(row.toString());
 					}
 				}
 			}

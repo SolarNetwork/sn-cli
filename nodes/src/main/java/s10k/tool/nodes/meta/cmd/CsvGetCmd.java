@@ -3,21 +3,21 @@ package s10k.tool.nodes.meta.cmd;
 import static s10k.tool.nodes.meta.cmd.ListNodeMetadataCmd.listNodeMetadata;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
-import org.supercsv.io.CsvListReader;
-import org.supercsv.io.ICsvListReader;
-import org.supercsv.prefs.CsvPreference;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.siegmar.fastcsv.reader.CommentStrategy;
+import de.siegmar.fastcsv.reader.CsvReader;
+import de.siegmar.fastcsv.reader.CsvRecord;
+import de.siegmar.fastcsv.reader.CsvRecordHandler;
+import de.siegmar.fastcsv.reader.FieldModifiers;
 import net.solarnetwork.domain.datum.GeneralDatumMetadata;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -84,11 +84,11 @@ public class CsvGetCmd extends BaseSubCmd<NodeMetadataCmd> implements Callable<I
 	private static List<List<String>> parseCsvMetadata(Object csvMeta) throws IOException {
 		List<List<String>> result = new ArrayList<>();
 		if (csvMeta instanceof String s) {
-			try (ICsvListReader csvReader = new CsvListReader(new StringReader(s), CsvPreference.STANDARD_PREFERENCE)) {
-				String[] headers = csvReader.getHeader(true);
-				result.add(Arrays.asList(headers));
-				for (List<String> row = csvReader.read(); row != null; row = csvReader.read()) {
-					result.add(row);
+			try (CsvReader<CsvRecord> in = CsvReader.builder().allowExtraFields(true).allowMissingFields(true)
+					.commentStrategy(CommentStrategy.SKIP)
+					.build(CsvRecordHandler.builder().fieldModifier(FieldModifiers.TRIM).build(), s)) {
+				for (CsvRecord row : in) {
+					result.add(row.getFields());
 				}
 			}
 		} else if (csvMeta instanceof List<?> list) {

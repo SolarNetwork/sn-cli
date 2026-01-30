@@ -73,12 +73,12 @@ subprojects {
 	ext {
 		asciiTableVersion = '1.8.0'
 		commonsIoVersion = '2.20.0'
+		fastCsvVersion = '4.1.0'
 		jlineVersion = '3.30.6'
 		picoCliVersion = '4.7.7'
 		progressbarVersion = '0.10.1'
 		snCommonVersion = '4.6.0'
 		snCommonWebJakartaVersion = '2.1.1'
-		superCsvVersion = '2.4.0'
 		threetenExtraVersion = '1.8.0'
 	
 		libraries = [
@@ -102,6 +102,7 @@ subprojects {
 	configurations {
 		configureEach {
 			exclude group: 'commons-logging'
+			exclude group: 'net.sf.supercsv'
 		}
 		all {	
 			resolutionStrategy {

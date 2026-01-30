@@ -6,7 +6,6 @@ import static s10k.tool.instructions.util.InstructionsUtils.executeInstruction;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -17,12 +16,14 @@ import java.util.concurrent.Callable;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
-import org.supercsv.io.CsvListReader;
-import org.supercsv.io.ICsvListReader;
-import org.supercsv.prefs.CsvPreference;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.siegmar.fastcsv.reader.CommentStrategy;
+import de.siegmar.fastcsv.reader.CsvReader;
+import de.siegmar.fastcsv.reader.CsvRecord;
+import de.siegmar.fastcsv.reader.CsvRecordHandler;
+import de.siegmar.fastcsv.reader.FieldModifiers;
 import net.solarnetwork.domain.BasicInstruction;
 import net.solarnetwork.domain.InstructionStatus;
 import net.solarnetwork.domain.InstructionStatus.InstructionState;
@@ -201,63 +202,63 @@ public class UpdateSettingsCmd extends BaseSubCmd<SettingsCmd> implements Callab
 	private List<SettingInfo> parseSettingsCsv(String csv) throws IOException {
 		final String staticKey = staticKey();
 		final List<SettingInfo> result = new ArrayList<>();
-		try (ICsvListReader csvReader = new CsvListReader(new StringReader(csv), CsvPreference.STANDARD_PREFERENCE)) {
-			final String[] header = csvReader.getHeader(true);
+		try (CsvReader<CsvRecord> in = CsvReader.builder().allowExtraFields(true).allowMissingFields(true)
+				.commentStrategy(CommentStrategy.SKIP)
+				.build(CsvRecordHandler.builder().fieldModifier(FieldModifiers.TRIM).build(), csv)) {
 
 			int keyCol = -1;
 			int typeCol = -1;
 			int valCol = -1;
-			for (int i = 0; i < header.length; i++) {
-				String colName = header[i];
-				if (colName.equalsIgnoreCase("key")) {
-					keyCol = i;
-				} else if (colName.equalsIgnoreCase("type")) {
-					typeCol = i;
-				} else if (colName.equalsIgnoreCase("value")) {
-					valCol = i;
-				}
-			}
 
-			if (staticKey != null && typeCol < 0) {
-				typeCol = keyCol;
-			}
+			int rowNum = 0;
+			for (CsvRecord row : in) {
+				if (++rowNum == 1) {
+					for (int i = 0; i < row.getFieldCount(); i++) {
+						String colName = row.getField(i);
+						if (colName.equalsIgnoreCase("key")) {
+							keyCol = i;
+						} else if (colName.equalsIgnoreCase("type")) {
+							typeCol = i;
+						} else if (colName.equalsIgnoreCase("value")) {
+							valCol = i;
+						}
+					}
 
-			if (keyCol < 0) {
-				throw new IllegalStateException("No 'Key' column available in CSV header row.");
-			} else if (typeCol < 0) {
-				throw new IllegalStateException("No 'Type' column available in CSV header row.");
-			} else if (valCol < 0) {
-				throw new IllegalStateException("No 'Value' column available in CSV header row.");
-			}
+					if (staticKey != null && typeCol < 0) {
+						typeCol = keyCol;
+					}
 
-			for (List<String> row = csvReader.read(); row != null; row = csvReader.read()) {
-				if (row.isEmpty() || (row.getFirst() != null && row.getFirst().startsWith("#"))) {
-					// skip blank or commented rows
-					continue;
+					if (keyCol < 0) {
+						throw new IllegalStateException("No 'Key' column available in CSV header row.");
+					} else if (typeCol < 0) {
+						throw new IllegalStateException("No 'Type' column available in CSV header row.");
+					} else if (valCol < 0) {
+						throw new IllegalStateException("No 'Value' column available in CSV header row.");
+					}
 				}
 				String key = null;
 				String type = null;
 				String val = null;
 				if (staticKey != null) {
 					key = staticKey;
-				} else if (keyCol < row.size()) {
-					key = row.get(keyCol);
+				} else if (keyCol < row.getFieldCount()) {
+					key = row.getField(keyCol);
 					if (key == null || key.isBlank()) {
 						continue;
 					}
 				} else {
 					continue;
 				}
-				if (typeCol < row.size()) {
-					type = row.get(typeCol);
+				if (typeCol < row.getFieldCount()) {
+					type = row.getField(typeCol);
 					if (type == null || type.isBlank()) {
 						continue;
 					}
 				} else {
 					continue;
 				}
-				if (valCol < row.size()) {
-					val = row.get(valCol);
+				if (valCol < row.getFieldCount()) {
+					val = row.getField(valCol);
 					if (val == null) {
 						val = "";
 					}
