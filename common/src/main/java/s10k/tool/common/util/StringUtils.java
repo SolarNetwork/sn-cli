@@ -105,7 +105,7 @@ public final class StringUtils {
 				try {
 					Long objId = Long.parseLong(key);
 					String sourceId = identifier.substring(idx + 1);
-					result.computeIfAbsent(objId, k -> new TreeSet<>(CASE_INSENSITIVE_NATURAL_SORT)).add(sourceId);
+					result.computeIfAbsent(objId, _ -> new TreeSet<>(CASE_INSENSITIVE_NATURAL_SORT)).add(sourceId);
 				} catch (NumberFormatException e) {
 					// ignore and continue
 				}

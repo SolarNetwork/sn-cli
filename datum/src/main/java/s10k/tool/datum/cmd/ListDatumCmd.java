@@ -359,7 +359,7 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 			row[idx++] = meta.getObjectId();
 			row[idx++] = meta.getSourceId();
 			for (String propName : propNames) {
-				final DatumSamplesType propType = propTypes.computeIfAbsent(propName, p -> {
+				final DatumSamplesType propType = propTypes.computeIfAbsent(propName, _ -> {
 					for (DatumSamplesType type : PROP_TYPES) {
 						if (meta.propertyIndex(type, propName) >= 0) {
 							return type;
@@ -451,7 +451,7 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 			.accept(displayMode == ResultDisplayMode.CSV
 					? MediaType.valueOf("text/csv")
 					: MediaType.APPLICATION_CBOR)
-			.exchange((req, res) -> {
+			.exchange((_, res) -> {
 				if (res.getStatusCode().is2xxSuccessful()) {
 					if (displayMode == ResultDisplayMode.CSV ) {
 						StreamUtils.copy(res.getBody(), System.out);						

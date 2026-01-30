@@ -127,7 +127,7 @@ public class DownloadCmd extends BaseSubCmd<CertificatesCmd> implements Callable
 		return restClient.get()
 			.uri("/solaruser/api/v1/sec/nodes/cert/" +nodeId)
 			.accept(MediaType.APPLICATION_OCTET_STREAM, MediaType.APPLICATION_JSON)
-			.exchange((req, res) -> {
+			.exchange((_, res) -> {
 				if (res.getStatusCode().is2xxSuccessful()) {
 					ContentDisposition cd = res.getHeaders().getContentDisposition();
 					Path outputFile;
