@@ -100,7 +100,9 @@ subprojects {
 	}
 
 	configurations {
-		all*.exclude group: 'commons-logging'
+		configureEach {
+			exclude group: 'commons-logging'
+		}
 		all {	
 			resolutionStrategy {
 				// the following are to pick up bug/security fixes in transitive dependencies
