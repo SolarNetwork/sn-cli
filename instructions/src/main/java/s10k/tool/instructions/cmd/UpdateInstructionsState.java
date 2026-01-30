@@ -1,6 +1,3 @@
-/**
- * 
- */
 package s10k.tool.instructions.cmd;
 
 import static java.util.Arrays.asList;

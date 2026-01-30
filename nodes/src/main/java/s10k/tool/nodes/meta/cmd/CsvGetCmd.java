@@ -1,6 +1,3 @@
-/**
- * 
- */
 package s10k.tool.nodes.meta.cmd;
 
 import static s10k.tool.nodes.meta.cmd.ListNodeMetadataCmd.listNodeMetadata;

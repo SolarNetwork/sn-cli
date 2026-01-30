@@ -1,6 +1,3 @@
-/**
- * 
- */
 package s10k.tool.common.codec;
 
 import java.io.IOException;
