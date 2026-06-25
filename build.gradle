@@ -74,11 +74,11 @@ subprojects {
 		asciiTableVersion = '1.8.0'
 		commonsIoVersion = '2.20.0'
 		fastCsvVersion = '4.1.0'
-		jlineVersion = '3.30.6'
+		jlineVersion = '3.30.13'
 		picoCliVersion = '4.7.7'
 		progressbarVersion = '0.10.1'
-		snCommonVersion = '4.6.0'
-		snCommonWebJakartaVersion = '2.1.1'
+		snCommonVersion = '4.42.0'
+		snCommonWebJakartaVersion = '2.4.2'
 		threetenExtraVersion = '1.8.0'
 	
 		libraries = [
@@ -87,7 +87,7 @@ subprojects {
 		]
 	}
 	
-	ext['netty.version'] = '4.2.6.Final'	
+	ext['netty.version'] = '4.2.15.Final'	
 
 	dependencies {
 		testImplementation libraries.mockito,
@@ -96,7 +96,7 @@ subprojects {
 				'org.junit.jupiter:junit-jupiter',
 				'org.junit.platform:junit-platform-launcher'
 		
-		errorprone 'com.google.errorprone:error_prone_core:2.41.0'
+		errorprone 'com.google.errorprone:error_prone_core:2.50.0'
 	}
 
 	configurations {

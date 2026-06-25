@@ -5,6 +5,7 @@ plugins {
 rootProject.name = 'sn-cli'
 
 include "app"
+include "c2c"
 include "common"
 include "common-test"
 include "datum"
@@ -14,6 +15,7 @@ include "nodes"
 include "sec-tokens"
 
 project(':app').name = "sn-cli-app"
+project(':c2c').name = "sn-cli-c2c"
 project(':common').name = "sn-cli-common"
 project(':datum').name = "sn-cli-datum"
 project(':flux').name = "sn-cli-flux"

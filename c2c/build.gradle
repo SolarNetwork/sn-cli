@@ -12,34 +12,29 @@ dependencyManagement {
 	}
 }
 
-description = 'sn-cli: Common'
+description = 'sn-cli: Cloud Integrations'
 
 base {
-	archivesName = 'sn-cli-common'
+	archivesName = 'sn-cli-c2c'
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-
+	implementation project(':sn-cli-common')
+	
+	// Core
 	implementation "info.picocli:picocli:${picoCliVersion}"
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 
 	// JSON
 	implementation 'com.fasterxml.jackson.core:jackson-annotations'
 	implementation 'com.fasterxml.jackson.core:jackson-core'
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
-	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-cbor'
-	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-toml'
-	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-	
+
 	// Utilities
-	api 'org.slf4j:slf4j-api'
 	implementation "com.github.freva:ascii-table:${asciiTableVersion}"
 	implementation "de.siegmar:fastcsv:${fastCsvVersion}"
 	
-	// SolarNetwork
-	api "net.solarnetwork.common:net.solarnetwork.common:${snCommonVersion}"
-	implementation "net.solarnetwork.common:net.solarnetwork.common.web.jakarta:${snCommonWebJakartaVersion}"
-	
+	// Annotations
 	annotationProcessor "info.picocli:picocli-codegen:${picoCliVersion}"
 	
 	// Testing
