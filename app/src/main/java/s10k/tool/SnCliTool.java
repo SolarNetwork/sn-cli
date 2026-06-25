@@ -13,6 +13,7 @@ import org.springframework.context.annotation.ReflectiveScan;
 
 import picocli.CommandLine;
 import picocli.CommandLine.IFactory;
+import s10k.tool.c2c.cmd.CloudIntegrationsCmd;
 import s10k.tool.common.cmd.ToolCmd;
 import s10k.tool.common.util.StringUtils;
 import s10k.tool.datum.cmd.DatumCmd;
@@ -50,6 +51,7 @@ public class SnCliTool implements CommandLineRunner, ExitCodeGenerator {
 		exitCode = new CommandLine(app, factory)
 				.setExecutionStrategy(app::globalInit)
 				.registerConverter(LocalDateTime.class, StringUtils::parseLocalDateTime)
+				.addSubcommand(new CloudIntegrationsCmd())
 				.addSubcommand(new DatumCmd())
 				.addSubcommand(new FluxCmd())
 				.addSubcommand(new InstructionsCmd())
