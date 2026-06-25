@@ -30,7 +30,7 @@ import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.TableUtils;
 
 /**
- * View Cloud Integration configurations.
+ * View Cloud Datum Stream configurations.
  */
 @Component
 @Command(name = "list", sortSynopsis = false)
@@ -70,7 +70,7 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
-			System.err.println("Error viewing cloud integrations: %s".formatted(e.getMessage()));
+			System.err.println("Error viewing cloud datum streams: %s".formatted(e.getMessage()));
 		}
 		return 1;
 	}
@@ -90,8 +90,8 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 				new Column().header("Kind").dataAlign(LEFT),
 				new Column().header("Object ID").dataAlign(RIGHT),
 				new Column().header("Source ID").dataAlign(LEFT),
-				new Column().header("Mapping ID").dataAlign(RIGHT),
 				new Column().header("Schedule").dataAlign(LEFT),
+				new Column().header("Mapping ID").dataAlign(RIGHT),
 			};
 		// @formatter:on
 	}
@@ -113,8 +113,8 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 				conf.kind(),
 				conf.objectId(),
 				sourceIdCellValue(conf),
-				conf.datumStreamMappingId(),
 				conf.schedule(),
+				conf.datumStreamMappingId(),
 			};
 		// @formatter:on
 	}

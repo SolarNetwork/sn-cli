@@ -9,7 +9,8 @@ import s10k.tool.common.cmd.BaseSubCmd;
  */
 // @formatter:off
 @Command(name = "datum-streams", aliases = "ds", subcommands = {
-		ListDatumStreamsCmd.class
+		ListDatumStreamsCmd.class,
+		ViewDatumStreamCmd.class
 })
 // @formatter:on
 public class DatumStreamsCmd extends BaseSubCmd<CloudIntegrationsCmd> {
