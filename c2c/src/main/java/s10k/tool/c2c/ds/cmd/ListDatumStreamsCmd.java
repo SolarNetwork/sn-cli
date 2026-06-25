@@ -1,8 +1,8 @@
-package s10k.tool.c2c.i9n.cmd;
+package s10k.tool.c2c.ds.cmd;
 
 import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
-import static s10k.tool.c2c.util.CloudIntegrationsUtils.integrationServiceLocalizedName;
+import static s10k.tool.c2c.util.CloudIntegrationsUtils.datumStreamServiceLocalizedName;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import com.github.freva.asciitable.Column;
 
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
-import s10k.tool.c2c.domain.CloudIntegrationConfiguration;
+import s10k.tool.c2c.domain.CloudDatumStreamConfiguration;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.TableUtils;
@@ -31,7 +31,7 @@ import s10k.tool.common.util.TableUtils;
  */
 @Component
 @Command(name = "list", sortSynopsis = false)
-public class ListIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implements Callable<Integer> {
+public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-mode", "--display-mode" },
@@ -46,7 +46,7 @@ public class ListIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implements 
 	 * @param reqFactory   the HTTP request factory to use
 	 * @param objectMapper the mapper to use
 	 */
-	public ListIntegrationsCmd(ClientHttpRequestFactory reqFactory, ObjectMapper objectMapper) {
+	public ListDatumStreamsCmd(ClientHttpRequestFactory reqFactory, ObjectMapper objectMapper) {
 		super(reqFactory, objectMapper);
 	}
 
@@ -55,7 +55,7 @@ public class ListIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implements 
 		final RestClient restClient = restClient();
 
 		try {
-			List<CloudIntegrationConfiguration> confs = listCloudIntegrations(restClient, objectMapper);
+			List<CloudDatumStreamConfiguration> confs = listCloudDatumStreams(restClient, objectMapper);
 			if (confs.isEmpty()) {
 				System.err.println("No sources matched your criteria.");
 				return 0;
@@ -84,6 +84,11 @@ public class ListIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implements 
 				new Column().header("Name").dataAlign(LEFT),
 				new Column().header("Type").dataAlign(LEFT),
 				new Column().header("Enabled").dataAlign(LEFT),
+				new Column().header("Kind").dataAlign(LEFT),
+				new Column().header("Object ID").dataAlign(RIGHT),
+				new Column().header("Source ID").dataAlign(LEFT),
+				new Column().header("Mapping ID").dataAlign(RIGHT),
+				new Column().header("Schedule").dataAlign(LEFT),
 			};
 		// @formatter:on
 	}
@@ -95,29 +100,34 @@ public class ListIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implements 
 	 * @param rawIdentifiers {@code true} to output the raw service identifiers
 	 * @return the metadata data
 	 */
-	public static Object[] tableDataRow(CloudIntegrationConfiguration conf, boolean rawIdentifiers) {
+	public static Object[] tableDataRow(CloudDatumStreamConfiguration conf, boolean rawIdentifiers) {
 		// @formatter:off
 		return new Object[] {
 				conf.configId(),
 				conf.name(),
-				(rawIdentifiers ? conf.serviceIdentifier() : integrationServiceLocalizedName(conf.serviceIdentifier())),
+				(rawIdentifiers ? conf.serviceIdentifier() : datumStreamServiceLocalizedName(conf.serviceIdentifier())),
 				conf.enabled(),
+				conf.kind(),
+				conf.objectId(),
+				conf.sourceId(),
+				conf.datumStreamMappingId(),
+				conf.schedule(),
 			};
 		// @formatter:on
 	}
 
 	/**
-	 * List cloud integrations.
+	 * List cloud datum streams.
 	 * 
 	 * @param restClient   the REST client
 	 * @param objectMapper the object mapper
 	 * @return the result
 	 */
-	public static List<CloudIntegrationConfiguration> listCloudIntegrations(RestClient restClient,
+	public static List<CloudDatumStreamConfiguration> listCloudDatumStreams(RestClient restClient,
 			ObjectMapper objectMapper) {
 		// @formatter:off
 		JsonNode response = restClient.get()
-			.uri("/solaruser/api/v1/sec/user/c2c/integrations")
+			.uri("/solaruser/api/v1/sec/user/c2c/datum-streams")
 			.accept(MediaType.APPLICATION_JSON)
 			.retrieve()
 			.body(JsonNode.class)
@@ -126,13 +136,13 @@ public class ListIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implements 
 
 		checkSuccess(response);
 
-		List<CloudIntegrationConfiguration> result = new ArrayList<>(response.path("data").size());
+		List<CloudDatumStreamConfiguration> result = new ArrayList<>(response.path("data").size());
 		for (JsonNode node : response.path("data").path("results")) {
-			CloudIntegrationConfiguration conf;
+			CloudDatumStreamConfiguration conf;
 			try {
-				conf = objectMapper.treeToValue(node, CloudIntegrationConfiguration.class);
+				conf = objectMapper.treeToValue(node, CloudDatumStreamConfiguration.class);
 			} catch (JsonProcessingException | IllegalArgumentException e) {
-				throw new IllegalStateException("Error parsing cloud integration list response: " + e.getMessage(), e);
+				throw new IllegalStateException("Error parsing cloud datum stream list response: " + e.getMessage(), e);
 			}
 			if (conf != null) {
 				result.add(conf);

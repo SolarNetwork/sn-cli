@@ -33,4 +33,23 @@ public final class CloudIntegrationsUtils {
 		}
 	}
 
+	/**
+	 * Get a localized name for a Cloud Datum Stream service.
+	 * 
+	 * @param serviceId the datum stream service ID
+	 * @return the localized name, falling back to {@code serviceId} if no localized
+	 *         name available
+	 */
+	public static String datumStreamServiceLocalizedName(String serviceId) {
+		try {
+			return RESOURCE_BUNDLE.getString("ds." + serviceId + ".name");
+		} catch (MissingResourceException e) {
+			int lastDotIdx = serviceId.lastIndexOf('.');
+			if (lastDotIdx >= 0 && lastDotIdx + 1 < serviceId.length()) {
+				return serviceId.substring(lastDotIdx + 1);
+			}
+			return serviceId;
+		}
+	}
+
 }

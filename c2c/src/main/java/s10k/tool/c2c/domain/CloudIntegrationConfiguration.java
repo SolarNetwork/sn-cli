@@ -1,4 +1,4 @@
-package s10k.tool.c2c.i9n.cmd;
+package s10k.tool.c2c.domain;
 
 import java.time.Instant;
 import java.util.Map;

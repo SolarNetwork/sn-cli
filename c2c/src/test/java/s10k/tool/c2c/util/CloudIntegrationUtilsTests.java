@@ -81,4 +81,76 @@ public class CloudIntegrationUtilsTests {
 		// @formatter:on
 	}
 
+	@ParameterizedTest
+	@ValueSource(strings = {
+	// @formatter:off
+			  "s10k.c2c.ds.also"
+			, "s10k.c2c.ds.egauge"
+			, "s10k.c2c.ds.enphase"
+			, "s10k.c2c.ds.fronius"
+			, "s10k.c2c.ds.locus"
+			, "s10k.c2c.ds.owm.day"
+			, "s10k.c2c.ds.owm.forecast"
+			, "s10k.c2c.ds.owm.weather"
+			, "s10k.c2c.ds.sma"
+			, "s10k.c2c.ds.solaredge.v1"
+			, "s10k.c2c.ds.solcast.irr"
+			, "s10k.c2c.ds.solrenview"
+			// @formatter:on
+	})
+	public void localizedCloudDatumStreamServiceNames(String serviceId) {
+		// WHEN
+		final String result = CloudIntegrationsUtils.datumStreamServiceLocalizedName(serviceId);
+
+		// THEN
+		// @formatter:off
+		then(result)
+			.isNotNull()
+			.as("Is not the input value")
+			.isNotEqualTo(serviceId)
+			.satisfies(s -> {
+				final int idx = serviceId.lastIndexOf('.');
+				then(s)
+					.as("Is not just the final component of the service ID")
+					.isNotEqualTo(serviceId.substring(idx + 1))
+					;
+			})
+			;
+		// @formatter:on
+	}
+
+	@Test
+	public void localizedCloudDatumStreamServiceNames_unknown() {
+		// GIVEN
+		final String serviceId = "foo.bar.bam";
+
+		// WHEN
+		final String result = CloudIntegrationsUtils.datumStreamServiceLocalizedName(serviceId);
+
+		// THEN
+		// @formatter:off
+		then(result)
+			.as("Unknown service uses last dot-delimited component value")
+			.isEqualTo("bam")
+			;
+		// @formatter:on
+	}
+
+	@Test
+	public void localizedCloudDatumStreamServiceNames_unknown_noDots() {
+		// GIVEN
+		final String serviceId = "Has No Dots";
+
+		// WHEN
+		final String result = CloudIntegrationsUtils.datumStreamServiceLocalizedName(serviceId);
+
+		// THEN
+		// @formatter:off
+		then(result)
+			.as("Unknown service without any dots returns original value")
+			.isEqualTo(serviceId)
+			;
+		// @formatter:on
+	}
+
 }
