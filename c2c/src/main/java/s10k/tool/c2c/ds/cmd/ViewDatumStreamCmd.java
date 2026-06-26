@@ -41,7 +41,7 @@ import s10k.tool.common.util.TableUtils;
 public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements Callable<Integer> {
 
 	// @formatter:off
-	@Option(names = { "-id", "--id" },
+	@Option(names = { "-stream", "--stream-id" },
 			description = "the ID of the datum stream to view the details of",
 			required = true)
 	Long datumStreamId;

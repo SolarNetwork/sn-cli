@@ -8,7 +8,6 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.SequencedCollection;
 
@@ -224,10 +223,10 @@ public class TableUtils {
 					if (row instanceof String[] a) {
 						csv.writeRecord(a);
 					} else if (row instanceof Object[] a) {
-						String[] s = List.of(a).stream().map(Object::toString).toArray(String[]::new);
+						String[] s = Arrays.stream(a).map(TableUtils::optionalStringValue).toArray(String[]::new);
 						csv.writeRecord(s);
 					} else if (row instanceof Collection<?> l) {
-						csv.writeRecord(l.stream().map(Object::toString).toArray(String[]::new));
+						csv.writeRecord(l.stream().map(TableUtils::optionalStringValue).toArray(String[]::new));
 					} else {
 						csv.writeRecord(row.toString());
 					}
@@ -262,5 +261,9 @@ public class TableUtils {
 			atb.writeTo(out);
 			out.write(System.lineSeparator().getBytes(Charset.defaultCharset()));
 		}
+	}
+
+	private static String optionalStringValue(Object v) {
+		return (v != null ? v.toString() : null);
 	}
 }

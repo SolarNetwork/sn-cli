@@ -30,7 +30,7 @@ import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.TableUtils;
 
 /**
- * View Cloud Datum Stream configurations.
+ * List Cloud Datum Stream configurations.
  */
 @Component
 @Command(name = "list", sortSynopsis = false)
