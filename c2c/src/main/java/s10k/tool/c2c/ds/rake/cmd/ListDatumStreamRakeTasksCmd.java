@@ -39,14 +39,14 @@ public class ListDatumStreamRakeTasksCmd extends BaseSubCmd<RakeTasksCmd> implem
 			description = "a datum stream ID to include tasks for",
 			split = "\\s*,\\s*",
 			splitSynopsisLabel = ",",
-			paramLabel = "nodeId")
+			paramLabel = "datumStreamId")
 	Long[] datumStreamIds;
 
 	@Option(names = { "-task", "--task-id" },
-			description = "a task ID to include",
+			description = "a rake task ID to include",
 			split = "\\s*,\\s*",
 			splitSynopsisLabel = ",",
-			paramLabel = "nodeId")
+			paramLabel = "rakeTaskId")
 	Long[] taskIds;
 
 	@Option(names = { "-mode", "--display-mode" },

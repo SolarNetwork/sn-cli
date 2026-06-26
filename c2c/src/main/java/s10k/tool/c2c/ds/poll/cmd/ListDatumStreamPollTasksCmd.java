@@ -39,7 +39,7 @@ public class ListDatumStreamPollTasksCmd extends BaseSubCmd<PollTasksCmd> implem
 			description = "a datum stream ID to include tasks for",
 			split = "\\s*,\\s*",
 			splitSynopsisLabel = ",",
-			paramLabel = "nodeId")
+			paramLabel = "datumStreamId")
 	Long[] datumStreamIds;
 
 	@Option(names = { "-mode", "--display-mode" },
