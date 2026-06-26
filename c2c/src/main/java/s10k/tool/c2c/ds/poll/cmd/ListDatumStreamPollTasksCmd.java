@@ -2,8 +2,8 @@ package s10k.tool.c2c.ds.poll.cmd;
 
 import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
-import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
+import static s10k.tool.common.util.RestUtils.populateQueryParameters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,9 @@ import com.github.freva.asciitable.Column;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.c2c.domain.CloudDatumStreamPollTaskConfiguration;
+import s10k.tool.c2c.domain.CloudIntegrationsFilter;
 import s10k.tool.common.cmd.BaseSubCmd;
+import s10k.tool.common.domain.ClaimableJobState;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.TableUtils;
 
@@ -36,11 +38,33 @@ public class ListDatumStreamPollTasksCmd extends BaseSubCmd<PollTasksCmd> implem
 
 	// @formatter:off
 	@Option(names = { "-stream", "--stream-id" },
-			description = "a datum stream ID to include tasks for",
+			description = "a datum stream ID to match",
 			split = "\\s*,\\s*",
 			splitSynopsisLabel = ",",
 			paramLabel = "datumStreamId")
 	Long[] datumStreamIds;
+
+	@Option(names = { "-node", "--node-id" },
+			description = "a node ID to match (on datum stream's objectId property)",
+			split = "\\s*,\\s*",
+			splitSynopsisLabel = ",",
+			paramLabel = "nodeId")
+	Long[] nodeIds;
+
+	@Option(names = { "-state", "--job-state" },
+			description = "a job state to match",
+			split = "\\s*,\\s*",
+			splitSynopsisLabel = ",",
+			paramLabel = "jobState")
+	ClaimableJobState jobStates[];
+
+	@Option(names = {"-M", "--max"},
+			description = "return at most this many results", paramLabel = "max")
+	int maxResults;
+
+	@Option(names = {"-O", "--offset"},
+			description = "start returning results from this offset, 0 being the first result")
+	long resultOffset;
 
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data",
@@ -61,10 +85,11 @@ public class ListDatumStreamPollTasksCmd extends BaseSubCmd<PollTasksCmd> implem
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final CloudIntegrationsFilter filter = filter();
 
 		try {
 			final List<CloudDatumStreamPollTaskConfiguration> tasks = listCloudDatumStreamPollTasks(restClient,
-					objectMapper, datumStreamIds);
+					objectMapper, filter);
 
 			final List<?> tableData = (displayMode == ResultDisplayMode.JSON ? tasks
 					: tasks.stream().map(c -> tableDataRow(c)).toList());
@@ -75,6 +100,26 @@ public class ListDatumStreamPollTasksCmd extends BaseSubCmd<PollTasksCmd> implem
 			System.err.println("Error listing cloud datum stream poll tasks: %s".formatted(e.getMessage()));
 		}
 		return 1;
+	}
+
+	private CloudIntegrationsFilter filter() {
+		final CloudIntegrationsFilter filter = new CloudIntegrationsFilter();
+		if (datumStreamIds != null && datumStreamIds.length > 0) {
+			filter.setDatumStreamIds(List.of(datumStreamIds));
+		}
+		if (jobStates != null && jobStates.length > 0) {
+			filter.setClaimableJobStates(List.of(jobStates));
+		}
+		if (nodeIds != null && nodeIds.length > 0) {
+			filter.setNodeIds(List.of(nodeIds));
+		}
+		if (maxResults > 0) {
+			filter.setMax(maxResults);
+		}
+		if (resultOffset > 0) {
+			filter.setOffset(resultOffset);
+		}
+		return filter;
 	}
 
 	/**
@@ -130,19 +175,19 @@ public class ListDatumStreamPollTasksCmd extends BaseSubCmd<PollTasksCmd> implem
 	/**
 	 * View a cloud datum stream mapping properties.
 	 * 
-	 * @param restClient     the REST client
-	 * @param objectMapper   the object mapper
-	 * @param datumStreamIds the IDs of datum streams to view poll tasks for
+	 * @param restClient   the REST client
+	 * @param objectMapper the object mapper
+	 * @param filter       an optional filter
 	 * @return the result
 	 */
-	public static List<CloudDatumStreamPollTaskConfiguration> listCloudDatumStreamPollTasks(RestClient restClient,
-			ObjectMapper objectMapper, Long[] datumStreamIds) {
+	public static List<CloudDatumStreamPollTaskConfiguration> listCloudDatumStreamPollTasks(final RestClient restClient,
+			final ObjectMapper objectMapper, final CloudIntegrationsFilter filter) {
 		// @formatter:off
 		JsonNode response = restClient.get()
 			.uri(b -> {
 				b.path("/solaruser/api/v1/sec/user/c2c/datum-stream-poll-tasks");
-				if (datumStreamIds != null && datumStreamIds.length > 0 ) {
-					b.queryParam("datumStreamIds", arrayToCommaDelimitedString(datumStreamIds));
+				if (filter != null ) {
+					populateQueryParameters(b, filter::toRequestMap);
 				}
 				return b.build();
 			})

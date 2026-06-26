@@ -2,7 +2,6 @@ package s10k.tool.c2c.ds.rake.cmd;
 
 import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
-import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 
 import java.util.ArrayList;
@@ -23,8 +22,11 @@ import com.github.freva.asciitable.Column;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.c2c.domain.CloudDatumStreamRakeTaskConfiguration;
+import s10k.tool.c2c.domain.CloudIntegrationsFilter;
 import s10k.tool.common.cmd.BaseSubCmd;
+import s10k.tool.common.domain.ClaimableJobState;
 import s10k.tool.common.domain.ResultDisplayMode;
+import s10k.tool.common.util.RestUtils;
 import s10k.tool.common.util.TableUtils;
 
 /**
@@ -49,6 +51,28 @@ public class ListDatumStreamRakeTasksCmd extends BaseSubCmd<RakeTasksCmd> implem
 			paramLabel = "rakeTaskId")
 	Long[] taskIds;
 
+	@Option(names = { "-node", "--node-id" },
+			description = "a node ID to match (on datum stream's objectId property)",
+			split = "\\s*,\\s*",
+			splitSynopsisLabel = ",",
+			paramLabel = "nodeId")
+	Long[] nodeIds;
+
+	@Option(names = { "-state", "--job-state" },
+			description = "a job state to match",
+			split = "\\s*,\\s*",
+			splitSynopsisLabel = ",",
+			paramLabel = "jobState")
+	ClaimableJobState jobStates[];
+
+	@Option(names = {"-M", "--max"},
+			description = "return at most this many results", paramLabel = "max")
+	int maxResults;
+
+	@Option(names = {"-O", "--offset"},
+			description = "start returning results from this offset, 0 being the first result")
+	long resultOffset;
+
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data",
 			defaultValue = "PRETTY")
@@ -68,10 +92,11 @@ public class ListDatumStreamRakeTasksCmd extends BaseSubCmd<RakeTasksCmd> implem
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final CloudIntegrationsFilter filter = filter();
 
 		try {
 			final List<CloudDatumStreamRakeTaskConfiguration> tasks = listCloudDatumStreamRakeTasks(restClient,
-					objectMapper, taskIds, datumStreamIds);
+					objectMapper, filter);
 
 			final List<?> tableData = (displayMode == ResultDisplayMode.JSON ? tasks
 					: tasks.stream().map(c -> tableDataRow(c)).toList());
@@ -82,6 +107,29 @@ public class ListDatumStreamRakeTasksCmd extends BaseSubCmd<RakeTasksCmd> implem
 			System.err.println("Error listing cloud datum stream rake tasks: %s".formatted(e.getMessage()));
 		}
 		return 1;
+	}
+
+	private CloudIntegrationsFilter filter() {
+		final CloudIntegrationsFilter filter = new CloudIntegrationsFilter();
+		if (datumStreamIds != null && datumStreamIds.length > 0) {
+			filter.setDatumStreamIds(List.of(datumStreamIds));
+		}
+		if (taskIds != null && taskIds.length > 0) {
+			filter.setTaskIds(List.of(taskIds));
+		}
+		if (jobStates != null && jobStates.length > 0) {
+			filter.setClaimableJobStates(List.of(jobStates));
+		}
+		if (nodeIds != null && nodeIds.length > 0) {
+			filter.setNodeIds(List.of(nodeIds));
+		}
+		if (maxResults > 0) {
+			filter.setMax(maxResults);
+		}
+		if (resultOffset > 0) {
+			filter.setOffset(resultOffset);
+		}
+		return filter;
 	}
 
 	/**
@@ -139,23 +187,19 @@ public class ListDatumStreamRakeTasksCmd extends BaseSubCmd<RakeTasksCmd> implem
 	/**
 	 * View a cloud datum stream mapping properties.
 	 * 
-	 * @param restClient     the REST client
-	 * @param objectMapper   the object mapper
-	 * @param taskIds        an optional list of task IDs to include
-	 * @param datumStreamIds an optional list of datum stream IDs to include
+	 * @param restClient   the REST client
+	 * @param objectMapper the object mapper
+	 * @param filter       an optional filter
 	 * @return the result
 	 */
 	public static List<CloudDatumStreamRakeTaskConfiguration> listCloudDatumStreamRakeTasks(RestClient restClient,
-			ObjectMapper objectMapper, Long[] taskIds, Long[] datumStreamIds) {
+			ObjectMapper objectMapper, CloudIntegrationsFilter filter) {
 		// @formatter:off
 		JsonNode response = restClient.get()
 			.uri(b -> {
 				b.path("/solaruser/api/v1/sec/user/c2c/datum-stream-rake-tasks");
-				if (taskIds != null && taskIds.length > 0 ) {
-					b.queryParam("taskIds", arrayToCommaDelimitedString(taskIds));
-				}
-				if (datumStreamIds != null && datumStreamIds.length > 0 ) {
-					b.queryParam("datumStreamIds", arrayToCommaDelimitedString(datumStreamIds));
+				if (filter != null ) {
+					RestUtils.populateQueryParameters(b, filter::toRequestMap);
 				}
 				return b.build();
 			})
