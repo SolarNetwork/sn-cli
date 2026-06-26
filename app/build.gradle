@@ -20,6 +20,8 @@ graalvmNative {
 	binaries.all {
 		buildArgs.add('--enable-native-access=ALL-UNNAMED')
 		buildArgs.add('-O3')
+		buildArgs.add('-Duser.language=en')
+		buildArgs.add('-Duser.country=US')
 	}
 	
 	binaries.main {
