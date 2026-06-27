@@ -10,6 +10,10 @@ Show [Cloud Datum Stream Poll Task][poll-task] entities matching a search filter
 ```
 s10k cloud-integrations datum-streams poll-tasks list
 	[-stream=datumStreamId[,datumStreamId...]]...
+	[-node=nodeId[,nodeId...]]...
+	[-state=jobState[,jobState...]]...
+	[-M=max]
+	[-O=<resultOffset>]
 	[-mode=<displayMode>]
 ```
 
@@ -17,8 +21,12 @@ s10k cloud-integrations datum-streams poll-tasks list
 
 | Option | Long Version | Description |
 |:-------|:-------------|:------------|
-| `-mode=` | `--display-mode=` | the format to display the data as, one of `CSV`, `JSON`, or `PRETTY`; defaults to `PRETTY` |
 | `-stream=` | `--stream-id=` | the datum stream ID(s) to show tasks for |
+| `-node=` | `--node-id=` | the node ID of datum streams to show tasks for (matching against datum stream `objectId` values) |
+| `-state=` | `--job-state=` | the [claimable job state][job-states] names to show tasks for, for example `Queued` or `Completed` |
+| `-M=` | `--max=` | the maximum number of results to return |
+| `-O=` | `--offset=` | start returning results from this offset, `0` being the first result |
+| `-mode=` | `--display-mode=` | the format to display the data as, one of `CSV`, `JSON`, or `PRETTY`; defaults to `PRETTY` |
 
 </div>
 
@@ -89,5 +97,5 @@ A listing of matching poll tasks.
 	]
 	```
 
-
+[job-states]: https://github.com/SolarNetwork/solarnetwork/wiki/SolarUser-API-enumerated-types#claimable-job-state-type
 [poll-task]: https://github.com/SolarNetwork/solarnetwork/wiki/SolarUser-Cloud-Integrations-API#cloud-datum-stream-poll-task
