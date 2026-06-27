@@ -11,6 +11,7 @@ import s10k.tool.common.cmd.BaseSubCmd;
  */
 // @formatter:off
 @Command(name = "datum-streams", aliases = "ds", subcommands = {
+		DatumStreamsReportCmd.class,
 		ListDatumStreamsCmd.class,
 		ViewDatumStreamCmd.class,
 		PollTasksCmd.class,

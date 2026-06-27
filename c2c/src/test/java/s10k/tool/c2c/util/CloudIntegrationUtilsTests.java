@@ -2,6 +2,8 @@ package s10k.tool.c2c.util;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
+import java.time.Period;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -151,6 +153,39 @@ public class CloudIntegrationUtilsTests {
 			.isEqualTo(serviceId)
 			;
 		// @formatter:on
+	}
+
+	@Test
+	public void comparePeriods_equal() {
+		// GIVEN
+		final Period l = Period.of(1, 2, 3);
+		final Period r = Period.of(1, 2, 3);
+
+		// THEN
+		then(CloudIntegrationsUtils.comparePeriods(l, r)).isEqualTo(0);
+		then(CloudIntegrationsUtils.comparePeriods(r, l)).isEqualTo(0);
+	}
+
+	@Test
+	public void comparePeriods_equal_normalized() {
+		// GIVEN
+		final Period l = Period.of(0, 12, 0);
+		final Period r = Period.of(1, 0, 0);
+
+		// THEN
+		then(CloudIntegrationsUtils.comparePeriods(l, r)).isEqualTo(0);
+		then(CloudIntegrationsUtils.comparePeriods(r, l)).isEqualTo(0);
+	}
+
+	@Test
+	public void comparePeriods_less() {
+		// GIVEN
+		final Period l = Period.of(0, 1, 2);
+		final Period r = Period.of(1, 2, 3);
+
+		// THEN
+		then(CloudIntegrationsUtils.comparePeriods(l, r)).isLessThan(0);
+		then(CloudIntegrationsUtils.comparePeriods(r, l)).isGreaterThan(0);
 	}
 
 }
