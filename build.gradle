@@ -103,6 +103,10 @@ subprojects {
 		configureEach {
 			exclude group: 'commons-logging'
 			exclude group: 'net.sf.supercsv'
+			exclude group: 'jakarta.servlet'
+			exclude group: 'org.springframework.security'
+			exclude group: 'org.springframework', module: 'spring-messaging'
+			exclude group: 'org.springframework', module: 'spring-webmvc'
 		}
 		all {	
 			resolutionStrategy {

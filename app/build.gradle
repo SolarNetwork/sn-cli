@@ -50,7 +50,6 @@ dependencies {
 
 	implementation "info.picocli:picocli-spring-boot-starter:${picoCliVersion}"
 	implementation 'org.springframework.boot:spring-boot-starter'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
 	
 	implementation "de.siegmar:fastcsv:${fastCsvVersion}"
 	implementation "net.solarnetwork.common:net.solarnetwork.common:${snCommonVersion}"

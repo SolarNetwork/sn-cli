@@ -19,9 +19,9 @@ base {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-
+	// Core
 	implementation "info.picocli:picocli:${picoCliVersion}"
+	implementation 'org.springframework:spring-web'
 
 	// JSON
 	implementation 'com.fasterxml.jackson.core:jackson-annotations'

@@ -23,7 +23,7 @@ dependencies {
 	
 	// Core
 	implementation "info.picocli:picocli:${picoCliVersion}"
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework:spring-web'
 	implementation 'net.solarnetwork.common:net.solarnetwork.common.mqtt.netty:5.0.0'
 
 	// JSON
