@@ -7,8 +7,11 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toMap;
 import static org.springframework.util.StreamUtils.nonClosing;
-import static s10k.tool.c2c.ds.poll.cmd.ListDatumStreamPollTasksCmd.pollTaskMessage;
-import static s10k.tool.c2c.ds.rake.cmd.ListDatumStreamRakeTasksCmd.rakeTaskMessage;
+import static s10k.tool.c2c.ds.cmd.ListDatumStreamsCmd.listCloudDatumStreams;
+import static s10k.tool.c2c.ds.poll.cmd.ListTasksCmd.listCloudDatumStreamPollTasks;
+import static s10k.tool.c2c.ds.poll.cmd.ListTasksCmd.pollTaskMessage;
+import static s10k.tool.c2c.ds.rake.cmd.ListTasksCmd.listCloudDatumStreamRakeTasks;
+import static s10k.tool.c2c.ds.rake.cmd.ListTasksCmd.rakeTaskMessage;
 import static s10k.tool.c2c.util.CloudIntegrationsUtils.datumStreamServiceLocalizedName;
 
 import java.io.IOException;
@@ -41,8 +44,6 @@ import picocli.CommandLine.Option;
 import s10k.tool.c2c.domain.CloudDatumStreamConfiguration;
 import s10k.tool.c2c.domain.CloudDatumStreamPollTaskConfiguration;
 import s10k.tool.c2c.domain.CloudDatumStreamRakeTaskConfiguration;
-import s10k.tool.c2c.ds.poll.cmd.ListDatumStreamPollTasksCmd;
-import s10k.tool.c2c.ds.rake.cmd.ListDatumStreamRakeTasksCmd;
 import s10k.tool.c2c.util.CloudIntegrationsUtils;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ClaimableJobState;
@@ -537,19 +538,18 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 	}
 
 	private SortedMap<Long, CloudDatumStreamConfiguration> allDatumStreams(RestClient restClient) {
-		return ListDatumStreamsCmd.listCloudDatumStreams(restClient, objectMapper).stream()
+		return listCloudDatumStreams(restClient, objectMapper).stream()
 				.collect(toMap(CloudDatumStreamConfiguration::configId, identity(), (_, n) -> n, TreeMap::new));
 	}
 
 	private SortedMap<Long, CloudDatumStreamPollTaskConfiguration> allPollTasks(RestClient restClient) {
-		return ListDatumStreamPollTasksCmd.listCloudDatumStreamPollTasks(restClient, objectMapper, null).stream()
-				.collect(toMap(CloudDatumStreamPollTaskConfiguration::datumStreamId, identity(), (_, n) -> n,
-						TreeMap::new));
+		return listCloudDatumStreamPollTasks(restClient, objectMapper, null).stream().collect(
+				toMap(CloudDatumStreamPollTaskConfiguration::datumStreamId, identity(), (_, n) -> n, TreeMap::new));
 	}
 
 	private SortedMap<Long, SortedMap<Period, CloudDatumStreamRakeTaskConfiguration>> allRakeTasks(
 			RestClient restClient) {
-		return ListDatumStreamRakeTasksCmd.listCloudDatumStreamRakeTasks(restClient, objectMapper, null).stream()
+		return listCloudDatumStreamRakeTasks(restClient, objectMapper, null).stream()
 				.collect(groupingBy(CloudDatumStreamRakeTaskConfiguration::datumStreamId, TreeMap::new,
 						mapping(Function.identity(), toMap(t -> Period.parse(t.offset()), identity(), (_, n) -> n,
 								() -> new TreeMap<>(CloudIntegrationsUtils::comparePeriods)))));

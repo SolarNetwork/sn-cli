@@ -9,7 +9,7 @@ import s10k.tool.common.cmd.BaseSubCmd;
  */
 // @formatter:off
 @Command(name = "rake-tasks", aliases = "rakes", subcommands = {
-		ListDatumStreamRakeTasksCmd.class,
+		ListTasksCmd.class,
 })
 // @formatter:on
 public class RakeTasksCmd extends BaseSubCmd<DatumStreamsCmd> {

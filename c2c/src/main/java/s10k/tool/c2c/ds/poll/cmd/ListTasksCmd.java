@@ -32,9 +32,9 @@ import s10k.tool.common.util.TableUtils;
 /**
  * List Cloud Datum Stream Poll Task configurations.
  */
-@Component
+@Component("listPollTasksCmd")
 @Command(name = "list", sortSynopsis = false)
-public class ListDatumStreamPollTasksCmd extends BaseSubCmd<PollTasksCmd> implements Callable<Integer> {
+public class ListTasksCmd extends BaseSubCmd<PollTasksCmd> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-stream", "--stream-id" },
@@ -78,7 +78,7 @@ public class ListDatumStreamPollTasksCmd extends BaseSubCmd<PollTasksCmd> implem
 	 * @param reqFactory   the HTTP request factory to use
 	 * @param objectMapper the mapper to use
 	 */
-	public ListDatumStreamPollTasksCmd(ClientHttpRequestFactory reqFactory, ObjectMapper objectMapper) {
+	public ListTasksCmd(ClientHttpRequestFactory reqFactory, ObjectMapper objectMapper) {
 		super(reqFactory, objectMapper);
 	}
 
