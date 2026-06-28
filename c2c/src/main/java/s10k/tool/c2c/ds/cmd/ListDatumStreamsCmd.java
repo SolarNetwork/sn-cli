@@ -2,14 +2,11 @@ package s10k.tool.c2c.ds.cmd;
 
 import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
-import static java.util.stream.Collectors.joining;
-import static net.solarnetwork.util.StringNaturalSortComparator.CASE_INSENSITIVE_NATURAL_SORT;
 import static s10k.tool.c2c.util.CloudIntegrationsUtils.datumStreamServiceLocalizedName;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 
 import org.springframework.http.MediaType;
@@ -112,20 +109,11 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 				conf.enabled(),
 				conf.kind(),
 				conf.objectId(),
-				sourceIdCellValue(conf),
+				conf.sourceIdsValue(),
 				conf.schedule(),
 				conf.datumStreamMappingId(),
 			};
 		// @formatter:on
-	}
-
-	private static String sourceIdCellValue(CloudDatumStreamConfiguration conf) {
-		final var sprops = conf.serviceProperties();
-		if (sprops != null && sprops.get("sourceIdMap") instanceof Map<?, ?> m) {
-			return m.values().stream().map(Object::toString).sorted(CASE_INSENSITIVE_NATURAL_SORT)
-					.collect(joining("\n"));
-		}
-		return conf.sourceId();
 	}
 
 	/**

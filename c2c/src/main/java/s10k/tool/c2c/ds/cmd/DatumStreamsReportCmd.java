@@ -366,6 +366,8 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 			return new Column[] {
 					new Column().header("Datum Stream ID").dataAlign(RIGHT),
 					new Column().header("Datum Stream Type").dataAlign(LEFT),
+					new Column().header("Object ID").dataAlign(RIGHT),
+					new Column().header("Source ID").dataAlign(LEFT),
 					new Column().header("State").dataAlign(LEFT),
 					new Column().header("Error Count").dataAlign(RIGHT),
 					new Column().header("State").dataAlign(LEFT),
@@ -381,6 +383,8 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 			return new Object[] {
 					conf.datumStreamId(),
 					datumStreamServiceLocalizedName(datumStream.serviceIdentifier()),
+					datumStream.objectId(),
+					datumStream.sourceIdsValue(),
 					conf.state(),
 					conf.errorCount(),
 					conf.executeAt(),
@@ -444,6 +448,8 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 			return new Column[] {
 					new Column().header("Datum Stream ID").dataAlign(RIGHT),
 					new Column().header("Datum Stream Type").dataAlign(LEFT),
+					new Column().header("Object ID").dataAlign(RIGHT),
+					new Column().header("Source ID").dataAlign(LEFT),
 					new Column().header("Task ID").dataAlign(RIGHT),
 					new Column().header("State").dataAlign(LEFT),
 					new Column().header("Error Count").dataAlign(RIGHT),
@@ -460,6 +466,8 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 			return new Object[] {
 					conf.datumStreamId(),
 					datumStreamServiceLocalizedName(datumStream.serviceIdentifier()),
+					datumStream.objectId(),
+					datumStream.sourceIdsValue(),
 					conf.configId(),
 					conf.state(),
 					conf.errorCount(),
