@@ -270,7 +270,7 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 		return new Checkup(allDatumStreams, pollCheckup, rakeCheckup);
 	}
 
-	@JsonPropertyOrder({ "datumStreamCount", "warningCount", "pollTasks", "rakeTasks" })
+	@JsonPropertyOrder({ "datumStreamCount", "warningCount", "datumStreamsWithWarnings", "pollTasks", "rakeTasks" })
 	@JsonIgnoreProperties("datumStreams")
 	@RegisterReflectionForBinding
 	public record Checkup(SortedMap<Long, CloudDatumStreamConfiguration> datumStreams, PollTaskCheckup pollTasks,
@@ -285,6 +285,14 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 		public int warningCount() {
 			return (pollTasks != null ? pollTasks.warningCount() : 0)
 					+ (rakeTasks != null ? rakeTasks.warningCount() : 0);
+		}
+
+		@JsonGetter
+		public SortedMap<Long, CloudDatumStreamConfiguration> datumStreamsWithWarnings() {
+			return datumStreams.values().stream()
+					.filter(ds -> pollTasks.datumStreamHasWarning(ds.configId())
+							|| rakeTasks.datumStreamHasWarning(ds.configId()))
+					.collect(toMap(ds -> ds.configId(), identity(), (_, n) -> n, TreeMap::new));
 		}
 
 		private Checkup asReport() {
@@ -341,6 +349,16 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 
 		private boolean isWithoutWarnings() {
 			return warningCount() < 1;
+		}
+
+		private boolean datumStreamHasWarning(Long datumStreamId) {
+			// @formatter:off
+			return (datumStreamsWithoutTasks != null && datumStreamsWithoutTasks.containsKey(datumStreamId))
+					|| (stoppedTasks != null && stoppedTasks.containsKey(datumStreamId))
+					|| (errorTasks != null && errorTasks.containsKey(datumStreamId))
+					|| (laggingTasks != null && laggingTasks.containsKey(datumStreamId))
+					;
+			// @formatter:on
 		}
 
 		public static Column[] tableDataColumns() {
@@ -409,6 +427,16 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 
 		private boolean isWithoutWarnings() {
 			return warningCount() < 1;
+		}
+
+		private boolean datumStreamHasWarning(Long datumStreamId) {
+			// @formatter:off
+			return (datumStreamsWithoutTasks != null && datumStreamsWithoutTasks.containsKey(datumStreamId))
+					|| (stoppedTasks != null && stoppedTasks.containsKey(datumStreamId))
+					|| (errorTasks != null && errorTasks.containsKey(datumStreamId))
+					|| (laggingTasks != null && laggingTasks.containsKey(datumStreamId))
+					;
+			// @formatter:on
 		}
 
 		public static Column[] tableDataColumns() {
