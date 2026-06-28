@@ -133,6 +133,12 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 					// @formatter:on
 				}
 
+				// missing task reports
+				generateDatumStreamReport(checkup.pollTasks.datumStreamsWithoutTasks, "Missing Poll Task",
+						"datum-stream-poll-task-missing-report", outputDir);
+				generateDatumStreamReport(checkup.rakeTasks.datumStreamsWithoutTasks, "Missing Rake Task",
+						"datum-stream-rake-task-missing-report", outputDir);
+
 				// poll task reports
 				generatePollTaskReport(checkup.datumStreams, checkup.pollTasks.stoppedTasks, "Stopped",
 						"datum-stream-poll-task-stopped-report", outputDir);
@@ -158,6 +164,22 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 		}
 		return 1;
 
+	}
+
+	@SuppressWarnings("ClosingStandardOutputStreams")
+	private void generateDatumStreamReport(SortedMap<Long, CloudDatumStreamConfiguration> datumStreams, String title,
+			String fileName, Path outputDir) throws IOException {
+		if (datumStreams != null && !datumStreams.isEmpty()) {
+			if (outputDir == null) {
+				System.out.printf("\n\nDatum Streams %s:\n", title);
+			}
+			try (OutputStream out = (outputDir != null ? Files.newOutputStream(outputDir.resolve(fileName(fileName)))
+					: nonClosing(System.out))) {
+				TableUtils.renderTableData(Checkup.datumStreamTableDataColumns(),
+						datumStreams.values().stream().map(c -> Checkup.datumStreamTableDataRow(c)).toList(),
+						displayMode, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, out);
+			}
+		}
 	}
 
 	@SuppressWarnings("ClosingStandardOutputStreams")
@@ -311,6 +333,36 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 			// @formatter:on
 		}
 
+		public static Column[] datumStreamTableDataColumns() {
+			// @formatter:off
+			return new Column[] {
+					new Column().header("Datum Stream ID").dataAlign(RIGHT),
+					new Column().header("Datum Stream Type").dataAlign(LEFT),
+					new Column().header("Object ID").dataAlign(RIGHT),
+					new Column().header("Source ID").dataAlign(LEFT),
+					new Column().header("Enabled").dataAlign(LEFT),
+					new Column().header("Kind").dataAlign(LEFT),
+					new Column().header("Schedule").dataAlign(LEFT),
+					new Column().header("Mapping ID").dataAlign(RIGHT),
+				};
+			// @formatter:on
+		}
+
+		public static Object[] datumStreamTableDataRow(CloudDatumStreamConfiguration conf) {
+			// @formatter:off
+			return new Object[] {
+					conf.configId(),
+					datumStreamServiceLocalizedName(conf.serviceIdentifier()),
+					conf.objectId(),
+					conf.sourceIdsValue(),
+					conf.enabled(),
+					conf.kind(),
+					conf.schedule(),
+					conf.datumStreamMappingId(),
+				};
+			// @formatter:on
+		}
+
 	}
 
 	@JsonPropertyOrder({ "taskCount", "warningCount", "datumStreamsWithoutTasks", "stoppedTasks", "errorTasks",
@@ -393,6 +445,7 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 				};
 			// @formatter:on
 		}
+
 	}
 
 	@JsonPropertyOrder({ "taskCount", "warningCount", "datumStreamsWithoutTasks", "stoppedTasks", "errorTasks",
