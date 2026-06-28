@@ -1,11 +1,15 @@
 package s10k.tool.c2c.ds.cmd;
 
+import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toMap;
 import static org.springframework.util.StreamUtils.nonClosing;
+import static s10k.tool.c2c.ds.poll.cmd.ListDatumStreamPollTasksCmd.pollTaskMessage;
+import static s10k.tool.c2c.ds.rake.cmd.ListDatumStreamRakeTasksCmd.rakeTaskMessage;
+import static s10k.tool.c2c.util.CloudIntegrationsUtils.datumStreamServiceLocalizedName;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -130,19 +134,19 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 				}
 
 				// poll task reports
-				generatePollTaskReport(checkup.pollTasks.stoppedTasks, "Stopped",
+				generatePollTaskReport(checkup.datumStreams, checkup.pollTasks.stoppedTasks, "Stopped",
 						"datum-stream-poll-task-stopped-report", outputDir);
-				generatePollTaskReport(checkup.pollTasks.errorTasks, "Failing", "datum-stream-poll-task-failing-report",
-						outputDir);
-				generatePollTaskReport(checkup.pollTasks.laggingTasks, "Lagging",
+				generatePollTaskReport(checkup.datumStreams, checkup.pollTasks.errorTasks, "Failing",
+						"datum-stream-poll-task-failing-report", outputDir);
+				generatePollTaskReport(checkup.datumStreams, checkup.pollTasks.laggingTasks, "Lagging",
 						"datum-stream-poll-task-lagging-report", outputDir);
 
 				// rake task reports
-				generateRakeTaskReport(checkup.rakeTasks.stoppedTasks, "Stopped",
+				generateRakeTaskReport(checkup.datumStreams, checkup.rakeTasks.stoppedTasks, "Stopped",
 						"datum-stream-rake-task-stopped-report", outputDir);
-				generateRakeTaskReport(checkup.rakeTasks.errorTasks, "Failing", "datum-stream-rake-task-failing-report",
-						outputDir);
-				generateRakeTaskReport(checkup.rakeTasks.laggingTasks, "Lagging",
+				generateRakeTaskReport(checkup.datumStreams, checkup.rakeTasks.errorTasks, "Failing",
+						"datum-stream-rake-task-failing-report", outputDir);
+				generateRakeTaskReport(checkup.datumStreams, checkup.rakeTasks.laggingTasks, "Lagging",
 						"datum-stream-rake-task-lagging-report", outputDir);
 			}
 			if (outputDir != null) {
@@ -157,33 +161,36 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 	}
 
 	@SuppressWarnings("ClosingStandardOutputStreams")
-	private void generatePollTaskReport(SortedMap<Long, CloudDatumStreamPollTaskConfiguration> tasks, String title,
-			String fileName, Path outputDir) throws IOException {
+	private void generatePollTaskReport(SortedMap<Long, CloudDatumStreamConfiguration> datumStreams,
+			SortedMap<Long, CloudDatumStreamPollTaskConfiguration> tasks, String title, String fileName, Path outputDir)
+			throws IOException {
 		if (tasks != null && !tasks.isEmpty()) {
 			if (outputDir == null) {
 				System.out.printf("\n\nPoll Tasks %s:\n", title);
 			}
 			try (OutputStream out = (outputDir != null ? Files.newOutputStream(outputDir.resolve(fileName(fileName)))
 					: nonClosing(System.out))) {
-				TableUtils.renderTableData(ListDatumStreamPollTasksCmd.tableDataColumns(),
-						tasks.values().stream().map(c -> ListDatumStreamPollTasksCmd.tableDataRow(c)).toList(),
+				TableUtils.renderTableData(PollTaskCheckup.tableDataColumns(), tasks.values().stream()
+						.map(c -> PollTaskCheckup.tableDataRow(datumStreams.get(c.datumStreamId()), c)).toList(),
 						displayMode, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, out);
 			}
 		}
 	}
 
 	@SuppressWarnings("ClosingStandardOutputStreams")
-	private void generateRakeTaskReport(SortedMap<Long, SortedMap<Period, CloudDatumStreamRakeTaskConfiguration>> tasks,
-			String title, String fileName, Path outputDir) throws IOException {
+	private void generateRakeTaskReport(SortedMap<Long, CloudDatumStreamConfiguration> datumStreams,
+			SortedMap<Long, SortedMap<Period, CloudDatumStreamRakeTaskConfiguration>> tasks, String title,
+			String fileName, Path outputDir) throws IOException {
 		if (tasks != null && !tasks.isEmpty()) {
 			if (outputDir == null) {
 				System.out.printf("\n\nRake Tasks %s:\n", title);
 			}
 			try (OutputStream out = (outputDir != null ? Files.newOutputStream(outputDir.resolve(fileName(fileName)))
 					: nonClosing(System.out))) {
-				TableUtils.renderTableData(ListDatumStreamRakeTasksCmd.tableDataColumns(),
+				TableUtils.renderTableData(RakeTaskCheckup.tableDataColumns(),
 						tasks.values().stream().flatMap(m -> m.values().stream())
-								.map(c -> ListDatumStreamRakeTasksCmd.tableDataRow(c)).toList(),
+								.map(c -> RakeTaskCheckup.tableDataRow(datumStreams.get(c.datumStreamId()), c))
+								.toList(),
 						displayMode, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, out);
 			}
 		}
@@ -336,6 +343,34 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 			return warningCount() < 1;
 		}
 
+		public static Column[] tableDataColumns() {
+			// @formatter:off
+			return new Column[] {
+					new Column().header("Datum Stream ID").dataAlign(RIGHT),
+					new Column().header("Datum Stream Type").dataAlign(LEFT),
+					new Column().header("State").dataAlign(LEFT),
+					new Column().header("Error Count").dataAlign(RIGHT),
+					new Column().header("State").dataAlign(LEFT),
+					new Column().header("Start At").dataAlign(LEFT),
+					new Column().header("Message").dataAlign(LEFT),
+				};
+			// @formatter:on
+		}
+
+		public static Object[] tableDataRow(CloudDatumStreamConfiguration datumStream,
+				CloudDatumStreamPollTaskConfiguration conf) {
+			// @formatter:off
+			return new Object[] {
+					conf.datumStreamId(),
+					datumStreamServiceLocalizedName(datumStream.serviceIdentifier()),
+					conf.state(),
+					conf.errorCount(),
+					conf.executeAt(),
+					conf.startAt(),
+					pollTaskMessage(conf),
+				};
+			// @formatter:on
+		}
 	}
 
 	@JsonPropertyOrder({ "taskCount", "warningCount", "datumStreamsWithoutTasks", "stoppedTasks", "errorTasks",
@@ -376,6 +411,36 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 			return warningCount() < 1;
 		}
 
+		public static Column[] tableDataColumns() {
+			// @formatter:off
+			return new Column[] {
+					new Column().header("Datum Stream ID").dataAlign(RIGHT),
+					new Column().header("Datum Stream Type").dataAlign(LEFT),
+					new Column().header("Task ID").dataAlign(RIGHT),
+					new Column().header("State").dataAlign(LEFT),
+					new Column().header("Error Count").dataAlign(RIGHT),
+					new Column().header("Execute At").dataAlign(LEFT),
+					new Column().header("Offset").dataAlign(LEFT),
+					new Column().header("Message").dataAlign(LEFT),
+				};
+			// @formatter:on
+		}
+
+		public static Object[] tableDataRow(CloudDatumStreamConfiguration datumStream,
+				CloudDatumStreamRakeTaskConfiguration conf) {
+			// @formatter:off
+			return new Object[] {
+					conf.datumStreamId(),
+					datumStreamServiceLocalizedName(datumStream.serviceIdentifier()),
+					conf.configId(),
+					conf.state(),
+					conf.errorCount(),
+					conf.executeAt(),
+					conf.offset(),
+					rakeTaskMessage(conf),
+				};
+			// @formatter:on
+		}
 	}
 
 	private static <K, V> SortedMap<K, V> nonEmpty(SortedMap<K, V> map) {
