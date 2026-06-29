@@ -16,14 +16,13 @@ allows you to do things like:
 
 Download the [latest release](https://github.com/SolarNetwork/sn-cli/releases), either as an
 executable binary for your operating system or an executable Java JAR you can run anywhere you have
-Java 21+ installed.
+Java 25+ installed.
 
 # Logging
 
 Logging can be enabled by creating an `application.yml` file in your working directory. You can then
-configure standard [Spring Boot Logging][logging-conf] settings. For example
-if you would like HTTP exchange traces, add the `--http-trace` option and then configure logging
-something like this:
+configure standard [Spring Boot Logging][logging-conf] settings. For example if you would like HTTP
+exchange traces, add the `--http-trace` option and then configure logging something like this:
 
 ```yaml
 logging:
@@ -51,12 +50,12 @@ The application will be built to `build/libs/s10k-VERSION.jar`.
 
 ## Building the native binary
 
-To build the native binary, you must have the [GraalVM][graalvm] version 24+ or later installed.
+To build the native binary, you must have the [GraalVM][graalvm] version 25+ or later installed.
 Then add `GRAALVM_HOME` to your environment. For example in `sh`:
 
 ```sh
 # macOS install
-export GRAALVM_HOME=/Library/Java/JavaVirtualMachines/graalvm-21.jdk/Contents/Home
+export GRAALVM_HOME=/Library/Java/JavaVirtualMachines/graalvm-25.jdk/Contents/Home
 ```
 
 Then you can run:
@@ -70,6 +69,50 @@ Then you can run:
 ```
 
 The native binary will be built to `app/build/native/nativeCompile/s10k`.
+
+### Building a native distribution archive
+
+Execute the `distTar` or `distZip` task to create an archive of the native application:
+
+```sh
+# Unix
+./gradlew distTar
+
+# Windows
+.\gradlew.bat distZip
+```
+
+The archive will be created in the `app/build/distributions` directory and named like
+`sn-cli-${VERSION}-${OS}-${ARCH}.${EXT}`, for example:
+
+| OS | Architecture | Archive | Output suffix |
+|:---|:-------------|:--------|:--------------|
+| Linux | x86 64-bit | Tar | `-linux-amd64.tar.gz` |
+| Linux | ARM 64-bit | Tar | `-linux-arm64.tar.gz` |
+| macOS | ARM 64-bit | Tar | `-macos-arm64.tar.gz` |
+| Windows | x86 64-bit | Zip | `-windows-amd64.zip` |
+
+Formally, `${OS}` is one of:
+
+| OS | Archive name |
+|:---|:-------------|
+| Linux | `linux` |
+| macOS | `macos` |
+| Windows | `windows` |
+
+and `${ARCH}` is one of:
+
+| Architecture | Archive name |
+|:-------------|:-------------|
+| ARM 64-bit | `arm64` |
+| x86 64-bit | `amd64` |
+
+and `${EXT}` is one of:
+
+| Archive | Archive name |
+|:-------------|:-------------|
+| Tar | `tar.gz` |
+| Zip | `zip` |
 
 [graalvm]: https://www.graalvm.org/
 [logging-conf]: https://docs.spring.io/spring-boot/reference/features/logging.html
