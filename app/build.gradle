@@ -75,9 +75,9 @@ distributions  {
 		distributionBaseName = "sn-cli"
 		distributionClassifier = "${osdetector.classifier}"
 		contents {
-			from 'build/native/nativeCompile'
-			include 's10k*'
-			into('/')
+			from(tasks.named("nativeCompile")) {
+				into('/')
+			}
 		}
 	}
 }
