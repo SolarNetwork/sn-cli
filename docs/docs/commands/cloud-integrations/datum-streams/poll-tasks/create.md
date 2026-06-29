@@ -3,7 +3,7 @@ title: create
 ---
 # Cloud Datum Stream Poll Task Create
 
-Create [Cloud Datum Stream Rake Task][rake-task] entities.
+Create [Cloud Datum Stream Poll Task][poll-task] entities.
 
 ## Usage
 
@@ -91,4 +91,4 @@ A listing of rake tasks "action" records. Each record's action will be either **
 	]
 	```
 
-[rake-task]: https://github.com/SolarNetwork/solarnetwork/wiki/SolarUser-Cloud-Integrations-API#cloud-datum-stream-rake-task
+[poll-task]: https://github.com/SolarNetwork/solarnetwork/wiki/SolarUser-Cloud-Integrations-API#cloud-datum-stream-poll-task
