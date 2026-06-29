@@ -10,6 +10,7 @@ import static org.springframework.util.StreamUtils.nonClosing;
 import static s10k.tool.c2c.ds.cmd.ListDatumStreamsCmd.listCloudDatumStreams;
 import static s10k.tool.c2c.ds.rake.cmd.ListTasksCmd.listCloudDatumStreamRakeTasks;
 import static s10k.tool.c2c.util.CloudIntegrationsUtils.datumStreamServiceLocalizedName;
+import static s10k.tool.common.util.RestUtils.checkSuccess;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -34,10 +35,12 @@ import java.util.TreeSet;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.freva.asciitable.Column;
 
@@ -131,6 +134,7 @@ public class CreateTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable
 			final Map<Long, ZoneId> nodeTimeZones = nodeTimeZonesForCreate(restClient, taskActions.values());
 
 			if (!isDryRun()) {
+				updateTasks(restClient, datumStreams, nodeTimeZones, taskActions);
 				// TODO: execute
 			}
 			if (displayMode == ResultDisplayMode.JSON) {
@@ -313,6 +317,107 @@ public class CreateTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable
 			}
 		}
 		return result;
+	}
+
+	private void updateTasks(RestClient restClient, SortedMap<Long, CloudDatumStreamConfiguration> datumStreams,
+			Map<Long, ZoneId> nodeTimeZones, SortedMap<Long, TaskActions> taskActions) {
+		for (TaskActions actions : taskActions.values()) {
+			final CloudDatumStreamConfiguration datumStream = datumStreams.get(actions.datumStreamId());
+			final ZoneId zone = (nodeTimeZones.containsKey(datumStream.objectId())
+					? nodeTimeZones.get(datumStream.objectId())
+					: ZoneOffset.UTC);
+			if (actions.missingOffsets.size() == offsets.length) {
+				bulkCreateRakeTasks(restClient, actions.datumStreamId, zone, actions.missingOffsets);
+			} else {
+				for (Period offset : actions.missingOffsets) {
+					createRakeTask(restClient, actions.datumStreamId, zone, offset);
+				}
+				for (CloudDatumStreamRakeTaskConfiguration task : actions.undesiredOffsets.values()) {
+					deleteRakeTask(restClient, task.configId());
+				}
+			}
+		}
+	}
+
+	private static void bulkCreateRakeTasks(RestClient restClient, Long datumStreamId, ZoneId zone,
+			Set<Period> offsets) {
+		final Instant executeAt = ZonedDateTime.now(zone).toLocalDate().plusDays(1).atStartOfDay(zone).toInstant();
+		final List<CloudDatumStreamRakeTaskConfiguration> tasks = offsets.stream().map(p -> {
+			return new CloudDatumStreamRakeTaskConfiguration(
+			// @formatter:off
+					  null
+					, null
+					, ClaimableJobState.Queued.keyValue()
+					, executeAt
+					, p.toString()
+					, null
+					, null
+					// @formatter:on
+			);
+		}).toList();
+
+		// @formatter:off
+		JsonNode response = restClient.post()
+			.uri(b -> {
+				b.path("/solaruser/api/v1/sec/user/c2c/datum-stream-rake-tasks/{datumStreamId}/tasks");
+				return b.build(datumStreamId);
+			})
+			.contentType(MediaType.APPLICATION_JSON)
+			.body(tasks)
+			.accept(MediaType.APPLICATION_JSON)
+			.retrieve()
+			.body(JsonNode.class)
+			;		
+		// @formatter:on
+
+		checkSuccess(response);
+	}
+
+	private static void createRakeTask(RestClient restClient, Long datumStreamId, ZoneId zone, Period offset) {
+		final Instant executeAt = ZonedDateTime.now(zone).toLocalDate().plusDays(1).atStartOfDay(zone).toInstant();
+		final CloudDatumStreamRakeTaskConfiguration task = new CloudDatumStreamRakeTaskConfiguration(
+		// @formatter:off
+					  null
+					, datumStreamId
+					, ClaimableJobState.Queued.keyValue()
+					, executeAt
+					, offset.toString()
+					, null
+					, null
+					// @formatter:on
+		);
+
+		// @formatter:off
+		JsonNode response = restClient.post()
+			.uri(b -> {
+				b.path("/solaruser/api/v1/sec/user/c2c/datum-stream-rake-tasks");
+				return b.build(datumStreamId);
+			})
+			.contentType(MediaType.APPLICATION_JSON)
+			.body(task)
+			.accept(MediaType.APPLICATION_JSON)
+			.retrieve()
+			.body(JsonNode.class)
+			;		
+		// @formatter:on
+
+		checkSuccess(response);
+	}
+
+	private static void deleteRakeTask(RestClient restClient, Long taskId) {
+		// @formatter:off
+		JsonNode response = restClient.delete()
+			.uri(b -> {
+				b.path("/solaruser/api/v1/sec/user/c2c/datum-stream-rake-tasks/{taskId}");
+				return b.build(taskId);
+			})
+			.accept(MediaType.APPLICATION_JSON)
+			.retrieve()
+			.body(JsonNode.class)
+			;		
+		// @formatter:on
+
+		checkSuccess(response);
 	}
 
 	@SuppressWarnings("ClosingStandardOutputStreams")
