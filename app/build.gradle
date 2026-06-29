@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'distribution'
     id 'org.springframework.boot' version '3.5.16'
 	id 'org.graalvm.buildtools.native' version '1.1.2'
 	id 'com.google.osdetector' version '1.7.3'
@@ -64,10 +65,19 @@ dependencies {
 	testImplementation project(':sn-cli-common-test')
 }
 
-task buildDist(type: Tar, dependsOn: nativeCompile) {
-	archiveFileName = "sn-cli-${version}-${osdetector.classifier}.tar.gz"
-	destinationDirectory = file("$buildDir/dist")
+distTar {
+	archiveExtension = 'tar.gz'
 	compression = Compression.GZIP
-	from 'build/native/nativeCompile'
-	include 's10k'
+}
+
+distributions  {
+	main {
+		distributionBaseName = "sn-cli"
+		distributionClassifier = "${osdetector.classifier}"
+		contents {
+			from 'build/native/nativeCompile'
+			include 's10k'
+			into('/')
+		}
+	}
 }
