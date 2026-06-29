@@ -70,10 +70,26 @@ distTar {
 	compression = Compression.GZIP
 }
 
+def getOsName() {
+	if ( osdetector.os == 'osx' ) {
+		return 'macos'
+	}
+	return osdetector.os
+}
+
+def getArchName() {
+	if ( osdetector.arch == 'aarch_64' ) {
+		return 'arm64'
+	} else if ( osdetector.arch == 'x86_64' ) {
+		return 'amd64'
+	}
+	return osdetector.os
+}
+
 distributions  {
 	main {
 		distributionBaseName = "sn-cli"
-		distributionClassifier = "${osdetector.classifier}"
+		distributionClassifier = getOsName() + '-' + getArchName()
 		contents {
 			from(tasks.named("nativeCompile")) {
 				into('/')
