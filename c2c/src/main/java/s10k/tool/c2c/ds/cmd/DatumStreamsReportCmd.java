@@ -538,7 +538,7 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 	}
 
 	private SortedMap<Long, CloudDatumStreamConfiguration> allDatumStreams(RestClient restClient) {
-		return listCloudDatumStreams(restClient, objectMapper).stream()
+		return listCloudDatumStreams(restClient, objectMapper, null).stream()
 				.collect(toMap(CloudDatumStreamConfiguration::configId, identity(), (_, n) -> n, TreeMap::new));
 	}
 
@@ -554,4 +554,5 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 						mapping(Function.identity(), toMap(t -> Period.parse(t.offset()), identity(), (_, n) -> n,
 								() -> new TreeMap<>(CloudIntegrationsUtils::comparePeriods)))));
 	}
+
 }

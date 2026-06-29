@@ -9,6 +9,7 @@ import s10k.tool.common.cmd.BaseSubCmd;
  */
 // @formatter:off
 @Command(name = "rake-tasks", aliases = "rakes", subcommands = {
+		CreateTasksCmd.class,
 		ListTasksCmd.class,
 })
 // @formatter:on

@@ -107,6 +107,16 @@ public abstract class BaseSubCmd<P extends ProfileProvider> implements ProfilePr
 	}
 
 	/**
+	 * Get the "dry run" mode.
+	 * 
+	 * @return {@code true} if a dry run is desired
+	 */
+	protected boolean isDryRun() {
+		final ToolCmd cmd = toolCmd();
+		return (cmd != null ? cmd.isDryRun() : false);
+	}
+
+	/**
 	 * Get a REST client.
 	 * 
 	 * @return the client

@@ -20,6 +20,7 @@ base {
 
 dependencies {
 	implementation project(':sn-cli-common')
+	implementation project(':sn-cli-nodes')
 	
 	// Core
 	implementation "info.picocli:picocli:${picoCliVersion}"

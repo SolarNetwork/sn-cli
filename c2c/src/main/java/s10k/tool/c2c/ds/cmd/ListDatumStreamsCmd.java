@@ -22,8 +22,10 @@ import com.github.freva.asciitable.Column;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.c2c.domain.CloudDatumStreamConfiguration;
+import s10k.tool.c2c.domain.CloudIntegrationsFilter;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
+import s10k.tool.common.util.RestUtils;
 import s10k.tool.common.util.TableUtils;
 
 /**
@@ -34,6 +36,13 @@ import s10k.tool.common.util.TableUtils;
 public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements Callable<Integer> {
 
 	// @formatter:off
+	@Option(names = { "-stream", "--stream-id" },
+			description = "a datum stream ID to match",
+			split = "\\s*,\\s*",
+			splitSynopsisLabel = ",",
+			paramLabel = "datumStreamId")
+	Long[] datumStreamIds;
+
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data",
 			defaultValue = "PRETTY")
@@ -53,11 +62,11 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
-
+		final CloudIntegrationsFilter filter = filter();
 		try {
-			List<CloudDatumStreamConfiguration> confs = listCloudDatumStreams(restClient, objectMapper);
+			List<CloudDatumStreamConfiguration> confs = listCloudDatumStreams(restClient, objectMapper, filter);
 			if (confs.isEmpty()) {
-				System.err.println("No sources matched your criteria.");
+				System.err.println("No datum streams matched your criteria.");
 				return 0;
 			}
 
@@ -70,6 +79,14 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 			System.err.println("Error viewing cloud datum streams: %s".formatted(e.getMessage()));
 		}
 		return 1;
+	}
+
+	private CloudIntegrationsFilter filter() {
+		final CloudIntegrationsFilter filter = new CloudIntegrationsFilter();
+		if (datumStreamIds != null && datumStreamIds.length > 0) {
+			filter.setDatumStreamIds(List.of(datumStreamIds));
+		}
+		return filter;
 	}
 
 	/**
@@ -121,13 +138,20 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 	 * 
 	 * @param restClient   the REST client
 	 * @param objectMapper the object mapper
+	 * @param filter       an optional filter
 	 * @return the result
 	 */
 	public static List<CloudDatumStreamConfiguration> listCloudDatumStreams(RestClient restClient,
-			ObjectMapper objectMapper) {
+			ObjectMapper objectMapper, CloudIntegrationsFilter filter) {
 		// @formatter:off
 		JsonNode response = restClient.get()
-			.uri("/solaruser/api/v1/sec/user/c2c/datum-streams")
+			.uri(b -> {
+				b.path("/solaruser/api/v1/sec/user/c2c/datum-streams");
+				if (filter != null ) {
+					RestUtils.populateQueryParameters(b, filter::toRequestMap);
+				}
+				return b.build();
+			})
 			.accept(MediaType.APPLICATION_JSON)
 			.retrieve()
 			.body(JsonNode.class)
