@@ -9,6 +9,7 @@ import s10k.tool.common.cmd.BaseSubCmd;
  */
 // @formatter:off
 @Command(name = "poll-tasks", aliases = "polls", subcommands = {
+		CreateTasksCmd.class,
 		ListTasksCmd.class,
 })
 // @formatter:on

@@ -3,7 +3,8 @@ title: create
 ---
 # Cloud Datum Stream Rake Task Create
 
-Create [Cloud Datum Stream Rake Task][rake-task] entities.
+Create [Cloud Datum Stream Rake Task][rake-task] entities for a set of offsets, and delete tasks
+for any other offset.
 
 ## Usage
 
@@ -20,8 +21,8 @@ s10k cloud-integrations datum-streams rake-tasks create
 | Option | Long Version | Description |
 |:-------|:-------------|:------------|
 | `-stream=` | `--stream-id=` | the datum stream ID(s) to create tasks for; if unspecified then create tasks for all available datum streams |
-| `-o=` | `--offset=` | a rake offset, in the form of an ISO 8601 period, for example `P3D` for 3 days |
-| `-t=` | `--stream-type=` | a datum stream service identifier filter; a case-insensitive sub-string match is performed against both the service identifier and the display name, for example `also` will match the AlsoEnergy type; prefix with a `!` character to **exclude** streams matching that type |
+| `-o=` | `--offset=` | a rake offset, in the form of an ISO 8601 period, for example `P3D` for 3 days; any existing rake tasks configured with any offset(s) not specified will be **deleted** |
+| `-t=` | `--stream-type=` | a datum stream service identifier filter to create tasks for; a case-insensitive sub-string match is performed against both the service identifier and the display name, for example `also` will match the AlsoEnergy type; prefix with a `!` character to **exclude** streams matching that type |
 | `-mode=` | `--display-mode=` | the format to display the data as, one of `CSV`, `JSON`, or `PRETTY`; defaults to `PRETTY` |
 
 </div>
@@ -41,7 +42,7 @@ s10k cloud-integrations datum-streams rake-tasks create
 
 ## Output
 
-A listing of matching rake tasks.
+A listing of rake tasks "action" records. Each record's action will be either **Create** or **Remove**.
 
 ## Examples
 

@@ -2,20 +2,16 @@ package s10k.tool.c2c.ds.cmd;
 
 import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
+import static s10k.tool.c2c.util.CloudIntegrationRestUtils.listCloudDatumStreams;
 import static s10k.tool.c2c.util.CloudIntegrationsUtils.datumStreamServiceLocalizedName;
-import static s10k.tool.common.util.RestUtils.checkSuccess;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.freva.asciitable.Column;
 
@@ -25,7 +21,6 @@ import s10k.tool.c2c.domain.CloudDatumStreamConfiguration;
 import s10k.tool.c2c.domain.CloudIntegrationsFilter;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
-import s10k.tool.common.util.RestUtils;
 import s10k.tool.common.util.TableUtils;
 
 /**
@@ -131,48 +126,6 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 				conf.datumStreamMappingId(),
 			};
 		// @formatter:on
-	}
-
-	/**
-	 * List cloud datum streams.
-	 * 
-	 * @param restClient   the REST client
-	 * @param objectMapper the object mapper
-	 * @param filter       an optional filter
-	 * @return the result
-	 */
-	public static List<CloudDatumStreamConfiguration> listCloudDatumStreams(RestClient restClient,
-			ObjectMapper objectMapper, CloudIntegrationsFilter filter) {
-		// @formatter:off
-		JsonNode response = restClient.get()
-			.uri(b -> {
-				b.path("/solaruser/api/v1/sec/user/c2c/datum-streams");
-				if (filter != null ) {
-					RestUtils.populateQueryParameters(b, filter::toRequestMap);
-				}
-				return b.build();
-			})
-			.accept(MediaType.APPLICATION_JSON)
-			.retrieve()
-			.body(JsonNode.class)
-			;		
-		// @formatter:on
-
-		checkSuccess(response);
-
-		List<CloudDatumStreamConfiguration> result = new ArrayList<>(response.path("data").size());
-		for (JsonNode node : response.path("data").path("results")) {
-			CloudDatumStreamConfiguration conf;
-			try {
-				conf = objectMapper.treeToValue(node, CloudDatumStreamConfiguration.class);
-			} catch (JsonProcessingException | IllegalArgumentException e) {
-				throw new IllegalStateException("Error parsing cloud datum stream list response: " + e.getMessage(), e);
-			}
-			if (conf != null) {
-				result.add(conf);
-			}
-		}
-		return result;
 	}
 
 }

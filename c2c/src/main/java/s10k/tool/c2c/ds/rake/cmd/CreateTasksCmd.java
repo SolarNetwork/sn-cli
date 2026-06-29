@@ -7,8 +7,8 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toMap;
 import static org.springframework.util.StreamUtils.nonClosing;
-import static s10k.tool.c2c.ds.cmd.ListDatumStreamsCmd.listCloudDatumStreams;
 import static s10k.tool.c2c.ds.rake.cmd.ListTasksCmd.listCloudDatumStreamRakeTasks;
+import static s10k.tool.c2c.util.CloudIntegrationRestUtils.datumStreamsOfType;
 import static s10k.tool.c2c.util.CloudIntegrationsUtils.datumStreamServiceLocalizedName;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 
@@ -22,9 +22,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.SequencedCollection;
 import java.util.Set;
@@ -65,16 +63,6 @@ import s10k.tool.nodes.domain.NodeInfo;
 @Command(name = "create", sortSynopsis = false)
 public class CreateTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable<Integer> {
 
-	/** The {@code offsets} option default value. */
-	// @formatter:off
-	private static final Period[] DEFAULT_OFFSETS = new Period[] {
-			Period.ofDays(3),
-			Period.ofDays(7),
-			Period.ofDays(14), 
-			Period.ofDays(21), 
-	};
-	// @formatter:on
-
 	// @formatter:off
 	@Option(names = { "-stream", "--stream-id" },
 			description = "a datum stream ID to create tasks for",
@@ -89,7 +77,7 @@ public class CreateTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable
 			splitSynopsisLabel = ",",
 			paramLabel = "offset",
 			defaultValue = "P3D,P7D,P14D,P21D")
-	Period[] offsets = DEFAULT_OFFSETS;
+	Period[] offsets;
 
 	@Option(names = { "-t", "--stream-type" },
 			description = """
@@ -123,7 +111,8 @@ public class CreateTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable
 			final CloudIntegrationsFilter filter = filter();
 
 			// get datum streams
-			final SortedMap<Long, CloudDatumStreamConfiguration> datumStreams = datumStreams(restClient, filter);
+			final SortedMap<Long, CloudDatumStreamConfiguration> datumStreams = datumStreamsOfType(restClient,
+					objectMapper, filter, types);
 
 			// get existing rake tasks
 			final SortedMap<Long, SortedMap<Period, CloudDatumStreamRakeTaskConfiguration>> tasks = rakeTasks(
@@ -135,7 +124,6 @@ public class CreateTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable
 
 			if (!isDryRun()) {
 				updateTasks(restClient, datumStreams, nodeTimeZones, taskActions);
-				// TODO: execute
 			}
 			if (displayMode == ResultDisplayMode.JSON) {
 				OutputUtils.writeJsonObject(objectMapper, taskActions);
@@ -155,69 +143,6 @@ public class CreateTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable
 			filter.setDatumStreamIds(List.of(datumStreamIds));
 		}
 		return filter;
-	}
-
-	private SortedMap<Long, CloudDatumStreamConfiguration> datumStreams(RestClient restClient,
-			CloudIntegrationsFilter filter) {
-		// local cache of known service identifiers to exclude
-		final Set<String> includeServiceIdents = new HashSet<>();
-		final Set<String> excludeServiceIdents = new HashSet<>();
-
-		// create lower-case copy of types for case-insensitive compare
-		final Set<String> lcIncludeTypes = new HashSet<>();
-		final Set<String> lcExcludeTypes = new HashSet<>();
-		if (types != null) {
-			for (String type : types) {
-				if (type.startsWith("!")) {
-					lcExcludeTypes.add(type.substring(1).toLowerCase(Locale.ROOT));
-				} else {
-					lcIncludeTypes.add(type.toLowerCase(Locale.ROOT));
-				}
-			}
-		}
-
-		return listCloudDatumStreams(restClient, objectMapper, filter).stream().filter(c -> {
-			if (!(lcExcludeTypes.isEmpty() && lcIncludeTypes.isEmpty())) {
-				final String serviceIdent = c.serviceIdentifier();
-				if (excludeServiceIdents.contains(serviceIdent)) {
-					return false;
-				} else if (includeServiceIdents.contains(serviceIdent)) {
-					return true;
-				}
-				for (String lcExclude : lcExcludeTypes) {
-					if (serviceIdent.contains(lcExclude)) {
-						excludeServiceIdents.add(serviceIdent);
-						return false;
-					}
-				}
-				for (String lcInclude : lcIncludeTypes) {
-					if (serviceIdent.contains(lcInclude)) {
-						includeServiceIdents.add(serviceIdent);
-						return true;
-					}
-				}
-				final String lcServiceName = datumStreamServiceLocalizedName(c.serviceIdentifier())
-						.toLowerCase(Locale.ROOT);
-				for (String lcExclude : lcExcludeTypes) {
-					if (lcServiceName.contains(lcExclude)) {
-						excludeServiceIdents.add(serviceIdent);
-						return false;
-					}
-				}
-				for (String lcInclude : lcIncludeTypes) {
-					if (lcServiceName.contains(lcInclude)) {
-						includeServiceIdents.add(serviceIdent);
-						return true;
-					}
-				}
-				if (!lcIncludeTypes.isEmpty()) {
-					excludeServiceIdents.add(serviceIdent);
-					return false;
-				}
-				includeServiceIdents.add(serviceIdent);
-			}
-			return true;
-		}).collect(toMap(CloudDatumStreamConfiguration::configId, identity(), (_, n) -> n, TreeMap::new));
 	}
 
 	private SortedMap<Long, SortedMap<Period, CloudDatumStreamRakeTaskConfiguration>> rakeTasks(RestClient restClient,

@@ -7,11 +7,11 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toMap;
 import static org.springframework.util.StreamUtils.nonClosing;
-import static s10k.tool.c2c.ds.cmd.ListDatumStreamsCmd.listCloudDatumStreams;
 import static s10k.tool.c2c.ds.poll.cmd.ListTasksCmd.listCloudDatumStreamPollTasks;
 import static s10k.tool.c2c.ds.poll.cmd.ListTasksCmd.pollTaskMessage;
 import static s10k.tool.c2c.ds.rake.cmd.ListTasksCmd.listCloudDatumStreamRakeTasks;
 import static s10k.tool.c2c.ds.rake.cmd.ListTasksCmd.rakeTaskMessage;
+import static s10k.tool.c2c.util.CloudIntegrationRestUtils.listCloudDatumStreams;
 import static s10k.tool.c2c.util.CloudIntegrationsUtils.datumStreamServiceLocalizedName;
 
 import java.io.IOException;
