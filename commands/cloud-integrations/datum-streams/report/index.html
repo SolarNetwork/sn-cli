@@ -1,0 +1,3159 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://solarnetwork.github.io/sn-cli/commands/cloud-integrations/datum-streams/report/">
+      
+      
+        <link rel="prev" href="../list/">
+      
+      
+        <link rel="next" href="../view/">
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>report - SolarNetwork CLI</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../css/sn.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="amber" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cloud-datum-stream-report" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="SolarNetwork CLI" class="md-header__button md-logo" aria-label="SolarNetwork CLI" data-md-component="logo">
+      
+  <img src="../../../../images/solarnetwork-logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SolarNetwork CLI
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              report
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="amber" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="amber" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="SolarNetwork CLI" class="md-nav__button md-logo" aria-label="SolarNetwork CLI" data-md-component="logo">
+      
+  <img src="../../../../images/solarnetwork-logo.svg" alt="logo">
+
+    </a>
+    SolarNetwork CLI
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Install
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../profiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Profiles
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../global-options/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Global options
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../logging/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Logging
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Commands
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Commands
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    cloud-integrations
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            cloud-integrations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    datum-streams
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_2_2" id="__nav_5_2_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            datum-streams
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    list
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    report
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    report
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Output
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#report-file-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Report file output
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../view/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    view
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../poll-tasks/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    poll-tasks
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_2_2_5" id="__nav_5_2_2_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_5_2_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            poll-tasks
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../poll-tasks/create/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    create
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../poll-tasks/list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    list
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2_2_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../rake-tasks/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    rake-tasks
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_2_2_6" id="__nav_5_2_2_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_5_2_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            rake-tasks
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rake-tasks/create/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    create
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rake-tasks/list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    list
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../integrations/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    integrations
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_2_3" id="__nav_5_2_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            integrations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integrations/list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    list
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../datum/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    datum
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            datum
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../datum/list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    list
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_3_3" id="__nav_5_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    stream
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            stream
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../datum/stream/ids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ids
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../datum/stream/list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    list
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../datum/stream/rename/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    rename
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../datum/stream/view/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    view
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../flux/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    flux
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            flux
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../flux/tail/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    tail
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../instructions/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    instructions
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            instructions
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../instructions/list-components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    list-components
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../instructions/list-controls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    list-controls
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../instructions/list-packages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    list-packages
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../instructions/list-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    list-services
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../instructions/list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    list
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../instructions/toggle-op-mode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    toggle-op-mode
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../instructions/update-state/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    update-state
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_5_9" id="__nav_5_5_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    controls
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5_9">
+            <span class="md-nav__icon md-icon"></span>
+            controls
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../instructions/controls/set-operating-state/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    set-operating-state
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../instructions/controls/set/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    set
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../instructions/controls/signal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    signal
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_5_10" id="__nav_5_5_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    settings
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5_10">
+            <span class="md-nav__icon md-icon"></span>
+            settings
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../instructions/settings/update/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    update
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../instructions/settings/view/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    view
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../nodes/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    nodes
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_6" id="__nav_5_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_6">
+            <span class="md-nav__icon md-icon"></span>
+            nodes
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../nodes/ids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ids
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../nodes/list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    list
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../nodes/sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    sources
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_6_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../nodes/certificates/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    certificates
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_6_5" id="__nav_5_6_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_6_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_6_5">
+            <span class="md-nav__icon md-icon"></span>
+            certificates
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../nodes/certificates/create/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    create
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../nodes/certificates/download/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    download
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../nodes/certificates/renew/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    renew
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../nodes/certificates/report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    report
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_6_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../nodes/meta/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    meta
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_6_6" id="__nav_5_6_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_6_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_6_6">
+            <span class="md-nav__icon md-icon"></span>
+            meta
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../nodes/meta/csv-get/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    csv-get
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../nodes/meta/csv-set/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    csv-set
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../nodes/meta/delete/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    delete
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../nodes/meta/list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    list
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../nodes/meta/save/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    save
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_7" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../sec-tokens/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    sec-tokens
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_7" id="__nav_5_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_7">
+            <span class="md-nav__icon md-icon"></span>
+            sec-tokens
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sec-tokens/create/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    create
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sec-tokens/delete/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    delete
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sec-tokens/list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    list
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sec-tokens/update/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    update
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Output
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#report-file-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Report file output
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="cloud-datum-stream-report">Cloud Datum Stream Report<a class="headerlink" href="#cloud-datum-stream-report" title="Permanent link">&para;</a></h1>
+<p>Generate an operational report on <a href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarUser-Cloud-Integrations-API#cloud-datum-stream">Cloud Datum Stream</a> poll and rake task status.</p>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>s10k cloud-integrations datum-streams list [-mode=&lt;displayMode&gt;]
+</code></pre></div>
+<div class="options-explicit-col-widths">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Option</th>
+<th style="text-align: left;">Long Version</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>-mode=</code></td>
+<td style="text-align: left;"><code>--display-mode=</code></td>
+<td style="text-align: left;">the format to display the data as, one of <code>CSV</code>, <code>JSON</code>, or <code>PRETTY</code>; defaults to <code>PRETTY</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="output">Output<a class="headerlink" href="#output" title="Permanent link">&para;</a></h2>
+<p>A report with several sections on the operational status of datum streams will be generated:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Section</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Overall</strong></td>
+<td style="text-align: left;">Total number of warnings found overall, for poll tasks, and for rake tasks.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Missing poll tasks</strong></td>
+<td style="text-align: left;">List of datum streams that have no associated poll task configured.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Missing rake tasks</strong></td>
+<td style="text-align: left;">List of datum streams that have no associated rake tasks configured.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Poll Tasks: stopped</strong></td>
+<td style="text-align: left;">List of poll tasks in the <code>Completed</code> state, meaning they are not scheduled to run.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Poll Tasks: failing</strong></td>
+<td style="text-align: left;">List of poll tasks that are still running, but have failed to acquire datum due to an error.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Poll Tasks: lagging</strong></td>
+<td style="text-align: left;">List of rake tasks that are still running, but the point in time they are acquiring datum at is lagging behind the current date.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Rake Tasks: stopped</strong></td>
+<td style="text-align: left;">List of rake tasks in the <code>Completed</code> state, meaning they are not scheduled to run.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Rake Tasks: failing</strong></td>
+<td style="text-align: left;">List of rake tasks that are still running, but have failed to acquire datum due to an error.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Rake Tasks: lagging</strong></td>
+<td style="text-align: left;">List of rake tasks that are still running, but the point in time they are acquiring datum at is lagging behind the current date.</td>
+</tr>
+</tbody>
+</table>
+<p>If no warnings are found, no output will be generated and a message to that effect will be output instead.</p>
+<h3 id="report-file-output">Report file output<a class="headerlink" href="#report-file-output" title="Permanent link">&para;</a></h3>
+<p>The <code>--directory</code> option can be used to save the report output into files. The files generated
+depend on the <code>--display-mode</code> option.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">CSV/PRETTY file output</label><label for="__tabbed_1_2">JSON file output</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Individual files will be generated for each report section with warnings, and will be named like the following
+table, using <code>.csv</code> or <code>.txt</code> file name extensions based on the mode:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Section</th>
+<th style="text-align: left;">File name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Overall</strong></td>
+<td style="text-align: left;"><code>datum-stream-overall-report.*</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Missing poll tasks</strong></td>
+<td style="text-align: left;"><code>datum-stream-poll-task-missing-report.*</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Missing rake tasks</strong></td>
+<td style="text-align: left;"><code>datum-stream-rake-task-missing-report.*</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Poll Tasks: stopped</strong></td>
+<td style="text-align: left;"><code>datum-stream-poll-task-stopped-report.*</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Poll Tasks: failing</strong></td>
+<td style="text-align: left;"><code>datum-stream-poll-task-failing-report.*</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Poll Tasks: lagging</strong></td>
+<td style="text-align: left;"><code>datum-stream-poll-task-lagging-report.*</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Rake Tasks: stopped</strong></td>
+<td style="text-align: left;"><code>datum-stream-rake-task-stopped-report.*</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Rake Tasks: failing</strong></td>
+<td style="text-align: left;"><code>datum-stream-rake-task-failing-report.*</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Rake Tasks: lagging</strong></td>
+<td style="text-align: left;"><code>datum-stream-rake-task-lagging-report.*</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tabbed-block">
+<p>A single JSON file named <code>datum-stream-report.json</code> will be generated that contains all report sections
+with warnings.</p>
+</div>
+</div>
+</div>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:5"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><input id="__tabbed_2_4" name="__tabbed_2" type="radio" /><input id="__tabbed_2_5" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Generate datum stream report</label><label for="__tabbed_2_2">Generate datum stream report (shortcut)</label><label for="__tabbed_2_3">Pretty Output</label><label for="__tabbed_2_4">CSV Output</label><label for="__tabbed_2_5">JSON Output</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>cloud-integrations<span class="w"> </span>datum-streams<span class="w"> </span>report
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>You can use <code>c2c</code> instead of <code>cloud-integrations</code> and <code>ds</code> instead of <code>datum-streams</code>:</p>
+<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>c2c<span class="w"> </span>ds<span class="w"> </span>report
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>+--------------------+---------------+-----------------+--------------------+-----------------+--------------------+
+| Datum Stream Count | Warning Count | Poll Task Count | Poll Warning Count | Rake Task Count | Rake Warning Count |
++--------------------+---------------+-----------------+--------------------+-----------------+--------------------+
+|                504 |            13 |             504 |                  6 |             173 |                  7 |
++--------------------+---------------+-----------------+--------------------+-----------------+--------------------+
+
+Datum Streams Missing Rake Task:
++-----------------+--------------------------+-----------+---------------------+---------+------+----------------+------------+
+| Datum Stream ID | Datum Stream Type        | Object ID | Source ID           | Enabled | Kind | Schedule       | Mapping ID |
++-----------------+--------------------------+-----------+---------------------+---------+------+----------------+------------+
+|            1004 | eGauge                   |       456 | /S1F2/S1/B4/GEN/100 | true    | n    | 0 0/30 * * * * |        500 |
+|                 |                          |           | /S1F2/S1/B4/INV/1   |         |      |                |            |
++-----------------+--------------------------+-----------+---------------------+---------+------+----------------+------------+
+
+Poll Tasks Stopped:
++-----------------+-------------------+-----------+---------------------+-------+-------------+-----------------------------+----------------------+--------------------------------------------------------------------------------+
+| Datum Stream ID | Datum Stream Type | Object ID | Source ID           | State | Error Count | State                       | Start At             | Message                                                                        |
++-----------------+-------------------+-----------+---------------------+-------+-------------+-----------------------------+----------------------+--------------------------------------------------------------------------------+
+|            1000 | Enphase           |       123 | /S1F2/S1/B1/GEN/100 | c     |        7200 | 2026-06-28T17:50:21.376540Z | 2026-06-18T00:15:00Z | Error executing poll task. 429 Too Many Requests on GET request for            |
+|                 |                   |           | /S1F2/S1/B1/INV/1   |       |             |                             |                      | &quot;https://api.enphaseenergy.com/api/v4/systems/4000000/telemetry/production_mic |
+|                 |                   |           |                     |       |             |                             |                      | ro&quot;: &quot;{&quot;message&quot;:&quot;Too Many Requests&quot;,&quot;details&quot;:&quot;Usage limit exceeded for plan  |
+|                 |                   |           |                     |       |             |                             |                      | Kilowatt&quot;,&quot;code&quot;:429}&quot;                                                         |
++-----------------+-------------------+-----------+---------------------+-------+-------------+-----------------------------+----------------------+--------------------------------------------------------------------------------+
+|            1001 | Enphase           |       234 | /S1F2/S1/B2/GEN/100 | c     |        7200 | 2026-06-28T16:55:40.569604Z | 2026-06-18T00:15:00Z | Error executing poll task. 429 Too Many Requests on GET request for            |
+|                 |                   |           | /S1F2/S1/B2/INV/1   |       |             |                             |                      | &quot;https://api.enphaseenergy.com/api/v4/systems/4000001/telemetry/production_mic |
+|                 |                   |           |                     |       |             |                             |                      | ro&quot;: &quot;{&quot;message&quot;:&quot;Too Many Requests&quot;,&quot;details&quot;:&quot;Usage limit exceeded for plan  |
+|                 |                   |           |                     |       |             |                             |                      | Kilowatt&quot;,&quot;code&quot;:429}&quot;                                                         |
++-----------------+-------------------+-----------+---------------------+-------+-------------+-----------------------------+----------------------+--------------------------------------------------------------------------------+
+
+Poll Tasks Failing:
++-----------------+-------------------+-----------+---------------------+-------+-------------+-----------------------------+----------------------+--------------------------------------------------------------------------------+
+| Datum Stream ID | Datum Stream Type | Object ID | Source ID           | State | Error Count | State                       | Start At             | Message                                                                        |
++-----------------+-------------------+-----------+---------------------+-------+-------------+-----------------------------+----------------------+--------------------------------------------------------------------------------+
+|            1002 | Enphase           |       345 | /S1F2/S1/B3/GEN/100 | q     |        7134 | 2026-06-28T19:25:24.609142Z | 2026-06-18T02:45:00Z | Error executing poll task. 429 Too Many Requests on GET request for            |
+|                 |                   |           | /S1F2/S1/B3/INV/1   |       |             |                             |                      | &quot;https://api.enphaseenergy.com/api/v4/systems/4000002/telemetry/production_mic |
+|                 |                   |           |                     |       |             |                             |                      | ro&quot;: &quot;{&quot;message&quot;:&quot;Too Many Requests&quot;,&quot;details&quot;:&quot;Usage limit exceeded for plan  |
+|                 |                   |           |                     |       |             |                             |                      | Kilowatt&quot;,&quot;code&quot;:429}&quot;                                                         |
++-----------------+-------------------+-----------+---------------------+-------+-------------+-----------------------------+----------------------+--------------------------------------------------------------------------------+
+
+Poll Tasks Lagging:
++-----------------+-------------------+-----------+---------------------+-------+-------------+-----------------------------+----------------------+--------------------------------------------------------------------------------+
+| Datum Stream ID | Datum Stream Type | Object ID | Source ID           | State | Error Count | State                       | Start At             | Message                                                                        |
++-----------------+-------------------+-----------+---------------------+-------+-------------+-----------------------------+----------------------+--------------------------------------------------------------------------------+
+|            1000 | Enphase           |       123 | /S1F2/S1/B1/GEN/100 | c     |        7200 | 2026-06-28T17:50:21.376540Z | 2026-06-18T00:15:00Z | Error executing poll task. 429 Too Many Requests on GET request for            |
+|                 |                   |           | /S1F2/S1/B1/INV/1   |       |             |                             |                      | &quot;https://api.enphaseenergy.com/api/v4/systems/4000000/telemetry/production_mic |
+|                 |                   |           |                     |       |             |                             |                      | ro&quot;: &quot;{&quot;message&quot;:&quot;Too Many Requests&quot;,&quot;details&quot;:&quot;Usage limit exceeded for plan  |
+|                 |                   |           |                     |       |             |                             |                      | Kilowatt&quot;,&quot;code&quot;:429}&quot;                                                         |
++-----------------+-------------------+-----------+---------------------+-------+-------------+-----------------------------+----------------------+--------------------------------------------------------------------------------+
+|            1001 | Enphase           |       234 | /S1F2/S1/B2/GEN/100 | c     |        7200 | 2026-06-28T16:55:40.569604Z | 2026-06-18T00:15:00Z | Error executing poll task. 429 Too Many Requests on GET request for            |
+|                 |                   |           | /S1F2/S1/B2/INV/1   |       |             |                             |                      | &quot;https://api.enphaseenergy.com/api/v4/systems/4000001/telemetry/production_mic |
+|                 |                   |           |                     |       |             |                             |                      | ro&quot;: &quot;{&quot;message&quot;:&quot;Too Many Requests&quot;,&quot;details&quot;:&quot;Usage limit exceeded for plan  |
+|                 |                   |           |                     |       |             |                             |                      | Kilowatt&quot;,&quot;code&quot;:429}&quot;                                                         |
++-----------------+-------------------+-----------+---------------------+-------+-------------+-----------------------------+----------------------+--------------------------------------------------------------------------------+
+|            1002 | Enphase           |       345 | /S1F2/S1/B3/GEN/100 | q     |        7134 | 2026-06-28T19:25:24.609142Z | 2026-06-18T02:45:00Z | Error executing poll task. 429 Too Many Requests on GET request for            |
+|                 |                   |           | /S1F2/S1/B3/INV/1   |       |             |                             |                      | &quot;https://api.enphaseenergy.com/api/v4/systems/4000002/telemetry/production_mic |
+|                 |                   |           |                     |       |             |                             |                      | ro&quot;: &quot;{&quot;message&quot;:&quot;Too Many Requests&quot;,&quot;details&quot;:&quot;Usage limit exceeded for plan  |
+|                 |                   |           |                     |       |             |                             |                      | Kilowatt&quot;,&quot;code&quot;:429}&quot;                                                         |
++-----------------+-------------------+-----------+---------------------+-------+-------------+-----------------------------+----------------------+--------------------------------------------------------------------------------+
+
+Rake Tasks Stopped:
++-----------------+-------------------+-----------+---------------------+---------+-------+-------------+----------------------+--------+--------------------------------------------------------------------------------+
+| Datum Stream ID | Datum Stream Type | Object ID | Source ID           | Task ID | State | Error Count | Execute At           | Offset | Message                                                                        |
++-----------------+-------------------+-----------+---------------------+---------+-------+-------------+----------------------+--------+--------------------------------------------------------------------------------+
+|            1000 | Enphase           |       123 | /S1F2/S1/B1/GEN/100 |     111 | c     |          51 | 2026-06-21T16:00:00Z | P7D    | Error executing rake task. Giving up [List system inverter data] after 1 try;  |
+|                 |                   |           | /S1F2/S1/B1/INV/1   |         |       |             |                      |        | last exception: List system inverter data failed because an invalid HTTP       |
+|                 |                   |           |                     |         |       |             |                      |        | status was returned: 429 TOO_MANY_REQUESTS                                     |
++-----------------+-------------------+-----------+---------------------+---------+-------+-------------+----------------------+--------+--------------------------------------------------------------------------------+
+|            1001 | Enphase           |       234 | /S1F2/S1/B2/GEN/100 |     222 | c     |          51 | 2026-06-21T16:00:00Z | P7D    | Error executing rake task. Giving up [List system inverter data] after 1 try;  |
+|                 |                   |           | /S1F2/S1/B2/INV/1   |         |       |             |                      |        | last exception: List system inverter data failed because an invalid HTTP       |
+|                 |                   |           |                     |         |       |             |                      |        | status was returned: 429 TOO_MANY_REQUESTS                                     |
++-----------------+-------------------+-----------+---------------------+---------+-------+-------------+----------------------+--------+--------------------------------------------------------------------------------+
+
+Rake Tasks Failing:
++-----------------+-------------------+-----------+---------------------+---------+-------+-------------+----------------------+--------+--------------------------------------------------------------------------------+
+| Datum Stream ID | Datum Stream Type | Object ID | Source ID           | Task ID | State | Error Count | Execute At           | Offset | Message                                                                        |
++-----------------+-------------------+-----------+---------------------+---------+-------+-------------+----------------------+--------+--------------------------------------------------------------------------------+
+|            1002 | Enphase           |       345 | /S1F2/S1/B3/GEN/100 |     333 | q     |          23 | 2026-06-29T04:00:00Z | P7D    | Error executing rake task. Giving up [List system inverter data] after 1 try;  |
+|                 |                   |           | /S1F2/S1/B3/INV/1   |         |       |             |                      |        | last exception: List system inverter data failed because an invalid HTTP       |
+|                 |                   |           |                     |         |       |             |                      |        | status was returned: 429 TOO_MANY_REQUESTS                                     |
++-----------------+-------------------+-----------+---------------------+---------+-------+-------------+----------------------+--------+--------------------------------------------------------------------------------+
+
+Rake Tasks Lagging:
++-----------------+-------------------+-----------+---------------------+---------+-------+-------------+----------------------+--------+--------------------------------------------------------------------------------+
+| Datum Stream ID | Datum Stream Type | Object ID | Source ID           | Task ID | State | Error Count | Execute At           | Offset | Message                                                                        |
++-----------------+-------------------+-----------+---------------------+---------+-------+-------------+----------------------+--------+--------------------------------------------------------------------------------+
+|            1000 | Enphase           |       123 | /S1F2/S1/B1/GEN/100 |     111 | c     |          51 | 2026-06-21T16:00:00Z | P7D    | Error executing rake task. Giving up [List system inverter data] after 1 try;  |
+|                 |                   |           | /S1F2/S1/B1/INV/1   |         |       |             |                      |        | last exception: List system inverter data failed because an invalid HTTP       |
+|                 |                   |           |                     |         |       |             |                      |        | status was returned: 429 TOO_MANY_REQUESTS                                     |
++-----------------+-------------------+-----------+---------------------+---------+-------+-------------+----------------------+--------+--------------------------------------------------------------------------------+
+|            1001 | Enphase           |       234 | /S1F2/S1/B2/GEN/100 |     222 | c     |          51 | 2026-06-21T16:00:00Z | P7D    | Error executing rake task. Giving up [List system inverter data] after 1 try;  |
+|                 |                   |           | /S1F2/S1/B2/INV/1   |         |       |             |                      |        | last exception: List system inverter data failed because an invalid HTTP       |
+|                 |                   |           |                     |         |       |             |                      |        | status was returned: 429 TOO_MANY_REQUESTS                                     |
++-----------------+-------------------+-----------+---------------------+---------+-------+-------------+----------------------+--------+--------------------------------------------------------------------------------+
+|            1002 | Enphase           |       345 | /S1F2/S1/B3/GEN/100 |     333 | q     |          23 | 2026-06-21T04:00:00Z | P7D    | Error executing rake task. Giving up [List system inverter data] after 1 try;  |
+|                 |                   |           | /S1F2/S1/B3/INV/1   |         |       |             |                      |        | last exception: List system inverter data failed because an invalid HTTP       |
+|                 |                   |           |                     |         |       |             |                      |        | status was returned: 429 TOO_MANY_REQUESTS                                     |
++-----------------+-------------------+-----------+---------------------+---------+-------+-------------+----------------------+--------+--------------------------------------------------------------------------------+
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>Datum Stream Count,Warning Count,Poll Task Count,Poll Warning Count,Rake Task Count,Rake Warning Count
+504,12,504,6,173,6
+
+Datum Streams Missing Rake Task:
+Datum Stream ID,Datum Stream Type,Object ID,Source ID,Enabled,Kind,Schedule,Mapping ID
+1004,eGauge,456,&quot;/S1F2/S1/B4/GEN/100
+/S1F2/S1/B4/INV/1&quot;,true,n,0 0/30 * * * *,500
+
+Poll Tasks Stopped:
+Datum Stream ID,Datum Stream Type,Object ID,Source ID,State,Error Count,State,Start At,Message
+1000,Enphase,123,&quot;/S1F2/S1/B1/GEN/100
+/S1F2/S1/B1/INV/1&quot;,c,7200,2026-06-28T17:50:21.376540Z,2026-06-18T00:15:00Z,&quot;Error executing poll task. 429 Too Many Requests on GET request for &quot;&quot;https://api.enphaseenergy.com/api/v4/systems/4000000/telemetry/production_micro&quot;&quot;: &quot;&quot;{&quot;&quot;message&quot;&quot;:&quot;&quot;Too Many Requests&quot;&quot;,&quot;&quot;details&quot;&quot;:&quot;&quot;Usage limit exceeded for plan Kilowatt&quot;&quot;,&quot;&quot;code&quot;&quot;:429}&quot;&quot;&quot;
+1001,Enphase,234,&quot;/0257/S1/G1/GEN/100
+/0257/S1/G1/INV/100&quot;,c,7200,2026-06-28T19:28:49.383846Z,2026-06-18T01:00:00Z,&quot;Error executing poll task. 429 Too Many Requests on GET request for &quot;&quot;https://api.enphaseenergy.com/api/v4/systems/4000001/telemetry/production_micro&quot;&quot;: &quot;&quot;{&quot;&quot;message&quot;&quot;:&quot;&quot;Too Many Requests&quot;&quot;,&quot;&quot;details&quot;&quot;:&quot;&quot;Usage limit exceeded for plan Kilowatt&quot;&quot;,&quot;&quot;code&quot;&quot;:429}&quot;&quot;&quot;
+
+Poll Tasks Failing:
+Datum Stream ID,Datum Stream Type,Object ID,Source ID,State,Error Count,State,Start At,Message
+1003,Enphase,345,&quot;/S1F2/S1/B3/GEN/100
+/S1F2/S1/B3/INV/1&quot;,c,7132,2026-06-28T17:50:21.376540Z,2026-06-18T00:15:00Z,&quot;Error executing poll task. 429 Too Many Requests on GET request for &quot;&quot;https://api.enphaseenergy.com/api/v4/systems/4000002/telemetry/production_micro&quot;&quot;: &quot;&quot;{&quot;&quot;message&quot;&quot;:&quot;&quot;Too Many Requests&quot;&quot;,&quot;&quot;details&quot;&quot;:&quot;&quot;Usage limit exceeded for plan Kilowatt&quot;&quot;,&quot;&quot;code&quot;&quot;:429}&quot;&quot;&quot;
+
+Poll Tasks Lagging:
+Datum Stream ID,Datum Stream Type,Object ID,Source ID,State,Error Count,State,Start At,Message
+1000,Enphase,123,&quot;/S1F2/S1/B1/GEN/100
+/S1F2/S1/B1/INV/1&quot;,c,7200,2026-06-28T17:50:21.376540Z,2026-06-18T00:15:00Z,&quot;Error executing poll task. 429 Too Many Requests on GET request for &quot;&quot;https://api.enphaseenergy.com/api/v4/systems/4000000/telemetry/production_micro&quot;&quot;: &quot;&quot;{&quot;&quot;message&quot;&quot;:&quot;&quot;Too Many Requests&quot;&quot;,&quot;&quot;details&quot;&quot;:&quot;&quot;Usage limit exceeded for plan Kilowatt&quot;&quot;,&quot;&quot;code&quot;&quot;:429}&quot;&quot;&quot;
+1001,Enphase,234,&quot;/0257/S1/G1/GEN/100
+/0257/S1/G1/INV/1&quot;,c,7200,2026-06-28T19:28:49.383846Z,2026-06-18T01:00:00Z,&quot;Error executing poll task. 429 Too Many Requests on GET request for &quot;&quot;https://api.enphaseenergy.com/api/v4/systems/4000001/telemetry/production_micro&quot;&quot;: &quot;&quot;{&quot;&quot;message&quot;&quot;:&quot;&quot;Too Many Requests&quot;&quot;,&quot;&quot;details&quot;&quot;:&quot;&quot;Usage limit exceeded for plan Kilowatt&quot;&quot;,&quot;&quot;code&quot;&quot;:429}&quot;&quot;&quot;
+1003,Enphase,345,&quot;/S1F2/S1/B3/GEN/100
+/S1F2/S1/B3/INV/1&quot;,c,7132,2026-06-28T17:50:21.376540Z,2026-06-18T00:15:00Z,&quot;Error executing poll task. 429 Too Many Requests on GET request for &quot;&quot;https://api.enphaseenergy.com/api/v4/systems/4000002/telemetry/production_micro&quot;&quot;: &quot;&quot;{&quot;&quot;message&quot;&quot;:&quot;&quot;Too Many Requests&quot;&quot;,&quot;&quot;details&quot;&quot;:&quot;&quot;Usage limit exceeded for plan Kilowatt&quot;&quot;,&quot;&quot;code&quot;&quot;:429}&quot;&quot;&quot;
+
+Rake Tasks Stopped:
+Datum Stream ID,Datum Stream Type,Object ID,Source ID,Task ID,State,Error Count,Execute At,Offset,Message
+1000,Enphase,123,&quot;/S1F2/S1/B1/GEN/100
+/S1F2/S1/B1/INV/1&quot;,111,c,51,2026-06-21T16:00:00Z,P7D,Error executing rake task. Giving up [List system inverter data] after 1 try; last exception: List system inverter data failed because an invalid HTTP status was returned: 429 TOO_MANY_REQUESTS
+1001,Enphase,234,&quot;/S1F2/S1/B2/GEN/100
+/S1F2/S1/B2/INV/1&quot;,222,c,51,2026-06-21T16:00:00Z,P7D,Error executing rake task. Giving up [List system inverter data] after 1 try; last exception: List system inverter data failed because an invalid HTTP status was returned: 429 TOO_MANY_REQUESTS
+
+Rake Tasks Failing:
+Datum Stream ID,Datum Stream Type,Object ID,Source ID,Task ID,State,Error Count,Execute At,Offset,Message
+1003,Enphase,345,&quot;/S1F2/S1/B3/GEN/100
+/S1F2/S1/B3/INV/1&quot;,333,c,23,2026-06-21T16:00:00Z,P7D,Error executing rake task. Giving up [List system inverter data] after 1 try; last exception: List system inverter data failed because an invalid HTTP status was returned: 429 TOO_MANY_REQUESTS
+
+Rake Tasks Lagging:
+Datum Stream ID,Datum Stream Type,Object ID,Source ID,Task ID,State,Error Count,Execute At,Offset,Message
+1000,Enphase,123,&quot;/S1F2/S1/B1/GEN/100
+/S1F2/S1/B1/INV/1&quot;,111,c,51,2026-06-21T16:00:00Z,P7D,Error executing rake task. Giving up [List system inverter data] after 1 try; last exception: List system inverter data failed because an invalid HTTP status was returned: 429 TOO_MANY_REQUESTS
+1001,Enphase,234,&quot;/S1F2/S1/B2/GEN/100
+/S1F2/S1/B2/INV/1&quot;,222,c,51,2026-06-21T16:00:00Z,P7D,Error executing rake task. Giving up [List system inverter data] after 1 try; last exception: List system inverter data failed because an invalid HTTP status was returned: 429 TOO_MANY_REQUESTS
+1003,Enphase,345,&quot;/S1F2/S1/B3/GEN/100
+/S1F2/S1/B3/INV/1&quot;,333,c,23,2026-06-21T16:00:00Z,P7D,Error executing rake task. Giving up [List system inverter data] after 1 try; last exception: List system inverter data failed because an invalid HTTP status was returned: 429 TOO_MANY_REQUESTS
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;datumStreamCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">504</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;warningCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;datumStreamsWithWarnings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;1000&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;S1-R1&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;serviceIdentifier&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s10k.c2c.ds.enphase&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-06-06 02:33:16.601642Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-06-06 02:33:16.601642Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;datumStreamMappingId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;schedule&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0 0/30 * * * *&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;n&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;objectId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;sourceId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;unused&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;serviceProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;sourceIdMap&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;/4000000/inv/sys&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/S1F2/S1/B1/INV/1&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;/4000000/met/sys&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/S1F2/S1/B1/GEN/100&quot;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;1001&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1001</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;S1-R2&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;serviceIdentifier&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s10k.c2c.ds.enphase&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-06-06 02:34:31.430303Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-06-06 02:34:31.430303Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;datumStreamMappingId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;schedule&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0 5/30 * * * *&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;n&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;objectId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">234</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;sourceId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;unused&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;serviceProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;sourceIdMap&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;/4000001/inv/sys&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/S1F2/S1/B2/INV/1&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;/4000001/met/sys&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/S1F2/S1/B2/GEN/100&quot;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;1002&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1002</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;S1-R3&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;serviceIdentifier&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s10k.c2c.ds.enphase&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-06-06 02:36:18.102657Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-06-06 02:36:18.102657Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;datumStreamMappingId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;schedule&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0 5/30 * * * *&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;n&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;objectId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">345</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;sourceId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;unused&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;serviceProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;sourceIdMap&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;/4000002/inv/sys&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/S1F2/S1/B3/INV/1&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;/4000002/met/sys&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/S1F2/S1/B3/GEN/100&quot;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;1003&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1003</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;S1-R4&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;serviceIdentifier&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s10k.c2c.ds.egauge&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-05-14 14:03:29.58754Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-05-14 14:32:23.129981Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;datumStreamMappingId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;schedule&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0 0/30 * * * *&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;n&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;objectId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">456</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;sourceId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/S1F2/S1/B4/GEN/100&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;serviceProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;deviceId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;egauge00000&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{SSHA-256}abcdef0123456789RyU1imCzjJjnJ2r4zu8v0mfgYOZG6vN0Q==&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;owner&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;virtualSourceIds&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                    </span><span class="s2">&quot;/S1F2/S1/B4INV/1&quot;</span>
+<span class="w">                </span><span class="p">]</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;pollTasks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;taskCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">504</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;warningCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;stoppedTasks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;1000&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;datumStreamId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;c&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;executeAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-28 17:50:21.37654Z&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;startAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-18 00:15:00Z&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Error executing poll task.&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;serviceProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;429 Too Many Requests on GET request for \&quot;https://api.enphaseenergy.com/api/v4/systems/4000000/telemetry/production_micro\&quot;: \&quot;{\&quot;message\&quot;:\&quot;Too Many Requests\&quot;,\&quot;details\&quot;:\&quot;Usage limit exceeded for plan Kilowatt\&quot;,\&quot;code\&quot;:429}\&quot;&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;errorCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">7200</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;1001&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;datumStreamId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1001</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;c&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;executeAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-28 19:28:49.383846Z&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;startAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-18 01:00:00Z&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Error executing poll task.&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;serviceProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;429 Too Many Requests on GET request for \&quot;https://api.enphaseenergy.com/api/v4/systems/4000001/telemetry/production_micro\&quot;: \&quot;{\&quot;message\&quot;:\&quot;Too Many Requests\&quot;,\&quot;details\&quot;:\&quot;Usage limit exceeded for plan Kilowatt\&quot;,\&quot;code\&quot;:429}\&quot;&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;errorCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">7200</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;errorTasks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;1002&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;datumStreamId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1002</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;q&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;executeAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-28 19:47:51.642393Z&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;startAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-18 02:45:00Z&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Error executing poll task.&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;serviceProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;429 Too Many Requests on GET request for \&quot;https://api.enphaseenergy.com/api/v4/systems/4000002/telemetry/production_micro\&quot;: \&quot;{\&quot;message\&quot;:\&quot;Too Many Requests\&quot;,\&quot;details\&quot;:\&quot;Usage limit exceeded for plan Kilowatt\&quot;,\&quot;code\&quot;:429}\&quot;&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;errorCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">7143</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;laggingTasks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;1000&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;datumStreamId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;c&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;executeAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-28 17:50:21.37654Z&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;startAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-18 00:15:00Z&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Error executing poll task.&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;serviceProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;429 Too Many Requests on GET request for \&quot;https://api.enphaseenergy.com/api/v4/systems/4000000/telemetry/production_micro\&quot;: \&quot;{\&quot;message\&quot;:\&quot;Too Many Requests\&quot;,\&quot;details\&quot;:\&quot;Usage limit exceeded for plan Kilowatt\&quot;,\&quot;code\&quot;:429}\&quot;&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;errorCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">7200</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;1001&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;datumStreamId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1001</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;c&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;executeAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-28 19:28:49.383846Z&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;startAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-18 01:00:00Z&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Error executing poll task.&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;serviceProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;429 Too Many Requests on GET request for \&quot;https://api.enphaseenergy.com/api/v4/systems/4000001/telemetry/production_micro\&quot;: \&quot;{\&quot;message\&quot;:\&quot;Too Many Requests\&quot;,\&quot;details\&quot;:\&quot;Usage limit exceeded for plan Kilowatt\&quot;,\&quot;code\&quot;:429}\&quot;&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;errorCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">7200</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;1002&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;datumStreamId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1002</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;q&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;executeAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-28 19:47:51.642393Z&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;startAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-18 02:45:00Z&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Error executing poll task.&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;serviceProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;429 Too Many Requests on GET request for \&quot;https://api.enphaseenergy.com/api/v4/systems/4000002/telemetry/production_micro\&quot;: \&quot;{\&quot;message\&quot;:\&quot;Too Many Requests\&quot;,\&quot;details\&quot;:\&quot;Usage limit exceeded for plan Kilowatt\&quot;,\&quot;code\&quot;:429}\&quot;&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;errorCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">7143</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;rakeTasks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;taskCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">173</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;warningCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;datumStreamsWithoutTasks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;1003&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1003</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;S1-R4&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;serviceIdentifier&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s10k.c2c.ds.egauge&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-05-14 14:03:29.58754Z&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-05-14 14:32:23.129981Z&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;datumStreamMappingId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;schedule&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0 0/30 * * * *&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;n&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;objectId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">456</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;sourceId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/S1F2/S1/B4/GEN/100&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;serviceProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;deviceId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;egauge00000&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{SSHA-256}abcdef0123456789RyU1imCzjJjnJ2r4zu8v0mfgYOZG6vN0Q==&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;owner&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;virtualSourceIds&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                        </span><span class="s2">&quot;/S1F2/S1/B4INV/1&quot;</span>
+<span class="w">                    </span><span class="p">]</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;stoppedTasks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;1000&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;P7D&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">111</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;datumStreamId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;c&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;executeAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-21 16:00:00Z&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;offset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;P7D&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Error executing rake task.&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;serviceProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;subId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">111</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Giving up [List system inverter data] after 1 try; last exception: List system inverter data failed because an invalid HTTP status was returned: 429 TOO_MANY_REQUESTS&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;errorCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">51</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;1001&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;P7D&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">222</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;datumStreamId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1002</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;c&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;executeAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-21 16:00:00Z&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;offset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;P7D&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Error executing rake task.&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;serviceProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;subId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">222</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Giving up [List system inverter data] after 1 try; last exception: List system inverter data failed because an invalid HTTP status was returned: 429 TOO_MANY_REQUESTS&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1001</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;errorCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">51</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;errorTasks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;1002&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;P3D&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">333</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;datumStreamId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1002</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;q&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;executeAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-29 04:00:00Z&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;offset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;P3D&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Rake task date is after poll task start.&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;serviceProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;subId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">333</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;endDate&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-26 04:00:00Z&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Giving up [List system inverter data] after 4 tries; last exception: List system inverter data failed because an invalid HTTP status was returned: 429 TOO_MANY_REQUESTS&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;startDate&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-18 00:15:00Z&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;errorCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;laggingTasks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;1000&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;P7D&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">111</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;datumStreamId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;c&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;executeAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-21 16:00:00Z&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;offset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;P7D&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Error executing rake task.&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;serviceProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;subId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">111</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Giving up [List system inverter data] after 1 try; last exception: List system inverter data failed because an invalid HTTP status was returned: 429 TOO_MANY_REQUESTS&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;errorCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">51</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;1001&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;P7D&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">222</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;datumStreamId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1002</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;c&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;executeAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-21 16:00:00Z&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;offset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;P7D&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Error executing rake task.&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;serviceProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;subId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">222</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Giving up [List system inverter data] after 1 try; last exception: List system inverter data failed because an invalid HTTP status was returned: 429 TOO_MANY_REQUESTS&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1001</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;errorCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">51</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;1002&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;P3D&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">333</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;datumStreamId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1002</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;q&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;executeAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-29 04:00:00Z&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;offset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;P3D&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Rake task date is after poll task start.&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;serviceProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;subId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">333</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;endDate&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-26 04:00:00Z&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Giving up [List system inverter data] after 4 tries; last exception: List system inverter data failed because an invalid HTTP status was returned: 429 TOO_MANY_REQUESTS&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;startDate&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-18 00:15:00Z&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;errorCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "navigation.indexes", "navigation.instant", "navigation.path", "navigation.tracking", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+        <script src="../../../../js/open_in_new_tab.js"></script>
+      
+    
+  </body>
+</html>

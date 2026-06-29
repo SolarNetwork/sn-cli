@@ -11,7 +11,7 @@
         <link rel="canonical" href="https://solarnetwork.github.io/sn-cli/commands/cloud-integrations/datum-streams/poll-tasks/list/">
       
       
-        <link rel="prev" href="../">
+        <link rel="prev" href="../create/">
       
       
         <link rel="next" href="../../rake-tasks/">
@@ -460,6 +460,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -527,6 +531,52 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../../report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    report
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../view/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    view
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -540,6 +590,8 @@
       
         
       
+        
+      
     
     
     
@@ -548,7 +600,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2_2_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2_2_5" checked>
         
           
           <div class="md-nav__link md-nav__container">
@@ -565,19 +617,42 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_2_2_3" id="__nav_5_2_2_3_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_2_2_5" id="__nav_5_2_2_5_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_5_2_2_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5_2_2_3">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_5_2_2_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_2_2_5">
             <span class="md-nav__icon md-icon"></span>
             poll-tasks
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../create/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    create
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -695,6 +770,8 @@
       
         
       
+        
+      
     
     
     
@@ -703,7 +780,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2_2_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2_2_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -720,19 +797,42 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_2_2_4" id="__nav_5_2_2_4_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_2_2_6" id="__nav_5_2_2_6_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_5_2_2_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_2_2_4">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_5_2_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2_2_6">
             <span class="md-nav__icon md-icon"></span>
             rake-tasks
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rake-tasks/create/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    create
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -2380,6 +2480,10 @@
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>s10k cloud-integrations datum-streams poll-tasks list
     [-stream=datumStreamId[,datumStreamId...]]...
+    [-node=nodeId[,nodeId...]]...
+    [-state=jobState[,jobState...]]...
+    [-M=max]
+    [-O=&lt;resultOffset&gt;]
     [-mode=&lt;displayMode&gt;]
 </code></pre></div>
 <div class="options-explicit-col-widths">
@@ -2393,14 +2497,34 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><code>-mode=</code></td>
-<td style="text-align: left;"><code>--display-mode=</code></td>
-<td style="text-align: left;">the format to display the data as, one of <code>CSV</code>, <code>JSON</code>, or <code>PRETTY</code>; defaults to <code>PRETTY</code></td>
-</tr>
-<tr>
 <td style="text-align: left;"><code>-stream=</code></td>
 <td style="text-align: left;"><code>--stream-id=</code></td>
 <td style="text-align: left;">the datum stream ID(s) to show tasks for</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>-node=</code></td>
+<td style="text-align: left;"><code>--node-id=</code></td>
+<td style="text-align: left;">the node ID of datum streams to show tasks for (matching against datum stream <code>objectId</code> values)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>-state=</code></td>
+<td style="text-align: left;"><code>--job-state=</code></td>
+<td style="text-align: left;">the <a href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarUser-API-enumerated-types#claimable-job-state-type">claimable job state</a> names to show tasks for, for example <code>Queued</code> or <code>Completed</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>-M=</code></td>
+<td style="text-align: left;"><code>--max=</code></td>
+<td style="text-align: left;">the maximum number of results to return</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>-O=</code></td>
+<td style="text-align: left;"><code>--offset=</code></td>
+<td style="text-align: left;">start returning results from this offset, <code>0</code> being the first result</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>-mode=</code></td>
+<td style="text-align: left;"><code>--display-mode=</code></td>
+<td style="text-align: left;">the format to display the data as, one of <code>CSV</code>, <code>JSON</code>, or <code>PRETTY</code>; defaults to <code>PRETTY</code></td>
 </tr>
 </tbody>
 </table>

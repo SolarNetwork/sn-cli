@@ -8,28 +8,28 @@
       
       
       
-        <link rel="canonical" href="https://solarnetwork.github.io/sn-cli/commands/instructions/list-packages/">
+        <link rel="canonical" href="https://solarnetwork.github.io/sn-cli/commands/cloud-integrations/datum-streams/view/">
       
       
-        <link rel="prev" href="../list-controls/">
+        <link rel="prev" href="../report/">
       
       
-        <link rel="next" href="../list-services/">
+        <link rel="next" href="../poll-tasks/">
       
       
-      <link rel="icon" href="../../../assets/images/favicon.png">
+      <link rel="icon" href="../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
     
     
       
-        <title>list-packages - SolarNetwork CLI</title>
+        <title>view - SolarNetwork CLI</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.7e37652d.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.7e37652d.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -48,9 +48,9 @@
       
     
     
-      <link rel="stylesheet" href="../../../css/sn.css">
+      <link rel="stylesheet" href="../../../../css/sn.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#instructions-list-packages" class="md-skip">
+        <a href="#cloud-datum-stream-view" class="md-skip">
           Skip to content
         </a>
       
@@ -92,9 +92,9 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="SolarNetwork CLI" class="md-header__button md-logo" aria-label="SolarNetwork CLI" data-md-component="logo">
+    <a href="../../../.." title="SolarNetwork CLI" class="md-header__button md-logo" aria-label="SolarNetwork CLI" data-md-component="logo">
       
-  <img src="../../../images/solarnetwork-logo.svg" alt="logo">
+  <img src="../../../../images/solarnetwork-logo.svg" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -111,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              list-packages
+              view
             
           </span>
         </div>
@@ -215,9 +215,9 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="SolarNetwork CLI" class="md-nav__button md-logo" aria-label="SolarNetwork CLI" data-md-component="logo">
+    <a href="../../../.." title="SolarNetwork CLI" class="md-nav__button md-logo" aria-label="SolarNetwork CLI" data-md-component="logo">
       
-  <img src="../../../images/solarnetwork-logo.svg" alt="logo">
+  <img src="../../../../images/solarnetwork-logo.svg" alt="logo">
 
     </a>
     SolarNetwork CLI
@@ -232,7 +232,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../install/" class="md-nav__link">
+      <a href="../../../../install/" class="md-nav__link">
         
   
   
@@ -254,7 +254,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../profiles/" class="md-nav__link">
+      <a href="../../../../profiles/" class="md-nav__link">
         
   
   
@@ -276,7 +276,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../global-options/" class="md-nav__link">
+      <a href="../../../../global-options/" class="md-nav__link">
         
   
   
@@ -298,7 +298,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../logging/" class="md-nav__link">
+      <a href="../../../../logging/" class="md-nav__link">
         
   
   
@@ -352,7 +352,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../" class="md-nav__link ">
+            <a href="../../../" class="md-nav__link ">
               
   
   
@@ -384,6 +384,8 @@
                 
   
   
+    
+  
   
   
     
@@ -401,15 +403,15 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../cloud-integrations/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   
@@ -428,7 +430,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5_2">
             <span class="md-nav__icon md-icon"></span>
             cloud-integrations
@@ -441,6 +443,8 @@
                 
   
   
+    
+  
   
   
     
@@ -464,15 +468,15 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2_2" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../cloud-integrations/datum-streams/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   
@@ -491,7 +495,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_2_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_2_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5_2_2">
             <span class="md-nav__icon md-icon"></span>
             datum-streams
@@ -507,7 +511,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cloud-integrations/datum-streams/list/" class="md-nav__link">
+      <a href="../list/" class="md-nav__link">
         
   
   
@@ -530,7 +534,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cloud-integrations/datum-streams/report/" class="md-nav__link">
+      <a href="../report/" class="md-nav__link">
         
   
   
@@ -550,10 +554,32 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../cloud-integrations/datum-streams/view/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    view
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -564,6 +590,53 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Output
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -598,7 +671,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../cloud-integrations/datum-streams/poll-tasks/" class="md-nav__link ">
+            <a href="../poll-tasks/" class="md-nav__link ">
               
   
   
@@ -633,7 +706,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cloud-integrations/datum-streams/poll-tasks/create/" class="md-nav__link">
+      <a href="../poll-tasks/create/" class="md-nav__link">
         
   
   
@@ -656,7 +729,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cloud-integrations/datum-streams/poll-tasks/list/" class="md-nav__link">
+      <a href="../poll-tasks/list/" class="md-nav__link">
         
   
   
@@ -709,7 +782,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../cloud-integrations/datum-streams/rake-tasks/" class="md-nav__link ">
+            <a href="../rake-tasks/" class="md-nav__link ">
               
   
   
@@ -744,7 +817,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cloud-integrations/datum-streams/rake-tasks/create/" class="md-nav__link">
+      <a href="../rake-tasks/create/" class="md-nav__link">
         
   
   
@@ -767,7 +840,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cloud-integrations/datum-streams/rake-tasks/list/" class="md-nav__link">
+      <a href="../rake-tasks/list/" class="md-nav__link">
         
   
   
@@ -826,7 +899,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../cloud-integrations/integrations/" class="md-nav__link ">
+            <a href="../../integrations/" class="md-nav__link ">
               
   
   
@@ -861,7 +934,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cloud-integrations/integrations/list/" class="md-nav__link">
+      <a href="../../integrations/list/" class="md-nav__link">
         
   
   
@@ -922,7 +995,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../datum/" class="md-nav__link ">
+            <a href="../../../datum/" class="md-nav__link ">
               
   
   
@@ -957,7 +1030,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../datum/list/" class="md-nav__link">
+      <a href="../../../datum/list/" class="md-nav__link">
         
   
   
@@ -1028,7 +1101,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../datum/stream/ids/" class="md-nav__link">
+      <a href="../../../datum/stream/ids/" class="md-nav__link">
         
   
   
@@ -1051,7 +1124,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../datum/stream/list/" class="md-nav__link">
+      <a href="../../../datum/stream/list/" class="md-nav__link">
         
   
   
@@ -1074,7 +1147,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../datum/stream/rename/" class="md-nav__link">
+      <a href="../../../datum/stream/rename/" class="md-nav__link">
         
   
   
@@ -1097,7 +1170,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../datum/stream/view/" class="md-nav__link">
+      <a href="../../../datum/stream/view/" class="md-nav__link">
         
   
   
@@ -1156,7 +1229,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../flux/" class="md-nav__link ">
+            <a href="../../../flux/" class="md-nav__link ">
               
   
   
@@ -1191,7 +1264,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../flux/tail/" class="md-nav__link">
+      <a href="../../../flux/tail/" class="md-nav__link">
         
   
   
@@ -1219,8 +1292,6 @@
                 
   
   
-    
-  
   
   
     
@@ -1252,15 +1323,15 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../../instructions/" class="md-nav__link ">
               
   
   
@@ -1279,7 +1350,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5_5">
             <span class="md-nav__icon md-icon"></span>
             instructions
@@ -1295,7 +1366,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../list-components/" class="md-nav__link">
+      <a href="../../../instructions/list-components/" class="md-nav__link">
         
   
   
@@ -1318,7 +1389,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../list-controls/" class="md-nav__link">
+      <a href="../../../instructions/list-controls/" class="md-nav__link">
         
   
   
@@ -1338,32 +1409,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    list-packages
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../instructions/list-packages/" class="md-nav__link">
         
   
   
@@ -1374,62 +1423,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      Usage
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#options" class="md-nav__link">
-    <span class="md-ellipsis">
-      Options
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#output" class="md-nav__link">
-    <span class="md-ellipsis">
-      Output
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      Examples
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1442,7 +1435,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../list-services/" class="md-nav__link">
+      <a href="../../../instructions/list-services/" class="md-nav__link">
         
   
   
@@ -1465,7 +1458,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../list/" class="md-nav__link">
+      <a href="../../../instructions/list/" class="md-nav__link">
         
   
   
@@ -1488,7 +1481,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../toggle-op-mode/" class="md-nav__link">
+      <a href="../../../instructions/toggle-op-mode/" class="md-nav__link">
         
   
   
@@ -1511,7 +1504,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../update-state/" class="md-nav__link">
+      <a href="../../../instructions/update-state/" class="md-nav__link">
         
   
   
@@ -1580,7 +1573,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../controls/set-operating-state/" class="md-nav__link">
+      <a href="../../../instructions/controls/set-operating-state/" class="md-nav__link">
         
   
   
@@ -1603,7 +1596,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../controls/set/" class="md-nav__link">
+      <a href="../../../instructions/controls/set/" class="md-nav__link">
         
   
   
@@ -1626,7 +1619,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../controls/signal/" class="md-nav__link">
+      <a href="../../../instructions/controls/signal/" class="md-nav__link">
         
   
   
@@ -1701,7 +1694,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../settings/update/" class="md-nav__link">
+      <a href="../../../instructions/settings/update/" class="md-nav__link">
         
   
   
@@ -1724,7 +1717,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../settings/view/" class="md-nav__link">
+      <a href="../../../instructions/settings/view/" class="md-nav__link">
         
   
   
@@ -1791,7 +1784,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../nodes/" class="md-nav__link ">
+            <a href="../../../nodes/" class="md-nav__link ">
               
   
   
@@ -1826,7 +1819,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../nodes/ids/" class="md-nav__link">
+      <a href="../../../nodes/ids/" class="md-nav__link">
         
   
   
@@ -1849,7 +1842,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../nodes/list/" class="md-nav__link">
+      <a href="../../../nodes/list/" class="md-nav__link">
         
   
   
@@ -1872,7 +1865,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../nodes/sources/" class="md-nav__link">
+      <a href="../../../nodes/sources/" class="md-nav__link">
         
   
   
@@ -1921,7 +1914,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../nodes/certificates/" class="md-nav__link ">
+            <a href="../../../nodes/certificates/" class="md-nav__link ">
               
   
   
@@ -1956,7 +1949,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../nodes/certificates/create/" class="md-nav__link">
+      <a href="../../../nodes/certificates/create/" class="md-nav__link">
         
   
   
@@ -1979,7 +1972,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../nodes/certificates/download/" class="md-nav__link">
+      <a href="../../../nodes/certificates/download/" class="md-nav__link">
         
   
   
@@ -2002,7 +1995,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../nodes/certificates/renew/" class="md-nav__link">
+      <a href="../../../nodes/certificates/renew/" class="md-nav__link">
         
   
   
@@ -2025,7 +2018,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../nodes/certificates/report/" class="md-nav__link">
+      <a href="../../../nodes/certificates/report/" class="md-nav__link">
         
   
   
@@ -2084,7 +2077,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../nodes/meta/" class="md-nav__link ">
+            <a href="../../../nodes/meta/" class="md-nav__link ">
               
   
   
@@ -2119,7 +2112,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../nodes/meta/csv-get/" class="md-nav__link">
+      <a href="../../../nodes/meta/csv-get/" class="md-nav__link">
         
   
   
@@ -2142,7 +2135,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../nodes/meta/csv-set/" class="md-nav__link">
+      <a href="../../../nodes/meta/csv-set/" class="md-nav__link">
         
   
   
@@ -2165,7 +2158,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../nodes/meta/delete/" class="md-nav__link">
+      <a href="../../../nodes/meta/delete/" class="md-nav__link">
         
   
   
@@ -2188,7 +2181,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../nodes/meta/list/" class="md-nav__link">
+      <a href="../../../nodes/meta/list/" class="md-nav__link">
         
   
   
@@ -2211,7 +2204,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../nodes/meta/save/" class="md-nav__link">
+      <a href="../../../nodes/meta/save/" class="md-nav__link">
         
   
   
@@ -2276,7 +2269,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../sec-tokens/" class="md-nav__link ">
+            <a href="../../../sec-tokens/" class="md-nav__link ">
               
   
   
@@ -2311,7 +2304,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sec-tokens/create/" class="md-nav__link">
+      <a href="../../../sec-tokens/create/" class="md-nav__link">
         
   
   
@@ -2334,7 +2327,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sec-tokens/delete/" class="md-nav__link">
+      <a href="../../../sec-tokens/delete/" class="md-nav__link">
         
   
   
@@ -2357,7 +2350,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sec-tokens/list/" class="md-nav__link">
+      <a href="../../../sec-tokens/list/" class="md-nav__link">
         
   
   
@@ -2380,7 +2373,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sec-tokens/update/" class="md-nav__link">
+      <a href="../../../sec-tokens/update/" class="md-nav__link">
         
   
   
@@ -2447,15 +2440,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#options" class="md-nav__link">
-    <span class="md-ellipsis">
-      Options
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#output" class="md-nav__link">
     <span class="md-ellipsis">
       Output
@@ -2489,14 +2473,15 @@
 
 
 
-<h1 id="instructions-list-packages">Instructions List-Packages<a class="headerlink" href="#instructions-list-packages" title="Permanent link">&para;</a></h1>
-<p>List the installed and/or available software packages on a node.</p>
+<h1 id="cloud-datum-stream-view">Cloud Datum Stream View<a class="headerlink" href="#cloud-datum-stream-view" title="Permanent link">&para;</a></h1>
+<p>Show detailed information about a <a href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarUser-Cloud-Integrations-API#cloud-datum-stream">Cloud Datum Stream</a> entity, including its mapping,
+integration, and mapped property details. This is a good way to get a holistic picture of a datum
+stream.</p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>s10k instructions list-packages -node=&lt;nodeId&gt; [-filter=&lt;filter&gt;]
-                                [-s=&lt;packageStatus&gt;]
-                                [-mode=&lt;displayMode&gt;]
+<div class="highlight"><pre><span></span><code>s10k cloud-integrations datum-streams view
+    -stream=&lt;datumStreamId&gt;
+    [-mode=&lt;displayMode&gt;]
 </code></pre></div>
-<h2 id="options">Options<a class="headerlink" href="#options" title="Permanent link">&para;</a></h2>
 <div class="options-explicit-col-widths">
 <table>
 <thead>
@@ -2508,19 +2493,9 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><code>-node=</code></td>
-<td style="text-align: left;"><code>--node-id=</code></td>
-<td style="text-align: left;">the node ID to list the control IDs for</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>-filter=</code></td>
-<td style="text-align: left;"><code>--filter=</code></td>
-<td style="text-align: left;">a regular expression to apply against package names to restrict the results to; defaults to <code>^(sn-|solarnode)</code></td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>-s</code></td>
-<td style="text-align: left;"><code>--status</code></td>
-<td style="text-align: left;">the package status to restrict results to, one of <code>Installed</code>, <code>Available</code>, or <code>All</code>; defaults to <code>Installed</code></td>
+<td style="text-align: left;"><code>-stream=</code></td>
+<td style="text-align: left;"><code>--stream-id=</code></td>
+<td style="text-align: left;">the datum stream ID to show information for</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-mode=</code></td>
@@ -2531,183 +2506,159 @@
 </table>
 </div>
 <h2 id="output">Output<a class="headerlink" href="#output" title="Permanent link">&para;</a></h2>
-<p>A listing of all matching package records.</p>
+<p>Detailed information about the datum stream, including its mapped properties.</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
-<p>You can list all installed packages on a node like this:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Show installed packages</label><label for="__tabbed_1_2">Pretty output</label><label for="__tabbed_1_3">CSV output</label><label for="__tabbed_1_4">JSON output</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:5"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><input id="__tabbed_1_5" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">View datum stream</label><label for="__tabbed_1_2">View datum stream (shortcut)</label><label for="__tabbed_1_3">Pretty Output</label><label for="__tabbed_1_4">CSV Output</label><label for="__tabbed_1_5">JSON Output</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>instructions<span class="w"> </span>list-packages<span class="w"> </span>--node-id<span class="w"> </span><span class="m">101</span>
+<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>cloud-integrations<span class="w"> </span>datum-streams<span class="w"> </span>view<span class="w"> </span>--stream-id<span class="w"> </span><span class="m">1000</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>+--------------------------------------+----------+-----------+
-| Name                                 | Version  | Installed |
-+--------------------------------------+----------+-----------+
-| sn-mbpoll                            |  1.5.2-1 |      true |
-+--------------------------------------+----------+-----------+
-| sn-nftables                          |  1.1.2-1 |      true |
-+--------------------------------------+----------+-----------+
-| sn-osstat                            |  1.1.0-2 |      true |
-+--------------------------------------+----------+-----------+
-| sn-pi                                |  1.2.0-1 |      true |
-+--------------------------------------+----------+-----------+
-| sn-pi-usb-support                    |  1.2.0-1 |      true |
-+--------------------------------------+----------+-----------+
-| sn-solarpkg                          |  1.3.0-1 |      true |
-+--------------------------------------+----------+-----------+
-| sn-solarssh                          |  1.0.0-4 |      true |
-+--------------------------------------+----------+-----------+
-| sn-system                            |  1.7.1-1 |      true |
-+--------------------------------------+----------+-----------+
-| solarnode-app-control-core           |  2.1.0-1 |      true |
-+--------------------------------------+----------+-----------+
-| solarnode-app-core                   |  4.0.2-1 |      true |
-+--------------------------------------+----------+-----------+
-| solarnode-app-datumfilters           |  2.0.0-1 |      true |
-+--------------------------------------+----------+-----------+
-| solarnode-app-db-h2                  |  3.0.0-1 |      true |
-+--------------------------------------+----------+-----------+
-| solarnode-app-io-modbus              |  4.0.0-1 |      true |
-+--------------------------------------+----------+-----------+
-| solarnode-app-io-modbus-nifty-pjc    |  2.0.0-1 |      true |
-+--------------------------------------+----------+-----------+
-| solarnode-app-io-mqtt                |  5.0.0-1 |      true |
-+--------------------------------------+----------+-----------+
-| solarnode-app-io-mqtt-netty          |  5.0.0-1 |      true |
-+--------------------------------------+----------+-----------+
-| solarnode-app-modbus                 |  2.1.0-1 |      true |
-+--------------------------------------+----------+-----------+
-| solarnode-app-solarflux              |  2.0.0-1 |      true |
-+--------------------------------------+----------+-----------+
-| solarnode-base                       |  5.0.0-2 |      true |
-+--------------------------------------+----------+-----------+
+<p>You can use <code>c2c</code> instead of <code>cloud-integrations</code> and <code>ds</code> instead of <code>datum-streams</code>:</p>
+<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>c2c<span class="w"> </span>ds<span class="w"> </span>view<span class="w"> </span>--stream-id<span class="w"> </span><span class="m">1000</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>Name,Version,Installed
-sn-mbpoll,1.5.2-1,true
-sn-nftables,1.1.2-1,true
-sn-osstat,1.1.0-2,true
-sn-pi,1.2.0-1,true
-sn-pi-usb-support,1.2.0-1,true
-sn-solarpkg,1.3.0-1,true
-sn-solarssh,1.0.0-4,true
-sn-system,1.7.1-1,true
-solarnode-app-control-core,2.1.0-1,true
-solarnode-app-core,4.0.2-1,true
-solarnode-app-datumfilters,2.0.0-1,true
-solarnode-app-db-h2,3.0.0-1,true
-solarnode-app-io-modbus,4.0.0-1,true
-solarnode-app-io-modbus-nifty-pjc,2.0.0-1,true
-solarnode-app-io-mqtt,5.0.0-1,true
-solarnode-app-io-mqtt-netty,5.0.0-1,true
-solarnode-app-modbus,2.1.0-1,true
-solarnode-app-solarflux,2.0.0-1,true
-solarnode-base,5.0.0-2,true
+<div class="highlight"><pre><span></span><code>+------+--------------------+------------+---------+------+-----------+-------------------+----------------+------------+------------------+----------------+------------------+---------------------+------------+------------------+---------------+---------------+------------+------------------------------------+
+| ID   | Name               | Type       | Enabled | Kind | Object ID | Source ID         | Schedule       | Mapping ID | Mapping Name     | Integration ID | Integration Name | Integration Enabled | Property # | Property Enabled | Property Type | Property Name | Value Type | Value Reference                    |
++------+--------------------+------------+---------+------+-----------+-------------------+----------------+------------+------------------+----------------+------------------+---------------------+------------+------------------+---------------+---------------+------------+------------------------------------+
+| 1000 | Solar Farm S1F2 PV | AlsoEnergy | true    | n    |       123 | /S1F2/S1/B1/GEN/1 | 0 0/30 * * * * |        222 | AlsoEnergy Basic |            121 | AlsoEnergy       | true                |          0 | true             | i             | watts         | r          | /{siteId}/{hardwareId}/KW/Last     |
+|      |                    |            |         |      |           | /S1F2/S1/B1/INV/1 |                |            |                  |                |                  |                     |            |                  |               |               |            |                                    |
+|      |                    |            |         |      |           | /S1F2/S1/B1/INV/2 |                |            |                  |                |                  |                     |            |                  |               |               |            |                                    |
++------+--------------------+------------+---------+------+-----------+-------------------+----------------+------------+------------------+----------------+------------------+---------------------+------------+------------------+---------------+---------------+------------+------------------------------------+
+| 1000 | Solar Farm S1F2 PV | AlsoEnergy | true    | n    |       123 | /S1F2/S1/B1/GEN/1 | 0 0/30 * * * * |        222 | AlsoEnergy Basic |            121 | AlsoEnergy       | true                |          1 | true             | a             | wattHours     | r          | /{siteId}/{hardwareId}/KWHnet/Last |
+|      |                    |            |         |      |           | /S1F2/S1/B1/INV/1 |                |            |                  |                |                  |                     |            |                  |               |               |            |                                    |
+|      |                    |            |         |      |           | /S1F2/S1/B1/INV/1 |                |            |                  |                |                  |                     |            |                  |               |               |            |                                    |
++------+--------------------+------------+---------+------+-----------+-------------------+----------------+------------+------------------+----------------+------------------+---------------------+------------+------------------+---------------+---------------+------------+------------------------------------+
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>ID,Name,Type,Enabled,Kind,Object ID,Source ID,Schedule,Mapping ID,Mapping Name,Integration ID,Integration Name,Integration Enabled,Property #,Property Enabled,Property Type,Property Name,Value Type,Value Reference
+1000,Solar Farm S1F2 PV,AlsoEnergy,true,n,123,&quot;/S1F2/S1/B1/GEN/1
+/S1F2/S1/B1/INV/1
+/S1F2/S1/B1/INV/2&quot;,0 0/30 * * * *,222,AlsoEnergy Basic,121,AlsoEnergy,true,0,true,i,watts,r,/{siteId}/{hardwareId}/KW/Last
+1000,Solar Farm S1F2 PV,AlsoEnergy,true,n,123,&quot;/S1F2/S1/B1/GEN/1
+/S1F2/S1/B1/INV/1
+/S1F2/S1/B1/INV/2&quot;,0 0/30 * * * *,222,AlsoEnergy Basic,121,AlsoEnergy,true,1,true,a,wattHours,r,/{siteId}/{hardwareId}/KWHnet/Last
 </code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="p">[</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sn-mbpoll&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.5.2-1&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;installed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;datumStream&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Solar Farm S1F2 PV&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;serviceIdentifier&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s10k.c2c.ds.also&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-18 19:24:31.562158Z&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-18 19:25:08.053295Z&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;datumStreamMappingId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">222</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;schedule&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0 0/30 * * * *&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;n&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;objectId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;sourceId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;unused&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;serviceProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;sourceIdMap&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;/40000/100000&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/S1F2/S1/B1/GEN/1&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;/40000/100001&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/S1F2/S1/B1/INV/1&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;/40000/100002&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/S1F2/S1/B1/INV/2&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sn-nftables&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.1.2-1&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;installed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="nt">&quot;mapping&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">222</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AlsoEnergy Basic&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-18 19:24:30.34634Z&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-18 19:24:30.34634Z&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;integrationId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">121</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sn-osstat&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.1.0-2&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;installed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="nt">&quot;integration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">121</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AlsoEnergy&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;serviceIdentifier&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s10k.c2c.i9n.also&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-17 19:15:02.203522Z&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-17 19:15:02.203522Z&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;serviceProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{SSHA-256}DfAb0g+EdzIW/9/EIbbE38IzTtMEIIOqOawBlTLuwOlWHNOhpnlyqQ==&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;example@localhost&quot;</span>
+<span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sn-pi&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.2.0-1&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;installed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="nt">&quot;property&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;datumStreamMappingId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">222</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-22 01:09:28.523208Z&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-22 01:09:28.523208Z&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;propertyType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;i&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;propertyName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;watts&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;valueType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;r&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;valueReference&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/{siteId}/{hardwareId}/KW/Last&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;datumStream&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Solar Farm S1F2 PV&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;serviceIdentifier&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s10k.c2c.ds.also&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-18 19:24:31.562158Z&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-18 19:25:08.053295Z&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;datumStreamMappingId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">222</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;schedule&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0 0/30 * * * *&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;n&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;objectId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;sourceId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;unused&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;serviceProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;sourceIdMap&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;/40000/100000&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/S1F2/S1/B1/GEN/1&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;/40000/100001&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/S1F2/S1/B1/INV/1&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;/40000/100002&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/S1F2/S1/B1/INV/2&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sn-pi-usb-support&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.2.0-1&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;installed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="nt">&quot;mapping&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">222</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AlsoEnergy Basic&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-18 19:24:30.34634Z&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-18 19:24:30.34634Z&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;integrationId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">121</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sn-solarpkg&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.3.0-1&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;installed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="nt">&quot;integration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">121</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AlsoEnergy&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;serviceIdentifier&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s10k.c2c.i9n.also&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-17 19:15:02.203522Z&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-17 19:15:02.203522Z&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;serviceProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{SSHA-256}DfAb0g+EdzIW/9/EIbbE38IzTtMEIIOqOawBlTLuwOlWHNOhpnlyqQ==&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;example@localhost&quot;</span>
+<span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sn-solarssh&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.0.0-4&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;installed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sn-system&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.7.1-1&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;installed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;solarnode-app-control-core&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2.1.0-1&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;installed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;solarnode-app-core&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;4.0.2-1&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;installed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;solarnode-app-datumfilters&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2.0.0-1&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;installed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;solarnode-app-db-h2&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3.0.0-1&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;installed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;solarnode-app-io-modbus&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;4.0.0-1&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;installed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;solarnode-app-io-modbus-nifty-pjc&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2.0.0-1&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;installed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;solarnode-app-io-mqtt&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;5.0.0-1&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;installed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;solarnode-app-io-mqtt-netty&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;5.0.0-1&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;installed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;solarnode-app-modbus&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2.1.0-1&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;installed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;solarnode-app-solarflux&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2.0.0-1&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;installed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;solarnode-base&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;5.0.0-2&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;installed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;property&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;datumStreamMappingId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">222</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-22 01:09:28.523208Z&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-22 01:09:28.523208Z&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;propertyType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;a&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;propertyName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;wattHours&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;valueType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;r&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;valueReference&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/{siteId}/{hardwareId}/KWHnet/Last&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
 <span class="p">]</span>
 </code></pre></div>
 </div>
 </div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Repeated rows in CSV and PRETTY output</p>
+<p>The CSV and PRETTY output will generate one row for each mapped property configured on the datum
+stream, and repeat all the stream/mapping/integration details on each row. The <strong>Property #</strong>
+column shows the property index value (unique across all properties within the datum stream).</p>
 </div>
 
 
@@ -2760,12 +2711,12 @@ solarnode-base,5.0.0-2,true
     
     
       
-      <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.annotate", "content.code.copy", "navigation.indexes", "navigation.instant", "navigation.path", "navigation.tracking", "toc.follow"], "search": "../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "navigation.indexes", "navigation.instant", "navigation.path", "navigation.tracking", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.92b07e13.min.js"></script>
       
-        <script src="../../../js/open_in_new_tab.js"></script>
+        <script src="../../../../js/open_in_new_tab.js"></script>
       
     
   </body>
