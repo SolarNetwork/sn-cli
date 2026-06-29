@@ -76,7 +76,7 @@ distributions  {
 		distributionClassifier = "${osdetector.classifier}"
 		contents {
 			from 'build/native/nativeCompile'
-			include 's10k'
+			include 's10k*'
 			into('/')
 		}
 	}
