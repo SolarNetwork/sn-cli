@@ -13,7 +13,7 @@ jobs:
         uses: Justintime50/homebrew-releaser@v3
         with:
           homebrew_owner: SolarNetwork
-          homebrew_tap: homebrew-taps
+          homebrew_tap: homebrew-tap
           github_token: ${{ secrets.RELEASE_TOKEN }}
           formula_folder: Formula
           commit_owner: homebrew-releaser
