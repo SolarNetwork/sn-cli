@@ -114,5 +114,39 @@ and `${EXT}` is one of:
 | Tar | `tar.gz` |
 | Zip | `zip` |
 
+# Building a release
+
+To build a release, using `git flow`:
+
+```sh
+export S10K_RELEASE_VERSION=1.0.0
+
+# start release
+git flow release start $RELEASE_VERSION
+
+# macOS
+for f in gradle.properties app/src/main/resources/s10k/tool/version.properties; do \
+  sed -i '' -e 's/^version = .*/version = '"$S10K_RELEASE_VERSION"'/' $f; \
+  done
+  
+# or, Linux
+for f in gradle.properties app/src/main/resources/s10k/tool/version.properties; do \
+  sed -i -e 's/^version = .*/version = '"$S10K_RELEASE_VERSION"'/' $f; \
+  done
+
+# commit version updates
+git add .
+git commit -S -m 'Bump version for next release.'
+
+# finish release
+git flow release finish -s
+
+# push changes
+git push --all && git push --tags
+
+# jump back to develop branch
+git switch develop
+``` 
+
 [graalvm]: https://www.graalvm.org/
 [logging-conf]: https://docs.spring.io/spring-boot/reference/features/logging.html
