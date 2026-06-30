@@ -13,6 +13,7 @@ They must be provided _before_ the command and any subsequent command-specific o
 | `-p=` | `--secret=` | The SolarNetwork security token secret to authenticate with, if `--profile` is not used; can omit value to be prompted interactively. |
 | `-u=` | `--token=` | The SolarNetwork secruity token ID to to authenticate with, if `--profile` is not used. |
 | `-v` | `--verbose` | Increase verbosity of output. Can specify multiple times to increase verbosity even more. |
+| `-V` | `--version` |  Show the tool version and exit. |
 |  | `--http-trace` | Enable HTTP exchange trace logging. Must also configure the `net.solarnetwork.http.REQ` and/or `net.solarnetwork.http.RES` [logger levels](logging.md) to `TRACE`. |
 
 </div>
