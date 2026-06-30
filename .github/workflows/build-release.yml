@@ -25,7 +25,7 @@ jobs:
           native-image-job-reports: true
 
       - name: Build app
-        run: gradlew distTar
+        run: ./gradlew distTar
       
       - name: Release
         uses: softprops/action-gh-release@v3
