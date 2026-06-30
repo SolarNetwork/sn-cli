@@ -24,10 +24,19 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           native-image-job-reports: true
 
-      - name: Build app
-        run: ./gradlew distTar
+      - name: Build
+        run: ./gradlew assemble distTar
       
-      - name: Release
+      - name: Release jar
+        uses: softprops/action-gh-release@v3
+        if: ${{ matrix.os }} == 'ubuntu-24.04'
+        with:
+          draft: true
+          prerelease: true
+          token: ${{ secrets.RELEASE_TOKEN }}
+          files: 'app/build/libs/s10k-${{ github.ref_name }}.jar'        
+      
+      - name: Release distribution
         uses: softprops/action-gh-release@v3
         with:
           draft: true
