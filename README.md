@@ -128,7 +128,7 @@ git flow release start $RELEASE_VERSION
 for f in gradle.properties app/src/main/resources/s10k/tool/version.properties; do \
   sed -i '' -e 's/^version = .*/version = '"$S10K_RELEASE_VERSION"'/' $f; \
   done
-  
+
 # or, Linux
 for f in gradle.properties app/src/main/resources/s10k/tool/version.properties; do \
   sed -i -e 's/^version = .*/version = '"$S10K_RELEASE_VERSION"'/' $f; \
@@ -146,7 +146,24 @@ git push --all && git push --tags
 
 # jump back to develop branch
 git switch develop
-``` 
+
+# start next release cycle
+export S10K_DEV_RELEASE_VERSION=1.0.1-dev.0
+
+# macOS
+for f in gradle.properties app/src/main/resources/s10k/tool/version.properties; do \
+  sed -i '' -e 's/^version = .*/version = '"$S10K_DEV_RELEASE_VERSION"'/' $f; \
+  done
+
+# or, Linux
+for f in gradle.properties app/src/main/resources/s10k/tool/version.properties; do \
+  sed -i -e 's/^version = .*/version = '"$S10K_DEV_RELEASE_VERSION"'/' $f; \
+  done
+
+# commit version updates
+git add .
+git commit -S -m 'Bump version for next release cycle.'
+```
 
 [graalvm]: https://www.graalvm.org/
 [logging-conf]: https://docs.spring.io/spring-boot/reference/features/logging.html
