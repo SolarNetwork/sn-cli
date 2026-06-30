@@ -12,6 +12,7 @@ jobs:
       - name: Release project to Homebrew tap
         uses: Justintime50/homebrew-releaser@v3
         with:
+          version: ${{ github.event.release.tag_name }}
           homebrew_owner: SolarNetwork
           homebrew_tap: homebrew-tap
           github_token: ${{ secrets.RELEASE_TOKEN }}
@@ -22,5 +23,5 @@ jobs:
           target_darwin_arm64: true
           target_linux_amd64: true
           target_linux_arm64: true
-          install: 'prefix.install Dir["*"]'
+          install: 'bin.install "s10k"'
           #test: 'assert_match("my script output", shell_output("my-script-command"))'
