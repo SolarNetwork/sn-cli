@@ -12,9 +12,11 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.ReflectiveScan;
 
 import picocli.CommandLine;
+import picocli.CommandLine.Command;
 import picocli.CommandLine.IFactory;
 import s10k.tool.c2c.cmd.CloudIntegrationsCmd;
 import s10k.tool.common.cmd.ToolCmd;
+import s10k.tool.common.cmd.VersionCmd;
 import s10k.tool.common.util.StringUtils;
 import s10k.tool.datum.cmd.DatumCmd;
 import s10k.tool.flux.cmd.FluxCmd;
@@ -27,6 +29,7 @@ import s10k.tool.sec.tokens.cmd.SecTokensCmd;
  */
 @SpringBootApplication
 @ReflectiveScan("s10k.tool")
+@Command(versionProvider = VersionCmd.class)
 public class SnCliTool implements CommandLineRunner, ExitCodeGenerator {
 
 	private final IFactory factory;
@@ -51,6 +54,7 @@ public class SnCliTool implements CommandLineRunner, ExitCodeGenerator {
 		exitCode = new CommandLine(app, factory)
 				.setExecutionStrategy(app::globalInit)
 				.registerConverter(LocalDateTime.class, StringUtils::parseLocalDateTime)
+				.addSubcommand(new VersionCmd())
 				.addSubcommand(new CloudIntegrationsCmd())
 				.addSubcommand(new DatumCmd())
 				.addSubcommand(new FluxCmd())

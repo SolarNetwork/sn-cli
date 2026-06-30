@@ -1,5 +1,7 @@
 package s10k.tool.common.cmd;
 
+import java.util.NoSuchElementException;
+
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -12,7 +14,7 @@ import s10k.tool.common.util.ProfileUtils;
 /**
  * Top-level command.
  */
-@Command(name = "s10k")
+@Command(name = "s10k", versionProvider = VersionCmd.class)
 public class ToolCmd implements ProfileProvider {
 
 	/** An environment variable name for a SolarNetwork token ID. */
@@ -41,6 +43,9 @@ public class ToolCmd implements ProfileProvider {
 
 	@Option(names = { "-p", "--secret" }, description = "the SolarNetwork API token secret", interactive = true)
 	char[] tokenSecret;
+
+	@Option(names = { "-V", "--version" }, versionHelp = true, description = "print version information and exit")
+	boolean versionRequested;
 
 	private ProfileInfo profile;
 
@@ -97,6 +102,15 @@ public class ToolCmd implements ProfileProvider {
 			}
 		}
 		if (parseResult != null) {
+			try {
+				final CommandLine commandLine = parseResult.asCommandLineList().getFirst();
+				if (parseResult.asCommandLineList().getFirst().isVersionHelpRequested()) {
+					commandLine.printVersionHelp(System.out);
+					return commandLine.getCommandSpec().exitCodeOnVersionHelp();
+				}
+			} catch (NoSuchElementException e) {
+				// ignore and continue
+			}
 			return new CommandLine.RunLast().execute(parseResult);
 		}
 		return 0;
