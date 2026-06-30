@@ -163,6 +163,9 @@ for f in gradle.properties app/src/main/resources/s10k/tool/version.properties; 
 # commit version updates
 git add .
 git commit -S -m 'Bump version for next release cycle.'
+
+# push changes
+git push
 ```
 
 [graalvm]: https://www.graalvm.org/
