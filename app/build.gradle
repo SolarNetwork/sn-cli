@@ -73,7 +73,7 @@ distTar {
 
 def getOsName() {
 	if ( osdetector.os == 'osx' ) {
-		return 'macos'
+		return 'darwin' // to work with homebrew-releaser
 	}
 	return osdetector.os
 }
