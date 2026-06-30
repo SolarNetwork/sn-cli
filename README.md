@@ -40,13 +40,13 @@ To build the executable JAR application from source, run:
 
 ```sh
 # Unix
-./gradlew build -x test
+./gradlew bootJar
 
 # Windows
-.\gradlew.bat build -x test
+.\gradlew.bat bootJar
 ```
 
-The application will be built to `build/libs/s10k-VERSION.jar`.
+The application will be built to `app/build/libs/s10k-VERSION.jar`.
 
 ## Building the native binary
 
