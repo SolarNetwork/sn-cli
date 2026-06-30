@@ -25,6 +25,7 @@ graalvmNative {
 		buildArgs.add('-O3')
 		buildArgs.add('-Duser.language=en')
 		buildArgs.add('-Duser.country=US')
+		buildArgs.add('--emit=build-report')
 	}
 	
 	binaries.main {
@@ -93,6 +94,8 @@ distributions  {
 		contents {
 			from(tasks.named("nativeCompile")) {
 				into('/')
+				exclude("management_ext.dll")
+				exclude("s10k-build-report.html")
 			}
 		}
 	}
