@@ -29,6 +29,7 @@ import s10k.tool.c2c.domain.CloudIntegrationConfiguration;
 import s10k.tool.c2c.i9n.cmd.ListIntegrationsCmd;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
+import s10k.tool.common.util.OutputUtils;
 import s10k.tool.common.util.TableUtils;
 
 /**
@@ -77,19 +78,19 @@ public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements C
 					? listCloudDatumStreamMappingProperties(restClient, objectMapper, mapping.configId())
 					: null);
 
-			final List<?> tableData;
 			if (displayMode == ResultDisplayMode.JSON) {
-				tableData = List.of(mappingDetails(datumStream, mapping, integration, properties));
+				OutputUtils.writeJsonObject(objectMapper,
+						mappingDetails(datumStream, mapping, integration, properties));
 			} else {
-				List<CloudDatumStreamPropertyDetail> details = (properties == null || properties.isEmpty()
+				final List<CloudDatumStreamPropertyDetail> details = (properties == null || properties.isEmpty()
 						? List.of(new CloudDatumStreamPropertyDetail(datumStream, mapping, integration, null))
 						: properties.stream()
 								.map(p -> new CloudDatumStreamPropertyDetail(datumStream, mapping, integration, p))
 								.toList());
-				tableData = details.stream().map(c -> tableDataRow(c, false)).toList();
+				final List<?> tableData = details.stream().map(c -> tableDataRow(c, false)).toList();
+				TableUtils.renderTableData(tableDataColumns(), tableData, displayMode, objectMapper,
+						TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			}
-			TableUtils.renderTableData(tableDataColumns(), tableData, displayMode, objectMapper,
-					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error viewing cloud datum stream: %s".formatted(e.getMessage()));
