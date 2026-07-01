@@ -75,8 +75,7 @@ Detailed information about the datum stream, including its mapped properties.
 === "JSON Output"
 
 	```json
-	[
-	  {
+	{
 		"datumStream": {
 		  "configId": 1000,
 		  "name": "Solar Farm S1F2 PV",
@@ -116,71 +115,31 @@ Detailed information about the datum stream, including its mapped properties.
 			"username": "example@localhost"
 		  }
 		},
-		"property": {
-		  "datumStreamMappingId": 222,
-		  "index": 0,
-		  "created": "2026-06-22 01:09:28.523208Z",
-		  "modified": "2026-06-22 01:09:28.523208Z",
-		  "enabled": true,
-		  "propertyType": "i",
-		  "propertyName": "watts",
-		  "valueType": "r",
-		  "valueReference": "/{siteId}/{hardwareId}/KW/Last"
-		}
-	  },
-	  {
-		"datumStream": {
-		  "configId": 1000,
-		  "name": "Solar Farm S1F2 PV",
-		  "serviceIdentifier": "s10k.c2c.ds.also",
-		  "created": "2026-06-18 19:24:31.562158Z",
-		  "modified": "2026-06-18 19:25:08.053295Z",
-		  "enabled": true,
-		  "datumStreamMappingId": 222,
-		  "schedule": "0 0/30 * * * *",
-		  "kind": "n",
-		  "objectId": 123,
-		  "sourceId": "unused",
-		  "serviceProperties": {
-			"sourceIdMap": {
-			  "/40000/100000": "/S1F2/S1/B1/GEN/1",
-			  "/40000/100001": "/S1F2/S1/B1/INV/1",
-			  "/40000/100002": "/S1F2/S1/B1/INV/2",
+		"properties": [
+			{
+				"datumStreamMappingId": 222,
+				"index": 0,
+				"created": "2026-06-22 01:09:28.523208Z",
+				"modified": "2026-06-22 01:09:28.523208Z",
+				"enabled": true,
+				"propertyType": "i",
+				"propertyName": "watts",
+				"valueType": "r",
+				"valueReference": "/{siteId}/{hardwareId}/KW/Last"
+			},
+			{
+				"datumStreamMappingId": 222,
+				"index": 1,
+				"created": "2026-06-22 01:09:28.523208Z",
+				"modified": "2026-06-22 01:09:28.523208Z",
+				"enabled": true,
+				"propertyType": "a",
+				"propertyName": "wattHours",
+				"valueType": "r",
+				"valueReference": "/{siteId}/{hardwareId}/KWHnet/Last"
 			}
-		  }
-		},
-		"mapping": {
-		  "configId": 222,
-		  "name": "AlsoEnergy Basic",
-		  "created": "2026-06-18 19:24:30.34634Z",
-		  "modified": "2026-06-18 19:24:30.34634Z",
-		  "integrationId": 121
-		},
-		"integration": {
-		  "configId": 121,
-		  "name": "AlsoEnergy",
-		  "serviceIdentifier": "s10k.c2c.i9n.also",
-		  "created": "2026-06-17 19:15:02.203522Z",
-		  "modified": "2026-06-17 19:15:02.203522Z",
-		  "enabled": true,
-		  "serviceProperties": {
-			"password": "{SSHA-256}DfAb0g+EdzIW/9/EIbbE38IzTtMEIIOqOawBlTLuwOlWHNOhpnlyqQ==",
-			"username": "example@localhost"
-		  }
-		},
-		"property": {
-		  "datumStreamMappingId": 222,
-		  "index": 1,
-		  "created": "2026-06-22 01:09:28.523208Z",
-		  "modified": "2026-06-22 01:09:28.523208Z",
-		  "enabled": true,
-		  "propertyType": "a",
-		  "propertyName": "wattHours",
-		  "valueType": "r",
-		  "valueReference": "/{siteId}/{hardwareId}/KWHnet/Last"
-		}
-	  }
-	]
+		]
+	}
 	```
 
 !!! note "Repeated rows in CSV and PRETTY output"
