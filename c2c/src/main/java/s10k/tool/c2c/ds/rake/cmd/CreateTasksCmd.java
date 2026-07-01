@@ -33,6 +33,7 @@ import java.util.TreeSet;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
 
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
@@ -153,6 +154,10 @@ public class CreateTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable
 								() -> new TreeMap<>(CloudIntegrationsUtils::comparePeriods)))));
 	}
 
+	/**
+	 * Actions for a single datum stream.
+	 */
+	@RegisterReflectionForBinding
 	public record TaskActions(Long datumStreamId, SortedSet<Period> missingOffsets,
 			SortedMap<Period, CloudDatumStreamRakeTaskConfiguration> undesiredOffsets) {
 
