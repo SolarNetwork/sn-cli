@@ -18,6 +18,29 @@ Download the [latest release](https://github.com/SolarNetwork/sn-cli/releases), 
 executable binary for your operating system or an executable Java JAR you can run anywhere you have
 Java 25+ installed.
 
+## Homebrew (macOS/Linux)
+
+You can install the `s10k` native binary using [Homebrew](https://brew.sh/) by adding the
+`SolarNetwork/tap` tap's `sn-cli` package:
+
+```sh
+# add the SolarNetwork tap
+brew tap solarnetwork/tap
+
+# trust the SolarNetwork tap
+brew trust solarnetwork/tap
+
+# install the sn-cli package
+brew install sn-cli
+```
+
+After that, the `s10k` tool should be available:
+
+```sh
+s10k version
+0.13.0
+```
+
 # Logging
 
 Logging can be enabled by creating an `application.yml` file in your working directory. You can then
