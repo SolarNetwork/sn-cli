@@ -31,13 +31,12 @@ esac
 
 updateVersions () {
 	for f in gradle.properties app/src/main/resources/s10k/tool/version.properties; do
+		echo "RELEASE: Update $f version to $1"
 		if [ ! -e "$f" ]; then
 			echo "ERROR: missing file $f" >&2
 			echo "Looking in SN_CLI_HOME: $SN_CLI_HOME" >&2
 			exit 1
-		elif [ -n "$DRY_RUN" ]; then
-			echo "RELEASE: Update $f version to $1"
-		else
+		elif [ -z "$DRY_RUN" ]; then
 			sed_i -e 's/^version = .*/version = '"$1"'/' "$f"
 		fi
 	done
