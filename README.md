@@ -139,57 +139,29 @@ and `${EXT}` is one of:
 
 # Building a release
 
-To build a release, using `git flow`:
+To build a release, use the `config/tools/release.sh` script, passing the desired release version
+as an argument. For example:
 
 ```sh
-export S10K_RELEASE_VERSION=1.0.0
+# can dry-run with -n option
+./config/tools/release.sh -n 1.0.0
 
-# start release
-git flow release start $RELEASE_VERSION
-
-# macOS
-for f in gradle.properties app/src/main/resources/s10k/tool/version.properties; do \
-  sed -i '' -e 's/^version = .*/version = '"$S10K_RELEASE_VERSION"'/' $f; \
-  done
-
-# or, Linux
-for f in gradle.properties app/src/main/resources/s10k/tool/version.properties; do \
-  sed -i -e 's/^version = .*/version = '"$S10K_RELEASE_VERSION"'/' $f; \
-  done
-
-# commit version updates
-git add .
-git commit -S -m 'Bump version for next release.'
-
-# finish release
-git flow release finish -s
-
-# push changes
-git push --all && git push --tags
-
-# jump back to develop branch
-git switch develop
-
-# start next release cycle
-export S10K_DEV_RELEASE_VERSION=1.0.1-dev.0
-
-# macOS
-for f in gradle.properties app/src/main/resources/s10k/tool/version.properties; do \
-  sed -i '' -e 's/^version = .*/version = '"$S10K_DEV_RELEASE_VERSION"'/' $f; \
-  done
-
-# or, Linux
-for f in gradle.properties app/src/main/resources/s10k/tool/version.properties; do \
-  sed -i -e 's/^version = .*/version = '"$S10K_DEV_RELEASE_VERSION"'/' $f; \
-  done
-
-# commit version updates
-git add .
-git commit -S -m 'Bump version for next release cycle.'
-
-# push changes
-git push
+# or run for real
+./config/tools/release.sh 1.0.0
 ```
+
+You must have **Gitflow** installed for the release script to work, and you must have a GPG signing
+key configured. The script will:
+
+ 1. Create a new git flow release with the given version number
+ 2. Update the version property files with the given version number
+ 3. Commit the property file changes to git
+ 4. Finish the git flow release (tagging with the given version number)
+ 5. Push all changes up to the origin repo
+ 6. Switch to the develop branch
+ 7. Update the version property files with the "next" development version
+ 8. Commit the property file changes to git
+ 9. Push all changes, and tags, up to the origin repo
 
 [graalvm]: https://www.graalvm.org/
 [logging-conf]: https://docs.spring.io/spring-boot/reference/features/logging.html
