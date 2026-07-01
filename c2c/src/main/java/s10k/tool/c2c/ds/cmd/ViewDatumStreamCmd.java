@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
@@ -76,12 +77,17 @@ public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements C
 					? listCloudDatumStreamMappingProperties(restClient, objectMapper, mapping.configId())
 					: null);
 
-			List<Detail> details = (properties == null || properties.isEmpty()
-					? List.of(new Detail(datumStream, mapping, integration, null))
-					: properties.stream().map(p -> new Detail(datumStream, mapping, integration, p)).toList());
-
-			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? details
-					: details.stream().map(c -> tableDataRow(c, false)).toList());
+			final List<?> tableData;
+			if (displayMode == ResultDisplayMode.JSON) {
+				tableData = List.of(mappingDetails(datumStream, mapping, integration, properties));
+			} else {
+				List<CloudDatumStreamPropertyDetail> details = (properties == null || properties.isEmpty()
+						? List.of(new CloudDatumStreamPropertyDetail(datumStream, mapping, integration, null))
+						: properties.stream()
+								.map(p -> new CloudDatumStreamPropertyDetail(datumStream, mapping, integration, p))
+								.toList());
+				tableData = details.stream().map(c -> tableDataRow(c, false)).toList();
+			}
 			TableUtils.renderTableData(tableDataColumns(), tableData, displayMode, objectMapper,
 					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
@@ -92,11 +98,43 @@ public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements C
 	}
 
 	/**
-	 * A detail record.
+	 * A datum stream property detail record.
 	 */
-	public static record Detail(CloudDatumStreamConfiguration datumStream, CloudDatumStreamMappingConfiguration mapping,
-			CloudIntegrationConfiguration integration, CloudDatumStreamMappingPropertyConfiguration property) {
+	@RegisterReflectionForBinding
+	public record CloudDatumStreamPropertyDetail(CloudDatumStreamConfiguration datumStream,
+			CloudDatumStreamMappingConfiguration mapping, CloudIntegrationConfiguration integration,
+			CloudDatumStreamMappingPropertyConfiguration property) {
 
+	}
+
+	/**
+	 * A datum stream mapping detail record.
+	 */
+	@RegisterReflectionForBinding
+	public record CloudDatumStreamMappingDetail(CloudDatumStreamConfiguration datumStream,
+			CloudDatumStreamMappingConfiguration mapping, CloudIntegrationConfiguration integration,
+			List<CloudDatumStreamMappingPropertyConfiguration> properties) {
+
+	}
+
+	/**
+	 * Create a mapping detail record.
+	 * 
+	 * @param datumStream the datum stream
+	 * @param mapping     the mapping
+	 * @param integration the integration
+	 * @param properties  the optional properties
+	 * @return the mapping detail
+	 */
+	public static CloudDatumStreamMappingDetail mappingDetails(CloudDatumStreamConfiguration datumStream,
+			CloudDatumStreamMappingConfiguration mapping, CloudIntegrationConfiguration integration,
+			List<CloudDatumStreamMappingPropertyConfiguration> properties) {
+		var result = new CloudDatumStreamMappingDetail(datumStream, mapping, integration,
+				properties != null && !properties.isEmpty() ? new ArrayList<>(properties.size()) : null);
+		for (CloudDatumStreamMappingPropertyConfiguration property : properties) {
+			result.properties.add(property);
+		}
+		return result;
 	}
 
 	/**
@@ -137,7 +175,7 @@ public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements C
 	 * @param rawIdentifiers {@code true} to output the raw service identifiers
 	 * @return the metadata data
 	 */
-	public static Object[] tableDataRow(Detail conf, boolean rawIdentifiers) {
+	public static Object[] tableDataRow(CloudDatumStreamPropertyDetail conf, boolean rawIdentifiers) {
 		// @formatter:off
 		return new Object[] {
 				conf.datumStream.configId(),
