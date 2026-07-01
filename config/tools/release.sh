@@ -19,7 +19,7 @@ shift $(($OPTIND - 1))
 
 version="$1"
 if [ -z "$version" ]; then
-	echo 'Pass releaes version as argument.'
+	echo 'Pass release version as argument.'
 	exit 1
 fi
 
@@ -61,7 +61,7 @@ doRelease () {
 	if [ -z "$DRY_RUN" ]; then
 		git flow release start $version
 	fi
-	
+
 	updateVersions $version
 
 	echo "RELEASE: commit release version changes."
@@ -71,10 +71,10 @@ doRelease () {
 		git flow release finish -s
 		git switch develop
 	fi
-	
+
 	updateVersions "$(nextDevRelease $version)"
-	
-	
+
+
 	echo "RELEASE: commit development version changes."
 	if [ -z "$DRY_RUN" ]; then
 		git add .
