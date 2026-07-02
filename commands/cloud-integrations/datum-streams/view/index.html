@@ -2569,8 +2569,7 @@ stream.</p>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="p">[</span>
-<span class="w">  </span><span class="p">{</span>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;datumStream&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
 <span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Solar Farm S1F2 PV&quot;</span><span class="p">,</span>
@@ -2610,71 +2609,31 @@ stream.</p>
 <span class="w">        </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;example@localhost&quot;</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;property&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;datumStreamMappingId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">222</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-22 01:09:28.523208Z&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-22 01:09:28.523208Z&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;propertyType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;i&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;propertyName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;watts&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;valueType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;r&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;valueReference&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/{siteId}/{hardwareId}/KW/Last&quot;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;datumStream&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Solar Farm S1F2 PV&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;serviceIdentifier&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s10k.c2c.ds.also&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-18 19:24:31.562158Z&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-18 19:25:08.053295Z&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;datumStreamMappingId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">222</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;schedule&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0 0/30 * * * *&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;n&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;objectId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;sourceId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;unused&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;serviceProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;sourceIdMap&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">&quot;/40000/100000&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/S1F2/S1/B1/GEN/1&quot;</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">&quot;/40000/100001&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/S1F2/S1/B1/INV/1&quot;</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">&quot;/40000/100002&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/S1F2/S1/B1/INV/2&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;datumStreamMappingId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">222</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-22 01:09:28.523208Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-22 01:09:28.523208Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;propertyType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;i&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;propertyName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;watts&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;valueType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;r&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;valueReference&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/{siteId}/{hardwareId}/KW/Last&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;datumStreamMappingId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">222</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-22 01:09:28.523208Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-22 01:09:28.523208Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;propertyType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;a&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;propertyName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;wattHours&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;valueType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;r&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;valueReference&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/{siteId}/{hardwareId}/KWHnet/Last&quot;</span>
 <span class="w">        </span><span class="p">}</span>
-<span class="w">      </span><span class="p">}</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;mapping&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">222</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AlsoEnergy Basic&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-18 19:24:30.34634Z&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-18 19:24:30.34634Z&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;integrationId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">121</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;integration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;configId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">121</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AlsoEnergy&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;serviceIdentifier&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s10k.c2c.i9n.also&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-17 19:15:02.203522Z&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-17 19:15:02.203522Z&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;serviceProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{SSHA-256}DfAb0g+EdzIW/9/EIbbE38IzTtMEIIOqOawBlTLuwOlWHNOhpnlyqQ==&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;example@localhost&quot;</span>
-<span class="w">      </span><span class="p">}</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;property&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;datumStreamMappingId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">222</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-22 01:09:28.523208Z&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-22 01:09:28.523208Z&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;propertyType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;a&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;propertyName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;wattHours&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;valueType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;r&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;valueReference&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/{siteId}/{hardwareId}/KWHnet/Last&quot;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">]</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
 </code></pre></div>
 </div>
 </div>
