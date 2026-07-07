@@ -11,7 +11,7 @@ import static s10k.tool.c2c.ds.poll.cmd.ListTasksCmd.listCloudDatumStreamPollTas
 import static s10k.tool.c2c.ds.poll.cmd.ListTasksCmd.pollTaskMessage;
 import static s10k.tool.c2c.ds.rake.cmd.ListTasksCmd.listCloudDatumStreamRakeTasks;
 import static s10k.tool.c2c.ds.rake.cmd.ListTasksCmd.rakeTaskMessage;
-import static s10k.tool.c2c.util.CloudIntegrationRestUtils.listCloudDatumStreams;
+import static s10k.tool.c2c.util.CloudIntegrationRestUtils.datumStreamsOfType;
 import static s10k.tool.c2c.util.CloudIntegrationsUtils.datumStreamServiceLocalizedName;
 
 import java.io.IOException;
@@ -44,6 +44,7 @@ import picocli.CommandLine.Option;
 import s10k.tool.c2c.domain.CloudDatumStreamConfiguration;
 import s10k.tool.c2c.domain.CloudDatumStreamPollTaskConfiguration;
 import s10k.tool.c2c.domain.CloudDatumStreamRakeTaskConfiguration;
+import s10k.tool.c2c.domain.CloudIntegrationsFilter;
 import s10k.tool.c2c.util.CloudIntegrationsUtils;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ClaimableJobState;
@@ -70,6 +71,15 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 			defaultValue = "P3D")
 	Duration lagThreshold = DEFAULT_LAG_THRESHOLD;
 
+	@Option(names = { "-t", "--stream-type" },
+			description = """
+					a datum stream type to restrict creating tasks for;
+					can be prefixed with ! to exclude that type""",			
+			split = "\\s*,\\s*",
+			splitSynopsisLabel = ",",
+			paramLabel = "datumStreamType")
+	String[] types;
+	
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data",
 			defaultValue = "PRETTY")
@@ -224,10 +234,16 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 	}
 
 	private Checkup createCheckup(RestClient restClient) {
-		final SortedMap<Long, CloudDatumStreamConfiguration> allDatumStreams = allDatumStreams(restClient);
-		final SortedMap<Long, CloudDatumStreamPollTaskConfiguration> allPollTasks = allPollTasks(restClient);
+		final SortedMap<Long, CloudDatumStreamConfiguration> allDatumStreams = datumStreamsOfType(restClient,
+				objectMapper, null, types);
+		final CloudIntegrationsFilter taskFilter = new CloudIntegrationsFilter();
+		if (types != null && types.length > 0) {
+			taskFilter.setDatumStreamIds(allDatumStreams.keySet().stream().toList());
+		}
+		final SortedMap<Long, CloudDatumStreamPollTaskConfiguration> allPollTasks = allPollTasks(restClient,
+				taskFilter);
 		final SortedMap<Long, SortedMap<Period, CloudDatumStreamRakeTaskConfiguration>> allRakeTasks = allRakeTasks(
-				restClient);
+				restClient, taskFilter);
 
 		final Instant now = Instant.now();
 		final Instant lagMax = now.minus(lagThreshold);
@@ -537,19 +553,15 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 		return (map == null || map.isEmpty() ? null : map);
 	}
 
-	private SortedMap<Long, CloudDatumStreamConfiguration> allDatumStreams(RestClient restClient) {
-		return listCloudDatumStreams(restClient, objectMapper, null).stream()
-				.collect(toMap(CloudDatumStreamConfiguration::configId, identity(), (_, n) -> n, TreeMap::new));
-	}
-
-	private SortedMap<Long, CloudDatumStreamPollTaskConfiguration> allPollTasks(RestClient restClient) {
-		return listCloudDatumStreamPollTasks(restClient, objectMapper, null).stream().collect(
+	private SortedMap<Long, CloudDatumStreamPollTaskConfiguration> allPollTasks(RestClient restClient,
+			CloudIntegrationsFilter filter) {
+		return listCloudDatumStreamPollTasks(restClient, objectMapper, filter).stream().collect(
 				toMap(CloudDatumStreamPollTaskConfiguration::datumStreamId, identity(), (_, n) -> n, TreeMap::new));
 	}
 
 	private SortedMap<Long, SortedMap<Period, CloudDatumStreamRakeTaskConfiguration>> allRakeTasks(
-			RestClient restClient) {
-		return listCloudDatumStreamRakeTasks(restClient, objectMapper, null).stream()
+			RestClient restClient, CloudIntegrationsFilter filter) {
+		return listCloudDatumStreamRakeTasks(restClient, objectMapper, filter).stream()
 				.collect(groupingBy(CloudDatumStreamRakeTaskConfiguration::datumStreamId, TreeMap::new,
 						mapping(Function.identity(), toMap(t -> Period.parse(t.offset()), identity(), (_, n) -> n,
 								() -> new TreeMap<>(CloudIntegrationsUtils::comparePeriods)))));
