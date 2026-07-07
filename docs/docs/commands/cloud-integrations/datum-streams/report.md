@@ -8,13 +8,20 @@ Generate an operational report on [Cloud Datum Stream][datum-stream] poll and ra
 ## Usage
 
 ```
-s10k cloud-integrations datum-streams list [-mode=<displayMode>]
+s10k cloud-integrations datum-streams report
+    [-d=<outputDirectory>]
+    [-lag=<lagThreshold>]
+	[-t=datumStreamType[,datumStreamType...]]...
+    [-mode=<displayMode>]
 ```
 
 <div markdown="1" class="options-explicit-col-widths">
 
 | Option | Long Version | Description |
 |:-------|:-------------|:------------|
+| `-d=` | `--directory=` | a directory to export the report to; each section will be saved in a unique file within this directory; the directory will be created if it does not already exist |
+| `-lag=` | `--lag-threshold=` | the minimum threshold at which to include a stream as lagging, in ISO 8601 period syntax, for example `P3D` for _3 days_; defaults to `P3D`|
+| `-t=` | `--stream-type=` | a datum stream service identifier filter to restrict the report to; a case-insensitive sub-string match is performed against both the service identifier and the display name, for example `also` will match the AlsoEnergy type; prefix with a `!` character to **exclude** streams matching that type |
 | `-mode=` | `--display-mode=` | the format to display the data as, one of `CSV`, `JSON`, or `PRETTY`; defaults to `PRETTY` |
 
 </div>
