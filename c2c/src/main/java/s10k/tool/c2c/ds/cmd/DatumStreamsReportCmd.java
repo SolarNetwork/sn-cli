@@ -67,7 +67,7 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 	String outputDirectory;
 
 	@Option(names = { "-lag", "--lag-threshold" },
-			description = "how to display the data",
+			description = "the minimum threshold at which to include a stream as lagging",
 			defaultValue = "P3D")
 	Duration lagThreshold = DEFAULT_LAG_THRESHOLD;
 
