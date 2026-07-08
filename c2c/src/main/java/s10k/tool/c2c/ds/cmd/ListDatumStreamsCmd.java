@@ -6,6 +6,7 @@ import static s10k.tool.c2c.util.CloudIntegrationRestUtils.listCloudDatumStreams
 import static s10k.tool.c2c.util.CloudIntegrationsUtils.datumStreamServiceLocalizedName;
 
 import java.util.List;
+import java.util.SortedSet;
 import java.util.concurrent.Callable;
 
 import org.springframework.http.client.ClientHttpRequestFactory;
@@ -21,6 +22,7 @@ import s10k.tool.c2c.domain.CloudDatumStreamConfiguration;
 import s10k.tool.c2c.domain.CloudIntegrationsFilter;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
+import s10k.tool.common.util.DatumUtils;
 import s10k.tool.common.util.TableUtils;
 
 /**
@@ -38,6 +40,13 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 			paramLabel = "datumStreamId")
 	Long[] datumStreamIds;
 
+	@Option(names = { "-source", "--source-id" },
+			description = "a source ID pattern to restrict results to",
+			split = "\\s*,\\s*",
+			splitSynopsisLabel = ",",
+			paramLabel = "sourceId")
+	String[] sourceIds;
+	
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data",
 			defaultValue = "PRETTY")
@@ -59,7 +68,8 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 		final RestClient restClient = restClient();
 		final CloudIntegrationsFilter filter = filter();
 		try {
-			List<CloudDatumStreamConfiguration> confs = listCloudDatumStreams(restClient, objectMapper, filter);
+			List<CloudDatumStreamConfiguration> confs = filterStreams(
+					listCloudDatumStreams(restClient, objectMapper, filter));
 			if (confs.isEmpty()) {
 				System.err.println("No datum streams matched your criteria.");
 				return 0;
@@ -82,6 +92,19 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 			filter.setDatumStreamIds(List.of(datumStreamIds));
 		}
 		return filter;
+	}
+
+	private List<CloudDatumStreamConfiguration> filterStreams(List<CloudDatumStreamConfiguration> confs) {
+		if (confs == null || confs.isEmpty() || (sourceIds == null || sourceIds.length < 1)) {
+			return confs;
+		}
+		return confs.stream().filter(conf -> {
+			if (sourceIds != null && sourceIds.length > 0) {
+				SortedSet<String> matchingSourceIds = DatumUtils.filterSources(conf.sourceIds(), sourceIds);
+				return !matchingSourceIds.isEmpty();
+			}
+			return true;
+		}).toList();
 	}
 
 	/**

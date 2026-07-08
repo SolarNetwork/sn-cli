@@ -8,13 +8,18 @@ Show [Cloud Datum Stream][datum-stream] entities matching a search filter.
 ## Usage
 
 ```
-s10k cloud-integrations datum-streams list [-mode=<displayMode>]
+s10k cloud-integrations datum-streams list
+	[-stream=datumStreamId[,datumStreamId...]]...
+	[-source=sourceId[,sourceId...]]...
+    [-mode=<displayMode>]
 ```
 
 <div markdown="1" class="options-explicit-col-widths">
 
 | Option | Long Version | Description |
 |:-------|:-------------|:------------|
+| `-source=` | `--source=` | the source ID(s) to restrict the results to |
+| `-stream=` | `--stream-id=` | the datum stream ID(s) to restrict the results to |
 | `-mode=` | `--display-mode=` | the format to display the data as, one of `CSV`, `JSON`, or `PRETTY`; defaults to `PRETTY` |
 
 </div>

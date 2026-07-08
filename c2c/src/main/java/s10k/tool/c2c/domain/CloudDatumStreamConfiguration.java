@@ -22,16 +22,11 @@ public record CloudDatumStreamConfiguration(Long configId, String name, String s
 		String sourceId, Map<String, Object> serviceProperties) {
 
 	/**
-	 * Get a new-line terminated list of source IDs included in this configuration.
+	 * Get all source IDs configured on the datum stream.
 	 * 
-	 * <p>
-	 * This will extract the source IDs referenced in the {@code sourceIdMap}
-	 * service property, if available.
-	 * </p>
-	 * 
-	 * @return the source ID list
+	 * @return the source IDs
 	 */
-	public String sourceIdsValue() {
+	public SortedSet<String> sourceIds() {
 		SortedSet<String> sourceIds = new TreeSet<>(CASE_INSENSITIVE_NATURAL_SORT);
 		if (serviceProperties != null) {
 			switch (serviceProperties.get("sourceIdMap")) {
@@ -50,6 +45,21 @@ public record CloudDatumStreamConfiguration(Long configId, String name, String s
 		if (serviceProperties == null || !serviceProperties.containsKey("sourceIdMap")) {
 			sourceIds.add(sourceId);
 		}
+		return sourceIds;
+	}
+
+	/**
+	 * Get a new-line terminated list of source IDs included in this configuration.
+	 * 
+	 * <p>
+	 * This will extract the source IDs referenced in the {@code sourceIdMap}
+	 * service property, if available.
+	 * </p>
+	 * 
+	 * @return the source ID list
+	 */
+	public String sourceIdsValue() {
+		SortedSet<String> sourceIds = sourceIds();
 		return sourceIds.stream().collect(joining(System.lineSeparator()));
 	}
 

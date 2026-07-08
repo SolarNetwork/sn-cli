@@ -3,7 +3,6 @@ package s10k.tool.datum.domain;
 import static java.time.ZoneOffset.UTC;
 import static net.solarnetwork.util.StringUtils.commaDelimitedStringFromCollection;
 import static s10k.tool.common.util.DateUtils.isMidnight;
-import static s10k.tool.common.util.StringUtils.parseStreamIdentifiers;
 
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -29,6 +28,7 @@ import net.solarnetwork.domain.datum.DatumReadingType;
 import net.solarnetwork.domain.datum.DatumRollupType;
 import net.solarnetwork.domain.datum.ObjectDatumKind;
 import net.solarnetwork.util.StringUtils;
+import s10k.tool.common.util.DatumUtils;
 
 /**
  * A mutable search filter for datum.
@@ -131,10 +131,10 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @param identifiers the collection of identifiers, each like
 	 *                    {@code OBJECT_ID:SOURCE_ID}
-	 * @see s10k.tool.common.util.StringUtils#parseStreamIdentifiers(java.util.Collection)
+	 * @see s10k.tool.common.util.DatumUtils#parseStreamIdentifiers(java.util.Collection)
 	 */
 	public void populateIdsFromStreamIdentifiers(SequencedCollection<String> identifiers) {
-		NavigableMap<Long, SortedSet<String>> mappings = parseStreamIdentifiers(identifiers);
+		NavigableMap<Long, SortedSet<String>> mappings = DatumUtils.parseStreamIdentifiers(identifiers);
 		setObjectIds(mappings.sequencedKeySet());
 		setSourceIds(mappings.sequencedValues().stream().flatMap(c -> c.stream()).toList());
 	}
