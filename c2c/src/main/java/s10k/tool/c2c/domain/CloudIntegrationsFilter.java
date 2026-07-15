@@ -28,6 +28,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	private SequencedCollection<ClaimableJobState> claimableJobStates;
 	private SequencedCollection<String> serviceIdentifiers;
 	private SequencedCollection<Long> nodeIds;
+	private SequencedCollection<String> sourceIds;
 	private ZonedDateTime startDate;
 	private ZonedDateTime endDate;
 	private Boolean enabled;
@@ -69,6 +70,9 @@ public class CloudIntegrationsFilter extends SimplePagination {
 		}
 		if (nodeIds != null && !nodeIds.isEmpty()) {
 			postBody.set("nodeIds", commaDelimitedStringFromCollection(nodeIds));
+		}
+		if (sourceIds != null && !sourceIds.isEmpty()) {
+			postBody.set("sourceIds", commaDelimitedStringFromCollection(sourceIds));
 		}
 		if (startDate != null) {
 			LocalDateTime utcDate = startDate.withZoneSameInstant(UTC).toLocalDateTime();
@@ -431,8 +435,8 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 * @return the first ID, or {@code null} if not available
 	 */
 	public final Long getNodeId() {
-		final SequencedCollection<Long> array = getNodeIds();
-		return (array != null && !array.isEmpty() ? array.getFirst() : null);
+		final SequencedCollection<Long> list = getNodeIds();
+		return (list != null && !list.isEmpty() ? list.getFirst() : null);
 	}
 
 	/**
@@ -460,6 +464,48 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 */
 	public final void setNodeIds(SequencedCollection<Long> nodeIds) {
 		this.nodeIds = nodeIds;
+	}
+
+	/**
+	 * Get the first source ID.
+	 *
+	 * <p>
+	 * This returns the first available source ID from the {@link #getSourceIds()}
+	 * array, or {@code null} if not available.
+	 * </p>
+	 *
+	 * @return the first ID, or {@code null} if not available
+	 */
+	public final String getSourceId() {
+		final SequencedCollection<String> list = getSourceIds();
+		return (list != null && !list.isEmpty() ? list.getFirst() : null);
+	}
+
+	/**
+	 * Set the source ID.
+	 *
+	 * @param sourceId the source ID to set
+	 */
+	public final void setSourceId(String sourceId) {
+		setSourceIds(sourceId != null ? List.of(sourceId) : null);
+	}
+
+	/**
+	 * Get the source IDs.
+	 * 
+	 * @return the source IDs
+	 */
+	public final SequencedCollection<String> getSourceIds() {
+		return sourceIds;
+	}
+
+	/**
+	 * Set the source IDs.
+	 *
+	 * @param sourceIds the source IDs to set
+	 */
+	public final void setSourceIds(SequencedCollection<String> sourceIds) {
+		this.sourceIds = sourceIds;
 	}
 
 	/**

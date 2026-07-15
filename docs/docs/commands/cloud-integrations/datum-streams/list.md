@@ -10,6 +10,7 @@ Show [Cloud Datum Stream][datum-stream] entities matching a search filter.
 ```
 s10k cloud-integrations datum-streams list
 	[-stream=datumStreamId[,datumStreamId...]]...
+	[-node=nodeId[,nodeId...]]...
 	[-source=sourceId[,sourceId...]]...
     [-mode=<displayMode>]
 ```
@@ -18,7 +19,8 @@ s10k cloud-integrations datum-streams list
 
 | Option | Long Version | Description |
 |:-------|:-------------|:------------|
-| `-source=` | `--source=` | the source ID(s) to restrict the results to |
+| `-node=` | `--node-id=` | the node ID(s) to restrict the results to |
+| `-source=` | `--source=` | the source ID(s) to restrict the results to; will match mapped and virtual source IDs and wildcard patterns are supported |
 | `-stream=` | `--stream-id=` | the datum stream ID(s) to restrict the results to |
 | `-mode=` | `--display-mode=` | the format to display the data as, one of `CSV`, `JSON`, or `PRETTY`; defaults to `PRETTY` |
 

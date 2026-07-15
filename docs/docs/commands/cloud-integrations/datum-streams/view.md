@@ -11,7 +11,9 @@ stream.
 
 ```
 s10k cloud-integrations datum-streams view
-	-stream=<datumStreamId>
+	[-stream=<datumStreamId>]
+	[-node=<nodeId>]
+	[-source=<sourceId>]
 	[-mode=<displayMode>]
 ```
 
@@ -19,10 +21,18 @@ s10k cloud-integrations datum-streams view
 
 | Option | Long Version | Description |
 |:-------|:-------------|:------------|
+| `-node=` | `--node-id=` | the node ID to show information for (first match) |
+| `-source=` | `--source-id=` | the source ID to show information for (first match); will match mapped and virtual source IDs and wildcard patterns are supported |
 | `-stream=` | `--stream-id=` | the datum stream ID to show information for |
 | `-mode=` | `--display-mode=` | the format to display the data as, one of `CSV`, `JSON`, or `PRETTY`; defaults to `PRETTY` |
 
 </div>
+
+!!! tip
+
+	The `--node-id` and `--source-id` options are convenient if you do not know the ID of the stream
+	you want to view, but be aware that just the first matching stream will be shown if multiple
+	streams match the given criteria.
 
 ## Output
 

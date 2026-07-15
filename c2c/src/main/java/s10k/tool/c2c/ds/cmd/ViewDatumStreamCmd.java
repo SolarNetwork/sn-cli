@@ -2,6 +2,7 @@ package s10k.tool.c2c.ds.cmd;
 
 import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
+import static s10k.tool.c2c.util.CloudIntegrationRestUtils.listCloudDatumStreams;
 import static s10k.tool.c2c.util.CloudIntegrationsUtils.datumStreamServiceLocalizedName;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 
@@ -26,7 +27,9 @@ import s10k.tool.c2c.domain.CloudDatumStreamConfiguration;
 import s10k.tool.c2c.domain.CloudDatumStreamMappingConfiguration;
 import s10k.tool.c2c.domain.CloudDatumStreamMappingPropertyConfiguration;
 import s10k.tool.c2c.domain.CloudIntegrationConfiguration;
+import s10k.tool.c2c.domain.CloudIntegrationsFilter;
 import s10k.tool.c2c.i9n.cmd.ListIntegrationsCmd;
+import s10k.tool.c2c.util.CloudIntegrationRestUtils;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.OutputUtils;
@@ -41,10 +44,17 @@ public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements C
 
 	// @formatter:off
 	@Option(names = { "-stream", "--stream-id" },
-			description = "the ID of the datum stream to view the details of",
-			required = true)
+			description = "the ID of the datum stream to view the details of")
 	Long datumStreamId;
 
+	@Option(names = { "-node", "--node-id" },
+			description = "a node ID to match")
+	Long nodeId;
+
+	@Option(names = { "-source", "--source-id" },
+			description = "a source ID pattern to match")
+	String sourceId;
+	
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data",
 			defaultValue = "PRETTY")
@@ -64,10 +74,18 @@ public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements C
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final CloudIntegrationsFilter filter = filter();
+		if (filter.getDatumStreamId() == null && filter.getNodeId() == null && filter.getSourceId() == null) {
+			System.err.println("At least one search criteria option is required.");
+			return 1;
+		}
 
 		try {
-			final CloudDatumStreamConfiguration datumStream = viewCloudDatumStream(restClient, objectMapper,
-					datumStreamId);
+			final CloudDatumStreamConfiguration datumStream = viewCloudDatumStream(restClient, objectMapper, filter);
+			if (datumStream == null) {
+				System.err.println("No datum stream matched your criteria.");
+				return 0;
+			}
 			final CloudDatumStreamMappingConfiguration mapping = (datumStream.datumStreamMappingId() != null
 					? viewCloudDatumStreamMapping(restClient, objectMapper, datumStream.datumStreamMappingId())
 					: null);
@@ -96,6 +114,20 @@ public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements C
 			System.err.println("Error viewing cloud datum stream: %s".formatted(e.getMessage()));
 		}
 		return 1;
+	}
+
+	private CloudIntegrationsFilter filter() {
+		final CloudIntegrationsFilter filter = new CloudIntegrationsFilter();
+		if (datumStreamId != null) {
+			filter.setDatumStreamId(datumStreamId);
+		}
+		if (nodeId != null) {
+			filter.setNodeId(nodeId);
+		}
+		if (sourceId != null) {
+			filter.setSourceId(sourceId);
+		}
+		return filter;
 	}
 
 	/**
@@ -202,6 +234,31 @@ public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements C
 				(conf.property != null ? conf.property.valueReference() : null),
 			};
 		// @formatter:on
+	}
+
+	/**
+	 * View a cloud datum stream.
+	 * 
+	 * @param restClient   the REST client
+	 * @param objectMapper the object mapper
+	 * @param filter       the search criteria; if a {@code datumStreamId} is
+	 *                     available this will call
+	 *                     {@link #viewCloudDatumStream(RestClient, ObjectMapper, Long)};
+	 *                     otherwise
+	 *                     {@link CloudIntegrationRestUtils#listCloudDatumStreams(RestClient, ObjectMapper, CloudIntegrationsFilter)}
+	 *                     will be called and the first result returned
+	 * @return the first available cloud datum stream matching the search criteria
+	 */
+	public static CloudDatumStreamConfiguration viewCloudDatumStream(RestClient restClient, ObjectMapper objectMapper,
+			CloudIntegrationsFilter filter) {
+		if (filter.getDatumStreamId() != null) {
+			return viewCloudDatumStream(restClient, objectMapper, filter.getDatumStreamId());
+		}
+		List<CloudDatumStreamConfiguration> confs = listCloudDatumStreams(restClient, objectMapper, filter);
+		if (confs != null && !confs.isEmpty()) {
+			return confs.getFirst();
+		}
+		return null;
 	}
 
 	/**
