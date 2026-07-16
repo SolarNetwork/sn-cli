@@ -1873,6 +1873,8 @@
       
         
       
+        
+      
     
     
     
@@ -1912,6 +1914,34 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../instructions/controls/orchestrate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    orchestrate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -3100,8 +3130,8 @@ properties that can be mapped into a cloud datum stream.</p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>s10k cloud-integrations datum-streams data-values
     -i=&lt;integrationId&gt;
-    [-t=&lt;type&gt;]
     [-p=&lt;path&gt;]
+    [-t=&lt;type&gt; | -stream=&lt;datumStreamId&gt;]
     [-mode=&lt;displayMode&gt;]
 </code></pre></div>
 <div class="options-explicit-col-widths">
@@ -3125,9 +3155,14 @@ properties that can be mapped into a cloud datum stream.</p>
 <td style="text-align: left;">the <a href="#data-hierarchy-paths">data hierarchy path</a> to show</td>
 </tr>
 <tr>
+<td style="text-align: left;"><code>-stream=</code></td>
+<td style="text-align: left;"><code>--stream-id=</code></td>
+<td style="text-align: left;">the datum stream ID to list data value for; only required by some providers, like eGauge</td>
+</tr>
+<tr>
 <td style="text-align: left;"><code>-t=</code></td>
 <td style="text-align: left;"><code>--stream-type=</code></td>
-<td style="text-align: left;">a datum stream service identifier, required when <code>--path</code> provided; a case-insensitive sub-string match is performed against both the service identifier and the display name, for example <code>also</code> will match the AlsoEnergy type</td>
+<td style="text-align: left;">a datum stream service identifier, required when <code>--path</code> provided; a case-insensitive sub-string match is performed against both the service identifier and the display name, for example <code>also</code> will match the AlsoEnergy type; not needed if <code>--stream-id</code> option is provided</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-mode=</code></td>

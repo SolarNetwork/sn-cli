@@ -1743,6 +1743,8 @@
       
         
       
+        
+      
     
     
     
@@ -1782,6 +1784,34 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../orchestrate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    orchestrate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -2994,7 +3024,7 @@
     
     
       <li class="md-path__item">
-        <a href="../set-operating-state/" class="md-path__link">
+        <a href="../orchestrate/" class="md-path__link">
           
   <span class="md-ellipsis">
     controls
@@ -3020,9 +3050,13 @@
 <p>Update the value of a SolarNode control. Pass the desired control value as the first (and only)
 parameter.</p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>s10k instructions controls set -node=&lt;nodeId&gt; -control=&lt;controlId&gt;
-                            [-x=&lt;expiration&gt;] [-X=&lt;executionDate&gt;]
-                            [-tz=&lt;zone&gt;] desiredValue
+<div class="highlight"><pre><span></span><code>s10k instructions controls set
+    -node=&lt;nodeId&gt;
+    -control=&lt;controlId&gt;
+    [-x=&lt;expiration&gt;]
+    [-X=&lt;executionDate&gt;]
+    [-tz=&lt;zone&gt;]
+    desiredValue
 </code></pre></div>
 <h2 id="options">Options<a class="headerlink" href="#options" title="Permanent link">&para;</a></h2>
 <div class="options-explicit-col-widths">
