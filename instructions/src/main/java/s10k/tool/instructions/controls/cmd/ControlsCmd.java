@@ -15,6 +15,7 @@ import s10k.tool.instructions.cmd.InstructionsCmd;
  */
 // @formatter:off
 @Command(name = "controls", subcommands = {
+		OrchestrateControlsCmd.class,
 		SetControlParameterCmd.class,
 		SetOperatingStateCmd.class,
 		SignalCmd.class,
@@ -30,7 +31,7 @@ public class ControlsCmd extends BaseSubCmd<InstructionsCmd> {
 	Long nodeId;
 
 	@Option(names = { "-control", "--control-id" },
-			description = "the control ID to validate",
+			description = "the control ID to operate on",
 			required = true,
 			scope = ScopeType.INHERIT)
 	String controlId;
