@@ -9,9 +9,13 @@ parameter.
 ## Usage
 
 ```
-s10k instructions controls set -node=<nodeId> -control=<controlId>
-							[-x=<expiration>] [-X=<executionDate>]
-							[-tz=<zone>] desiredValue
+s10k instructions controls set
+	-node=<nodeId>
+	-control=<controlId>
+	[-x=<expiration>]
+	[-X=<executionDate>]
+	[-tz=<zone>]
+	desiredValue
 ```
 
 ## Options

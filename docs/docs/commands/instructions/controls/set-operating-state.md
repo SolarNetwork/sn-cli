@@ -6,13 +6,20 @@ title: set-operating-state
 Update the [operating state][operating-states] of a SolarNode component. Pass the desired operating
 state as the first (and only) parameter.
 
+!!! tip
+
+	See the [`SetOperatingState`][SetOperatingState] instruction documentation for more information.
+
 ## Usage
 
 ```
-s10k instructions controls set-operating-state -node=<nodeId>
-							-control=<controlId>
-							[-x=<expiration>] [-X=<executionDate>]
-							[-tz=<zone>] desiredState
+s10k instructions controls set-operating-state
+	-node=<nodeId>
+	-control=<controlId>
+	[-x=<expiration>]
+	[-X=<executionDate>]
+	[-tz=<zone>]
+	desiredState
 ```
 
 ## Options
@@ -51,3 +58,4 @@ Update a component to "standby" mode:
 	```
 
 [operating-states]: https://github.com/SolarNetwork/solarnetwork/wiki/SolarNet-API-global-objects#standard-device-operating-states
+[SetOperatingState]: https://solarnetwork.github.io/solarnode-handbook/users/instructions/topics/set-operating-state/

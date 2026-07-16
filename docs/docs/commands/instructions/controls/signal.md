@@ -9,10 +9,13 @@ parameter.
 ## Usage
 
 ```
-s10k instructions controls signal -node=<nodeId>
-							-control=<controlId>
-							[-x=<expiration>] [-X=<executionDate>]
-							[-tz=<zone>] signal
+s10k instructions controls signal
+	-node=<nodeId>
+	-control=<controlId>
+	[-x=<expiration>]
+	[-X=<executionDate>]
+	[-tz=<zone>]
+	signalName
 ```
 
 ## Options
