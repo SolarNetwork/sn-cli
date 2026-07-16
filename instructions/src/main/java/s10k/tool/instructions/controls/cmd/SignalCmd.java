@@ -70,7 +70,7 @@ public class SignalCmd extends BaseSubCmd<ControlsCmd> implements Callable<Integ
 									status.getInstructionId())));
 			return 3;
 		} catch (Exception e) {
-			System.err.println(Ansi.AUTO.string("Error setting operating state: %s".formatted(e.getMessage())));
+			System.err.println(Ansi.AUTO.string("Error sending signal: %s".formatted(e.getMessage())));
 		}
 		return 1;
 	}
