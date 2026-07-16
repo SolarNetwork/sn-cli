@@ -75,11 +75,12 @@ public final class CloudIntegrationsUtils {
 	 * search.
 	 * 
 	 * @param query the substring to look for
-	 * @return the matching service ID and name, or {@code null} if not found
+	 * @return the matching service ID and name
+	 * @throws IllegalStateException if a matching service ID is not found
 	 */
 	public static Entry<String, String> findDatumStreamServiceId(String query) {
 		if (query == null || query.isEmpty()) {
-			return null;
+			throw new IllegalStateException("Datum stream type not provided.");
 		}
 		final String lcQuery = query.toLowerCase(Locale.ENGLISH);
 		for (String key : RESOURCE_BUNDLE.keySet()) {
@@ -91,7 +92,7 @@ public final class CloudIntegrationsUtils {
 				return Map.entry(key.substring(3, key.length() - 5), val);
 			}
 		}
-		return null;
+		throw new IllegalStateException("Datum stream type not found for [" + query + "]");
 	}
 
 }

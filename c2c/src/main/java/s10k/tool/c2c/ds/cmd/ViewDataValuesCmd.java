@@ -2,6 +2,7 @@ package s10k.tool.c2c.ds.cmd;
 
 import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static java.util.stream.Collectors.joining;
+import static s10k.tool.c2c.util.CloudIntegrationRestUtils.viewCloudDatumStream;
 import static s10k.tool.c2c.util.CloudIntegrationRestUtils.viewDatumStreamFilters;
 import static s10k.tool.c2c.util.CloudIntegrationsUtils.findDatumStreamServiceId;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
@@ -9,7 +10,6 @@ import static s10k.tool.common.util.RestUtils.checkSuccess;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.SequencedMap;
 import java.util.concurrent.Callable;
 
@@ -26,6 +26,7 @@ import com.github.freva.asciitable.Column;
 
 import net.solarnetwork.codec.JsonUtils;
 import net.solarnetwork.util.StringUtils;
+import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.c2c.domain.CloudDataValue;
@@ -47,10 +48,9 @@ public class ViewDataValuesCmd extends BaseSubCmd<DatumStreamsCmd> implements Ca
 			required =  true)
 	Long integrationId;
 
-	@Option(names = { "-t", "--stream-type" },
-			description = "the datum stream type to show data values for")
-	String type;
-	
+	@ArgGroup(exclusive = true, multiplicity = "0..1")
+	StreamTypeOrId streamTypeOrId;
+
 	@Option(names = { "-p", "--path" },
 			description = "the datum data value path to return")
 	String path;
@@ -60,6 +60,33 @@ public class ViewDataValuesCmd extends BaseSubCmd<DatumStreamsCmd> implements Ca
 			defaultValue = "PRETTY")
 	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
 	// @formatter:on
+
+	/**
+	 * Grouping of stream type or ID, where only one or the other should be
+	 * specified.
+	 */
+	static class StreamTypeOrId {
+		// @formatter:off
+		@Option(names = { "-t", "--stream-type" },
+				description = "the datum stream type to show data values for")
+		String type;
+		
+
+		@Option(names = { "-stream", "--stream-id" },
+				description = "the ID of the datum stream to show data value for")
+    	Long datumStreamId;
+    	// @formatter:on
+
+		/**
+		 * Test if a datum stream ID is configured.
+		 * 
+		 * @return {@code true} if datumStreamId is configured
+		 */
+		boolean isDatumStream() {
+			return datumStreamId != null;
+		}
+
+	}
 
 	/**
 	 * Constructor.
@@ -77,20 +104,37 @@ public class ViewDataValuesCmd extends BaseSubCmd<DatumStreamsCmd> implements Ca
 
 		final List<String> pathIdentifiers = StringUtils.delimitedStringToList(path, "/");
 
-		if (pathIdentifiers != null && !pathIdentifiers.isEmpty() && (type == null || type.isEmpty())) {
+		if (pathIdentifiers != null && !pathIdentifiers.isEmpty() && streamTypeOrId == null) {
 			System.err.println("The --stream-type option must be provided when --path specified.");
 			return 1;
 		}
 
-		final Entry<String, String> datumStreamServiceId = findDatumStreamServiceId(type);
+		// determine datum stream service ID (if needed)
+		final String datumStreamServiceId;
+		try {
+			if (streamTypeOrId != null) {
+				if (streamTypeOrId.datumStreamId != null) {
+					datumStreamServiceId = viewCloudDatumStream(restClient, objectMapper, streamTypeOrId.datumStreamId)
+							.serviceIdentifier();
+				} else {
+					datumStreamServiceId = findDatumStreamServiceId(streamTypeOrId.type).getKey();
+				}
+			} else {
+				datumStreamServiceId = null;
+			}
+		} catch (IllegalStateException e) {
+			System.err.printf("Error looking up stream type information: %s", e.getMessage());
+			return 1;
+		}
 		if (pathIdentifiers != null && !pathIdentifiers.isEmpty() && datumStreamServiceId == null) {
-			System.err.printf("The stream-type [%s] is not supported.\n", type);
+			System.err.printf("The stream type [%s] is not supported.\n", streamTypeOrId.type);
 			return 1;
 		}
 
 		try {
 			List<CloudDataValue> confs = viewDatumDataValues(restClient, objectMapper, integrationId,
-					(datumStreamServiceId != null ? datumStreamServiceId.getKey() : null), pathIdentifiers);
+					(streamTypeOrId != null ? streamTypeOrId.datumStreamId : null),
+					(datumStreamServiceId != null ? datumStreamServiceId : null), pathIdentifiers);
 			if (confs.isEmpty()) {
 				System.err.println("No sources matched your criteria.");
 				return 0;
@@ -102,7 +146,7 @@ public class ViewDataValuesCmd extends BaseSubCmd<DatumStreamsCmd> implements Ca
 					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
-			System.err.println("Error viewing cloud integrations: %s".formatted(e.getMessage()));
+			System.err.println("Error viewing cloud data values: %s".formatted(e.getMessage()));
 		}
 		return 1;
 	}
@@ -146,16 +190,27 @@ public class ViewDataValuesCmd extends BaseSubCmd<DatumStreamsCmd> implements Ca
 	 * @param restClient           the REST client
 	 * @param objectMapper         the object mapper
 	 * @param integrationId        the integration ID
-	 * @param datumStreamServiceId the datum stream service ID, required if
-	 *                             {@code pathIdentifiers} provided
+	 * @param datumStreamId        the optional datum stream ID (required by some
+	 *                             providers like eGauge)
+	 * @param datumStreamServiceId the datum stream service ID; required if
+	 *                             {@code pathIdentifiers} is provided or the
+	 *                             integration offers more than one datum stream
+	 *                             service
 	 * @param pathIdentifiers      the optional path identifiers to extract
 	 * @return the result
 	 */
 	public static List<CloudDataValue> viewDatumDataValues(RestClient restClient, ObjectMapper objectMapper,
-			Long integrationId, String datumStreamServiceId, List<String> pathIdentifiers) {
+			Long integrationId, Long datumStreamId, String datumStreamServiceId, List<String> pathIdentifiers) {
 
 		final MultiValueMap<String, String> queryParameters = new LinkedMultiValueMap<>(
-				pathIdentifiers != null ? pathIdentifiers.size() : 0);
+				(pathIdentifiers != null ? pathIdentifiers.size() : 0) + (datumStreamId != null ? 1 : 0)
+						+ (datumStreamServiceId != null ? 1 : 0));
+		if (datumStreamServiceId != null) {
+			queryParameters.put("datumStreamServiceIdentifier", List.of(datumStreamServiceId));
+		}
+		if (datumStreamId != null) {
+			queryParameters.put("datumStreamId", List.of(datumStreamId.toString()));
+		}
 		if (pathIdentifiers != null && !pathIdentifiers.isEmpty()) {
 			// get datum stream filter names for given service type
 			SequencedMap<String, String> filterKeys = viewDatumStreamFilters(restClient, objectMapper,

@@ -242,7 +242,7 @@ public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements C
 	 * @param objectMapper the object mapper
 	 * @param filter       the search criteria; if a {@code datumStreamId} is
 	 *                     available this will call
-	 *                     {@link #viewCloudDatumStream(RestClient, ObjectMapper, Long)};
+	 *                     {@link CloudIntegrationRestUtils#viewCloudDatumStream(RestClient, ObjectMapper, Long)};
 	 *                     otherwise
 	 *                     {@link CloudIntegrationRestUtils#listCloudDatumStreams(RestClient, ObjectMapper, CloudIntegrationsFilter)}
 	 *                     will be called and the first result returned
@@ -251,43 +251,13 @@ public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements C
 	public static CloudDatumStreamConfiguration viewCloudDatumStream(RestClient restClient, ObjectMapper objectMapper,
 			CloudIntegrationsFilter filter) {
 		if (filter.getDatumStreamId() != null) {
-			return viewCloudDatumStream(restClient, objectMapper, filter.getDatumStreamId());
+			return CloudIntegrationRestUtils.viewCloudDatumStream(restClient, objectMapper, filter.getDatumStreamId());
 		}
 		List<CloudDatumStreamConfiguration> confs = listCloudDatumStreams(restClient, objectMapper, filter);
 		if (confs != null && !confs.isEmpty()) {
 			return confs.getFirst();
 		}
 		return null;
-	}
-
-	/**
-	 * View a cloud datum stream.
-	 * 
-	 * @param restClient    the REST client
-	 * @param objectMapper  the object mapper
-	 * @param datumStreamId the datum stream ID to view
-	 * @return the result
-	 */
-	public static CloudDatumStreamConfiguration viewCloudDatumStream(RestClient restClient, ObjectMapper objectMapper,
-			Long datumStreamId) {
-		// @formatter:off
-		JsonNode response = restClient.get()
-			.uri(b -> b.path("/solaruser/api/v1/sec/user/c2c/datum-streams/{datumStreamId}")
-				.build(datumStreamId)
-			)
-			.accept(MediaType.APPLICATION_JSON)
-			.retrieve()
-			.body(JsonNode.class)
-			;		
-		// @formatter:on
-
-		checkSuccess(response);
-
-		try {
-			return objectMapper.treeToValue(response.path("data"), CloudDatumStreamConfiguration.class);
-		} catch (JsonProcessingException | IllegalArgumentException e) {
-			throw new IllegalStateException("Error parsing cloud datum stream response: " + e.getMessage(), e);
-		}
 	}
 
 	/**

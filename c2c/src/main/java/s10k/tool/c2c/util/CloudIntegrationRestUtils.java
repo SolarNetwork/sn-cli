@@ -37,12 +37,44 @@ public final class CloudIntegrationRestUtils {
 	}
 
 	/**
+	 * View a cloud datum stream.
+	 * 
+	 * @param restClient    the REST client
+	 * @param objectMapper  the object mapper
+	 * @param datumStreamId the datum stream ID to view
+	 * @return the result
+	 * @throws IllegalStateException if an error occurs fetching the stream
+	 */
+	public static CloudDatumStreamConfiguration viewCloudDatumStream(RestClient restClient, ObjectMapper objectMapper,
+			Long datumStreamId) {
+		// @formatter:off
+		JsonNode response = restClient.get()
+			.uri(b -> b.path("/solaruser/api/v1/sec/user/c2c/datum-streams/{datumStreamId}")
+				.build(datumStreamId)
+			)
+			.accept(MediaType.APPLICATION_JSON)
+			.retrieve()
+			.body(JsonNode.class)
+			;		
+		// @formatter:on
+
+		checkSuccess(response);
+
+		try {
+			return objectMapper.treeToValue(response.path("data"), CloudDatumStreamConfiguration.class);
+		} catch (JsonProcessingException | IllegalArgumentException e) {
+			throw new IllegalStateException("Error parsing cloud datum stream response: " + e.getMessage(), e);
+		}
+	}
+
+	/**
 	 * List cloud datum streams.
 	 * 
 	 * @param restClient   the REST client
 	 * @param objectMapper the object mapper
 	 * @param filter       an optional filter
 	 * @return the result
+	 * @throws IllegalStateException if an error occurs fetching the streams
 	 */
 	public static List<CloudDatumStreamConfiguration> listCloudDatumStreams(RestClient restClient,
 			ObjectMapper objectMapper, CloudIntegrationsFilter filter) {
@@ -88,6 +120,7 @@ public final class CloudIntegrationRestUtils {
 	 * @param typeFilters  optional include/exclude filters (prefix with {@code !}
 	 *                     to exclude
 	 * @return the matching datum streams
+	 * @throws IllegalStateException if an error occurs fetching the streams
 	 */
 	public static SortedMap<Long, CloudDatumStreamConfiguration> datumStreamsOfType(RestClient restClient,
 			ObjectMapper objectMapper, CloudIntegrationsFilter filter, String[] typeFilters) {
@@ -159,6 +192,7 @@ public final class CloudIntegrationRestUtils {
 	 * @param objectMapper  the object mapper
 	 * @param integrationId the integration ID
 	 * @return the result
+	 * @throws IllegalStateException if an error occurs fetching the integration
 	 */
 	public static CloudIntegrationConfiguration viewCloudIntegration(RestClient restClient, ObjectMapper objectMapper,
 			Long integrationId) {
@@ -190,6 +224,7 @@ public final class CloudIntegrationRestUtils {
 	 * @param datumStreamServiceId the datum stream service ID to look up the
 	 *                             filters for
 	 * @return a mapping of filter keys to associated names, never {@code null}
+	 * @throws IllegalStateException if an error occurs fetching the stream
 	 */
 	public static SequencedMap<String, String> viewDatumStreamFilters(RestClient restClient, ObjectMapper objectMapper,
 			String datumStreamServiceId) {

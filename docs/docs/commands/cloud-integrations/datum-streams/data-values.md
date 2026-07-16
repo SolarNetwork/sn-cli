@@ -11,8 +11,8 @@ properties that can be mapped into a cloud datum stream.
 ```
 s10k cloud-integrations datum-streams data-values
 	-i=<integrationId>
-	[-t=<type>]
 	[-p=<path>]
+	[-t=<type> | -stream=<datumStreamId>]
 	[-mode=<displayMode>]
 ```
 
@@ -22,7 +22,8 @@ s10k cloud-integrations datum-streams data-values
 |:-------|:-------------|:------------|
 | `-i=` | `--integration-id=` | the Cloud Integration ID to list data values for |
 | `-p=` | `--path=` | the [data hierarchy path](#data-hierarchy-paths) to show |
-| `-t=` | `--stream-type=` | a datum stream service identifier, required when `--path` provided; a case-insensitive sub-string match is performed against both the service identifier and the display name, for example `also` will match the AlsoEnergy type |
+| `-stream=` | `--stream-id=` | the datum stream ID to list data value for; only required by some providers, like eGauge |
+| `-t=` | `--stream-type=` | a datum stream service identifier, required when `--path` provided; a case-insensitive sub-string match is performed against both the service identifier and the display name, for example `also` will match the AlsoEnergy type; not needed if `--stream-id` option is provided |
 | `-mode=` | `--display-mode=` | the format to display the data as, one of `CSV`, `JSON`, or `PRETTY`; defaults to `PRETTY` |
 
 </div>
