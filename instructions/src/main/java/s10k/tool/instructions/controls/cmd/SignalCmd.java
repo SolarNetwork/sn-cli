@@ -28,7 +28,7 @@ import s10k.tool.instructions.domain.InstructionRequest;
 @Command(name = "signal", sortSynopsis = false)
 public class SignalCmd extends BaseSubCmd<ControlsCmd> implements Callable<Integer> {
 
-	@Parameters(index = "0", description = "the signal to send", paramLabel = "signal")
+	@Parameters(index = "0", description = "the signal to send", paramLabel = "signalName")
 	String value;
 
 	/**
