@@ -9,6 +9,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.SequencedCollection;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -20,18 +21,18 @@ import s10k.tool.common.domain.ClaimableJobState;
  */
 public class CloudIntegrationsFilter extends SimplePagination {
 
-	private SequencedCollection<Long> integrationIds;
-	private SequencedCollection<Long> datumStreamIds;
-	private SequencedCollection<Long> datumStreamMappingIds;
-	private SequencedCollection<Long> taskIds;
-	private SequencedCollection<Integer> indexes;
-	private SequencedCollection<ClaimableJobState> claimableJobStates;
-	private SequencedCollection<String> serviceIdentifiers;
-	private SequencedCollection<Long> nodeIds;
-	private SequencedCollection<String> sourceIds;
-	private ZonedDateTime startDate;
-	private ZonedDateTime endDate;
-	private Boolean enabled;
+	private @Nullable SequencedCollection<Long> integrationIds;
+	private @Nullable SequencedCollection<Long> datumStreamIds;
+	private @Nullable SequencedCollection<Long> datumStreamMappingIds;
+	private @Nullable SequencedCollection<Long> taskIds;
+	private @Nullable SequencedCollection<Integer> indexes;
+	private @Nullable SequencedCollection<ClaimableJobState> claimableJobStates;
+	private @Nullable SequencedCollection<String> serviceIdentifiers;
+	private @Nullable SequencedCollection<Long> nodeIds;
+	private @Nullable SequencedCollection<String> sourceIds;
+	private @Nullable ZonedDateTime startDate;
+	private @Nullable ZonedDateTime endDate;
+	private @Nullable Boolean enabled;
 
 	/**
 	 * Constructor.
@@ -104,7 +105,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @return the first ID, or {@code null} if not available
 	 */
-	public final Long getIntegrationId() {
+	public final @Nullable Long getIntegrationId() {
 		final SequencedCollection<Long> array = getIntegrationIds();
 		return (array != null && !array.isEmpty() ? array.getFirst() : null);
 	}
@@ -114,7 +115,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param integrationId the integration ID to set
 	 */
-	public final void setIntegrationId(Long integrationId) {
+	public final void setIntegrationId(@Nullable Long integrationId) {
 		setIntegrationIds(integrationId != null ? List.of(integrationId) : null);
 	}
 
@@ -123,7 +124,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 * 
 	 * @return the integration IDs
 	 */
-	public final SequencedCollection<Long> getIntegrationIds() {
+	public final @Nullable SequencedCollection<Long> getIntegrationIds() {
 		return integrationIds;
 	}
 
@@ -132,7 +133,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param integrationIds the integration IDs to set
 	 */
-	public final void setIntegrationIds(SequencedCollection<Long> integrationIds) {
+	public final void setIntegrationIds(@Nullable SequencedCollection<Long> integrationIds) {
 		this.integrationIds = integrationIds;
 	}
 
@@ -146,7 +147,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @return the first ID, or {@code null} if not available
 	 */
-	public final Long getDatumStreamId() {
+	public final @Nullable Long getDatumStreamId() {
 		final SequencedCollection<Long> array = getDatumStreamIds();
 		return (array != null && !array.isEmpty() ? array.getFirst() : null);
 	}
@@ -156,7 +157,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param datumStreamId the datum stream ID to set
 	 */
-	public final void setDatumStreamId(Long datumStreamId) {
+	public final void setDatumStreamId(@Nullable Long datumStreamId) {
 		setDatumStreamIds(datumStreamId != null ? List.of(datumStreamId) : null);
 	}
 
@@ -165,7 +166,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 * 
 	 * @return the datum stream IDs
 	 */
-	public final SequencedCollection<Long> getDatumStreamIds() {
+	public final @Nullable SequencedCollection<Long> getDatumStreamIds() {
 		return datumStreamIds;
 	}
 
@@ -174,7 +175,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param datumStreamIds the datum stream IDs to set
 	 */
-	public final void setDatumStreamIds(SequencedCollection<Long> datumStreamIds) {
+	public final void setDatumStreamIds(@Nullable SequencedCollection<Long> datumStreamIds) {
 		this.datumStreamIds = datumStreamIds;
 	}
 
@@ -188,7 +189,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @return the first ID, or {@code null} if not available
 	 */
-	public final Long getDatumStreamMappingId() {
+	public final @Nullable Long getDatumStreamMappingId() {
 		final SequencedCollection<Long> array = getDatumStreamMappingIds();
 		return (array != null && !array.isEmpty() ? array.getFirst() : null);
 	}
@@ -198,7 +199,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param datumStreamMappingId the datum stream mapping ID to set
 	 */
-	public final void setDatumStreamMappingId(Long datumStreamMappingId) {
+	public final void setDatumStreamMappingId(@Nullable Long datumStreamMappingId) {
 		setDatumStreamMappingIds(datumStreamMappingId != null ? List.of(datumStreamMappingId) : null);
 	}
 
@@ -207,7 +208,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 * 
 	 * @return the IDs
 	 */
-	public final SequencedCollection<Long> getDatumStreamMappingIds() {
+	public final @Nullable SequencedCollection<Long> getDatumStreamMappingIds() {
 		return datumStreamMappingIds;
 	}
 
@@ -216,7 +217,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param datumStreamMappingIds the datum stream mapping IDs to set
 	 */
-	public final void setDatumStreamMappingIds(SequencedCollection<Long> datumStreamMappingIds) {
+	public final void setDatumStreamMappingIds(@Nullable SequencedCollection<Long> datumStreamMappingIds) {
 		this.datumStreamMappingIds = datumStreamMappingIds;
 	}
 
@@ -230,7 +231,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @return the first index, or {@code null} if not available
 	 */
-	public final Integer getIndex() {
+	public final @Nullable Integer getIndex() {
 		final SequencedCollection<Integer> array = getIndexes();
 		return (array != null && !array.isEmpty() ? array.getFirst() : null);
 	}
@@ -240,7 +241,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param index the index to set
 	 */
-	public final void setIndex(Integer index) {
+	public final void setIndex(@Nullable Integer index) {
 		setIndexes(index != null ? List.of(index) : null);
 	}
 
@@ -249,7 +250,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @return the indexes
 	 */
-	public final SequencedCollection<Integer> getIndexes() {
+	public final @Nullable SequencedCollection<Integer> getIndexes() {
 		return indexes;
 	}
 
@@ -258,7 +259,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param indexes the indexes to set
 	 */
-	public final void setIndexes(SequencedCollection<Integer> indexes) {
+	public final void setIndexes(@Nullable SequencedCollection<Integer> indexes) {
 		this.indexes = indexes;
 	}
 
@@ -272,7 +273,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @return the first state, or {@code null} if not available
 	 */
-	public ClaimableJobState getClaimableJobState() {
+	public @Nullable ClaimableJobState getClaimableJobState() {
 		final SequencedCollection<ClaimableJobState> array = getClaimableJobStates();
 		return (array != null && !array.isEmpty() ? array.getFirst() : null);
 	}
@@ -282,7 +283,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param state the state to set
 	 */
-	public void setClaimableJobState(ClaimableJobState state) {
+	public void setClaimableJobState(@Nullable ClaimableJobState state) {
 		setClaimableJobStates(state != null ? List.of(state) : null);
 	}
 
@@ -291,7 +292,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 * 
 	 * @return the state
 	 */
-	public final SequencedCollection<ClaimableJobState> getClaimableJobStates() {
+	public final @Nullable SequencedCollection<ClaimableJobState> getClaimableJobStates() {
 		return claimableJobStates;
 	}
 
@@ -300,7 +301,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param claimableJobStates the states to set
 	 */
-	public final void setClaimableJobStates(SequencedCollection<ClaimableJobState> claimableJobStates) {
+	public final void setClaimableJobStates(@Nullable SequencedCollection<ClaimableJobState> claimableJobStates) {
 		this.claimableJobStates = claimableJobStates;
 	}
 
@@ -309,7 +310,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 * 
 	 * @return the start date
 	 */
-	public final ZonedDateTime getStartDate() {
+	public final @Nullable ZonedDateTime getStartDate() {
 		return startDate;
 	}
 
@@ -318,7 +319,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param startDate the date to set
 	 */
-	public final void setStartDate(ZonedDateTime startDate) {
+	public final void setStartDate(@Nullable ZonedDateTime startDate) {
 		this.startDate = startDate;
 	}
 
@@ -327,7 +328,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 * 
 	 * @return the end date
 	 */
-	public final ZonedDateTime getEndDate() {
+	public final @Nullable ZonedDateTime getEndDate() {
 		return endDate;
 	}
 
@@ -336,7 +337,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param endDate the date to set
 	 */
-	public final void setEndDate(ZonedDateTime endDate) {
+	public final void setEndDate(@Nullable ZonedDateTime endDate) {
 		this.endDate = endDate;
 	}
 
@@ -350,7 +351,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @return the first service identifier, or {@code null} if not available
 	 */
-	public String getServiceIdentifier() {
+	public @Nullable String getServiceIdentifier() {
 		final SequencedCollection<String> array = getServiceIdentifiers();
 		return (array != null && !array.isEmpty() ? array.getFirst() : null);
 	}
@@ -360,7 +361,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param serviceIdentifier the identifier to set
 	 */
-	public void setServiceIdentifier(String serviceIdentifier) {
+	public void setServiceIdentifier(@Nullable String serviceIdentifier) {
 		setServiceIdentifiers(serviceIdentifiers != null ? List.of(serviceIdentifier) : null);
 	}
 
@@ -369,7 +370,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 * 
 	 * @return service identifiers
 	 */
-	public final SequencedCollection<String> getServiceIdentifiers() {
+	public final @Nullable SequencedCollection<String> getServiceIdentifiers() {
 		return serviceIdentifiers;
 	}
 
@@ -378,7 +379,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param serviceIdentifiers the service identifiers to set
 	 */
-	public final void setServiceIdentifiers(SequencedCollection<String> serviceIdentifiers) {
+	public final void setServiceIdentifiers(@Nullable SequencedCollection<String> serviceIdentifiers) {
 		this.serviceIdentifiers = serviceIdentifiers;
 	}
 
@@ -392,7 +393,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @return the first task ID, or {@code null} if not available
 	 */
-	public final Long getTaskId() {
+	public final @Nullable Long getTaskId() {
 		final SequencedCollection<Long> array = getTaskIds();
 		return (array != null && !array.isEmpty() ? array.getFirst() : null);
 	}
@@ -402,7 +403,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param taskId the task ID to set
 	 */
-	public final void setTaskId(Long taskId) {
+	public final void setTaskId(@Nullable Long taskId) {
 		setTaskIds(taskId != null ? List.of(taskId) : null);
 	}
 
@@ -411,7 +412,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 * 
 	 * @return the task IDs
 	 */
-	public final SequencedCollection<Long> getTaskIds() {
+	public final @Nullable SequencedCollection<Long> getTaskIds() {
 		return taskIds;
 	}
 
@@ -420,7 +421,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param taskIds the task IDs to set
 	 */
-	public final void setTaskIds(SequencedCollection<Long> taskIds) {
+	public final void setTaskIds(@Nullable SequencedCollection<Long> taskIds) {
 		this.taskIds = taskIds;
 	}
 
@@ -434,7 +435,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @return the first ID, or {@code null} if not available
 	 */
-	public final Long getNodeId() {
+	public final @Nullable Long getNodeId() {
 		final SequencedCollection<Long> list = getNodeIds();
 		return (list != null && !list.isEmpty() ? list.getFirst() : null);
 	}
@@ -444,7 +445,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param nodeId the node ID to set
 	 */
-	public final void setNodeId(Long nodeId) {
+	public final void setNodeId(@Nullable Long nodeId) {
 		setNodeIds(nodeId != null ? List.of(nodeId) : null);
 	}
 
@@ -453,7 +454,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 * 
 	 * @return the node IDs
 	 */
-	public final SequencedCollection<Long> getNodeIds() {
+	public final @Nullable SequencedCollection<Long> getNodeIds() {
 		return nodeIds;
 	}
 
@@ -462,7 +463,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param nodeIds the node IDs to set
 	 */
-	public final void setNodeIds(SequencedCollection<Long> nodeIds) {
+	public final void setNodeIds(@Nullable SequencedCollection<Long> nodeIds) {
 		this.nodeIds = nodeIds;
 	}
 
@@ -476,7 +477,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @return the first ID, or {@code null} if not available
 	 */
-	public final String getSourceId() {
+	public final @Nullable String getSourceId() {
 		final SequencedCollection<String> list = getSourceIds();
 		return (list != null && !list.isEmpty() ? list.getFirst() : null);
 	}
@@ -486,7 +487,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param sourceId the source ID to set
 	 */
-	public final void setSourceId(String sourceId) {
+	public final void setSourceId(@Nullable String sourceId) {
 		setSourceIds(sourceId != null ? List.of(sourceId) : null);
 	}
 
@@ -495,7 +496,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 * 
 	 * @return the source IDs
 	 */
-	public final SequencedCollection<String> getSourceIds() {
+	public final @Nullable SequencedCollection<String> getSourceIds() {
 		return sourceIds;
 	}
 
@@ -504,7 +505,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param sourceIds the source IDs to set
 	 */
-	public final void setSourceIds(SequencedCollection<String> sourceIds) {
+	public final void setSourceIds(@Nullable SequencedCollection<String> sourceIds) {
 		this.sourceIds = sourceIds;
 	}
 
@@ -513,7 +514,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 * 
 	 * @return the enabled flag
 	 */
-	public final Boolean getEnabled() {
+	public final @Nullable Boolean getEnabled() {
 		return enabled;
 	}
 
@@ -522,7 +523,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param enabled the enabled to set
 	 */
-	public final void setEnabled(Boolean enabled) {
+	public final void setEnabled(@Nullable Boolean enabled) {
 		this.enabled = enabled;
 	}
 

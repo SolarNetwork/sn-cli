@@ -28,7 +28,6 @@ import s10k.tool.c2c.domain.CloudDatumStreamMappingConfiguration;
 import s10k.tool.c2c.domain.CloudDatumStreamMappingPropertyConfiguration;
 import s10k.tool.c2c.domain.CloudIntegrationConfiguration;
 import s10k.tool.c2c.domain.CloudIntegrationsFilter;
-import s10k.tool.c2c.i9n.cmd.ListIntegrationsCmd;
 import s10k.tool.c2c.util.CloudIntegrationRestUtils;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
@@ -90,7 +89,7 @@ public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements C
 					? viewCloudDatumStreamMapping(restClient, objectMapper, datumStream.datumStreamMappingId())
 					: null);
 			final CloudIntegrationConfiguration integration = (mapping != null
-					? ListIntegrationsCmd.viewCloudIntegration(restClient, objectMapper, mapping.integrationId())
+					? CloudIntegrationRestUtils.viewCloudIntegration(restClient, objectMapper, mapping.integrationId())
 					: null);
 			final List<CloudDatumStreamMappingPropertyConfiguration> properties = (mapping != null
 					? listCloudDatumStreamMappingProperties(restClient, objectMapper, mapping.configId())

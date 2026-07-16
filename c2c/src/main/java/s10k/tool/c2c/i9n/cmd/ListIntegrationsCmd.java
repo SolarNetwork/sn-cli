@@ -107,36 +107,6 @@ public class ListIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implements 
 	}
 
 	/**
-	 * View cloud integration.
-	 * 
-	 * @param restClient    the REST client
-	 * @param objectMapper  the object mapper
-	 * @param integrationId the integration ID
-	 * @return the result
-	 */
-	public static CloudIntegrationConfiguration viewCloudIntegration(RestClient restClient, ObjectMapper objectMapper,
-			Long integrationId) {
-		// @formatter:off
-		JsonNode response = restClient.get()
-			.uri(b -> b.path("/solaruser/api/v1/sec/user/c2c/integrations/{integrationId}")
-				.build(integrationId)
-			)
-			.accept(MediaType.APPLICATION_JSON)
-			.retrieve()
-			.body(JsonNode.class)
-			;		
-		// @formatter:on
-
-		checkSuccess(response);
-
-		try {
-			return objectMapper.treeToValue(response.path("data"), CloudIntegrationConfiguration.class);
-		} catch (JsonProcessingException | IllegalArgumentException e) {
-			throw new IllegalStateException("Error parsing cloud integration response: " + e.getMessage(), e);
-		}
-	}
-
-	/**
 	 * List cloud integrations.
 	 * 
 	 * @param restClient   the REST client

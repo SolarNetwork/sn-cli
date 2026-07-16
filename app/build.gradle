@@ -66,6 +66,14 @@ dependencies {
 	testImplementation project(':sn-cli-common-test')
 }
 
+compileAotJava {
+	options.errorprone.enabled = false
+}
+
+compileAotTestJava {
+	options.errorprone.enabled = false
+}
+
 distTar {
 	archiveExtension = 'tar.gz'
 	compression = Compression.GZIP

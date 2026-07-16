@@ -6,6 +6,7 @@ import static net.solarnetwork.util.StringUtils.commaDelimitedStringToList;
 import static net.solarnetwork.util.StringUtils.commaDelimitedStringToMap;
 
 import java.time.Instant;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -29,17 +30,24 @@ public record CloudDatumStreamConfiguration(Long configId, String name, String s
 	public SortedSet<String> sourceIds() {
 		SortedSet<String> sourceIds = new TreeSet<>(CASE_INSENSITIVE_NATURAL_SORT);
 		if (serviceProperties != null) {
-			switch (serviceProperties.get("sourceIdMap")) {
-			case Map<?, ?> m -> sourceIds.addAll(m.values().stream().map(Object::toString).toList());
-			case String s -> sourceIds.addAll(commaDelimitedStringToMap(s).values());
-			case null, default -> {
+			Collection<String> sources = switch (serviceProperties.get("sourceIdMap")) {
+			case Map<?, ?> m -> m.values().stream().map(Object::toString).toList();
+			case String s -> {
+				Map<String, String> map = commaDelimitedStringToMap(s);
+				yield (map != null ? map.values() : null);
 			}
+			case null, default -> null;
+			};
+			if (sources != null) {
+				sourceIds.addAll(sources);
 			}
-			switch (serviceProperties.get("virtualSourceIds")) {
-			case List<?> l -> sourceIds.addAll(l.stream().map(Object::toString).toList());
-			case String s -> sourceIds.addAll(commaDelimitedStringToList(s));
-			case null, default -> {
-			}
+			sources = switch (serviceProperties.get("virtualSourceIds")) {
+			case List<?> l -> l.stream().map(Object::toString).toList();
+			case String s -> commaDelimitedStringToList(s);
+			case null, default -> null;
+			};
+			if (sources != null) {
+				sourceIds.addAll(sources);
 			}
 		}
 		if (serviceProperties == null || !serviceProperties.containsKey("sourceIdMap")) {

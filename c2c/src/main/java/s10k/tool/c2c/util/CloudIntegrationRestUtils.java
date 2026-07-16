@@ -7,8 +7,10 @@ import static s10k.tool.common.util.RestUtils.checkSuccess;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.SequencedMap;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -21,6 +23,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import s10k.tool.c2c.domain.CloudDatumStreamConfiguration;
+import s10k.tool.c2c.domain.CloudIntegrationConfiguration;
 import s10k.tool.c2c.domain.CloudIntegrationsFilter;
 import s10k.tool.common.util.RestUtils;
 
@@ -147,6 +150,74 @@ public final class CloudIntegrationRestUtils {
 			}
 			return true;
 		}).collect(toMap(CloudDatumStreamConfiguration::configId, identity(), (_, n) -> n, TreeMap::new));
+	}
+
+	/**
+	 * View cloud integration.
+	 * 
+	 * @param restClient    the REST client
+	 * @param objectMapper  the object mapper
+	 * @param integrationId the integration ID
+	 * @return the result
+	 */
+	public static CloudIntegrationConfiguration viewCloudIntegration(RestClient restClient, ObjectMapper objectMapper,
+			Long integrationId) {
+		// @formatter:off
+		JsonNode response = restClient.get()
+			.uri(b -> b.path("/solaruser/api/v1/sec/user/c2c/integrations/{integrationId}")
+				.build(integrationId)
+			)
+			.accept(MediaType.APPLICATION_JSON)
+			.retrieve()
+			.body(JsonNode.class)
+			;		
+		// @formatter:on
+
+		checkSuccess(response);
+
+		try {
+			return objectMapper.treeToValue(response.path("data"), CloudIntegrationConfiguration.class);
+		} catch (JsonProcessingException | IllegalArgumentException e) {
+			throw new IllegalStateException("Error parsing cloud integration response: " + e.getMessage(), e);
+		}
+	}
+
+	/**
+	 * View cloud datum stream filters.
+	 * 
+	 * @param restClient           the REST client
+	 * @param objectMapper         the object mapper
+	 * @param datumStreamServiceId the datum stream service ID to look up the
+	 *                             filters for
+	 * @return a mapping of filter keys to associated names, never {@code null}
+	 */
+	public static SequencedMap<String, String> viewDatumStreamFilters(RestClient restClient, ObjectMapper objectMapper,
+			String datumStreamServiceId) {
+		// @formatter:off
+		JsonNode response = restClient.get()
+			.uri(b -> b.path("/solaruser/api/v1/sec/user/c2c/services/datum-streams/data-filters")
+					.replaceQueryParam("identifier", datumStreamServiceId)
+				.build()
+			)
+			.accept(MediaType.APPLICATION_JSON)
+			.retrieve()
+			.body(JsonNode.class)
+			;		
+		// @formatter:on
+
+		checkSuccess(response);
+
+		final JsonNode dataListNode = response.path("data");
+		final SequencedMap<String, String> result = new LinkedHashMap<>(dataListNode.size());
+		for (JsonNode dataNode : dataListNode) {
+			final String id = dataNode.path("id").textValue();
+			final String name = dataNode.path("localizedName").textValue();
+			if (id != null && name != null) {
+				result.put(id, name);
+			}
+		}
+
+		return result;
 	}
 
 }

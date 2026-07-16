@@ -14,6 +14,7 @@ import s10k.tool.common.cmd.BaseSubCmd;
 		DatumStreamsReportCmd.class,
 		ListDatumStreamsCmd.class,
 		ViewDatumStreamCmd.class,
+		ViewDataValuesCmd.class,
 		PollTasksCmd.class,
 		RakeTasksCmd.class
 })
