@@ -58,7 +58,7 @@ import s10k.tool.common.util.SystemUtils;
 import s10k.tool.datum.domain.DatumFilter;
 
 /**
- * View stream information.
+ * Query for datum.
  */
 @Component
 @Command(name = "list", sortSynopsis = false)
