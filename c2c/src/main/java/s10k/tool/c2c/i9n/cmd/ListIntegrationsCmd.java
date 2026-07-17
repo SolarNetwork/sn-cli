@@ -2,26 +2,26 @@ package s10k.tool.c2c.i9n.cmd;
 
 import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
+import static s10k.tool.c2c.util.CloudIntegrationRestUtils.listCloudIntegrations;
 import static s10k.tool.c2c.util.CloudIntegrationsUtils.integrationServiceLocalizedName;
-import static s10k.tool.common.util.RestUtils.checkSuccess;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.freva.asciitable.Column;
 
+import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.c2c.domain.CloudIntegrationConfiguration;
+import s10k.tool.c2c.domain.CloudIntegrationsFilter;
+import s10k.tool.c2c.domain.EnabledOrDisabled;
+import s10k.tool.c2c.util.CloudIntegrationsUtils;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.TableUtils;
@@ -34,6 +34,44 @@ import s10k.tool.common.util.TableUtils;
 public class ListIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implements Callable<Integer> {
 
 	// @formatter:off
+	@ArgGroup(exclusive = true, multiplicity = "0..1")
+	EnabledOrDisabled enabledOrDisabled;
+
+	@Option(names = { "-i", "--integration-id" },
+			description = "an integration ID to match",
+			split = "\\s*,\\s*",
+			splitSynopsisLabel = ",",
+			paramLabel = "integrationId")
+	Long[] integrationIds;
+
+	@Option(names = { "-stream", "--stream-id" },
+			description = "a datum stream ID to match",
+			split = "\\s*,\\s*",
+			splitSynopsisLabel = ",",
+			paramLabel = "datumStreamId")
+	Long[] datumStreamIds;
+
+	@Option(names = { "-map", "--mapping-id" },
+			description = "an datum stream mapping ID to match",
+			split = "\\s*,\\s*",
+			splitSynopsisLabel = ",",
+			paramLabel = "mappingId")
+	Long[] mappingIds;
+
+	@Option(names = { "-m", "--name" },
+			description = "a name to match",
+			split = "\\s*,\\s*",
+			splitSynopsisLabel = ",",
+			paramLabel = "name")
+	String[] names;
+	
+	@Option(names = { "-S", "--service" },
+			description = "a name to match",
+			split = "\\s*,\\s*",
+			splitSynopsisLabel = ",",
+			paramLabel = "serviceIdent")
+	String[] serviceIdentifiers;
+	
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data",
 			defaultValue = "PRETTY")
@@ -53,9 +91,10 @@ public class ListIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implements 
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final CloudIntegrationsFilter filter = filter();
 
 		try {
-			List<CloudIntegrationConfiguration> confs = listCloudIntegrations(restClient, objectMapper);
+			List<CloudIntegrationConfiguration> confs = listCloudIntegrations(restClient, objectMapper, filter);
 			if (confs.isEmpty()) {
 				System.err.println("No sources matched your criteria.");
 				return 0;
@@ -70,6 +109,29 @@ public class ListIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implements 
 			System.err.println("Error viewing cloud integrations: %s".formatted(e.getMessage()));
 		}
 		return 1;
+	}
+
+	private CloudIntegrationsFilter filter() {
+		final CloudIntegrationsFilter filter = new CloudIntegrationsFilter();
+		if (enabledOrDisabled != null) {
+			filter.setEnabled(enabledOrDisabled.enabled);
+		}
+		if (integrationIds != null && integrationIds.length > 0) {
+			filter.setIntegrationIds(List.of(integrationIds));
+		}
+		if (mappingIds != null && mappingIds.length > 0) {
+			filter.setDatumStreamMappingIds(List.of(mappingIds));
+		}
+		if (datumStreamIds != null && datumStreamIds.length > 0) {
+			filter.setDatumStreamIds(List.of(datumStreamIds));
+		}
+		if (names != null && names.length > 0) {
+			filter.setNames(List.of(names));
+		}
+		if (serviceIdentifiers != null && serviceIdentifiers.length > 0) {
+			filter.setServiceIdentifiers(CloudIntegrationsUtils.findIntegrationServiceIds(serviceIdentifiers));
+		}
+		return filter;
 	}
 
 	/**
@@ -104,41 +166,6 @@ public class ListIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implements 
 				conf.enabled(),
 			};
 		// @formatter:on
-	}
-
-	/**
-	 * List cloud integrations.
-	 * 
-	 * @param restClient   the REST client
-	 * @param objectMapper the object mapper
-	 * @return the result
-	 */
-	public static List<CloudIntegrationConfiguration> listCloudIntegrations(RestClient restClient,
-			ObjectMapper objectMapper) {
-		// @formatter:off
-		JsonNode response = restClient.get()
-			.uri("/solaruser/api/v1/sec/user/c2c/integrations")
-			.accept(MediaType.APPLICATION_JSON)
-			.retrieve()
-			.body(JsonNode.class)
-			;		
-		// @formatter:on
-
-		checkSuccess(response);
-
-		List<CloudIntegrationConfiguration> result = new ArrayList<>(response.path("data").size());
-		for (JsonNode node : response.path("data").path("results")) {
-			CloudIntegrationConfiguration conf;
-			try {
-				conf = objectMapper.treeToValue(node, CloudIntegrationConfiguration.class);
-			} catch (JsonProcessingException | IllegalArgumentException e) {
-				throw new IllegalStateException("Error parsing cloud integration list response: " + e.getMessage(), e);
-			}
-			if (conf != null) {
-				result.add(conf);
-			}
-		}
-		return result;
 	}
 
 }

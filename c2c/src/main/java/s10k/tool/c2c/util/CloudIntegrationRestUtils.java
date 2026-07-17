@@ -255,4 +255,46 @@ public final class CloudIntegrationRestUtils {
 		return result;
 	}
 
+	/**
+	 * List cloud integrations.
+	 * 
+	 * @param restClient   the REST client
+	 * @param objectMapper the object mapper
+	 * @param filter       the filter
+	 * @return the result
+	 */
+	public static List<CloudIntegrationConfiguration> listCloudIntegrations(RestClient restClient,
+			ObjectMapper objectMapper, CloudIntegrationsFilter filter) {
+		// @formatter:off
+		JsonNode response = restClient.get()
+			.uri(b -> {
+				b.path("/solaruser/api/v1/sec/user/c2c/integrations");
+				if (filter != null ) {
+					RestUtils.populateQueryParameters(b, filter::toRequestMap);
+				}
+				return b.build();
+			})
+			.accept(MediaType.APPLICATION_JSON)
+			.retrieve()
+			.body(JsonNode.class)
+			;		
+		// @formatter:on
+	
+		checkSuccess(response);
+	
+		List<CloudIntegrationConfiguration> result = new ArrayList<>(response.path("data").size());
+		for (JsonNode node : response.path("data").path("results")) {
+			CloudIntegrationConfiguration conf;
+			try {
+				conf = objectMapper.treeToValue(node, CloudIntegrationConfiguration.class);
+			} catch (JsonProcessingException | IllegalArgumentException e) {
+				throw new IllegalStateException("Error parsing cloud integration list response: " + e.getMessage(), e);
+			}
+			if (conf != null) {
+				result.add(conf);
+			}
+		}
+		return result;
+	}
+
 }

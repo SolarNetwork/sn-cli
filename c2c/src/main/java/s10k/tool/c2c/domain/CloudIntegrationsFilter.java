@@ -27,6 +27,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	private @Nullable SequencedCollection<Long> taskIds;
 	private @Nullable SequencedCollection<Integer> indexes;
 	private @Nullable SequencedCollection<ClaimableJobState> claimableJobStates;
+	private @Nullable SequencedCollection<String> names;
 	private @Nullable SequencedCollection<String> serviceIdentifiers;
 	private @Nullable SequencedCollection<Long> nodeIds;
 	private @Nullable SequencedCollection<String> sourceIds;
@@ -65,6 +66,9 @@ public class CloudIntegrationsFilter extends SimplePagination {
 		}
 		if (claimableJobStates != null && !claimableJobStates.isEmpty()) {
 			postBody.set("claimableJobStates", commaDelimitedStringFromCollection(claimableJobStates));
+		}
+		if (names != null && !names.isEmpty()) {
+			postBody.set("names", commaDelimitedStringFromCollection(names));
 		}
 		if (serviceIdentifiers != null && !serviceIdentifiers.isEmpty()) {
 			postBody.set("serviceIdentifiers", commaDelimitedStringFromCollection(serviceIdentifiers));
@@ -339,6 +343,48 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 */
 	public final void setEndDate(@Nullable ZonedDateTime endDate) {
 		this.endDate = endDate;
+	}
+
+	/**
+	 * Get the first name.
+	 *
+	 * <p>
+	 * This returns the first available name from the {@link #getNames()} array, or
+	 * {@code null} if not available.
+	 * </p>
+	 *
+	 * @return the first name, or {@code null} if not available
+	 */
+	public @Nullable String getName() {
+		final SequencedCollection<String> array = getNames();
+		return (array != null && !array.isEmpty() ? array.getFirst() : null);
+	}
+
+	/**
+	 * Set the name.
+	 *
+	 * @param name the identifier to set
+	 */
+	public void setName(@Nullable String name) {
+		setNames(names != null ? List.of(name) : null);
+	}
+
+	/**
+	 * Get the names.
+	 * 
+	 * @return names
+	 */
+	public final @Nullable SequencedCollection<String> getNames() {
+		return names;
+	}
+
+	/**
+	 * Set the names.
+	 *
+	 * @param names the names to set
+	 */
+	public final void setNames(@Nullable SequencedCollection<String> names) {
+		this.names = names;
 	}
 
 	/**

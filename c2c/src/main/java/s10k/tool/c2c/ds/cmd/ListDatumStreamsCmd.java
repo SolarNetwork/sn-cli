@@ -15,10 +15,13 @@ import org.springframework.web.client.RestClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.freva.asciitable.Column;
 
+import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.c2c.domain.CloudDatumStreamConfiguration;
 import s10k.tool.c2c.domain.CloudIntegrationsFilter;
+import s10k.tool.c2c.domain.EnabledOrDisabled;
+import s10k.tool.c2c.util.CloudIntegrationsUtils;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.TableUtils;
@@ -31,6 +34,23 @@ import s10k.tool.common.util.TableUtils;
 public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements Callable<Integer> {
 
 	// @formatter:off
+	@ArgGroup(exclusive = true, multiplicity = "0..1")
+	EnabledOrDisabled enabledOrDisabled;
+
+	@Option(names = { "-i", "--integration-id" },
+			description = "an integration ID to match",
+			split = "\\s*,\\s*",
+			splitSynopsisLabel = ",",
+			paramLabel = "integrationId")
+	Long[] integrationIds;
+
+	@Option(names = { "-map", "--mapping-id" },
+			description = "an datum stream mapping ID to match",
+			split = "\\s*,\\s*",
+			splitSynopsisLabel = ",",
+			paramLabel = "mappingId")
+	Long[] mappingIds;
+
 	@Option(names = { "-stream", "--stream-id" },
 			description = "a datum stream ID to match",
 			split = "\\s*,\\s*",
@@ -38,6 +58,20 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 			paramLabel = "datumStreamId")
 	Long[] datumStreamIds;
 
+	@Option(names = { "-m", "--name" },
+			description = "a name to match",
+			split = "\\s*,\\s*",
+			splitSynopsisLabel = ",",
+			paramLabel = "name")
+	String[] names;
+	
+	@Option(names = { "-S", "--service" },
+			description = "a name to match",
+			split = "\\s*,\\s*",
+			splitSynopsisLabel = ",",
+			paramLabel = "serviceIdent")
+	String[] serviceIdentifiers;
+	
 	@Option(names = { "-node", "--node-id" },
 			description = "a node ID to match",
 			split = "\\s*,\\s*",
@@ -92,8 +126,23 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 
 	private CloudIntegrationsFilter filter() {
 		final CloudIntegrationsFilter filter = new CloudIntegrationsFilter();
+		if (enabledOrDisabled != null) {
+			filter.setEnabled(enabledOrDisabled.enabled);
+		}
+		if (integrationIds != null && integrationIds.length > 0) {
+			filter.setIntegrationIds(List.of(integrationIds));
+		}
+		if (mappingIds != null && mappingIds.length > 0) {
+			filter.setDatumStreamMappingIds(List.of(mappingIds));
+		}
 		if (datumStreamIds != null && datumStreamIds.length > 0) {
 			filter.setDatumStreamIds(List.of(datumStreamIds));
+		}
+		if (names != null && names.length > 0) {
+			filter.setNames(List.of(names));
+		}
+		if (serviceIdentifiers != null && serviceIdentifiers.length > 0) {
+			filter.setServiceIdentifiers(CloudIntegrationsUtils.findDatumStreamServiceIds(serviceIdentifiers));
 		}
 		if (nodeIds != null && nodeIds.length > 0) {
 			filter.setNodeIds(List.of(nodeIds));
