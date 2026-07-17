@@ -65,7 +65,7 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 	String[] names;
 	
 	@Option(names = { "-S", "--service" },
-			description = "a name to match",
+			description = "a service identifier to match",
 			split = "\\s*,\\s*",
 			splitSynopsisLabel = ",",
 			paramLabel = "serviceIdent")
