@@ -3028,9 +3028,14 @@
 <p>Show <a href="https://github.com/SolarNetwork/solarnetwork/wiki/SolarUser-Cloud-Integrations-API#cloud-datum-stream">Cloud Datum Stream</a> entities matching a search filter.</p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>s10k cloud-integrations datum-streams list
+    [-i=integrationId[,integrationId...]]...
+    [-map=mappingId[,mappingId...]]...
     [-stream=datumStreamId[,datumStreamId...]]...
+    [-m=name[,name...]]...
+    [-S=serviceIdent[,serviceIdent...]]...
     [-node=nodeId[,nodeId...]]...
     [-source=sourceId[,sourceId...]]...
+    [-e | -d]
     [-mode=&lt;displayMode&gt;]
 </code></pre></div>
 <div class="options-explicit-col-widths">
@@ -3044,19 +3049,49 @@
 </thead>
 <tbody>
 <tr>
+<td style="text-align: left;"><code>-d</code></td>
+<td style="text-align: left;"><code>--disabled</code></td>
+<td style="text-align: left;">match only disabled entities</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>-e</code></td>
+<td style="text-align: left;"><code>--enabled</code></td>
+<td style="text-align: left;">match only enabled entities</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>-i=</code></td>
+<td style="text-align: left;"><code>--integration-id=</code></td>
+<td style="text-align: left;">the integration ID(s) to match, by way of the mapping relationship</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>-m=</code></td>
+<td style="text-align: left;"><code>--name=</code></td>
+<td style="text-align: left;">a case-insensitive name substring to match</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>-map=</code></td>
+<td style="text-align: left;"><code>--mapping-id=</code></td>
+<td style="text-align: left;">the datum stream mapping ID(s) to match</td>
+</tr>
+<tr>
 <td style="text-align: left;"><code>-node=</code></td>
 <td style="text-align: left;"><code>--node-id=</code></td>
-<td style="text-align: left;">the node ID(s) to restrict the results to</td>
+<td style="text-align: left;">the node ID(s) to match</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>-S=</code></td>
+<td style="text-align: left;"><code>--service=</code></td>
+<td style="text-align: left;">the service idenetifier(s) to match</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-source=</code></td>
 <td style="text-align: left;"><code>--source=</code></td>
-<td style="text-align: left;">the source ID(s) to restrict the results to; will match mapped and virtual source IDs and wildcard patterns are supported</td>
+<td style="text-align: left;">the source ID(s) to match; will match mapped and virtual source IDs and wildcard patterns are supported</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-stream=</code></td>
 <td style="text-align: left;"><code>--stream-id=</code></td>
-<td style="text-align: left;">the datum stream ID(s) to restrict the results to</td>
+<td style="text-align: left;">the datum stream ID(s) to match</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-mode=</code></td>
