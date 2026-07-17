@@ -121,7 +121,7 @@ public final class CloudIntegrationsUtils {
 	 * Lookup a Cloud Integration service IDs using a case-insensitive substring
 	 * search.
 	 * 
-	 * @param query the substring to look for
+	 * @param queries the substrings to look for
 	 * @return the list of matching service IDs, never {@code null}
 	 */
 	public static List<String> findIntegrationServiceIds(final String[] queries) {
@@ -132,7 +132,7 @@ public final class CloudIntegrationsUtils {
 	 * Lookup a Cloud Datum Stream service IDs using a case-insensitive substring
 	 * search.
 	 * 
-	 * @param query the substring to look for
+	 * @param queries the substrings to look for
 	 * @return the matching service ID and name
 	 * @return the list of matching service IDs, never {@code null}
 	 */

@@ -20,7 +20,6 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.c2c.domain.CloudDatumStreamConfiguration;
 import s10k.tool.c2c.domain.CloudIntegrationsFilter;
-import s10k.tool.c2c.domain.EnabledOrDisabled;
 import s10k.tool.c2c.util.CloudIntegrationsUtils;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
@@ -91,6 +90,23 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 			defaultValue = "PRETTY")
 	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
 	// @formatter:on
+
+	/**
+	 * Grouping of enabled/disabled mode flags.
+	 */
+	static class EnabledOrDisabled {
+
+		// @formatter:off
+		@Option(names = {"-e", "--enabled"},
+				description = "match only enabled entities")
+		public boolean enabled;
+		
+		@Option(names = {"-d", "--disabled"},
+				description = "match only disabled entities")
+		public boolean disabled;
+		// @formatter:on
+
+	}
 
 	/**
 	 * Constructor.
