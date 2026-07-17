@@ -24,7 +24,7 @@ s10k cloud-integrations datum-streams data-values
 |:-------|:-------------|:------------|
 | `-i=` | `--integration-id=` | the integration ID to list data values for; `--stream-id` can be provided instead |
 | `-p=` | `--path=` | the [data hierarchy path](#data-hierarchy-paths) to show |
-| `-R`  | `--ident-paths` | show the identifiers as data hierarchy paths, instead of a list |
+| `-R`  | `--ident-paths` | show the identifiers as data hierarchy paths, instead of a list; ignored in `JSON` display mode |
 | `-stream=` | `--stream-id=` | the datum stream ID to list data value for; required by some providers like eGauge; can be provided instead of `--integration-id` |
 | `-t=` | `--stream-type=` | a datum stream service identifier, required when `--path` provided; a case-insensitive sub-string match is performed against both the service identifier and the display name, for example `also` will match the AlsoEnergy type; not needed if `--stream-id` is provided |
 | `-mode=` | `--display-mode=` | the format to display the data as, one of `CSV`, `JSON`, or `PRETTY`; defaults to `PRETTY` |
