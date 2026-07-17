@@ -8,13 +8,27 @@ Show [Cloud Integration][integration] entities matching a search filter.
 ## Usage
 
 ```
-s10k cloud-integrations integrations list [-mode=<displayMode>]
+s10k cloud-integrations integrations list
+	[-i=integrationId[,integrationId...]]...
+	[-map=mappingId[,mappingId...]]...
+	[-stream=datumStreamId[,datumStreamId...]]...
+	[-m=name[,name...]]...
+	[-S=serviceIdent[,serviceIdent...]]...
+	[-e | -d]
+    [-mode=<displayMode>]
 ```
 
 <div markdown="1" class="options-explicit-col-widths">
 
 | Option | Long Version | Description |
 |:-------|:-------------|:------------|
+| `-d`   | `--disabled` | match only disabled entities |
+| `-e`   | `--enabled` | match only enabled entities |
+| `-i=`   | `--integration-id=` | the integration ID(s) to match |
+| `-m=`     | `--name=` | a case-insensitive name substring to match |
+| `-map=` | `--mapping-id=` | the datum stream mapping ID(s) to match, by way of the integration relationship |
+| `-S=` | `--service=` | the service idenetifier(s) to match |
+| `-stream=` | `--stream-id=` | the datum stream ID(s) to match, by way of the mapping to datum stream relationship |
 | `-mode=` | `--display-mode=` | the format to display the data as, one of `CSV`, `JSON`, or `PRETTY`; defaults to `PRETTY` |
 
 </div>

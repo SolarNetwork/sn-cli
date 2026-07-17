@@ -9,9 +9,14 @@ Show [Cloud Datum Stream][datum-stream] entities matching a search filter.
 
 ```
 s10k cloud-integrations datum-streams list
+	[-i=integrationId[,integrationId...]]...
+	[-map=mappingId[,mappingId...]]...
 	[-stream=datumStreamId[,datumStreamId...]]...
+	[-m=name[,name...]]...
+	[-S=serviceIdent[,serviceIdent...]]...
 	[-node=nodeId[,nodeId...]]...
 	[-source=sourceId[,sourceId...]]...
+	[-e | -d]
     [-mode=<displayMode>]
 ```
 
@@ -19,9 +24,15 @@ s10k cloud-integrations datum-streams list
 
 | Option | Long Version | Description |
 |:-------|:-------------|:------------|
-| `-node=` | `--node-id=` | the node ID(s) to restrict the results to |
-| `-source=` | `--source=` | the source ID(s) to restrict the results to; will match mapped and virtual source IDs and wildcard patterns are supported |
-| `-stream=` | `--stream-id=` | the datum stream ID(s) to restrict the results to |
+| `-d`   | `--disabled` | match only disabled entities |
+| `-e`   | `--enabled` | match only enabled entities |
+| `-i=`   | `--integration-id=` | the integration ID(s) to match, by way of the mapping relationship |
+| `-m=`     | `--name=` | a case-insensitive name substring to match |
+| `-map=` | `--mapping-id=` | the datum stream mapping ID(s) to match |
+| `-node=` | `--node-id=` | the node ID(s) to match |
+| `-S=` | `--service=` | the service idenetifier(s) to match |
+| `-source=` | `--source=` | the source ID(s) to match; will match mapped and virtual source IDs and wildcard patterns are supported |
+| `-stream=` | `--stream-id=` | the datum stream ID(s) to match |
 | `-mode=` | `--display-mode=` | the format to display the data as, one of `CSV`, `JSON`, or `PRETTY`; defaults to `PRETTY` |
 
 </div>
