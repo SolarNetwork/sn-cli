@@ -26,10 +26,12 @@ import com.github.freva.asciitable.Column;
 
 import net.solarnetwork.codec.JsonUtils;
 import net.solarnetwork.util.StringUtils;
-import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.c2c.domain.CloudDataValue;
+import s10k.tool.c2c.domain.CloudIntegrationConfiguration;
+import s10k.tool.c2c.domain.CloudIntegrationsFilter;
+import s10k.tool.c2c.util.CloudIntegrationRestUtils;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.RestUtils;
@@ -44,49 +46,30 @@ public class ViewDataValuesCmd extends BaseSubCmd<DatumStreamsCmd> implements Ca
 
 	// @formatter:off
 	@Option(names = { "-i", "--integration-id" },
-			description = "the Cloud Integration ID to view datum data values for",
-			required =  true)
+			description = "the ID of the integration to view data values for")
 	Long integrationId;
 
-	@ArgGroup(exclusive = true, multiplicity = "0..1")
-	StreamTypeOrId streamTypeOrId;
+	@Option(names = { "-t", "--stream-type" },
+			description = "the datum stream type to show data values for")
+	String type;
+
+	@Option(names = { "-stream", "--stream-id" },
+			description = "the ID of the datum stream to show data values for")
+	Long datumStreamId;
 
 	@Option(names = { "-p", "--path" },
 			description = "the datum data value path to return")
 	String path;
+	
+	@Option(names = { "-R", "--ident-paths" },
+			description = "display identifiers as paths")
+	boolean identifiersAsPaths;
 
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data",
 			defaultValue = "PRETTY")
 	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
 	// @formatter:on
-
-	/**
-	 * Grouping of stream type or ID, where only one or the other should be
-	 * specified.
-	 */
-	static class StreamTypeOrId {
-		// @formatter:off
-		@Option(names = { "-t", "--stream-type" },
-				description = "the datum stream type to show data values for")
-		String type;
-		
-
-		@Option(names = { "-stream", "--stream-id" },
-				description = "the ID of the datum stream to show data value for")
-    	Long datumStreamId;
-    	// @formatter:on
-
-		/**
-		 * Test if a datum stream ID is configured.
-		 * 
-		 * @return {@code true} if datumStreamId is configured
-		 */
-		boolean isDatumStream() {
-			return datumStreamId != null;
-		}
-
-	}
 
 	/**
 	 * Constructor.
@@ -104,21 +87,30 @@ public class ViewDataValuesCmd extends BaseSubCmd<DatumStreamsCmd> implements Ca
 
 		final List<String> pathIdentifiers = StringUtils.delimitedStringToList(path, "/");
 
-		if (pathIdentifiers != null && !pathIdentifiers.isEmpty() && streamTypeOrId == null) {
-			System.err.println("The --stream-type option must be provided when --path specified.");
+		final Long integrationId = resolveIntegrationId(restClient);
+		if (integrationId == null) {
+			System.err.print("""
+					An integration ID is required, from either the --integration-id or option or the
+					--stream-id option that resolves to a datum stream with a mapping configured.
+					""");
+			return 1;
+		}
+
+		if (pathIdentifiers != null && !pathIdentifiers.isEmpty() && type == null && datumStreamId == null) {
+			System.err.print("""
+					The --stream-type or --stream-id option must be provided when --path is specified.
+					""");
 			return 1;
 		}
 
 		// determine datum stream service ID (if needed)
 		final String datumStreamServiceId;
 		try {
-			if (streamTypeOrId != null) {
-				if (streamTypeOrId.datumStreamId != null) {
-					datumStreamServiceId = viewCloudDatumStream(restClient, objectMapper, streamTypeOrId.datumStreamId)
-							.serviceIdentifier();
-				} else {
-					datumStreamServiceId = findDatumStreamServiceId(streamTypeOrId.type).getKey();
-				}
+			if (datumStreamId != null) {
+				datumStreamServiceId = viewCloudDatumStream(restClient, objectMapper, datumStreamId)
+						.serviceIdentifier();
+			} else if (type != null) {
+				datumStreamServiceId = findDatumStreamServiceId(type).getKey();
 			} else {
 				datumStreamServiceId = null;
 			}
@@ -127,21 +119,20 @@ public class ViewDataValuesCmd extends BaseSubCmd<DatumStreamsCmd> implements Ca
 			return 1;
 		}
 		if (pathIdentifiers != null && !pathIdentifiers.isEmpty() && datumStreamServiceId == null) {
-			System.err.printf("The stream type [%s] is not supported.\n", streamTypeOrId.type);
+			System.err.printf("The stream type [%s] is not supported.\n", type);
 			return 1;
 		}
 
 		try {
-			List<CloudDataValue> confs = viewDatumDataValues(restClient, objectMapper, integrationId,
-					(streamTypeOrId != null ? streamTypeOrId.datumStreamId : null),
-					(datumStreamServiceId != null ? datumStreamServiceId : null), pathIdentifiers);
+			List<CloudDataValue> confs = viewDatumDataValues(restClient, objectMapper, integrationId, datumStreamId,
+					datumStreamServiceId, pathIdentifiers);
 			if (confs.isEmpty()) {
 				System.err.println("No sources matched your criteria.");
 				return 0;
 			}
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? confs
-					: CloudDataValue.flatList(confs).stream().map(c -> tableDataRow(c)).toList());
+					: CloudDataValue.flatList(confs).stream().map(c -> tableDataRow(c, identifiersAsPaths)).toList());
 			TableUtils.renderTableData(tableDataColumns(), tableData, displayMode, objectMapper,
 					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
@@ -149,6 +140,22 @@ public class ViewDataValuesCmd extends BaseSubCmd<DatumStreamsCmd> implements Ca
 			System.err.println("Error viewing cloud data values: %s".formatted(e.getMessage()));
 		}
 		return 1;
+	}
+
+	private Long resolveIntegrationId(RestClient restClient) {
+		if (integrationId != null) {
+			return integrationId;
+		}
+		if (datumStreamId != null) {
+			var filter = new CloudIntegrationsFilter();
+			filter.setDatumStreamId(datumStreamId);
+			List<CloudIntegrationConfiguration> integrations = CloudIntegrationRestUtils
+					.listCloudIntegrations(restClient, objectMapper, filter);
+			if (integrations != null && !integrations.isEmpty()) {
+				return integrations.getFirst().configId();
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -173,11 +180,13 @@ public class ViewDataValuesCmd extends BaseSubCmd<DatumStreamsCmd> implements Ca
 	 * @param dataValue the data value to convert
 	 * @return the tabular data
 	 */
-	public static Object[] tableDataRow(CloudDataValue dataValue) {
+	public static Object[] tableDataRow(CloudDataValue dataValue, boolean identifiersAsPaths) {
+		final String identDelim = (identifiersAsPaths ? "/" : "\n");
 		// @formatter:off
 		return new Object[] {
 				dataValue.getName(),
-				dataValue.getIdentifiers().stream().collect(joining("\n")),
+				dataValue.getIdentifiers().stream().collect(joining(
+						identDelim, identifiersAsPaths ? identDelim : "", "")),
 				dataValue.getReference(),
 				TableUtils.basicTable(dataValue.getMetadata(), null, null, false),
 			};

@@ -10,9 +10,11 @@ properties that can be mapped into a cloud datum stream.
 
 ```
 s10k cloud-integrations datum-streams data-values
-	-i=<integrationId>
+	[-R]
+	[-i=<integrationId>]
+	[-stream=<datumStreamId>]
+	[-t=<type>]
 	[-p=<path>]
-	[-t=<type> | -stream=<datumStreamId>]
 	[-mode=<displayMode>]
 ```
 
@@ -20,10 +22,11 @@ s10k cloud-integrations datum-streams data-values
 
 | Option | Long Version | Description |
 |:-------|:-------------|:------------|
-| `-i=` | `--integration-id=` | the Cloud Integration ID to list data values for |
+| `-i=` | `--integration-id=` | the integration ID to list data values for; `--stream-id` can be provided instead |
 | `-p=` | `--path=` | the [data hierarchy path](#data-hierarchy-paths) to show |
-| `-stream=` | `--stream-id=` | the datum stream ID to list data value for; only required by some providers, like eGauge |
-| `-t=` | `--stream-type=` | a datum stream service identifier, required when `--path` provided; a case-insensitive sub-string match is performed against both the service identifier and the display name, for example `also` will match the AlsoEnergy type; not needed if `--stream-id` option is provided |
+| `-R`  | `--ident-paths` | show the identifiers as data hierarchy paths, instead of a list |
+| `-stream=` | `--stream-id=` | the datum stream ID to list data value for; required by some providers like eGauge; can be provided instead of `--integration-id` |
+| `-t=` | `--stream-type=` | a datum stream service identifier, required when `--path` provided; a case-insensitive sub-string match is performed against both the service identifier and the display name, for example `also` will match the AlsoEnergy type; not needed if `--stream-id` is provided |
 | `-mode=` | `--display-mode=` | the format to display the data as, one of `CSV`, `JSON`, or `PRETTY`; defaults to `PRETTY` |
 
 </div>
@@ -35,7 +38,7 @@ A list of data value records. Each data value record contains the following prop
 | Property        | Description |
 |:----------------|:------------|
 | **Name**        | A display name for the data value. |
-| **Identifiers** | An ordered list of the unique hierarchy identifiers that the data value represents. |
+| **Identifiers** | An ordered list of the unique hierarchy identifiers that the data value represents, or a path value if `--ident-paths` is used. |
 | **Reference**   | The mapping reference, if the data value can be used in Cloud Datum Stream property mapping. |
 | **Metadata**    | Optional table of provider-specific metadata, such as device serial number or location. |
 | **Children**    | Data values are presented in a hierarchy, and if a data value has nested data values they appear as children. |
