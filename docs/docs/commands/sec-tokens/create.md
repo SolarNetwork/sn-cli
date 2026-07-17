@@ -8,7 +8,7 @@ Create a new security token.
 ## Usage
 
 ```
-s10k sec-tokens create [-r] -t=<tokenType> [-n=<name>]
+s10k sec-tokens create [-r] -t=<tokenType> [-m=<name>]
 						[-D=<description>] [-node=nodeId[,nodeId...]]...
 						[-source=sourceId[,sourceId...]]...
 						[-N=metaPath[,metaPath...]]...
@@ -35,7 +35,7 @@ s10k sec-tokens create [-r] -t=<tokenType> [-n=<name>]
 | `-exp=` | `--expiration-date=` | an expiration date for the token,like `2020-10-30` or `2020-10-30T12:45` |
 | `-loc=` | `--min-location-precision=` | a minimum location precision to restrict access to |
 |   | `--location-precision=` | a location precision to restrict access to |
-| `-n=` | `--name=` | a brief name for the token |
+| `-m=` | `--name=` | a brief name for the token |
 | `-N=` | `--node-metadata-path=` | node [metadata paths][metadata-paths] to restrict access to ([wildcard patterns][wildcard-pats] allowed) |
 | `-node=` | `--node-id=` | node ID(s) to restrict access to |
 | `-r` | `--refresh-allowed` | allow signing keys for the token to be refreshed |

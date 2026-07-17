@@ -8,7 +8,7 @@ Update a security token.
 ## Usage
 
 ```
-s10k sec-tokens update [-rR] -id=tokenId [-n=<name>]
+s10k sec-tokens update [-rR] -id=tokenId [-m=<name>]
 						[-D=<description>] [-node=nodeId[,nodeId...]]...
 						[-source=sourceId[,sourceId...]]...
 						[-N=metaPath[,metaPath...]]...
@@ -39,7 +39,7 @@ s10k sec-tokens update [-rR] -id=tokenId [-n=<name>]
 | `-id=` | `--identifier=` | the ID of the token to update |
 | `-loc=` | `--min-location-precision=` | a minimum location precision to restrict access to |
 |   | `--location-precision=` | a location precision to restrict access to |
-| `-n=` | `--name=` | a brief name for the token |
+| `-m=` | `--name=` | a brief name for the token |
 | `-N=` | `--node-metadata-path=` | node [metadata paths][metadata-paths] to restrict access to ([wildcard patterns][wildcard-pats] allowed) |
 | `-node=` | `--node-id=` | node ID(s) to restrict access to |
 | `-r` | `--refresh-allowed` | allow signing keys for the token to be refreshed |

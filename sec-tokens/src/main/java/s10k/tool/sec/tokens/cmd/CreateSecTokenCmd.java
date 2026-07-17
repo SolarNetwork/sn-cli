@@ -44,7 +44,7 @@ public class CreateSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Calla
 			required =  true)
 	SecurityTokenType tokenType;
 	
-	@Option(names = { "-n", "--name" },
+	@Option(names = { "-m", "--name" },
 			description = "a name to give the token")
 	String name;
 	
