@@ -300,8 +300,11 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 			// generate stable list from all stream properties
 			for (UUID streamId : result.metadataStreamIds()) {
 				ObjectDatumStreamMetadata meta = result.metadataForStreamId(streamId);
-				properties.addAll(asList(filter.isReadingRecordStyle() ? meta.propertyNamesForType(Accumulating)
-						: meta.getPropertyNames()));
+				String[] names = filter.isReadingRecordStyle() ? meta.propertyNamesForType(Accumulating)
+						: meta.getPropertyNames();
+				if (names != null) {
+					properties.addAll(asList(names));
+				}
 			}
 		}
 		return properties;
