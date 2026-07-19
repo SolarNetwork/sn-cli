@@ -61,6 +61,7 @@ public class SnCliTool implements CommandLineRunner, ExitCodeGenerator {
 				.addSubcommand(new InstructionsCmd())
 				.addSubcommand(new NodesCmd())
 				.addSubcommand(new SecTokensCmd())
+				.setCaseInsensitiveEnumValuesAllowed(true)
 				.execute(args);
 		// @formatter:on
 	}
