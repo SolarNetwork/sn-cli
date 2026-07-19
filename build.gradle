@@ -81,7 +81,7 @@ subprojects {
 		jlineVersion = '3.30.13'
 		picoCliVersion = '4.7.7'
 		progressbarVersion = '0.10.2'
-		snCommonVersion = '4.42.0'
+		snCommonVersion = '4.44.0'
 		snCommonWebJakartaVersion = '2.4.2'
 		threetenExtraVersion = '1.8.0'
 	

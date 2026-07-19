@@ -4,6 +4,7 @@ import static java.time.ZoneOffset.UTC;
 import static net.solarnetwork.util.StringUtils.commaDelimitedStringFromCollection;
 import static s10k.tool.common.util.DateUtils.isMidnight;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -97,6 +98,15 @@ public class CloudIntegrationsFilter extends SimplePagination {
 			postBody.set("offset", getOffset());
 		}
 		return postBody;
+	}
+
+	/**
+	 * Test if a start and end date are available.
+	 * 
+	 * @return {@code true} if the start and end dates are both non-{@code null}
+	 */
+	public boolean hasDateRange() {
+		return (startDate != null && endDate != null);
 	}
 
 	/**
@@ -328,6 +338,30 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	}
 
 	/**
+	 * Test if a start date is available.
+	 * 
+	 * @return {@code true} if {@code startDate} is non-{@code null}
+	 */
+	public final boolean hasStartDate() {
+		return (startDate != null);
+	}
+
+	/**
+	 * Get the start date.
+	 *
+	 * <p>
+	 * This method is designed to be used after a call to {@link #hasStartDate()}
+	 * returns {@code true}, to avoid nullness warnings.
+	 * </p>
+	 *
+	 * @return the start date (presumed non-null)
+	 */
+	@SuppressWarnings("NullAway")
+	public final Instant startDate() {
+		return startDate.toInstant();
+	}
+
+	/**
 	 * Get the end date.
 	 * 
 	 * @return the end date
@@ -343,6 +377,30 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 */
 	public final void setEndDate(@Nullable ZonedDateTime endDate) {
 		this.endDate = endDate;
+	}
+
+	/**
+	 * Test if an end date is available.
+	 * 
+	 * @return {@code true} if {@code endDate} is non-{@code null}
+	 */
+	public final boolean hasEndDate() {
+		return (startDate != null);
+	}
+
+	/**
+	 * Get the start date.
+	 *
+	 * <p>
+	 * This method is designed to be used after a call to {@link #hasEndDate()}
+	 * returns {@code true}, to avoid nullness warnings.
+	 * </p>
+	 *
+	 * @return the start date (presumed non-null)
+	 */
+	@SuppressWarnings("NullAway")
+	public final Instant endDate() {
+		return endDate.toInstant();
 	}
 
 	/**
