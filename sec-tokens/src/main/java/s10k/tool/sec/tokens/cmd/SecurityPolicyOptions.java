@@ -12,7 +12,6 @@ import net.solarnetwork.domain.datum.Aggregation;
 import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Option;
 import s10k.tool.common.util.DateUtils;
-import s10k.tool.common.util.LocalDateTimeConverter;
 
 /**
  * Security policy options.
@@ -62,8 +61,7 @@ class SecurityPolicyOptions {
 	String[] apiPaths;
 	
 	@Option(names = { "-exp", "--expiration-date" },
-			description = "an expiration date",
-			converter = LocalDateTimeConverter.class)
+			description = "an expiration date")
 	LocalDateTime expirationDate;
 
 	@Option(names = {"-r", "--refresh-allowed"},

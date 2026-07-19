@@ -48,7 +48,6 @@ import s10k.tool.c2c.domain.CloudIntegrationsFilter;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.DateUtils;
-import s10k.tool.common.util.LocalDateTimeConverter;
 import s10k.tool.common.util.TableUtils;
 
 /**
@@ -84,13 +83,11 @@ public class ListDatumStreamDatumCmd extends BaseSubCmd<DatumStreamsCmd> impleme
 		// @formatter:off
 		@Option(names = { "-min", "--min-date" },
 				description = "a minimum datum date to match",
-				converter = LocalDateTimeConverter.class,
 				required = true)
 		LocalDateTime minDate;
 
 		@Option(names = { "-max", "--max-date" },
 				description = "a maximum datum date (exclusive) to match",
-				converter = LocalDateTimeConverter.class,
 				required = true)
 		LocalDateTime maxDate;
     	// @formatter:on

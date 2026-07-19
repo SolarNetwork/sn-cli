@@ -28,7 +28,6 @@ import s10k.tool.common.domain.ObjectAndSource;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.domain.SourceFilter;
 import s10k.tool.common.util.DateUtils;
-import s10k.tool.common.util.LocalDateTimeConverter;
 import s10k.tool.common.util.TableUtils;
 
 /**
@@ -54,13 +53,11 @@ public class ListSourcesCmd extends BaseSubCmd<NodesCmd> implements Callable<Int
 	String[] sourceIds;
 	
 	@Option(names = { "-min", "--min-date" },
-			description = "a minimum datum date after which a source must have datum to match",
-			converter = LocalDateTimeConverter.class)
+			description = "a minimum datum date after which a source must have datum to match")
 	LocalDateTime minDate;
 
 	@Option(names = { "-max", "--max-date" },
-			description = "a maximum datum date (exclusive) before which a source must have datum to match",
-			converter = LocalDateTimeConverter.class)
+			description = "a maximum datum date (exclusive) before which a source must have datum to match")
 	LocalDateTime maxDate;
 	
 	@Option(names = {"-local", "--local-dates"},

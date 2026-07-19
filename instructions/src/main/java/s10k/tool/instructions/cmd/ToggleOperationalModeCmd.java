@@ -25,7 +25,6 @@ import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.ScopeType;
 import s10k.tool.common.cmd.BaseSubCmd;
-import s10k.tool.common.util.LocalDateTimeConverter;
 import s10k.tool.instructions.domain.InstructionRequest;
 
 /**
@@ -47,18 +46,15 @@ public class ToggleOperationalModeCmd extends BaseSubCmd<InstructionsCmd> implem
 	boolean disable;
 	
 	@Option(names = { "--mode-expiration" },
-			description = "an expiration date when enabling a mode to automatically disable the mode",
-			converter = LocalDateTimeConverter.class)
+			description = "an expiration date when enabling a mode to automatically disable the mode")
 	LocalDateTime modeExpiration;
 
 	@Option(names = { "-x", "--expiration" },
-			description = "a date to automatically transition the instruction to Declined if not completed",
-			converter = LocalDateTimeConverter.class)
+			description = "a date to automatically transition the instruction to Declined if not completed")
 	LocalDateTime expiration;
 
 	@Option(names = { "-X", "--exec-at" },
-			description = "a date to defer instruction execution until",
-			converter = LocalDateTimeConverter.class)
+			description = "a date to defer instruction execution until")
 	LocalDateTime executionDate;
 	
 	@Option(names = { "-tz", "--time-zone" },

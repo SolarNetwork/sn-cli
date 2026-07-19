@@ -53,7 +53,6 @@ import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.DateUtils;
-import s10k.tool.common.util.LocalDateTimeConverter;
 import s10k.tool.common.util.SystemUtils;
 import s10k.tool.datum.domain.DatumFilter;
 
@@ -96,13 +95,11 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 	ObjectDatumKind streamIdentifierKind = ObjectDatumKind.Node;
 	
 	@Option(names = { "-min", "--min-date" },
-			description = "a minimum datum date to match",
-			converter = LocalDateTimeConverter.class)
+			description = "a minimum datum date to match")
 	LocalDateTime minDate;
 
 	@Option(names = { "-max", "--max-date" },
-			description = "a maximum datum date (exclusive) to match",
-			converter = LocalDateTimeConverter.class)
+			description = "a maximum datum date (exclusive) to match")
 	LocalDateTime maxDate;
 	
 	@Option(names = {"-local", "--local-dates"},

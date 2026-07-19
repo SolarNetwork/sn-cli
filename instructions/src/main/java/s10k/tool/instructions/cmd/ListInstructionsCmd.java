@@ -24,7 +24,6 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.util.DateUtils;
-import s10k.tool.common.util.LocalDateTimeConverter;
 import s10k.tool.instructions.domain.InstructionsFilter;
 
 /**
@@ -57,13 +56,11 @@ public class ListInstructionsCmd extends BaseSubCmd<InstructionsCmd> implements 
 	InstructionState[] instructionStates;
 
 	@Option(names = { "-min", "--min-date" },
-		description = "a minimum instruction creation date to match",
-		converter = LocalDateTimeConverter.class)
+		description = "a minimum instruction creation date to match")
 	LocalDateTime minDate;
 
 	@Option(names = { "-max", "--max-date" },
-		description = "a maximum instruction creation date (exclusive) to match",
-		converter = LocalDateTimeConverter.class)
+		description = "a maximum instruction creation date (exclusive) to match")
 	LocalDateTime maxDate;
 
 	@Option(names = { "-tz", "--time-zone" },
