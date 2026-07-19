@@ -32,31 +32,31 @@ s10k cloud-integrations datum-streams poll-tasks create
 	created or removed, without actually changing anything. For example:
 
 	```sh
-	# dry run to create 3- and 7-day rake tasks for all datum streams except for those
+	# dry run to create 3- and 7-day poll tasks for all datum streams except for those
 	# using Solcast and OpenWeatherMap integrations
-	s10k --dry-run cloud-integrations datum-streams rake-tasks create
+	s10k --dry-run cloud-integrations datum-streams poll-tasks create
 	  --stream-type !solcast,!weather
-	  --offset P3D,P7D
+	  --start-date 2026-06-29T04:10
 	```
 
 ## Output
 
-A listing of rake tasks "action" records. Each record's action will be either **Create** or **Remove**.
+A listing of created poll tasks records.
 
 ## Examples
 
-=== "Create rake tasks"
+=== "Create poll tasks"
 
 	```sh
-	s10k --dry-run cloud-integrations datum-streams rake-tasks create --stream-id 1000
+	s10k --dry-run cloud-integrations datum-streams poll-tasks create --stream-id 1000
 	```
 
-=== "Create rake tasks (shortcut)"
+=== "Create poll tasks (shortcut)"
 
-	You can use `c2c` instead of `cloud-integrations` and `ds` instead of `datum-streams` and `rakes` instead of `rake-tasks`:
+	You can use `c2c` instead of `cloud-integrations` and `ds` instead of `datum-streams` and `polls` instead of `poll-tasks`:
 
 	```sh
-	s10k c2c ds rakes create --stream-id 1000 --offset P3D,P7D
+	s10k c2c ds polls create --stream-id 1000 --start-date 2026-06-29T04:10
 	```
 
 === "Pretty Output"
