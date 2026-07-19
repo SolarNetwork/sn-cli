@@ -1,5 +1,7 @@
 package s10k.tool.common.domain;
 
+import org.jspecify.annotations.Nullable;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
@@ -83,7 +85,7 @@ public enum ClaimableJobState {
 	 * @throws IllegalArgumentException if {@code value} is not a valid value
 	 */
 	@JsonCreator
-	public static ClaimableJobState fromValue(String value) {
+	public static @Nullable ClaimableJobState fromValue(@Nullable String value) {
 		if (value == null || value.isEmpty()) {
 			return null;
 		}

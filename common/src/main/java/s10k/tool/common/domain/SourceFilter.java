@@ -9,6 +9,7 @@ import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -17,10 +18,11 @@ import net.solarnetwork.domain.datum.ObjectDatumKind;
 /**
  * Search filter for source information.
  */
-public record SourceFilter(Collection<Long> objectIds, Collection<String> sourceIds, ZonedDateTime startDate,
-		ZonedDateTime endDate, boolean useLocalDates, String metadataFilter, Collection<String> propertyNames,
-		Collection<String> instantaneousPropertyNames, Collection<String> accumulatingPropertyNames,
-		Collection<String> statusPropertyNames) {
+public record SourceFilter(@Nullable Collection<Long> objectIds, @Nullable Collection<String> sourceIds,
+		@Nullable ZonedDateTime startDate, @Nullable ZonedDateTime endDate, boolean useLocalDates,
+		@Nullable String metadataFilter, @Nullable Collection<String> propertyNames,
+		@Nullable Collection<String> instantaneousPropertyNames, @Nullable Collection<String> accumulatingPropertyNames,
+		@Nullable Collection<String> statusPropertyNames) {
 
 	/**
 	 * Create a filter from array parameters.
@@ -43,9 +45,11 @@ public record SourceFilter(Collection<Long> objectIds, Collection<String> source
 	 * @param statusPropertyNames        the status property names, or {@code null}
 	 * @return the new filter instance
 	 */
-	public static SourceFilter sourceFilter(Long[] objectIds, String[] sourceIds, ZonedDateTime startDate,
-			ZonedDateTime endDate, boolean useLocalDates, String metadataFilter, String[] propertyNames,
-			String[] instantaneousPropertyNames, String[] accumulatingPropertyNames, String[] statusPropertyNames) {
+	public static SourceFilter sourceFilter(Long @Nullable [] objectIds, String @Nullable [] sourceIds,
+			@Nullable ZonedDateTime startDate, @Nullable ZonedDateTime endDate, boolean useLocalDates,
+			@Nullable String metadataFilter, String @Nullable [] propertyNames,
+			String @Nullable [] instantaneousPropertyNames, String @Nullable [] accumulatingPropertyNames,
+			String @Nullable [] statusPropertyNames) {
 		// @formatter:off
 		return new SourceFilter(
 				objectIds != null && objectIds.length > 0 ? Arrays.asList(objectIds) : null,

@@ -3,6 +3,7 @@ package s10k.tool.common.domain;
 import java.time.Instant;
 import java.util.Arrays;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -21,10 +22,10 @@ import net.solarnetwork.web.jakarta.support.StaticAuthorizationCredentialsProvid
 public record SnTokenCredentials(
 // @formatter:off
 		@JsonProperty("sn_token_id")
-		String tokenId,
+		@Nullable String tokenId,
 		
 		@JsonProperty("sn_token_secret")
-		char[] tokenSecret
+		char @Nullable [] tokenSecret
 		// @formatter:on
 ) {
 
@@ -56,6 +57,9 @@ public record SnTokenCredentials(
 	 *                               token secret is not available
 	 */
 	public AuthorizationCredentialsProvider credentialsProvider(Instant signingDate) {
+		if (tokenId == null || tokenId.isEmpty()) {
+			throw new IllegalStateException("The token ID is not available.");
+		}
 		if (tokenSecret == null || tokenSecret.length < 1 || tokenSecret[0] == '0') {
 			throw new IllegalStateException("The token secret is not available.");
 		}
