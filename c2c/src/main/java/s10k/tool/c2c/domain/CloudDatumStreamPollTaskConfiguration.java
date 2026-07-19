@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 
+import s10k.tool.common.domain.ClaimableJobState;
+
 /**
  * Cloud Datum Stream Poll Task configuration.
  */
@@ -22,6 +24,17 @@ public record CloudDatumStreamPollTaskConfiguration(Long datumStreamId, String s
 			return n.intValue();
 		}
 		return 0;
+	}
+
+	/**
+	 * Create a copy with a specific job state.
+	 * 
+	 * @param newState the new state
+	 * @return the new instance
+	 */
+	public CloudDatumStreamPollTaskConfiguration copyWithState(ClaimableJobState newState) {
+		return new CloudDatumStreamPollTaskConfiguration(datumStreamId, newState.keyValue(), executeAt, startAt,
+				message, serviceProperties);
 	}
 
 }

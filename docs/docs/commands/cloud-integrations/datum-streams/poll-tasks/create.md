@@ -48,7 +48,7 @@ A listing of created poll tasks records.
 === "Create poll tasks"
 
 	```sh
-	s10k --dry-run cloud-integrations datum-streams poll-tasks create --stream-id 1000
+	s10k cloud-integrations datum-streams poll-tasks create --stream-id 1000 --start-date 2026-06-29T04:10
 	```
 
 === "Create poll tasks (shortcut)"

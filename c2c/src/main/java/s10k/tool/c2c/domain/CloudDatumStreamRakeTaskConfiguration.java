@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 
+import s10k.tool.common.domain.ClaimableJobState;
+
 /**
  * Cloud Datum Stream Rake Task configuration.
  */
@@ -22,6 +24,17 @@ public record CloudDatumStreamRakeTaskConfiguration(Long configId, Long datumStr
 			return n.intValue();
 		}
 		return 0;
+	}
+
+	/**
+	 * Create a copy with a specific job state.
+	 * 
+	 * @param newState the new state
+	 * @return the new instance
+	 */
+	public CloudDatumStreamRakeTaskConfiguration copyWithState(ClaimableJobState newState) {
+		return new CloudDatumStreamRakeTaskConfiguration(configId, datumStreamId, newState.keyValue(), executeAt,
+				offset, message, serviceProperties);
 	}
 
 }

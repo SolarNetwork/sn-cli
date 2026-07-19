@@ -141,7 +141,7 @@ public class ListTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable<I
 		// @formatter:off
 		return new Column[] {
 				new Column().header("Task ID").dataAlign(RIGHT),
-				new Column().header("Datum Stream ID").dataAlign(RIGHT),
+				new Column().header("Stream ID").dataAlign(RIGHT),
 				new Column().header("State").dataAlign(LEFT),
 				new Column().header("Execute At").dataAlign(LEFT),
 				new Column().header("Offset").dataAlign(LEFT),

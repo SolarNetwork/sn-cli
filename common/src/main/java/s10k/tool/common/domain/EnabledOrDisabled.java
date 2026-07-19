@@ -10,15 +10,32 @@ import net.solarnetwork.util.StringUtils;
 public enum EnabledOrDisabled {
 
 	/** An enabled state. */
-	Enabled,
+	Enabled(ClaimableJobState.Queued),
 
 	/** A disabled state. */
-	Disabled,
+	Disabled(ClaimableJobState.Completed),
 
 	;
 
+	private final ClaimableJobState jobState;
+
+	EnabledOrDisabled(ClaimableJobState jobState) {
+		this.jobState = jobState;
+	}
+
 	/**
-	 * Parse a boolean/number/string value into an enum value.
+	 * Get a job state for this enumeration.
+	 * 
+	 * @return the job state
+	 */
+	public ClaimableJobState asJobState() {
+		return jobState;
+	}
+
+	/**
+	 * Parse a
+	 * {@code EnabledOrDisabled}/boolean/number/string/{@link ClaimableJobState}
+	 * value into an enum value.
 	 * 
 	 * @param value the value to parse
 	 * @return the enum, never {@code null}
@@ -30,8 +47,16 @@ public enum EnabledOrDisabled {
 			return (b ? Enabled : Disabled);
 		} else if (value instanceof Number n) {
 			return (n.intValue() == 0 ? Disabled : Enabled);
+		} else if (value instanceof ClaimableJobState s) {
+			return (s == ClaimableJobState.Completed ? Disabled : Enabled);
 		}
-		final boolean b = StringUtils.parseBoolean(value.toString());
+		final String s = value.toString();
+		for (EnabledOrDisabled e : EnabledOrDisabled.values()) {
+			if (e.name().equalsIgnoreCase(s)) {
+				return e;
+			}
+		}
+		final boolean b = StringUtils.parseBoolean(s);
 		return (b ? Enabled : Disabled);
 	}
 

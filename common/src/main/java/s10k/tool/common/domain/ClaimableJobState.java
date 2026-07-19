@@ -85,7 +85,7 @@ public enum ClaimableJobState {
 	 * @throws IllegalArgumentException if {@code value} is not a valid value
 	 */
 	@JsonCreator
-	public static @Nullable ClaimableJobState fromValue(@Nullable String value) {
+	public static @Nullable ClaimableJobState valueFor(@Nullable String value) {
 		if (value == null || value.isEmpty()) {
 			return null;
 		}

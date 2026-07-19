@@ -17,6 +17,7 @@ import picocli.CommandLine.IFactory;
 import s10k.tool.c2c.cmd.CloudIntegrationsCmd;
 import s10k.tool.common.cmd.ToolCmd;
 import s10k.tool.common.cmd.VersionCmd;
+import s10k.tool.common.domain.ClaimableJobState;
 import s10k.tool.common.domain.EnabledOrDisabled;
 import s10k.tool.common.util.StringUtils;
 import s10k.tool.datum.cmd.DatumCmd;
@@ -64,6 +65,7 @@ public class SnCliTool implements CommandLineRunner, ExitCodeGenerator {
 				.setCaseInsensitiveEnumValuesAllowed(true)
 				.registerConverter(LocalDateTime.class, StringUtils::parseLocalDateTime)
 				.registerConverter(EnabledOrDisabled.class, EnabledOrDisabled::valueFor)
+				.registerConverter(ClaimableJobState.class, ClaimableJobState::valueFor)
 				.execute(args);
 		// @formatter:on
 	}
