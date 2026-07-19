@@ -37,11 +37,10 @@ import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ClaimableJobState;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.DateUtils;
-import s10k.tool.common.util.LocalDateTimeConverter;
 import s10k.tool.common.util.TableUtils;
 
 /**
- * Create Cloud Datum Stream Rake Task configurations.
+ * Create Cloud Datum Stream Poll Task configurations.
  */
 @Component("createPollTasksCmd")
 @Command(name = "create", sortSynopsis = false)
@@ -65,8 +64,7 @@ public class CreateTasksCmd extends BaseSubCmd<PollTasksCmd> implements Callable
 	String[] types;
 	
 	@Option(names = { "-s", "--start-date" },
-			description = "the date to start polling data from",
-			converter = LocalDateTimeConverter.class)
+			description = "the date to start polling data from")
 	LocalDateTime startDate;
 
 	@Option(names = { "-tz", "--time-zone" },
