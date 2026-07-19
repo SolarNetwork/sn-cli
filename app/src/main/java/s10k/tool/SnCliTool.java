@@ -17,6 +17,7 @@ import picocli.CommandLine.IFactory;
 import s10k.tool.c2c.cmd.CloudIntegrationsCmd;
 import s10k.tool.common.cmd.ToolCmd;
 import s10k.tool.common.cmd.VersionCmd;
+import s10k.tool.common.domain.EnabledOrDisabled;
 import s10k.tool.common.util.StringUtils;
 import s10k.tool.datum.cmd.DatumCmd;
 import s10k.tool.flux.cmd.FluxCmd;
@@ -53,7 +54,6 @@ public class SnCliTool implements CommandLineRunner, ExitCodeGenerator {
 		// @formatter:off
 		exitCode = new CommandLine(app, factory)
 				.setExecutionStrategy(app::globalInit)
-				.registerConverter(LocalDateTime.class, StringUtils::parseLocalDateTime)
 				.addSubcommand(new VersionCmd())
 				.addSubcommand(new CloudIntegrationsCmd())
 				.addSubcommand(new DatumCmd())
@@ -62,6 +62,8 @@ public class SnCliTool implements CommandLineRunner, ExitCodeGenerator {
 				.addSubcommand(new NodesCmd())
 				.addSubcommand(new SecTokensCmd())
 				.setCaseInsensitiveEnumValuesAllowed(true)
+				.registerConverter(LocalDateTime.class, StringUtils::parseLocalDateTime)
+				.registerConverter(EnabledOrDisabled.class, EnabledOrDisabled::valueFor)
 				.execute(args);
 		// @formatter:on
 	}
