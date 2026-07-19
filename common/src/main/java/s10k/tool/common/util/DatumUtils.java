@@ -1,6 +1,3 @@
-/**
- * 
- */
 package s10k.tool.common.util;
 
 import static net.solarnetwork.util.StringNaturalSortComparator.CASE_INSENSITIVE_NATURAL_SORT;
