@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 
 import org.jspecify.annotations.Nullable;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -43,7 +44,6 @@ public final class CollectionUtils {
 	 * </p>
 	 * 
 	 * @param spec         a service property specification, in the form path:value
-	 * 
 	 * @param sprops       the service properties map to populate
 	 * @param objectMapper an optional object mapper, to support path{:value syntax
 	 *                     to treat {@code value} as JSON
@@ -61,24 +61,25 @@ public final class CollectionUtils {
 		final Object value;
 		if (objectMapper != null && specKey.length() > 2 && specKey.endsWith("{")) {
 			// parse value as JSON
-			path = specKey.substring(0, specKey.length() - 2);
+			path = specKey.substring(0, specKey.length() - 1);
 			try {
-				value = objectMapper.readTree(specValue);
+				JsonNode json = objectMapper.readTree(specValue);
+				value = (json.isNull() ? null : json);
 			} catch (Exception e) {
 				throw new IllegalStateException("Error parsing service property [%s] value [%s] as JSON: %s"
 						.formatted(path, specValue, e.getMessage()), e);
 			}
 		} else if (specKey.length() > 2 && specKey.endsWith("%")) {
 			// parse value as delimited map
-			path = specKey.substring(0, specKey.length() - 2);
+			path = specKey.substring(0, specKey.length() - 1);
 			value = commaDelimitedStringToMap(specValue);
 		} else if (specKey.length() > 2 && specKey.endsWith("[")) {
 			// parse value as delimited list
-			path = specKey.substring(0, specKey.length() - 2);
+			path = specKey.substring(0, specKey.length() - 1);
 			value = commaDelimitedStringToList(specValue);
 		} else if (specKey.length() > 2 && specKey.endsWith("#")) {
 			// parse value as delimited set
-			path = specKey.substring(0, specKey.length() - 2);
+			path = specKey.substring(0, specKey.length() - 1);
 			value = commaDelimitedStringToSet(specValue);
 		} else {
 			path = specKey;
@@ -89,11 +90,16 @@ public final class CollectionUtils {
 		String[] pathSegments = (path.startsWith("/") ? path.substring(1) : path).split("/", 0);
 		Map<String, Object> mapToPopulate = sprops;
 		for (int i = 1; i < pathSegments.length; i++) {
-			Map<String, Object> subMap = new LinkedHashMap<>(2);
-			mapToPopulate.put(pathSegments[i - 1], subMap);
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			Map<String, Object> subMap = (Map) mapToPopulate.compute(pathSegments[i - 1],
+					(_, v) -> v instanceof Map<?, ?> t ? (Map) t : new LinkedHashMap<>(2));
 			mapToPopulate = subMap;
 		}
-		mapToPopulate.put(pathSegments[pathSegments.length - 1], value);
+		if (value == null) {
+			mapToPopulate.remove(pathSegments[pathSegments.length - 1]);
+		} else {
+			mapToPopulate.put(pathSegments[pathSegments.length - 1], value);
+		}
 	}
 
 	/**
