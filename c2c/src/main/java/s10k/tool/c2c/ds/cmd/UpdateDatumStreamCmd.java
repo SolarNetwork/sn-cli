@@ -28,6 +28,7 @@ import net.solarnetwork.domain.datum.ObjectDatumKind;
 import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
+import picocli.CommandLine.Parameters;
 import s10k.tool.c2c.domain.CloudDatumStreamConfiguration;
 import s10k.tool.c2c.util.CloudIntegrationsUtils;
 import s10k.tool.common.cmd.BaseSubCmd;
@@ -88,7 +89,7 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 			paramLabel = "serviceProperty")
 	String serviceProperties[];
 
-	@Option(names = {"-R", "--replace"},
+	@Option(names = {"-r", "--replace"},
 			description = "when JSON input is provided, replace the settings instead of merging the given settings")
 	public boolean replace;
 	
@@ -100,6 +101,9 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 			description = "how to display the data",
 			defaultValue = "PRETTY")
 	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+
+	@Parameters(index = "0", paramLabel = "<config>", description = "the updates to save, or @file for file to load", arity = "0..1")
+	String value;
 	// @formatter:on
 
 	/**
@@ -184,6 +188,12 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 			} catch (RuntimeException e) {
 				System.err.println(e.getMessage());
 				return 1;
+			}
+
+			if (value != null && !value.isBlank()) {
+				Map<String, Object> inputProps = objectMapper.readValue(stringOrFileContents(value),
+						JsonUtils.STRING_MAP_TYPE);
+				CollectionUtils.copyServiceProperties(inputProps, settings);
 			}
 
 			if (!existing.differsFromSettings(settings)) {
