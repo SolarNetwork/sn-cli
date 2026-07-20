@@ -16,6 +16,7 @@ import java.util.TreeSet;
 import org.jspecify.annotations.Nullable;
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 
+import net.solarnetwork.codec.JsonUtils;
 import net.solarnetwork.domain.Differentiable;
 import net.solarnetwork.domain.datum.ObjectDatumKind;
 
@@ -101,7 +102,8 @@ public record CloudDatumStreamConfiguration(Long configId, String name, String s
 			result.put("sourceId", sourceId);
 		}
 		if (serviceProperties != null) {
-			result.put("serviceProperties", new LinkedHashMap<>(serviceProperties));
+			// perform a deep copy here
+			result.put("serviceProperties", JsonUtils.getStringMapFromObject(serviceProperties));
 		}
 		return result;
 	}
