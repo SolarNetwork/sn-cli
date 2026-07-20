@@ -40,7 +40,7 @@ public enum EnabledOrDisabled {
 	 * @param value the value to parse
 	 * @return the enum, never {@code null}
 	 */
-	public static EnabledOrDisabled valueFor(@Nullable Object value) {
+	public static EnabledOrDisabled fromValue(@Nullable Object value) {
 		if (value == null) {
 			return Disabled;
 		} else if (value instanceof Boolean b) {

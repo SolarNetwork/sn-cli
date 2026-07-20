@@ -17,7 +17,8 @@ import s10k.tool.common.cmd.BaseSubCmd;
 		ViewDatumStreamCmd.class,
 		ViewDataValuesCmd.class,
 		PollTasksCmd.class,
-		RakeTasksCmd.class
+		RakeTasksCmd.class,
+		UpdateDatumStreamCmd.class,
 })
 // @formatter:on
 public class DatumStreamsCmd extends BaseSubCmd<CloudIntegrationsCmd> {

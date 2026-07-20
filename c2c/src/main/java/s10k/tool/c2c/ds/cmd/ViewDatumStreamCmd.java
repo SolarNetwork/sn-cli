@@ -216,7 +216,7 @@ public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements C
 						? conf.datumStream.serviceIdentifier()
 						: datumStreamServiceLocalizedName(conf.datumStream.serviceIdentifier())),
 				conf.datumStream.enabled(),
-				conf.datumStream.kind(),
+				(conf.datumStream.kind() != null ? conf.datumStream.kind().keyValue() : null),
 				conf.datumStream.objectId(),
 				conf.datumStream.sourceIdsValue(),
 				conf.datumStream.schedule(),

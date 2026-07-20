@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.ReflectiveScan;
 
+import net.solarnetwork.domain.datum.ObjectDatumKind;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.IFactory;
@@ -63,9 +64,10 @@ public class SnCliTool implements CommandLineRunner, ExitCodeGenerator {
 				.addSubcommand(new NodesCmd())
 				.addSubcommand(new SecTokensCmd())
 				.setCaseInsensitiveEnumValuesAllowed(true)
+				.registerConverter(ClaimableJobState.class, ClaimableJobState::fromValue)
+				.registerConverter(EnabledOrDisabled.class, EnabledOrDisabled::fromValue)
 				.registerConverter(LocalDateTime.class, StringUtils::parseLocalDateTime)
-				.registerConverter(EnabledOrDisabled.class, EnabledOrDisabled::valueFor)
-				.registerConverter(ClaimableJobState.class, ClaimableJobState::valueFor)
+				.registerConverter(ObjectDatumKind.class, ObjectDatumKind::fromValue)
 				.execute(args);
 		// @formatter:on
 	}

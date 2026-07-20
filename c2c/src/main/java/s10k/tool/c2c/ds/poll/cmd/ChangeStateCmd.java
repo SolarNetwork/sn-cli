@@ -148,13 +148,13 @@ public class ChangeStateCmd extends BaseSubCmd<PollTasksCmd> implements Callable
 				conf.datumStreamId(),
 				datumStream.name(),
 				datumStreamServiceLocalizedName(datumStream.serviceIdentifier()),
-				datumStream.kind(),
+				(datumStream.kind() != null ? datumStream.kind().keyValue() : null),
 				datumStream.objectId(),
 				datumStream.sourceIdsValue(),
 				datumStream.schedule(),
 				conf.executeAt(),
 				conf.startAt(),
-				EnabledOrDisabled.valueFor(ClaimableJobState.valueFor(conf.state())),
+				EnabledOrDisabled.fromValue(ClaimableJobState.fromValue(conf.state())),
 				desiredState,
 			};
 		// @formatter:on

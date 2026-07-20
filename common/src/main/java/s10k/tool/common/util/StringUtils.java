@@ -1,7 +1,13 @@
 package s10k.tool.common.util;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static net.solarnetwork.util.StringNaturalSortComparator.CASE_INSENSITIVE_NATURAL_SORT;
+import static org.springframework.util.FileCopyUtils.copyToString;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,6 +15,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAccessor;
 import java.util.Arrays;
+
+import org.jspecify.annotations.Nullable;
 
 import net.solarnetwork.util.DateUtils;
 
@@ -73,8 +81,37 @@ public final class StringUtils {
 	 * @param o the object to convert to a string, or {@code null}
 	 * @return the string or {@code null} if {@code o} is {@code null}
 	 */
-	public static String toStringOrNull(Object o) {
+	public static @Nullable String toStringOrNull(@Nullable Object o) {
 		return (o != null ? o.toString() : null);
+	}
+
+	/**
+	 * Get a string, possibly loaded from a file.
+	 * 
+	 * <p>
+	 * If {@code value} starts with an {@code @} character, that will be stripped
+	 * from the string and the remainder treated as a file path, whose contents will
+	 * be loaded as a {@code UTF-8} string and returned. Otherwise {@code value}
+	 * will be returned as-is.
+	 * </p>
+	 * 
+	 * @param value the value or {@code @}-prefixed file path
+	 * @return the resulting string
+	 * @throws IllegalStateException if any error occurs reading the file contents
+	 */
+	public static @Nullable String stringOrFileContents(@Nullable String value) {
+		if (value == null || !value.startsWith("@")) {
+			return value;
+		}
+		Path path = Paths.get(value.substring(1));
+		try {
+			if (!Files.isReadable(path)) {
+				throw new IllegalStateException("File [%s] is not available.".formatted(path));
+			}
+			return copyToString(Files.newBufferedReader(path, UTF_8));
+		} catch (IOException e) {
+			throw new IllegalStateException("Error reading file [%s]: %s".formatted(path, e.getMessage()));
+		}
 	}
 
 }

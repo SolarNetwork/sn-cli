@@ -373,7 +373,7 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 					conf.objectId(),
 					conf.sourceIdsValue(),
 					conf.enabled(),
-					conf.kind(),
+					(conf.kind() != null ? conf.kind().keyValue() : null),
 					conf.schedule(),
 					conf.datumStreamMappingId(),
 				};

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.github.freva.asciitable.Column;
 
 import picocli.CommandLine.ArgGroup;
@@ -121,6 +122,7 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
 		final CloudIntegrationsFilter filter = filter();
 		try {
 			List<CloudDatumStreamConfiguration> confs = listCloudDatumStreams(restClient, objectMapper, filter);
@@ -130,7 +132,7 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 			}
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? confs
-					: confs.stream().map(c -> tableDataRow(c, false)).toList());
+					: confs.stream().map(c -> tableDataRow(c, false, pretty)).toList());
 			TableUtils.renderTableData(tableDataColumns(), tableData, displayMode, objectMapper,
 					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
@@ -186,6 +188,7 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 				new Column().header("Source ID").dataAlign(LEFT),
 				new Column().header("Schedule").dataAlign(LEFT),
 				new Column().header("Mapping ID").dataAlign(RIGHT),
+				new Column().header("Service Properties").dataAlign(LEFT),
 			};
 		// @formatter:on
 	}
@@ -195,22 +198,33 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 	 * 
 	 * @param conf           the configuration to convert
 	 * @param rawIdentifiers {@code true} to output the raw service identifiers
+	 * @param jsonWriter     the JSON writer to use for service properties
 	 * @return the metadata data
 	 */
-	public static Object[] tableDataRow(CloudDatumStreamConfiguration conf, boolean rawIdentifiers) {
-		// @formatter:off
-		return new Object[] {
-				conf.configId(),
-				conf.name(),
-				(rawIdentifiers ? conf.serviceIdentifier() : datumStreamServiceLocalizedName(conf.serviceIdentifier())),
-				conf.enabled(),
-				conf.kind(),
-				conf.objectId(),
-				conf.sourceIdsValue(),
-				conf.schedule(),
-				conf.datumStreamMappingId(),
-			};
-		// @formatter:on
+	public static Object[] tableDataRow(CloudDatumStreamConfiguration conf, boolean rawIdentifiers,
+			ObjectWriter jsonWriter) {
+		try {
+			// @formatter:off
+			return new Object[] {
+					conf.configId(),
+					conf.name(),
+					(rawIdentifiers 
+						? conf.serviceIdentifier()
+						: datumStreamServiceLocalizedName(conf.serviceIdentifier())),
+					conf.enabled(),
+					(conf.kind() != null ? conf.kind().keyValue() : null),
+					conf.objectId(),
+					conf.sourceIdsValue(),
+					conf.schedule(),
+					conf.datumStreamMappingId(),
+					(conf.serviceProperties() != null 
+						? jsonWriter.writeValueAsString(conf.serviceProperties())
+						: null),
+				};
+			// @formatter:on
+		} catch (Exception e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 }

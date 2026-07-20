@@ -154,13 +154,13 @@ public class ChangeStateCmd extends BaseSubCmd<RakeTasksCmd> implements Callable
 				conf.configId(),
 				datumStream.name(),
 				datumStreamServiceLocalizedName(datumStream.serviceIdentifier()),
-				datumStream.kind(),
+				(datumStream.kind() != null ?  datumStream.kind().keyValue() : null),
 				datumStream.objectId(),
 				datumStream.sourceIdsValue(),
 				datumStream.schedule(),
 				conf.executeAt(),
 				conf.offset(),
-				EnabledOrDisabled.valueFor(ClaimableJobState.valueFor(conf.state())),
+				EnabledOrDisabled.fromValue(ClaimableJobState.fromValue(conf.state())),
 				desiredState,
 			};
 		// @formatter:on

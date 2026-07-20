@@ -10,6 +10,8 @@ import java.util.Map.Entry;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.jspecify.annotations.Nullable;
+
 /**
  * Helper utilities for Cloud Integrations.
  */
@@ -28,7 +30,10 @@ public final class CloudIntegrationsUtils {
 	 * @return the localized name, falling back to {@code serviceId} if no localized
 	 *         name available
 	 */
-	public static String integrationServiceLocalizedName(String serviceId) {
+	public static @Nullable String integrationServiceLocalizedName(@Nullable String serviceId) {
+		if (serviceId == null) {
+			return null;
+		}
 		try {
 			return RESOURCE_BUNDLE.getString("i9n." + serviceId + ".name");
 		} catch (MissingResourceException e) {
@@ -47,7 +52,10 @@ public final class CloudIntegrationsUtils {
 	 * @return the localized name, falling back to {@code serviceId} if no localized
 	 *         name available
 	 */
-	public static String datumStreamServiceLocalizedName(String serviceId) {
+	public static @Nullable String datumStreamServiceLocalizedName(@Nullable String serviceId) {
+		if (serviceId == null) {
+			return null;
+		}
 		try {
 			return RESOURCE_BUNDLE.getString("ds." + serviceId + ".name");
 		} catch (MissingResourceException e) {
