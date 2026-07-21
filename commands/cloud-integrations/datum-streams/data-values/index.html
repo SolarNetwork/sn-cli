@@ -14,7 +14,7 @@
         <link rel="prev" href="../">
       
       
-        <link rel="next" href="../list/">
+        <link rel="next" href="../datum/">
       
       
         
@@ -536,6 +536,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -750,6 +754,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../datum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    datum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../list/" class="md-nav__link">
         
   
@@ -786,6 +818,34 @@
     
   
     report
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../update/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    update
   
 
     
@@ -844,6 +904,8 @@
       
         
       
+        
+      
     
     
     
@@ -852,7 +914,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3_2_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3_2_8" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -874,14 +936,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_3_2_6" id="__nav_5_3_2_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_3_2_8" id="__nav_5_3_2_8_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_5_3_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_3_2_6">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_5_3_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3_2_8">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -891,6 +953,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../poll-tasks/change-state/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    change-state
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -974,6 +1064,8 @@
       
         
       
+        
+      
     
     
     
@@ -982,7 +1074,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3_2_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3_2_9" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1004,14 +1096,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_3_2_7" id="__nav_5_3_2_7_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_3_2_9" id="__nav_5_3_2_9_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_5_3_2_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_3_2_7">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_5_3_2_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3_2_9">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1021,6 +1113,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rake-tasks/change-state/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    change-state
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -3129,9 +3249,11 @@
 properties that can be mapped into a cloud datum stream.</p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>s10k cloud-integrations datum-streams data-values
-    -i=&lt;integrationId&gt;
+    [-R]
+    [-i=&lt;integrationId&gt;]
+    [-stream=&lt;datumStreamId&gt;]
+    [-t=&lt;type&gt;]
     [-p=&lt;path&gt;]
-    [-t=&lt;type&gt; | -stream=&lt;datumStreamId&gt;]
     [-mode=&lt;displayMode&gt;]
 </code></pre></div>
 <div class="options-explicit-col-widths">
@@ -3147,7 +3269,7 @@ properties that can be mapped into a cloud datum stream.</p>
 <tr>
 <td style="text-align: left;"><code>-i=</code></td>
 <td style="text-align: left;"><code>--integration-id=</code></td>
-<td style="text-align: left;">the Cloud Integration ID to list data values for</td>
+<td style="text-align: left;">the integration ID to list data values for; <code>--stream-id</code> can be provided instead</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-p=</code></td>
@@ -3155,14 +3277,19 @@ properties that can be mapped into a cloud datum stream.</p>
 <td style="text-align: left;">the <a href="#data-hierarchy-paths">data hierarchy path</a> to show</td>
 </tr>
 <tr>
+<td style="text-align: left;"><code>-R</code></td>
+<td style="text-align: left;"><code>--ident-paths</code></td>
+<td style="text-align: left;">show the identifiers as data hierarchy paths, instead of a list; ignored in <code>JSON</code> display mode</td>
+</tr>
+<tr>
 <td style="text-align: left;"><code>-stream=</code></td>
 <td style="text-align: left;"><code>--stream-id=</code></td>
-<td style="text-align: left;">the datum stream ID to list data value for; only required by some providers, like eGauge</td>
+<td style="text-align: left;">the datum stream ID to list data value for; required by some providers like eGauge; can be provided instead of <code>--integration-id</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-t=</code></td>
 <td style="text-align: left;"><code>--stream-type=</code></td>
-<td style="text-align: left;">a datum stream service identifier, required when <code>--path</code> provided; a case-insensitive sub-string match is performed against both the service identifier and the display name, for example <code>also</code> will match the AlsoEnergy type; not needed if <code>--stream-id</code> option is provided</td>
+<td style="text-align: left;">a datum stream service identifier, required when <code>--path</code> provided; a case-insensitive sub-string match is performed against both the service identifier and the display name, for example <code>also</code> will match the AlsoEnergy type; not needed if <code>--stream-id</code> is provided</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-mode=</code></td>
@@ -3188,7 +3315,7 @@ properties that can be mapped into a cloud datum stream.</p>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Identifiers</strong></td>
-<td style="text-align: left;">An ordered list of the unique hierarchy identifiers that the data value represents.</td>
+<td style="text-align: left;">An ordered list of the unique hierarchy identifiers that the data value represents, or a path value if <code>--ident-paths</code> is used.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Reference</strong></td>

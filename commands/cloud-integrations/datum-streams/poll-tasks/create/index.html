@@ -11,7 +11,7 @@
         <link rel="canonical" href="https://solarnetwork.github.io/sn-cli/commands/cloud-integrations/datum-streams/poll-tasks/create/">
       
       
-        <link rel="prev" href="../">
+        <link rel="prev" href="../change-state/">
       
       
         <link rel="next" href="../list/">
@@ -536,6 +536,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -620,6 +624,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../datum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    datum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../list/" class="md-nav__link">
         
   
@@ -656,6 +688,34 @@
     
   
     report
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../update/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    update
   
 
     
@@ -716,6 +776,8 @@
       
         
       
+        
+      
     
     
     
@@ -724,7 +786,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3_2_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3_2_8" checked>
         
           
           <div class="md-nav__link md-nav__container">
@@ -746,14 +808,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_3_2_6" id="__nav_5_3_2_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_3_2_8" id="__nav_5_3_2_8_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_5_3_2_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5_3_2_6">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_5_3_2_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_3_2_8">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -763,6 +825,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../change-state/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    change-state
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -926,6 +1016,8 @@
       
         
       
+        
+      
     
     
     
@@ -934,7 +1026,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3_2_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3_2_9" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -956,14 +1048,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_3_2_7" id="__nav_5_3_2_7_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_3_2_9" id="__nav_5_3_2_9_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_5_3_2_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_3_2_7">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_5_3_2_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3_2_9">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -973,6 +1065,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rake-tasks/change-state/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    change-state
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -3090,25 +3210,25 @@
 <p class="admonition-title">Tip</p>
 <p>Use the <code>--dry-run</code> <a href="../../../../../global-options/">global option</a> to generate a report of what tasks would be
 created or removed, without actually changing anything. For example:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># dry run to create 3- and 7-day rake tasks for all datum streams except for those</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># dry run to create 3- and 7-day poll tasks for all datum streams except for those</span>
 <span class="c1"># using Solcast and OpenWeatherMap integrations</span>
-s10k<span class="w"> </span>--dry-run<span class="w"> </span>cloud-integrations<span class="w"> </span>datum-streams<span class="w"> </span>rake-tasks<span class="w"> </span>create
+s10k<span class="w"> </span>--dry-run<span class="w"> </span>cloud-integrations<span class="w"> </span>datum-streams<span class="w"> </span>poll-tasks<span class="w"> </span>create
 <span class="w">  </span>--stream-type<span class="w"> </span>!solcast,!weather
-<span class="w">  </span>--offset<span class="w"> </span>P3D,P7D
+<span class="w">  </span>--start-date<span class="w"> </span><span class="m">2026</span>-06-29T04:10
 </code></pre></div>
 </div>
 <h2 id="output">Output<a class="headerlink" href="#output" title="Permanent link">&para;</a></h2>
-<p>A listing of rake tasks "action" records. Each record's action will be either <strong>Create</strong> or <strong>Remove</strong>.</p>
+<p>A listing of created poll tasks records.</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:5"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><input id="__tabbed_1_5" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Create rake tasks</label><label for="__tabbed_1_2">Create rake tasks (shortcut)</label><label for="__tabbed_1_3">Pretty Output</label><label for="__tabbed_1_4">CSV Output</label><label for="__tabbed_1_5">JSON Output</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:5"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><input id="__tabbed_1_5" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Create poll tasks</label><label for="__tabbed_1_2">Create poll tasks (shortcut)</label><label for="__tabbed_1_3">Pretty Output</label><label for="__tabbed_1_4">CSV Output</label><label for="__tabbed_1_5">JSON Output</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>--dry-run<span class="w"> </span>cloud-integrations<span class="w"> </span>datum-streams<span class="w"> </span>rake-tasks<span class="w"> </span>create<span class="w"> </span>--stream-id<span class="w"> </span><span class="m">1000</span>
+<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>cloud-integrations<span class="w"> </span>datum-streams<span class="w"> </span>poll-tasks<span class="w"> </span>create<span class="w"> </span>--stream-id<span class="w"> </span><span class="m">1000</span><span class="w"> </span>--start-date<span class="w"> </span><span class="m">2026</span>-06-29T04:10
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<p>You can use <code>c2c</code> instead of <code>cloud-integrations</code> and <code>ds</code> instead of <code>datum-streams</code> and <code>rakes</code> instead of <code>rake-tasks</code>:</p>
-<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>c2c<span class="w"> </span>ds<span class="w"> </span>rakes<span class="w"> </span>create<span class="w"> </span>--stream-id<span class="w"> </span><span class="m">1000</span><span class="w"> </span>--offset<span class="w"> </span>P3D,P7D
+<p>You can use <code>c2c</code> instead of <code>cloud-integrations</code> and <code>ds</code> instead of <code>datum-streams</code> and <code>polls</code> instead of <code>poll-tasks</code>:</p>
+<div class="highlight"><pre><span></span><code>s10k<span class="w"> </span>c2c<span class="w"> </span>ds<span class="w"> </span>polls<span class="w"> </span>create<span class="w"> </span>--stream-id<span class="w"> </span><span class="m">1000</span><span class="w"> </span>--start-date<span class="w"> </span><span class="m">2026</span>-06-29T04:10
 </code></pre></div>
 </div>
 <div class="tabbed-block">
