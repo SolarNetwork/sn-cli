@@ -64,7 +64,7 @@ s10k cloud-integrations datum-streams update
 | `-m=`   | `--name=` | a name to set |
 | `-map=` | `--mapping-id=` | the datum stream mapping ID to set |
 | `-node=` | `--node-id=` | the node ID to set |
-| `-prop=` | `--service-property` | a service property, in the form `path:value`; see [Service property option](#--service-property-option) for details |
+| `-prop=` | `--service-property` | a service property, in the form `path:value` or `@@file.json`; see [Service property option](#--service-property-option) for details |
 | `-r` | `--replace` | replace the existing configuration completely, instead of merging in the changes provided |
 | `-S=` | `--service=` | the service idenetifier to set; can be specified as a case-insensitive sub-string of a supported service, matched against both the service identifier and the display name, for example `also` will match the AlsoEnergy type |
 | `-source=` | `--source-id=` | the source ID to set |
@@ -129,7 +129,7 @@ That would result in service properties like this:
 Multiple `--service-property` options are allowed, and they are processed in the order given on
 the command line.
 
-#### Special service property values
+#### Special service property encodings
 
 The `value` given in a `--service-property path:value` option can be interpreted in some alternate
 ways by changing the `:` delimiter to one of the following:
@@ -140,6 +140,17 @@ ways by changing the `:` delimiter to one of the following:
 | `%:`      | Treat as a comma-delimited list of equal-delimited key-value mappings. For example a `sourceIdMap` setting could be provided like `sourceIdMap%:/site123/dev23=/BLD1/INV/1,/site123/dev567=/BLD1/INV/2` |
 | `[:`      | Treat as a comma-delimited list. For example a `virtualSourceIds` setting could be provided like `virtualSourceIds[:/BLD1/GEN/1,/BLD1/GEN/2` |
 | `#:`      | Treat as a comma-delimited unique list. Duplicate values will be discarded. |
+
+#### Service property file references
+
+A `--service-property` value can be also be given as a JSON file reference in the form `@@file-path`.
+For example, `--service-property @@settings.json`. The contents of the file must be a JSON object,
+whose properties will be configured directly as service properties.
+
+!!! warning
+
+	The JSON properties loaded from the given file will be **added** to any existing
+	service properties, and **replace** any existing service properties.
 
 ## Output
 
