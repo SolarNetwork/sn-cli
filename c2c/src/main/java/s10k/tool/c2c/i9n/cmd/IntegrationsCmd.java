@@ -9,7 +9,8 @@ import s10k.tool.common.cmd.BaseSubCmd;
  */
 // @formatter:off
 @Command(name = "integrations", aliases = "i9n", subcommands = {
-		ListIntegrationsCmd.class
+		ListIntegrationsCmd.class,
+		UpdateIntegrationServicePropertiesCmd.class,
 })
 // @formatter:on
 public class IntegrationsCmd extends BaseSubCmd<CloudIntegrationsCmd> {
