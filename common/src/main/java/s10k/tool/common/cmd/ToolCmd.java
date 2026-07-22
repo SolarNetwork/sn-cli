@@ -1,5 +1,6 @@
 package s10k.tool.common.cmd;
 
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import picocli.CommandLine;
@@ -91,13 +92,15 @@ public class ToolCmd implements ProfileProvider {
 		if (profileName == null || profile == null) {
 			// use command options if available
 			if (tokenId != null && !tokenId.isEmpty() && tokenSecret != null && tokenSecret.length > 0) {
-				profile = new ProfileInfo("", new SnTokenCredentials(tokenId, tokenSecret));
+				Map<String, ?> config = ProfileUtils.profileConfiguration("");
+				profile = new ProfileInfo("", new SnTokenCredentials(tokenId, tokenSecret), config);
 			} else {
 				// use environment variables
 				String tokenId = System.getenv(SN_TOKEN_ID_ENV);
 				String tokenSecret = System.getenv(SN_TOKEN_SECRET_ENV);
 				if (tokenId != null && !tokenId.isEmpty() && tokenSecret != null && !tokenSecret.isEmpty()) {
-					profile = new ProfileInfo("", new SnTokenCredentials(tokenId, tokenSecret.toCharArray()));
+					Map<String, ?> config = ProfileUtils.profileConfiguration("");
+					profile = new ProfileInfo("", new SnTokenCredentials(tokenId, tokenSecret.toCharArray()), config);
 				}
 			}
 		}

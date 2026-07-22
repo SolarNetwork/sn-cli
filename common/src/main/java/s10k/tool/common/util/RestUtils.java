@@ -26,6 +26,7 @@ import com.fasterxml.jackson.dataformat.cbor.CBORFactory;
 import net.solarnetwork.web.jakarta.security.AuthorizationCredentialsProvider;
 import net.solarnetwork.web.jakarta.support.AuthorizationV2RequestInterceptor;
 import net.solarnetwork.web.jakarta.support.LoggingHttpRequestInterceptor;
+import s10k.tool.common.domain.ProfileProvider;
 import s10k.tool.common.domain.SnTokenCredentialsInfo;
 
 /**
@@ -64,25 +65,27 @@ public final class RestUtils {
 	 * each request.
 	 * </p>
 	 * 
-	 * @param reqFactory   the request factory
-	 * @param credProvider the SolarNetwork API credentials provider
-	 * @param objectMapper the object mapper
-	 * @param baseUrl      the base URL
-	 * @param traceHttp    {@code true} to enable HTTP trace logging
+	 * @param reqFactory      the request factory
+	 * @param profileProvider the profile provider
+	 * @param credProvider    the SolarNetwork API credentials provider
+	 * @param objectMapper    the object mapper
+	 * @param baseUrl         the base URL
+	 * @param traceHttp       {@code true} to enable HTTP trace logging
 	 * @return the client
 	 */
 	public static RestClient createSolarNetworkRestClient(ClientHttpRequestFactory reqFactory,
-			AuthorizationCredentialsProvider credProvider, ObjectMapper objectMapper, String baseUrl,
-			boolean traceHttp) {
+			ProfileProvider profileProvider, AuthorizationCredentialsProvider credProvider, ObjectMapper objectMapper,
+			String baseUrl, boolean traceHttp) {
 		if (traceHttp) {
 			RestTemplate template = new RestTemplate(new BufferingClientHttpRequestFactory(reqFactory));
-			template.setInterceptors(
-					List.of(new AuthorizationV2RequestInterceptor(credProvider), new LoggingHttpRequestInterceptor()));
+			template.setInterceptors(List.of(new ServiceUrlResolver(profileProvider.profile().serviceUrls()),
+					new AuthorizationV2RequestInterceptor(credProvider), new LoggingHttpRequestInterceptor()));
 			RestUtils.setObjectMapper(template, objectMapper);
 			return RestClient.builder(template).baseUrl(baseUrl).build();
 		}
 		RestTemplate template = new RestTemplate(reqFactory);
-		template.setInterceptors(List.of(new AuthorizationV2RequestInterceptor(credProvider)));
+		template.setInterceptors(List.of(new ServiceUrlResolver(profileProvider.profile().serviceUrls()),
+				new AuthorizationV2RequestInterceptor(credProvider)));
 		RestUtils.setObjectMapper(template, objectMapper);
 		return RestClient.builder(template).baseUrl(baseUrl).build();
 	}

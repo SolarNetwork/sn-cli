@@ -125,7 +125,7 @@ public abstract class BaseSubCmd<P extends ProfileProvider> implements ProfilePr
 	protected RestClient restClient() {
 		final ProfileInfo profile = profileWithCredentials();
 		final Instant now = Instant.now();
-		final RestClient restClient = RestUtils.createSolarNetworkRestClient(reqFactory,
+		final RestClient restClient = RestUtils.createSolarNetworkRestClient(reqFactory, profile,
 				profile.tokenCredentials().credentialsProvider(now), objectMapper,
 				RestUtils.DEFAULT_SOLARNETWORK_BASE_URL, isTraceHttp());
 		return restClient;
