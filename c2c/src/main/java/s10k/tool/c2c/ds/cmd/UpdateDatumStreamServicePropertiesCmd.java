@@ -33,7 +33,7 @@ import s10k.tool.common.util.SystemUtils;
 import s10k.tool.common.util.TableUtils;
 
 /**
- * Update cloud datum stream entity.
+ * Update cloud datum stream entity service properties.
  */
 @Component
 @Command(name = "update-service-properties", aliases = "update-props", sortSynopsis = false, descriptionHeading = "%n", optionListHeading = "%n", description = {
@@ -42,7 +42,7 @@ public class UpdateDatumStreamServicePropertiesCmd extends BaseSubCmd<DatumStrea
 
 	// @formatter:off
 	@Option(names = { "-stream", "--stream-id" },
-			description = "the datum stream ID to update",
+			description = "the ID of the datum stream to update",
 			required = true)
 	Long datumStreamId;
 	
