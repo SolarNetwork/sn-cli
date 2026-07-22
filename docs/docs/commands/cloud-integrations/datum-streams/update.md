@@ -9,7 +9,7 @@ The changes to make can be provided by a combination of methods:
 
  1. Standard input, as a JSON object in the form supported by the [Cloud Datum Stream update API][update-api].
  3. Command line options
- 2. Command line parameter, including `@@` file reference
+ 2. Command line parameter JSON object, including `@@` file reference
 
 For example, the following invocations produce equivalent results:
 
@@ -51,6 +51,7 @@ s10k cloud-integrations datum-streams update
 	[-node=<nodeId> | -loc=<locationId>]
 	[-e | -d]
     [-mode=<displayMode>]
+	[<config>]
 ```
 
 <div markdown="1" class="options-explicit-col-widths">
@@ -59,12 +60,13 @@ s10k cloud-integrations datum-streams update
 |:-------|:-------------|:------------|
 | `-d`   | `--disabled` | make the entity disabled |
 | `-e`   | `--enabled` | make the entity enabled |
+| `-g=`  | `--merge-mode=` | one of `Simple`, `RecursiveObjects`, or `RecursiveObjectsAndArrays` to control the merge style; see [here][merge-option] for details |
 | `-I` | `--ignore-input` | ignore standard input, instead of treating that as a JSON settings object |
 | `-loc=` | `--location-id=` | the location ID to set |
 | `-m=`   | `--name=` | a name to set |
 | `-map=` | `--mapping-id=` | the datum stream mapping ID to set |
 | `-node=` | `--node-id=` | the node ID to set |
-| `-prop=` | `--service-property` | a service property, in the form `path:value` or `@@file.json`; see [Service property option](#--service-property-option) for details |
+| `-prop=` | `--service-property` | a service property, in the form `path:value` or `@@file.json`; see [here][prop-option] for details |
 | `-r` | `--replace` | replace the existing configuration completely, instead of merging in the changes provided |
 | `-S=` | `--service=` | the service idenetifier to set; can be specified as a case-insensitive sub-string of a supported service, matched against both the service identifier and the display name, for example `also` will match the AlsoEnergy type |
 | `-source=` | `--source-id=` | the source ID to set |
@@ -82,79 +84,90 @@ s10k cloud-integrations datum-streams update
 	s10k --dry-run cloud-integrations datum-streams update --stream-id 100 --disabled
 	```
 
-### Replace vs merge
-
-By default the setting updates given as input to this command are _merged_ into any existing settings
-on the datum stream entity. Thus you only need to provide values for settings you need to change, and
-all other settings will remain the same.
-
-You can instead _replace_ all settings with new values by including the `--replace` option. In this
-mode you must provide the entire configuration required by a cloud datum stream, and any optional
-settings you do not provide will end up empty in the updated entity. This mode can be handy if you
-are generating a full configuration JSON document outside of this tool, and then provide that as
-standard input to this command.
-
-### `--service-property` option
-
-The `--service-property` option allows you to make changes to the service properties metadata. It
-takes the form `path:value` where `path` is a `/`-delimited path in the metadata document to update.
-For example imagine a datum stream with these service properties:
-
-```json
-{
-	"placeholders": {
-		"siteId": 123456
-	}
-}
-```
-
-You could add another placeholder for `deviceId` like this:
-
-```sh
-s10k cloud-integrations datum-streams update --stream-id 100 \
-    --service-property placeholders/deviceId=ABCDEF
-```
-
-That would result in service properties like this:
-
-```json
-{
-	"placeholders": {
-		"siteId": 123456,
-		"deviceId": "ABCDEF"
-	}
-}
-```
-
-Multiple `--service-property` options are allowed, and they are processed in the order given on
-the command line.
-
-#### Special service property encodings
-
-The `value` given in a `--service-property path:value` option can be interpreted in some alternate
-ways by changing the `:` delimiter to one of the following:
-
-| Delimiter | Description |
-|:----------|:------------|
-| `{:`      | Treat as JSON. For example a `sourceIdMap` setting could be provided like `sourceIdMap{:{"/site123/dev234":"/BLD1/INV/1","/site123/dev567":"/BLD1/INV/2"}` |
-| `%:`      | Treat as a comma-delimited list of equal-delimited key-value mappings. For example a `sourceIdMap` setting could be provided like `sourceIdMap%:/site123/dev23=/BLD1/INV/1,/site123/dev567=/BLD1/INV/2` |
-| `[:`      | Treat as a comma-delimited list. For example a `virtualSourceIds` setting could be provided like `virtualSourceIds[:/BLD1/GEN/1,/BLD1/GEN/2` |
-| `#:`      | Treat as a comma-delimited unique list. Duplicate values will be discarded. |
-
-#### Service property file references
-
-A `--service-property` value can be also be given as a JSON file reference in the form `@@file-path`.
-For example, `--service-property @@settings.json`. The contents of the file must be a JSON object,
-whose properties will be configured directly as service properties.
-
-!!! warning
-
-	The JSON properties loaded from the given file will be **added** to any existing
-	service properties, and **replace** any existing service properties.
-
 ## Output
 
-The updated datum stream.
+The updated datum stream (or a preview of the update if the `--dry-run` option was given).
+
+## Examples
+
+=== "Disable datum stream"
+
+	```sh
+	s10k cloud-integrations datum-streams update --stream-id 100 --disabled
+	```
+
+=== "Disable datum stream (shortcut)"
+
+	You can use `c2c` instead of `cloud-integrations` and `ds` instead of `datum-streams`:
+
+	```sh
+	s10k c2c ds update --stream-id 100 --disabled
+	```
+
+=== "Pretty Output"
+
+	```
+	+-----+----------------+-----------+---------+------+-----------+---------------------+----------------+------------+--------------------------------------------------------+
+	| ID  | Name           | Type      | Enabled | Kind | Object ID | Source ID           | Schedule       | Mapping ID | Service Properties                                     |
+	+-----+----------------+-----------+---------+------+-----------+---------------------+----------------+------------+--------------------------------------------------------+
+	| 100 | Big Solar Farm | SolarEdge | false   | n    |       123 | /BLD1/S1/R1/GEN/100 | 0 0/30 * * * * |        700 | {                                                      |
+	|     |                |           |         |      |           | /BLD1/S1/R1/INV/1   |                |            |   "sourceIdMap" : {                                    |
+	|     |                |           |         |      |           |                     |                |            |     "/0000000/met/Production" : "/BLD1/S1/R1/GEN/100", |
+	|     |                |           |         |      |           |                     |                |            |     "/0000000/inv/77777777-4E" : "/BLD1/S1/R1/INV/1"   |
+	|     |                |           |         |      |           |                     |                |            |   },                                                   |
+	|     |                |           |         |      |           |                     |                |            |   "placeholders" : {                                   |
+	|     |                |           |         |      |           |                     |                |            |     "siteId" : 0000000                                 |
+	|     |                |           |         |      |           |                     |                |            |   }                                                    |
+	|     |                |           |         |      |           |                     |                |            | }                                                      |
+	+-----+----------------+-----------+---------+------+-----------+---------------------+----------------+------------+--------------------------------------------------------+
+	```
+
+=== "CSV Output"
+
+	```csv
+	ID,Name,Type,Enabled,Kind,Object ID,Source ID,Schedule,Mapping ID,Service Properties
+	100,Big Solar Farm,SolarEdge,false,n,123,"/BLD1/S1/R1/GEN/100
+	/BLD1/S1/R1/INV/1",0 0/30 * * * *,700,"{
+	""sourceIdMap"" : {
+		""/0000000/met/Production"" : ""/BLD1/S1/R1/GEN/100"",
+		""/0000000/inv/77777777-4E"" : ""/BLD1/S1/R1/INV/1""
+	},
+	""placeholders"" : {
+		""siteId"" : 0000000
+	}
+	}"
+	```
+
+=== "JSON Output"
+
+	```json
+	[
+		{
+			"configId": 100,
+			"name": "Big Solar Farm",
+			"serviceIdentifier": "s10k.c2c.ds.solaredge.v1",
+			"created": "2025-02-26 11:21:31.409418Z",
+			"modified": "2026-07-22 00:33:26.638189Z",
+			"enabled": false,
+			"datumStreamMappingId": 700,
+			"schedule": "0 0/30 * * * *",
+			"kind": "n",
+			"objectId": 123,
+			"sourceId": "unused",
+			"serviceProperties": {
+			"sourceIdMap": {
+				"/0000000/met/Production": "/BLD1/S1/R1/GEN/100",
+				"/0000000/inv/77777777-4E": "/BLD1/S1/R1/INV/1"
+			},
+				"placeholders": {
+					"siteId": 0000000
+				}
+			}
+		}
+	]
+	```
 
 [datum-stream]: https://github.com/SolarNetwork/solarnetwork/wiki/SolarUser-Cloud-Integrations-API#cloud-datum-stream
+[merge-option]: ../../../service-properties.md#--merge-mode-option
+[prop-option]: ../../../service-properties.md#--service-property-option
 [update-api]: https://github.com/SolarNetwork/solarnetwork/wiki/SolarUser-Cloud-Integrations-API#cloud-datum-stream-update

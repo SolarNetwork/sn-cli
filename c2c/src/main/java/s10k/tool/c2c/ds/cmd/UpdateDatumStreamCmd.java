@@ -5,7 +5,6 @@ import static s10k.tool.c2c.util.CloudIntegrationRestUtils.viewCloudDatumStream;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 import static s10k.tool.common.util.StringUtils.stringOrFileContents;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.Instant;
 import java.util.LinkedHashMap;
@@ -32,6 +31,7 @@ import picocli.CommandLine.Parameters;
 import s10k.tool.c2c.domain.CloudDatumStreamConfiguration;
 import s10k.tool.c2c.util.CloudIntegrationsUtils;
 import s10k.tool.common.cmd.BaseSubCmd;
+import s10k.tool.common.domain.MergeMode;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.CollectionUtils;
 import s10k.tool.common.util.SystemUtils;
@@ -57,6 +57,11 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 			description = "the datum stream ID to update",
 			required = true)
 	Long datumStreamId;
+
+	@Option(names = { "-g", "--merge-mode" },
+			description = "the merge style to perform",
+			defaultValue = "RecursiveObjects")
+	MergeMode mode;
 
 	@Option(names = { "-S", "--service" },
 			description = "the service identifier to set; a substring of the service type can be used")
@@ -180,7 +185,7 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 			if (!(ignoreStdIn || SystemUtils.systemConsoleIsTerminal())) {
 				Map<String, Object> inputProps = objectMapper.readValue(new InputStreamReader(System.in, UTF_8),
 						JsonUtils.STRING_MAP_TYPE);
-				CollectionUtils.copyServiceProperties(inputProps, settings);
+				CollectionUtils.mergeServiceProperties(inputProps, settings, mode);
 			}
 
 			try {
@@ -193,7 +198,7 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 			if (value != null && !value.isBlank()) {
 				Map<String, Object> inputProps = objectMapper.readValue(stringOrFileContents(value),
 						JsonUtils.STRING_MAP_TYPE);
-				CollectionUtils.copyServiceProperties(inputProps, settings);
+				CollectionUtils.mergeServiceProperties(inputProps, settings, mode);
 			}
 
 			if (!existing.differsFromSettings(settings)) {
@@ -252,26 +257,13 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 		if (schedule != null) {
 			settings.put("schedule", schedule);
 		}
+
 		if (serviceProperties != null) {
 			@SuppressWarnings({ "unchecked", "rawtypes" })
-			Map<String, Object> sprops = (Map) settings.compute("serviceProperties",
+			final Map<String, Object> sprops = (Map) settings.compute("serviceProperties",
 					(_, v) -> v instanceof Map<?, ?> t ? (Map) t : new LinkedHashMap<>(8));
-			for (String spec : serviceProperties) {
-				if (spec.startsWith("@")) {
-					try {
-						Map<String, Object> m = objectMapper.readValue(stringOrFileContents(spec),
-								JsonUtils.STRING_MAP_TYPE);
-						if (m != null) {
-							sprops.putAll(m);
-						}
-					} catch (IOException e) {
-						throw new IllegalStateException(
-								"Error reading service property JSON: %s".formatted(e.getMessage()), e);
-					}
-				} else {
-					CollectionUtils.populateServiceProperty(spec, sprops, objectMapper);
-				}
-			}
+
+			CollectionUtils.populateServiceProperties(serviceProperties, sprops, objectMapper);
 		}
 	}
 
@@ -281,8 +273,7 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 		final JsonNode response = restClient.put()
 				.uri(b -> {
 					return b.path("/solaruser/api/v1/sec/user/c2c/datum-streams/{datumStreamId}")
-							.queryParam("datumStreamId", datumStreamId)
-							.build();
+							.build(datumStreamId);
 				})
 				.contentType(MediaType.APPLICATION_JSON)
 				.body(settings)

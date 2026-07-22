@@ -1,5 +1,7 @@
 package s10k.tool.common.util;
 
+import static com.github.freva.asciitable.HorizontalAlign.LEFT;
+import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
 import static org.springframework.util.StreamUtils.nonClosing;
 
 import java.io.IOException;
@@ -9,7 +11,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.SequencedCollection;
+
+import org.jspecify.annotations.Nullable;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.PrettyPrinter;
@@ -21,6 +26,7 @@ import com.github.freva.asciitable.AsciiTableBuilder;
 import com.github.freva.asciitable.Column;
 
 import de.siegmar.fastcsv.writer.CsvWriter;
+import net.solarnetwork.util.StringUtils;
 import s10k.tool.common.domain.ResultDisplayMode;
 
 /**
@@ -29,7 +35,47 @@ import s10k.tool.common.domain.ResultDisplayMode;
 public class TableUtils {
 
 	/**
+	 * Create a column header for map entries.
+	 * 
+	 * @param keyName           the key column name
+	 * @param valueName         the value column name
+	 * @param valRightJustified {@code true} to right-justify the value column, or
+	 *                          {@code false} for left justification
+	 * @return the columns
+	 */
+	public static Column[] mapColumns(String keyName, String valueName, boolean valRightJustified) {
+		// @formatter:off
+		return new Column[] {
+				new Column().header(keyName).dataAlign(LEFT),
+				new Column().header(valueName).dataAlign(valRightJustified ? RIGHT : LEFT),
+			};
+		// @formatter:on
+	}
+
+	/**
 	 * Generate a basic ASCII table structure for a map.
+	 * 
+	 * <p>
+	 * The resulting string is a simple formatted key/value listing of the map
+	 * entries. The keys are left-justified and given enough space to accommodate
+	 * the longest value so the values align vertically when left-justified. The
+	 * values can instead be right-justified if {@code valRightJustified} is
+	 * {@code true}.
+	 * </p>
+	 * 
+	 * <p>
+	 * For example, given a Map {@code m} of
+	 * {@code {"max":123, "mode":"advanced", "repeat":true}} then calling this
+	 * method like {@code basicTable(m, "Property", "Value", false)} would output:
+	 * </p>
+	 * 
+	 * <pre>{@code
+	 * Property     Value
+	 * ---------------------
+	 * max          123
+	 * mode         advanced
+	 * repeatAlways true
+	 * }</pre>
 	 *
 	 * @param map               the map
 	 * @param keyName           the key header column name
@@ -163,7 +209,10 @@ public class TableUtils {
 	 * 
 	 * @param data         the data to render; the collection value type can be
 	 *                     {@code Object[]} or {@code Collection<?>} or
-	 *                     {@code Object}
+	 *                     {@code Object}; or if the collection holds a single
+	 *                     {@code Map} value, the map entries will be enumerated
+	 *                     into a 2-column table, or written directly in
+	 *                     {@code JSON} mode
 	 * @param mode         the output mode
 	 * @param objectMapper the JSON mapper to use (only required for if {@code mode}
 	 *                     is {@code JSON})
@@ -181,7 +230,10 @@ public class TableUtils {
 	 * @param columns      optional column information; ignored for JSON output
 	 * @param data         the data to render; the collection value type can be
 	 *                     {@code Object[]} or {@code Collection<?>} or
-	 *                     {@code Object}
+	 *                     {@code Object}; or if the collection holds a single
+	 *                     {@code Map} value, the map entries will be enumerated
+	 *                     into a 2-column table, or written directly in
+	 *                     {@code JSON} mode
 	 * @param mode         the output mode
 	 * @param objectMapper the JSON mapper to use (only required for if {@code mode}
 	 *                     is {@code JSON})
@@ -200,7 +252,10 @@ public class TableUtils {
 	 *                            output
 	 * @param data                the data to render; the collection value type can
 	 *                            be {@code Object[]} or {@code Collection<?>} or
-	 *                            {@code Object}
+	 *                            {@code Object}; or if the collection holds a
+	 *                            single {@code Map} value, the map entries will be
+	 *                            enumerated into a 2-column table, or written
+	 *                            directly in {@code JSON} mode
 	 * @param mode                the output mode
 	 * @param objectMapper        the JSON mapper to use (only required for if
 	 *                            {@code mode} is {@code JSON})
@@ -214,44 +269,61 @@ public class TableUtils {
 		if (data == null || data.isEmpty()) {
 			return;
 		}
+		Map<?, ?> mapData = null;
+		if (data.size() == 1 && data.getFirst() instanceof Map<?, ?> m) {
+			mapData = m;
+		}
 		if (mode == ResultDisplayMode.CSV) {
 			try (CsvWriter csv = CsvWriter.builder().build(nonClosing(out))) {
 				if (columns != null) {
 					csv.writeRecord(Arrays.stream(columns).map(Column::getHeader).toArray(String[]::new));
 				}
-				for (Object row : data) {
-					if (row instanceof String[] a) {
-						csv.writeRecord(a);
-					} else if (row instanceof Object[] a) {
-						String[] s = Arrays.stream(a).map(TableUtils::optionalStringValue).toArray(String[]::new);
-						csv.writeRecord(s);
-					} else if (row instanceof Collection<?> l) {
-						csv.writeRecord(l.stream().map(TableUtils::optionalStringValue).toArray(String[]::new));
-					} else {
-						csv.writeRecord(row.toString());
+				if (mapData != null) {
+					for (Entry<?, ?> e : mapData.entrySet()) {
+						csv.writeRecord(optionalStringValue(e.getKey()), cellValue(e.getValue()));
+					}
+				} else {
+					for (Object row : data) {
+						if (row instanceof String[] a) {
+							csv.writeRecord(a);
+						} else if (row instanceof Object[] a) {
+							String[] s = Arrays.stream(a).map(TableUtils::optionalStringValue).toArray(String[]::new);
+							csv.writeRecord(s);
+						} else if (row instanceof Collection<?> l) {
+							csv.writeRecord(l.stream().map(TableUtils::optionalStringValue).toArray(String[]::new));
+						} else {
+							csv.writeRecord(cellValue(row));
+						}
 					}
 				}
 			}
 		} else if (mode == ResultDisplayMode.JSON) {
+			final Object jsonData = (mapData != null ? mapData : data);
 			if (SystemUtils.systemConsoleIsTerminal()) {
 				if (customJsonFormatter != null) {
-					objectMapper.writer(TableDataJsonPrettyPrinter.INSTANCE).writeValue(nonClosing(out), data);
+					objectMapper.writer(TableDataJsonPrettyPrinter.INSTANCE).writeValue(nonClosing(out), jsonData);
 				} else {
-					objectMapper.writerWithDefaultPrettyPrinter().writeValue(nonClosing(System.out), data);
+					objectMapper.writerWithDefaultPrettyPrinter().writeValue(nonClosing(System.out), jsonData);
 				}
 				out.write(System.lineSeparator().getBytes(Charset.defaultCharset()));
 			} else {
-				objectMapper.writeValue(nonClosing(System.out), data);
+				objectMapper.writeValue(nonClosing(System.out), jsonData);
 			}
 		} else {
-			Object[][] tableData = data.stream().map(row -> {
-				if (row instanceof Object[] a) {
-					return a;
-				} else if (row instanceof Collection<?> l) {
-					return l.toArray(Object[]::new);
-				}
-				return new Object[] { row };
-			}).toArray(Object[][]::new);
+			Object[][] tableData;
+			if (mapData != null) {
+				tableData = mapData.entrySet().stream().map(e -> new Object[] { e.getKey(), cellValue(e.getValue()) })
+						.toArray(Object[][]::new);
+			} else {
+				tableData = data.stream().map(row -> {
+					if (row instanceof Object[] a) {
+						return a;
+					} else if (row instanceof Collection<?> l) {
+						return l.toArray(Object[]::new);
+					}
+					return new Object[] { row };
+				}).toArray(Object[][]::new);
+			}
 			AsciiTableBuilder atb = AsciiTable.builder();
 			if (columns != null) {
 				atb.data(columns, tableData);
@@ -263,7 +335,16 @@ public class TableUtils {
 		}
 	}
 
-	private static String optionalStringValue(Object v) {
+	private static String optionalStringValue(@Nullable Object v) {
 		return (v != null ? v.toString() : null);
+	}
+
+	private static String cellValue(@Nullable Object val) {
+		if (val instanceof Collection<?> c) {
+			val = StringUtils.commaDelimitedStringFromCollection(c);
+		} else if (val instanceof Map<?, ?> m) {
+			val = StringUtils.delimitedStringFromMap(m);
+		}
+		return optionalStringValue(val);
 	}
 }

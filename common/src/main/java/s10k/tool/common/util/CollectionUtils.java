@@ -5,7 +5,11 @@ import static net.solarnetwork.util.StringUtils.commaDelimitedStringToMap;
 import static net.solarnetwork.util.StringUtils.commaDelimitedStringToSet;
 import static s10k.tool.common.util.StringUtils.stringOrFileContents;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -13,6 +17,9 @@ import org.jspecify.annotations.Nullable;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import net.solarnetwork.codec.JsonUtils;
+import s10k.tool.common.domain.MergeMode;
 
 /**
  * Collection utilities.
@@ -44,11 +51,11 @@ public final class CollectionUtils {
 	 * </p>
 	 * 
 	 * @param spec         a service property specification, in the form path:value
-	 * @param sprops       the service properties map to populate
+	 * @param serviceProps the service properties map to populate
 	 * @param objectMapper an optional object mapper, to support path{:value syntax
 	 *                     to treat {@code value} as JSON
 	 */
-	public static void populateServiceProperty(final String spec, final Map<String, Object> sprops,
+	public static void populateServiceProperty(final String spec, final Map<String, Object> serviceProps,
 			final @Nullable ObjectMapper objectMapper) {
 		final int colonIdx = spec.indexOf(':');
 		if (colonIdx < 1) {
@@ -88,7 +95,7 @@ public final class CollectionUtils {
 
 		// split on slash, dropping any leading slash
 		String[] pathSegments = (path.startsWith("/") ? path.substring(1) : path).split("/", 0);
-		Map<String, Object> mapToPopulate = sprops;
+		Map<String, Object> mapToPopulate = serviceProps;
 		for (int i = 1; i < pathSegments.length; i++) {
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			Map<String, Object> subMap = (Map) mapToPopulate.compute(pathSegments[i - 1],
@@ -103,14 +110,46 @@ public final class CollectionUtils {
 	}
 
 	/**
+	 * Parse a list of service property specifications and populate the results onto
+	 * a settings map.
+	 * 
+	 * @param specifications the service specifications to parse
+	 * @param serviceProps   the settings map to populate the service properties on
+	 * @param objectMapper   the object mapper to parse JSON values with
+	 * @throws IllegalStateException if any error parsing the specifications occurs
+	 */
+	public static void populateServiceProperties(String @Nullable [] specifications, Map<String, Object> serviceProps,
+			ObjectMapper objectMapper) {
+		if (specifications == null || specifications.length < 1) {
+			return;
+		}
+		for (String spec : specifications) {
+			if (spec.startsWith("@")) {
+				try {
+					Map<String, Object> m = objectMapper.readValue(stringOrFileContents(spec),
+							JsonUtils.STRING_MAP_TYPE);
+					if (m != null) {
+						serviceProps.putAll(m);
+					}
+				} catch (IOException e) {
+					throw new IllegalStateException("Error reading service property JSON: %s".formatted(e.getMessage()),
+							e);
+				}
+			} else {
+				populateServiceProperty(spec, serviceProps, objectMapper);
+			}
+		}
+	}
+
+	/**
 	 * Recursively copy service properties from one map to another.
 	 * 
 	 * @param input  the input map
 	 * @param output the output map
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static void copyServiceProperties(final @Nullable Map<String, Object> input,
-			final Map<String, Object> output) {
+	public static void mergeServiceProperties(final @Nullable Map<String, Object> input,
+			final Map<String, Object> output, MergeMode mode) {
 		if (input == null) {
 			return;
 		}
@@ -118,9 +157,15 @@ public final class CollectionUtils {
 			final String key = e.getKey();
 			final Object val = e.getValue();
 			if (val instanceof Map<?, ?> m) {
-				Map<String, Object> targetMap = (Map) output.compute(key,
-						(_, v) -> v instanceof Map<?, ?> t ? (Map) t : new LinkedHashMap<>(8));
-				copyServiceProperties((Map) m, targetMap);
+				Map<String, Object> targetMap = (Map) output.compute(key, (_,
+						v) -> mode != MergeMode.Simple && v instanceof Map<?, ?> t ? (Map) t : new LinkedHashMap<>(8));
+				mergeServiceProperties((Map) m, targetMap, mode);
+			} else if (val instanceof Collection<?> l) {
+				Collection<Object> targetList = (List) output.compute(key,
+						(_, v) -> mode == MergeMode.RecursiveObjectsAndArrays && v instanceof Collection<?> c
+								? (Collection) c
+								: new ArrayList<>(2));
+				targetList.addAll(l);
 			} else {
 				output.put(key, val);
 			}

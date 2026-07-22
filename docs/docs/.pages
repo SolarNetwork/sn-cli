@@ -3,4 +3,5 @@ nav:
   - profiles.md
   - global-options.md
   - logging.md
+  - service-properties.md
   - commands
