@@ -62,9 +62,6 @@ s10k cloud-integrations datum-streams update-service-properties
 |:-------|:-------------|:------------|
 | `-g=`  | `--merge-mode=` | one of `Simple`, `RecursiveObjects`, or `RecursiveObjectsAndArrays` to control the merge style; see [here][merge-option] for details |
 | `-I` | `--ignore-input` | ignore standard input, instead of treating that as a JSON settings object |
-| `-m=`   | `--name=` | a name to set |
-| `-map=` | `--mapping-id=` | the datum stream mapping ID to set |
-| `-node=` | `--node-id=` | the node ID to set |
 | `-prop=` | `--service-property` | a service property, in the form `path:value` or `@@file.json`; see [here][prop-option] for details |
 | `-stream=` | `--stream-id=` | the datum stream ID to update |
 | `-mode=` | `--display-mode=` | the format to display the output as, one of `CSV`, `JSON`, or `PRETTY`; defaults to `PRETTY` |
@@ -113,9 +110,7 @@ The updated datum stream service properties (or a preview of the update if the `
 	| sourceIdMap       | /0000000/met/Production=/BLD1/S1/R1/GEN/100,/0000000/inv/77777777-4E=/BLD1/S1/ |
 	|                   | R1/INV/1                                                                       |
 	+-------------------+--------------------------------------------------------------------------------+
-	| placeholders      | siteId=0000000                                                                 |
-	+-------------------+--------------------------------------------------------------------------------+
-	| serviceProperties | placeholders={deviceId=1111111}                                                |
+	| placeholders      | siteId=0000000,deviceId=1111111                                                |
 	+-------------------+--------------------------------------------------------------------------------+
 	```
 
@@ -137,12 +132,8 @@ The updated datum stream service properties (or a preview of the update if the `
 			"/0000000/inv/77777777-4E": "/BLD1/S1/R1/INV/1"
 		},
 		"placeholders": {
-			"siteId": 0000000
-		},
-		"serviceProperties": {
-			"placeholders": {
-				"deviceId": "1111111"
-			}
+			"siteId": 0000000,
+			"deviceId": "1111111"
 		}
 	}
 	```
