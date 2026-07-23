@@ -79,7 +79,7 @@ public final class DatumUtils {
 
 		final boolean isPattern = (pathMatcher != null && pathMatcher.isPattern(pattern));
 		for (String source : sources) {
-			if (isPattern) {
+			if (isPattern && pathMatcher != null) { // re-check pathMatcher to avoid null warning
 				if (pathMatcher.match(pattern, source)) {
 					result.add(source);
 				}

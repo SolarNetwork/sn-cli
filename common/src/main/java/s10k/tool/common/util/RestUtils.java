@@ -1,11 +1,14 @@
 package s10k.tool.common.util;
 
+import static net.solarnetwork.util.ObjectUtils.nonnull;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.function.Supplier;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestFactory;
@@ -94,14 +97,19 @@ public final class RestUtils {
 	 * Validate the success response property.
 	 * 
 	 * @param response the response to validate
-	 * @throws IllegalStateException if the response does not have a {@code true}
-	 *                               success value
+	 * @return the {@code response} object, non-null
+	 * @throws IllegalStateException if the response is {@code null} or does not
+	 *                               have a {@code true} success value
 	 */
-	public static void checkSuccess(JsonNode response) {
+	public static JsonNode checkSuccess(@Nullable JsonNode response) {
+		if (response == null) {
+			throw new IllegalStateException("No response returned");
+		}
 		if (!response.path("success").booleanValue()) {
 			throw new IllegalStateException(
 					"Non-success response returned: " + response.path("message").asText("Unknown reason."));
 		}
+		return response;
 	}
 
 	/**
@@ -148,22 +156,20 @@ public final class RestUtils {
 	public static SnTokenCredentialsInfo credentialsInfo(RestClient restClient) {
 		assert restClient != null;
 		// @formatter:off
-		JsonNode response = restClient.get()
+		final JsonNode response = checkSuccess(restClient.get()
 			.uri("/solarquery/api/v1/sec/whoami")
 			.accept(MediaType.APPLICATION_JSON)
 			.retrieve()
 			.body(JsonNode.class)
-			;		
+			);		
 		// @formatter:on
-
-		checkSuccess(response);
 
 		JsonNode node = response.path("data");
 		String token = node.path("token").textValue();
 		String tokenType = node.path("tokenType").textValue();
 
 		JsonNode userIdNode = node.path("userId");
-		Long userId = (userIdNode.isNumber() ? userIdNode.longValue() : null);
+		Long userId = nonnull(userIdNode.isNumber() ? userIdNode.longValue() : null, "User ID");
 		return new SnTokenCredentialsInfo(token, tokenType, userId);
 	}
 

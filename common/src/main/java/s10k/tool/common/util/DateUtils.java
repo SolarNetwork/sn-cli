@@ -23,7 +23,7 @@ public final class DateUtils {
 	 * @param dateTime the date-time to test
 	 * @return {@code true} if the time component is exactly at midnight
 	 */
-	public static boolean isMidnight(LocalDateTime dateTime) {
+	public static boolean isMidnight(@Nullable LocalDateTime dateTime) {
 		return (dateTime != null && dateTime.truncatedTo(ChronoUnit.DAYS).isEqual(dateTime));
 	}
 
@@ -34,7 +34,7 @@ public final class DateUtils {
 	 * @param zone the time zone, or {@code null} to use the system default
 	 * @return the zoned date time, or {@code null} if {@code date} is {@code null}
 	 */
-	public static ZonedDateTime zonedDate(LocalDateTime date, ZoneId zone) {
+	public static @Nullable ZonedDateTime zonedDate(@Nullable LocalDateTime date, @Nullable ZoneId zone) {
 		if (date == null) {
 			return null;
 		}

@@ -83,7 +83,8 @@ public class TableUtils {
 	 * @param valRightJustified {@code true} to right-justify values
 	 * @return the formatted table
 	 */
-	public static String basicTable(Map<?, ?> map, String keyName, String valName, boolean valRightJustified) {
+	public static @Nullable String basicTable(@Nullable Map<?, ?> map, @Nullable String keyName,
+			@Nullable String valName, boolean valRightJustified) {
 		if (map == null || map.isEmpty()) {
 			return null;
 		}
@@ -219,8 +220,8 @@ public class TableUtils {
 	 * @param out          the output stream
 	 * @throws IOException if any IO error occurs
 	 */
-	public static void renderTableData(SequencedCollection<?> data, ResultDisplayMode mode, ObjectMapper objectMapper,
-			OutputStream out) throws IOException {
+	public static void renderTableData(@Nullable SequencedCollection<?> data, ResultDisplayMode mode,
+			ObjectMapper objectMapper, OutputStream out) throws IOException {
 		renderTableData(null, data, mode, objectMapper, null, out);
 	}
 
@@ -240,8 +241,8 @@ public class TableUtils {
 	 * @param out          the output stream
 	 * @throws IOException if any IO error occurs
 	 */
-	public static void renderTableData(Column[] columns, SequencedCollection<?> data, ResultDisplayMode mode,
-			ObjectMapper objectMapper, OutputStream out) throws IOException {
+	public static void renderTableData(Column @Nullable [] columns, @Nullable SequencedCollection<?> data,
+			ResultDisplayMode mode, ObjectMapper objectMapper, OutputStream out) throws IOException {
 		renderTableData(columns, data, mode, objectMapper, null, out);
 	}
 
@@ -264,8 +265,9 @@ public class TableUtils {
 	 * @param out                 the output stream
 	 * @throws IOException if any IO error occurs
 	 */
-	public static void renderTableData(Column[] columns, SequencedCollection<?> data, ResultDisplayMode mode,
-			ObjectMapper objectMapper, PrettyPrinter customJsonFormatter, OutputStream out) throws IOException {
+	public static void renderTableData(Column @Nullable [] columns, @Nullable SequencedCollection<?> data,
+			ResultDisplayMode mode, @Nullable ObjectMapper objectMapper, @Nullable PrettyPrinter customJsonFormatter,
+			OutputStream out) throws IOException {
 		if (data == null || data.isEmpty()) {
 			return;
 		}
@@ -297,7 +299,7 @@ public class TableUtils {
 					}
 				}
 			}
-		} else if (mode == ResultDisplayMode.JSON) {
+		} else if (mode == ResultDisplayMode.JSON && objectMapper != null) {
 			final Object jsonData = (mapData != null ? mapData : data);
 			if (SystemUtils.systemConsoleIsTerminal()) {
 				if (customJsonFormatter != null) {
@@ -335,11 +337,11 @@ public class TableUtils {
 		}
 	}
 
-	private static String optionalStringValue(@Nullable Object v) {
+	private static @Nullable String optionalStringValue(@Nullable Object v) {
 		return (v != null ? v.toString() : null);
 	}
 
-	private static String cellValue(@Nullable Object val) {
+	private static @Nullable String cellValue(@Nullable Object val) {
 		if (val instanceof Collection<?> c) {
 			val = StringUtils.commaDelimitedStringFromCollection(c);
 		} else if (val instanceof Map<?, ?> m) {

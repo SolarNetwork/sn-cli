@@ -48,7 +48,7 @@ public final class StringUtils {
 	 * @return the parsed date
 	 * @throws DateTimeParseException if the date cannot be parsed
 	 */
-	public static LocalDateTime parseLocalDateTime(String s) {
+	public static @Nullable LocalDateTime parseLocalDateTime(@Nullable String s) {
 		if (s == null) {
 			return null;
 		}
@@ -73,7 +73,7 @@ public final class StringUtils {
 	 * @param array the array to sort, in place
 	 * @return the {@code array} argument, for method chaining
 	 */
-	public static String[] naturallyCaseInsensitiveSorted(String[] array) {
+	public static String @Nullable [] naturallyCaseInsensitiveSorted(String @Nullable [] array) {
 		if (array == null) {
 			return null;
 		}

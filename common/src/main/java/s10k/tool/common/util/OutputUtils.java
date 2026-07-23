@@ -8,6 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.jspecify.annotations.Nullable;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -42,7 +44,7 @@ public final class OutputUtils {
 	 * @return the directory {@code Path}, or {@code null} if unable to create or
 	 *         exists already but is not a directory
 	 */
-	public static Path ensureDirectory(String outputDirectory) {
+	public static @Nullable Path ensureDirectory(String outputDirectory) {
 		final Path outputDir = Paths.get(outputDirectory != null ? outputDirectory : ".");
 		if (!Files.exists(outputDir)) {
 			try {

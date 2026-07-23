@@ -2,12 +2,14 @@ package s10k.tool.common.util;
 
 import java.time.LocalDateTime;
 
+import org.jspecify.annotations.Nullable;
+
 import picocli.CommandLine.ITypeConverter;
 
 /**
  * Custom converter for {@link LocalDateTime}.
  */
-public class LocalDateTimeConverter implements ITypeConverter<LocalDateTime> {
+public class LocalDateTimeConverter implements ITypeConverter<@Nullable LocalDateTime> {
 
 	/**
 	 * Constructor.
@@ -17,7 +19,7 @@ public class LocalDateTimeConverter implements ITypeConverter<LocalDateTime> {
 	}
 
 	@Override
-	public LocalDateTime convert(String value) throws Exception {
+	public @Nullable LocalDateTime convert(String value) throws Exception {
 		return StringUtils.parseLocalDateTime(value);
 	}
 
