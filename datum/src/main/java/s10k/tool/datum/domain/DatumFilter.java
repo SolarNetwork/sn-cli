@@ -1,6 +1,7 @@
 package s10k.tool.datum.domain;
 
 import static java.time.ZoneOffset.UTC;
+import static net.solarnetwork.util.ObjectUtils.nonnull;
 import static net.solarnetwork.util.StringUtils.commaDelimitedStringFromCollection;
 import static s10k.tool.common.util.DateUtils.isMidnight;
 
@@ -18,6 +19,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.UUID;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -35,24 +37,24 @@ import s10k.tool.common.util.DatumUtils;
  */
 public final class DatumFilter extends SimplePagination {
 
-	private ObjectDatumKind objectKind;
-	private SequencedCollection<UUID> streamIds;
-	private SequencedCollection<Long> objectIds;
-	private SequencedCollection<String> sourceIds;
-	private ZonedDateTime startDate;
-	private ZonedDateTime endDate;
-	private LocalDateTime localStartDate;
-	private LocalDateTime localEndDate;
+	private @Nullable ObjectDatumKind objectKind;
+	private @Nullable SequencedCollection<UUID> streamIds;
+	private @Nullable SequencedCollection<Long> objectIds;
+	private @Nullable SequencedCollection<String> sourceIds;
+	private @Nullable ZonedDateTime startDate;
+	private @Nullable ZonedDateTime endDate;
+	private @Nullable LocalDateTime localStartDate;
+	private @Nullable LocalDateTime localEndDate;
 	private boolean mostRecent = false;
 	private boolean withoutTotalResultsCount = true;
-	private Aggregation aggregation;
-	private Aggregation partialAggregation;
-	private DatumReadingType readingType;
-	private Period timeTolerance;
-	private SequencedCollection<DatumRollupType> datumRollupTypes;
-	private CombiningType combiningType;
-	private Map<Long, Set<Long>> objectIdMappings;
-	private Map<String, Set<String>> sourceIdMappings;
+	private @Nullable Aggregation aggregation;
+	private @Nullable Aggregation partialAggregation;
+	private @Nullable DatumReadingType readingType;
+	private @Nullable Period timeTolerance;
+	private @Nullable SequencedCollection<DatumRollupType> datumRollupTypes;
+	private @Nullable CombiningType combiningType;
+	private @Nullable Map<Long, Set<Long>> objectIdMappings;
+	private @Nullable Map<String, Set<String>> sourceIdMappings;
 
 	/**
 	 * Default constructor.
@@ -133,7 +135,7 @@ public final class DatumFilter extends SimplePagination {
 	 *                    {@code OBJECT_ID:SOURCE_ID}
 	 * @see s10k.tool.common.util.DatumUtils#parseStreamIdentifiers(java.util.Collection)
 	 */
-	public void populateIdsFromStreamIdentifiers(SequencedCollection<String> identifiers) {
+	public void populateIdsFromStreamIdentifiers(@Nullable SequencedCollection<String> identifiers) {
 		NavigableMap<Long, SortedSet<String>> mappings = DatumUtils.parseStreamIdentifiers(identifiers);
 		setObjectIds(mappings.sequencedKeySet());
 		setSourceIds(mappings.sequencedValues().stream().flatMap(c -> c.stream()).toList());
@@ -246,7 +248,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @return the object IDs
 	 */
-	public SequencedCollection<Long> getObjectIds() {
+	public @Nullable SequencedCollection<Long> getObjectIds() {
 		return objectIds;
 	}
 
@@ -255,7 +257,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @param objectIds the object IDs to set
 	 */
-	public void setObjectIds(SequencedCollection<Long> objectIds) {
+	public void setObjectIds(@Nullable SequencedCollection<Long> objectIds) {
 		this.objectIds = objectIds;
 	}
 
@@ -264,7 +266,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @return the source IDs
 	 */
-	public SequencedCollection<String> getSourceIds() {
+	public @Nullable SequencedCollection<String> getSourceIds() {
 		return sourceIds;
 	}
 
@@ -273,7 +275,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @param sourceIds the source IDs to set
 	 */
-	public void setSourceIds(SequencedCollection<String> sourceIds) {
+	public void setSourceIds(@Nullable SequencedCollection<String> sourceIds) {
 		this.sourceIds = sourceIds;
 	}
 
@@ -282,7 +284,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @return the start date
 	 */
-	public ZonedDateTime getStartDate() {
+	public @Nullable ZonedDateTime getStartDate() {
 		return startDate;
 	}
 
@@ -291,7 +293,7 @@ public final class DatumFilter extends SimplePagination {
 	 *
 	 * @param startDate the date to set
 	 */
-	public void setStartDate(ZonedDateTime startDate) {
+	public void setStartDate(@Nullable ZonedDateTime startDate) {
 		this.startDate = startDate;
 	}
 
@@ -300,7 +302,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @return the end date
 	 */
-	public ZonedDateTime getEndDate() {
+	public @Nullable ZonedDateTime getEndDate() {
 		return endDate;
 	}
 
@@ -309,7 +311,7 @@ public final class DatumFilter extends SimplePagination {
 	 *
 	 * @param endDate the date to set
 	 */
-	public void setEndDate(ZonedDateTime endDate) {
+	public void setEndDate(@Nullable ZonedDateTime endDate) {
 		this.endDate = endDate;
 	}
 
@@ -318,7 +320,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @return the local start date
 	 */
-	public LocalDateTime getLocalStartDate() {
+	public @Nullable LocalDateTime getLocalStartDate() {
 		return localStartDate;
 	}
 
@@ -327,7 +329,7 @@ public final class DatumFilter extends SimplePagination {
 	 *
 	 * @param localStartDate the date to set
 	 */
-	public void setLocalStartDate(LocalDateTime localStartDate) {
+	public void setLocalStartDate(@Nullable LocalDateTime localStartDate) {
 		this.localStartDate = localStartDate;
 	}
 
@@ -336,7 +338,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @return the local end date
 	 */
-	public LocalDateTime getLocalEndDate() {
+	public @Nullable LocalDateTime getLocalEndDate() {
 		return localEndDate;
 	}
 
@@ -345,7 +347,7 @@ public final class DatumFilter extends SimplePagination {
 	 *
 	 * @param localEndDate the date to set
 	 */
-	public void setLocalEndDate(LocalDateTime localEndDate) {
+	public void setLocalEndDate(@Nullable LocalDateTime localEndDate) {
 		this.localEndDate = localEndDate;
 	}
 
@@ -354,7 +356,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @return the first stream ID
 	 */
-	public UUID getStreamId() {
+	public @Nullable UUID getStreamId() {
 		return (streamIds != null && !streamIds.isEmpty() ? streamIds.getFirst() : null);
 	}
 
@@ -369,7 +371,7 @@ public final class DatumFilter extends SimplePagination {
 	 * @param streamId the stream ID to set
 	 */
 	@SuppressWarnings("InvalidParam")
-	public void setStreamId(UUID streamId) {
+	public void setStreamId(@Nullable UUID streamId) {
 		setStreamIds(streamId == null ? null : List.of(streamId));
 	}
 
@@ -378,7 +380,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @return the stream IDs
 	 */
-	public SequencedCollection<UUID> getStreamIds() {
+	public @Nullable SequencedCollection<UUID> getStreamIds() {
 		return streamIds;
 	}
 
@@ -387,7 +389,7 @@ public final class DatumFilter extends SimplePagination {
 	 *
 	 * @param streamIds the location IDs to set
 	 */
-	public void setStreamIds(SequencedCollection<UUID> streamIds) {
+	public void setStreamIds(@Nullable SequencedCollection<UUID> streamIds) {
 		this.streamIds = streamIds;
 	}
 
@@ -432,7 +434,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @return the aggregation
 	 */
-	public Aggregation getAggregation() {
+	public @Nullable Aggregation getAggregation() {
 		return aggregation;
 	}
 
@@ -441,7 +443,7 @@ public final class DatumFilter extends SimplePagination {
 	 *
 	 * @param aggregation the aggregation to set
 	 */
-	public void setAggregation(Aggregation aggregation) {
+	public void setAggregation(@Nullable Aggregation aggregation) {
 		this.aggregation = aggregation;
 	}
 
@@ -450,7 +452,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @return the partial aggregation
 	 */
-	public Aggregation getPartialAggregation() {
+	public @Nullable Aggregation getPartialAggregation() {
 		return partialAggregation;
 	}
 
@@ -459,7 +461,7 @@ public final class DatumFilter extends SimplePagination {
 	 *
 	 * @param partialAggregation the partialAggregation to set
 	 */
-	public void setPartialAggregation(Aggregation partialAggregation) {
+	public void setPartialAggregation(@Nullable Aggregation partialAggregation) {
 		this.partialAggregation = partialAggregation;
 	}
 
@@ -468,7 +470,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @return the datum rollup type
 	 */
-	public DatumRollupType getDatumRollupType() {
+	public @Nullable DatumRollupType getDatumRollupType() {
 		SequencedCollection<DatumRollupType> types = getDatumRollupTypes();
 		return types != null && !types.isEmpty() ? types.getFirst() : null;
 	}
@@ -486,7 +488,7 @@ public final class DatumFilter extends SimplePagination {
 	 *
 	 * @param type the type to set
 	 */
-	public void setDatumRollupType(DatumRollupType type) {
+	public void setDatumRollupType(@Nullable DatumRollupType type) {
 		setDatumRollupTypes(type == null ? null : List.of(type));
 	}
 
@@ -495,7 +497,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @return the rollup types
 	 */
-	public SequencedCollection<DatumRollupType> getDatumRollupTypes() {
+	public @Nullable SequencedCollection<DatumRollupType> getDatumRollupTypes() {
 		return datumRollupTypes;
 	}
 
@@ -504,7 +506,7 @@ public final class DatumFilter extends SimplePagination {
 	 *
 	 * @param datumRollupTypes the types to set
 	 */
-	public void setDatumRollupTypes(SequencedCollection<DatumRollupType> datumRollupTypes) {
+	public void setDatumRollupTypes(@Nullable SequencedCollection<DatumRollupType> datumRollupTypes) {
 		this.datumRollupTypes = datumRollupTypes;
 	}
 
@@ -513,7 +515,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @return the reading type
 	 */
-	public DatumReadingType getReadingType() {
+	public @Nullable DatumReadingType getReadingType() {
 		return readingType;
 	}
 
@@ -522,7 +524,7 @@ public final class DatumFilter extends SimplePagination {
 	 *
 	 * @param readingType the type to set
 	 */
-	public void setReadingType(DatumReadingType readingType) {
+	public void setReadingType(@Nullable DatumReadingType readingType) {
 		this.readingType = readingType;
 	}
 
@@ -531,7 +533,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @return the period
 	 */
-	public Period getTimeTolerance() {
+	public @Nullable Period getTimeTolerance() {
 		return timeTolerance;
 	}
 
@@ -540,7 +542,7 @@ public final class DatumFilter extends SimplePagination {
 	 *
 	 * @param timeTolerance the period to set
 	 */
-	public void setTimeTolerance(Period timeTolerance) {
+	public void setTimeTolerance(@Nullable Period timeTolerance) {
 		this.timeTolerance = timeTolerance;
 	}
 
@@ -549,7 +551,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @return the object kind
 	 */
-	public ObjectDatumKind getObjectKind() {
+	public @Nullable ObjectDatumKind getObjectKind() {
 		return objectKind;
 	}
 
@@ -558,7 +560,7 @@ public final class DatumFilter extends SimplePagination {
 	 *
 	 * @param objectKind the object kind to set
 	 */
-	public void setObjectKind(ObjectDatumKind objectKind) {
+	public void setObjectKind(@Nullable ObjectDatumKind objectKind) {
 		this.objectKind = objectKind;
 	}
 
@@ -567,7 +569,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @return the combining type
 	 */
-	public CombiningType getCombiningType() {
+	public @Nullable CombiningType getCombiningType() {
 		return combiningType;
 	}
 
@@ -576,7 +578,7 @@ public final class DatumFilter extends SimplePagination {
 	 *
 	 * @param combiningType the type to set
 	 */
-	public void setCombiningType(CombiningType combiningType) {
+	public void setCombiningType(@Nullable CombiningType combiningType) {
 		this.combiningType = combiningType;
 	}
 
@@ -585,7 +587,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @return the object ID mappings
 	 */
-	public Map<Long, Set<Long>> getObjectIdMappings() {
+	public @Nullable Map<Long, Set<Long>> getObjectIdMappings() {
 		return objectIdMappings;
 	}
 
@@ -594,7 +596,7 @@ public final class DatumFilter extends SimplePagination {
 	 *
 	 * @param objectIdMappings the objectIdMappings to set
 	 */
-	public void setObjectIdMappings(Map<Long, Set<Long>> objectIdMappings) {
+	public void setObjectIdMappings(@Nullable Map<Long, Set<Long>> objectIdMappings) {
 		this.objectIdMappings = objectIdMappings;
 	}
 
@@ -604,7 +606,7 @@ public final class DatumFilter extends SimplePagination {
 	 * @param mappings the mapping values
 	 * @see ObjectMappingCriteria#mappingsFrom(String[])
 	 */
-	public void setObjectIdMaps(String[] mappings) {
+	public void setObjectIdMaps(String @Nullable [] mappings) {
 		setObjectIdMappings(objectMappingsFrom(mappings));
 	}
 
@@ -613,7 +615,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @return the source ID mappings
 	 */
-	public Map<String, Set<String>> getSourceIdMappings() {
+	public @Nullable Map<String, Set<String>> getSourceIdMappings() {
 		return sourceIdMappings;
 	}
 
@@ -622,7 +624,7 @@ public final class DatumFilter extends SimplePagination {
 	 *
 	 * @param sourceIdMappings the source ID mappings to set
 	 */
-	public void setSourceIdMappings(Map<String, Set<String>> sourceIdMappings) {
+	public void setSourceIdMappings(@Nullable Map<String, Set<String>> sourceIdMappings) {
 		this.sourceIdMappings = sourceIdMappings;
 	}
 
@@ -631,7 +633,7 @@ public final class DatumFilter extends SimplePagination {
 	 *
 	 * @param mappings the mapping values
 	 */
-	public void setSourceIdMaps(String[] mappings) {
+	public void setSourceIdMaps(String @Nullable [] mappings) {
 		setSourceIdMappings(sourceMappingsFrom(mappings));
 	}
 
@@ -642,7 +644,7 @@ public final class DatumFilter extends SimplePagination {
 	 * @param values the mapping value
 	 * @return the query parameter value
 	 */
-	public static String mappingsParameter(Object key, Set<?> values) {
+	public static String mappingsParameter(Object key, @Nullable Set<?> values) {
 		StringBuilder buf = new StringBuilder();
 		buf.append(key.toString());
 		buf.append(':');
@@ -668,7 +670,7 @@ public final class DatumFilter extends SimplePagination {
 	 * @param mappings the mappings to decode
 	 * @return the mappings, or {@literal null} if {@code mappings} is empty
 	 */
-	public static Map<String, Set<String>> sourceMappingsFrom(String[] mappings) {
+	public static @Nullable Map<String, Set<String>> sourceMappingsFrom(String @Nullable [] mappings) {
 		Map<String, Set<String>> result;
 		if (mappings == null || mappings.length < 1) {
 			result = null;
@@ -680,7 +682,7 @@ public final class DatumFilter extends SimplePagination {
 					// special case, when Spring maps single query param into 3 fields split on
 					// comma like A:B, C, D
 					try {
-						result.get(result.keySet().iterator().next()).add(map);
+						nonnull(result.get(result.keySet().iterator().next()), "Set").add(map);
 					} catch (NumberFormatException e) {
 						// ignore
 					}
@@ -714,7 +716,7 @@ public final class DatumFilter extends SimplePagination {
 	 * @param mappings the mappings to decode
 	 * @return the mappings, or {@literal null} if {@code mappings} is empty
 	 */
-	public static Map<Long, Set<Long>> objectMappingsFrom(String[] mappings) {
+	public static @Nullable Map<Long, Set<Long>> objectMappingsFrom(String @Nullable [] mappings) {
 		Map<Long, Set<Long>> result;
 		if (mappings == null || mappings.length < 1) {
 			result = null;
@@ -726,7 +728,7 @@ public final class DatumFilter extends SimplePagination {
 					// special case, when Spring maps single query param into 3 fields split on
 					// comma like 1:2, 3, 4
 					try {
-						result.get(result.keySet().iterator().next()).add(Long.valueOf(map));
+						nonnull(result.get(result.keySet().iterator().next()), "Set").add(Long.valueOf(map));
 					} catch (NumberFormatException e) {
 						// ignore
 					}
@@ -737,9 +739,14 @@ public final class DatumFilter extends SimplePagination {
 				try {
 					Long vId = Long.valueOf(map.substring(0, vIdDelimIdx));
 					Set<String> rIds = StringUtils.commaDelimitedStringToSet(map.substring(vIdDelimIdx + 1));
-					Set<Long> rNodeIds = new LinkedHashSet<>(rIds.size());
-					for (String rId : rIds) {
-						rNodeIds.add(Long.valueOf(rId));
+					Set<Long> rNodeIds;
+					if (rIds != null) {
+						rNodeIds = new LinkedHashSet<>(rIds.size());
+						for (String rId : rIds) {
+							rNodeIds.add(Long.valueOf(rId));
+						}
+					} else {
+						rNodeIds = new LinkedHashSet<>(0);
 					}
 					result.put(vId, rNodeIds);
 				} catch (NumberFormatException e) {

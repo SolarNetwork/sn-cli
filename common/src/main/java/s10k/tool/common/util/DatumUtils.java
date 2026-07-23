@@ -9,6 +9,7 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 
@@ -30,7 +31,8 @@ public final class DatumUtils {
 	 *                    {@code OBJECT_ID:SOURCE_ID}
 	 * @return the parsed stream ID mappings
 	 */
-	public static NavigableMap<Long, SortedSet<String>> parseStreamIdentifiers(Collection<String> identifiers) {
+	public static NavigableMap<Long, SortedSet<String>> parseStreamIdentifiers(
+			@Nullable Collection<String> identifiers) {
 		NavigableMap<Long, SortedSet<String>> result = new TreeMap<Long, SortedSet<String>>();
 		if (identifiers != null && !identifiers.isEmpty()) {
 			for (String identifier : identifiers) {
@@ -69,8 +71,8 @@ public final class DatumUtils {
 		WILDCARD_PATTERN_MATCHER = matcher;
 	}
 
-	private static void filterSources(Set<String> sources, PathMatcher pathMatcher, String pattern,
-			SortedSet<String> result) {
+	private static void filterSources(@Nullable Set<String> sources, @Nullable PathMatcher pathMatcher,
+			@Nullable String pattern, SortedSet<String> result) {
 		if (sources == null || sources.isEmpty() || pattern == null) {
 			return;
 		}
@@ -99,7 +101,7 @@ public final class DatumUtils {
 	 * @param pattern the pattern to test
 	 * @return the filtered sources (always a new instance)
 	 */
-	public static SortedSet<String> filterSources(Set<String> sources, String pattern) {
+	public static SortedSet<String> filterSources(@Nullable Set<String> sources, @Nullable String pattern) {
 		return filterSources(sources, WILDCARD_PATTERN_MATCHER, pattern);
 	}
 
@@ -117,7 +119,8 @@ public final class DatumUtils {
 	 * @param pattern     the pattern to test
 	 * @return the filtered sources (always a new instance)
 	 */
-	public static SortedSet<String> filterSources(Set<String> sources, PathMatcher pathMatcher, String pattern) {
+	public static SortedSet<String> filterSources(@Nullable Set<String> sources, @Nullable PathMatcher pathMatcher,
+			@Nullable String pattern) {
 		final SortedSet<String> result = new TreeSet<>(CASE_INSENSITIVE_NATURAL_SORT);
 		filterSources(sources, pathMatcher, pattern, result);
 		return result;
@@ -135,7 +138,7 @@ public final class DatumUtils {
 	 * @param patterns the patterns to test (using a logical OR)
 	 * @return the filtered sources (always a new instance)
 	 */
-	public static SortedSet<String> filterSources(Set<String> sources, String[] patterns) {
+	public static SortedSet<String> filterSources(@Nullable Set<String> sources, String @Nullable [] patterns) {
 		return filterSources(sources, WILDCARD_PATTERN_MATCHER, patterns);
 	}
 
@@ -153,7 +156,8 @@ public final class DatumUtils {
 	 * @param patterns    the patterns to test (using a logical OR)
 	 * @return the filtered sources (always a new instance)
 	 */
-	public static SortedSet<String> filterSources(Set<String> sources, PathMatcher pathMatcher, String[] patterns) {
+	public static SortedSet<String> filterSources(@Nullable Set<String> sources, @Nullable PathMatcher pathMatcher,
+			String @Nullable [] patterns) {
 		final SortedSet<String> result = new TreeSet<>(CASE_INSENSITIVE_NATURAL_SORT);
 		if (patterns == null || patterns.length < 1) {
 			return result;

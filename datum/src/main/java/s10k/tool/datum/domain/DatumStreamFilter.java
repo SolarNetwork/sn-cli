@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.UUID;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -14,9 +15,10 @@ import net.solarnetwork.domain.datum.ObjectDatumKind;
 /**
  * Search filter for datum stream metadata.
  */
-public record DatumStreamFilter(Collection<UUID> streamIds, Collection<Long> objectIds, Collection<String> sourceIds,
-		Collection<String> propertyNames, Collection<String> instantaneousPropertyNames,
-		Collection<String> accumulatingPropertyNames, Collection<String> statusPropertyNames) {
+public record DatumStreamFilter(@Nullable Collection<UUID> streamIds, @Nullable Collection<Long> objectIds,
+		@Nullable Collection<String> sourceIds, @Nullable Collection<String> propertyNames,
+		@Nullable Collection<String> instantaneousPropertyNames, @Nullable Collection<String> accumulatingPropertyNames,
+		@Nullable Collection<String> statusPropertyNames) {
 
 	/**
 	 * Create a filter from array parameters.
@@ -33,9 +35,10 @@ public record DatumStreamFilter(Collection<UUID> streamIds, Collection<Long> obj
 	 * @param statusPropertyNames        the status property names, or {@code null}
 	 * @return the new filter instance
 	 */
-	public static DatumStreamFilter datumStreamFilter(UUID[] streamIds, Long[] objectIds, String[] sourceIds,
-			String[] propertyNames, String[] instantaneousPropertyNames, String[] accumulatingPropertyNames,
-			String[] statusPropertyNames) {
+	public static DatumStreamFilter datumStreamFilter(UUID @Nullable [] streamIds, Long @Nullable [] objectIds,
+			String @Nullable [] sourceIds, String @Nullable [] propertyNames,
+			String @Nullable [] instantaneousPropertyNames, String @Nullable [] accumulatingPropertyNames,
+			String @Nullable [] statusPropertyNames) {
 		// @formatter:off
 		return new DatumStreamFilter(
 				streamIds != null && streamIds.length > 0 ? Arrays.asList(streamIds) : null,
