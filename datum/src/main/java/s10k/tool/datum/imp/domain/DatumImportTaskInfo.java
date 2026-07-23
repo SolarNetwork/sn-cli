@@ -40,8 +40,6 @@ public record DatumImportTaskInfo(
 		@JsonProperty("importDate") Instant importDate,
 		@JsonProperty(value = "groupKey", required = false) @Nullable String groupKey,
 		@JsonProperty("success") boolean success,
-		@JsonProperty("done") boolean done,
-		@JsonProperty("cancelled") boolean cancelled,
 		@JsonProperty("submitDate") Instant submitDate,
 		@JsonProperty(value = "startedDate", required = false) @Nullable Instant startedDate,
 		@JsonProperty(value = "completionDate", required = false) @Nullable Instant completionDate,
