@@ -14,7 +14,13 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAccessor;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.ResourceBundle;
 
 import org.jspecify.annotations.Nullable;
 
@@ -112,6 +118,84 @@ public final class StringUtils {
 		} catch (IOException e) {
 			throw new IllegalStateException("Error reading file [%s]: %s".formatted(path, e.getMessage()));
 		}
+	}
+
+	/**
+	 * Get a boolean as a string, but only if it is {@code true}.
+	 * 
+	 * @param val the boolean to test
+	 * @return the string {@code true} if {@code val} is true
+	 */
+	public static @Nullable String onlyTrueValue(@Nullable Boolean val) {
+		return (val != null && val.booleanValue() ? String.valueOf(true) : null);
+	}
+
+	/**
+	 * Lookup bundle values that case-insenstive match any of a set of substring
+	 * queries.
+	 * 
+	 * @param queries the substrings to look for
+	 * @param prefix  a prefix the bundle key must have
+	 * @param suffix  a prefix the bundle key must have
+	 * @param queries the queries to search for
+	 * @return the list of matching bundle values, never {@code null}
+	 */
+	public static List<String> findBundleKeys(final ResourceBundle bundle, final @Nullable String prefix,
+			final @Nullable String suffix, final String @Nullable [] queries) {
+		if (queries == null || queries.length < 0) {
+			return List.of();
+		}
+		final List<String> result = new ArrayList<>(queries.length);
+		for (String query : queries) {
+			final String lcQuery = query.toLowerCase(Locale.ENGLISH);
+			for (String key : bundle.keySet()) {
+				if (prefix != null && !key.startsWith(prefix)) {
+					continue;
+				}
+				if (suffix != null && !key.endsWith(suffix)) {
+					continue;
+				}
+				final String val = bundle.getString(key);
+				if (key.contains(lcQuery) || val.toLowerCase(Locale.getDefault()).contains(lcQuery)) {
+					result.add(key.substring((prefix != null ? prefix.length() : 0),
+							key.length() - (suffix != null ? suffix.length() : 0)));
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Lookup a bundle entry using a case-insensitive substring search.
+	 * 
+	 * @param query  the substring to look for
+	 * @param prefix a prefix the bundle key must have; will be stripped from the
+	 *               resulting entry key
+	 * @param suffix a prefix the bundle key must have; will be stripped from the
+	 *               resulting entry key
+	 * @return the first matching entry
+	 * @throws IllegalStateException if a matching entry is not found
+	 */
+	public static Entry<String, String> findBundleEntry(final ResourceBundle bundle, final @Nullable String prefix,
+			final @Nullable String suffix, String query) {
+		if (query == null || query.isEmpty()) {
+			throw new IllegalStateException("Datum stream type not provided.");
+		}
+		final String lcQuery = query.toLowerCase(Locale.ENGLISH);
+		for (String key : bundle.keySet()) {
+			if (prefix != null && !key.startsWith(prefix)) {
+				continue;
+			}
+			if (suffix != null && !key.endsWith(suffix)) {
+				continue;
+			}
+			final String val = bundle.getString(key);
+			if (key.contains(lcQuery) || val.toLowerCase(Locale.getDefault()).contains(lcQuery)) {
+				return Map.entry(key.substring((prefix != null ? prefix.length() : 0),
+						key.length() - (suffix != null ? suffix.length() : 0)), val);
+			}
+		}
+		throw new IllegalStateException("Value not found for [" + query + "]");
 	}
 
 }
