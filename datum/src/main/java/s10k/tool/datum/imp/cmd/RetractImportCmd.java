@@ -1,7 +1,6 @@
 package s10k.tool.datum.imp.cmd;
 
 import static s10k.tool.common.util.RestUtils.checkSuccess;
-import static s10k.tool.datum.imp.cmd.ConfirmStagedImportCmd.viewDatumImportTask;
 import static s10k.tool.datum.imp.domain.DatumImportState.Retracted;
 
 import java.util.List;
@@ -21,6 +20,7 @@ import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.TableUtils;
 import s10k.tool.datum.imp.domain.DatumImportTaskInfo;
+import s10k.tool.datum.imp.util.DatumImportRestUtils;
 
 /**
  * Retract a datum import job.
@@ -66,14 +66,15 @@ public class RetractImportCmd extends BaseSubCmd<DatumImportsCmd> implements Cal
 			final DatumImportTaskInfo result;
 
 			if (isDryRun()) {
-				result = viewDatumImportTask(restClient, objectMapper, jobId).copyWithState(Retracted);
+				result = DatumImportRestUtils.viewDatumImportTask(restClient, objectMapper, jobId)
+						.copyWithState(Retracted);
 			} else {
 				result = retractDatumImportTask(restClient, objectMapper, jobId, force);
 			}
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? List.of(result)
-					: List.of((Object) ListImportJobsCmd.tableDataRow(result)));
-			TableUtils.renderTableData(ListImportJobsCmd.tableDataColumns(), tableData, displayMode, objectMapper,
+					: List.of((Object) ViewImportJobCmd.tableDataRow(result)));
+			TableUtils.renderTableData(ViewImportJobCmd.tableDataColumns(), tableData, displayMode, objectMapper,
 					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
