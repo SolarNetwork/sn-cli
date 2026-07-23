@@ -58,7 +58,7 @@ public class PreviewStagedImportCmd extends BaseSubCmd<DatumImportsCmd> implemen
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
 		try {
-			final List<Datum> datum = previewDatumImportTasks(restClient, objectMapper, jobId);
+			final List<Datum> datum = previewStagedDatumImportTask(restClient, objectMapper, jobId);
 
 			if (datum.isEmpty()) {
 				System.err.println("No datum generated.");
@@ -76,13 +76,13 @@ public class PreviewStagedImportCmd extends BaseSubCmd<DatumImportsCmd> implemen
 			}
 			return 0;
 		} catch (Exception e) {
-			System.err.println("Error listing datum: %s".formatted(e.getMessage()));
+			System.err.println("Error previewing staged datum import job: %s".formatted(e.getMessage()));
 		}
 		return 1;
 	}
 
 	/**
-	 * List datum import tasks.
+	 * Preview a staged datum import tasks.
 	 * 
 	 * @param restClient   the REST client
 	 * @param objectMapper the object mapper
@@ -90,7 +90,8 @@ public class PreviewStagedImportCmd extends BaseSubCmd<DatumImportsCmd> implemen
 	 * @return the list of matching tasks
 	 * @throws IllegalStateException if an error occurs
 	 */
-	public static List<Datum> previewDatumImportTasks(RestClient restClient, ObjectMapper objectMapper, String jobId) {
+	public static List<Datum> previewStagedDatumImportTask(RestClient restClient, ObjectMapper objectMapper,
+			String jobId) {
 		// @formatter:off
 		final JsonNode response = checkSuccess(restClient.get()
 				.uri(b -> {

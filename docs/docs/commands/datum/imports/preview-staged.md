@@ -30,7 +30,7 @@ s10k datum imports preview-staged
 
 ## Output
 
-A listing of all matching job states.
+A sample of datum from the start of the staged datum import resoruce.
 
 # Examples
 

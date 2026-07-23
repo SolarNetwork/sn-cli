@@ -9,6 +9,7 @@ import s10k.tool.datum.cmd.DatumCmd;
  */
 // @formatter:off
 @Command(name = "imports", aliases = "imp", subcommands = {
+		ConfirmStagedImportCmd.class,
 		ListImportJobsCmd.class,
 		PreviewStagedImportCmd.class,
 })

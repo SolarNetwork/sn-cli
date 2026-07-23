@@ -49,4 +49,15 @@ public record DatumImportTaskInfo(
 		// @formatter:on
 ) {
 
+	/**
+	 * Create a copy with a different state.
+	 * 
+	 * @param newState the desired state
+	 * @return the copy
+	 */
+	public DatumImportTaskInfo copyWithState(DatumImportState newState) {
+		return new DatumImportTaskInfo(userId, jobId, newState, importDate, groupKey, success, submitDate, startedDate,
+				completionDate, loadedCount, percentComplete, configuration);
+	}
+
 }
