@@ -12,6 +12,7 @@ import s10k.tool.datum.cmd.DatumCmd;
 		ConfirmStagedImportCmd.class,
 		ListImportJobsCmd.class,
 		PreviewStagedImportCmd.class,
+		RetractImportCmd.class,
 })
 // @formatter:on
 public class DatumImportsCmd extends BaseSubCmd<DatumCmd> {
