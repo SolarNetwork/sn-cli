@@ -40,7 +40,7 @@ public class DatumInputServiceConfiguration extends ServiceConfiguration {
 	 * 
 	 * @return the time zone ID
 	 */
-	public final String getTimeZoneId() {
+	public final @Nullable String getTimeZoneId() {
 		return timeZoneId;
 	}
 
@@ -49,7 +49,7 @@ public class DatumInputServiceConfiguration extends ServiceConfiguration {
 	 * 
 	 * @param timeZoneId the time zone ID to set
 	 */
-	public final void setTimeZoneId(String timeZoneId) {
+	public final void setTimeZoneId(@Nullable String timeZoneId) {
 		this.timeZoneId = timeZoneId;
 	}
 

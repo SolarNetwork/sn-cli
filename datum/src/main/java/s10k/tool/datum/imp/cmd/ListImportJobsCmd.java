@@ -23,9 +23,12 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
+import s10k.tool.common.util.RestUtils;
 import s10k.tool.common.util.TableUtils;
 import s10k.tool.datum.imp.domain.DatumImportConfiguration;
+import s10k.tool.datum.imp.domain.DatumImportState;
 import s10k.tool.datum.imp.domain.DatumImportTaskInfo;
+import s10k.tool.datum.imp.domain.DatumImportsFilter;
 import s10k.tool.datum.imp.domain.DatumInputServiceConfiguration;
 
 /**
@@ -35,6 +38,13 @@ import s10k.tool.datum.imp.domain.DatumInputServiceConfiguration;
 public class ListImportJobsCmd extends BaseSubCmd<DatumImportCmd> implements Callable<Integer> {
 
 	// @formatter:off
+	@Option(names = { "-state", "--job-state" },
+			description = "a job state to match",
+			split = "\\s*,\\s*",
+			splitSynopsisLabel = ",",
+			paramLabel = "jobState")
+	DatumImportState[] jobStates;
+
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data",
 			defaultValue = "PRETTY")
@@ -54,9 +64,9 @@ public class ListImportJobsCmd extends BaseSubCmd<DatumImportCmd> implements Cal
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
-
+		final DatumImportsFilter filter = filter();
 		try {
-			final List<DatumImportTaskInfo> tasks = listDatumImportTasks(restClient, objectMapper);
+			final List<DatumImportTaskInfo> tasks = listDatumImportTasks(restClient, objectMapper, filter);
 
 			final List<?> tableData = (displayMode == ResultDisplayMode.JSON ? tasks
 					: tasks.stream().map(c -> tableDataRow(c)).toList());
@@ -69,17 +79,32 @@ public class ListImportJobsCmd extends BaseSubCmd<DatumImportCmd> implements Cal
 		return 1;
 	}
 
+	private DatumImportsFilter filter() {
+		final DatumImportsFilter filter = new DatumImportsFilter();
+		if (jobStates != null && jobStates.length > 0) {
+			filter.setJobStates(List.of(jobStates));
+		}
+		return filter;
+	}
+
 	/**
 	 * List datum import tasks.
 	 * 
 	 * @param restClient   the REST client
 	 * @param objectMapper the object mapper
+	 * @param filter       the criteria
+	 * @return the list of matching tasks
+	 * @throws IllegalStateException if an error occurs
 	 */
-	public static List<DatumImportTaskInfo> listDatumImportTasks(RestClient restClient, ObjectMapper objectMapper) {
+	public static List<DatumImportTaskInfo> listDatumImportTasks(RestClient restClient, ObjectMapper objectMapper,
+			DatumImportsFilter filter) {
 		// @formatter:off
 		JsonNode response = restClient.get()
 				.uri(b -> {
 					b.path("/solaruser/api/v1/sec/user/import/jobs");
+					if (filter != null ) {
+						RestUtils.populateQueryParameters(b, filter::toRequestMap);
+					}
 					return b.build();
 				})
 			.accept(MediaType.APPLICATION_JSON)
@@ -112,7 +137,6 @@ public class ListImportJobsCmd extends BaseSubCmd<DatumImportCmd> implements Cal
 				new Column().header("Submit Date").dataAlign(LEFT),
 				new Column().header("State").dataAlign(LEFT),
 				new Column().header("Import Date").dataAlign(LEFT),
-				new Column().header("Staged").dataAlign(LEFT),
 				new Column().header("Done").dataAlign(LEFT),
 				new Column().header("Success").dataAlign(LEFT),
 				new Column().header("Started At").dataAlign(LEFT),
@@ -144,7 +168,6 @@ public class ListImportJobsCmd extends BaseSubCmd<DatumImportCmd> implements Cal
 				info.submitDate(),
 				info.jobState(),
 				info.importDate(),
-				onlyTrueValue(conf.stage()),
 				onlyTrueValue(info.done()),
 				onlyTrueValue(info.success()),
 				nonEpochInstant(info.startedDate()),
