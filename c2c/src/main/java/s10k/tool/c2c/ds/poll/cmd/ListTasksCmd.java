@@ -56,7 +56,7 @@ public class ListTasksCmd extends BaseSubCmd<PollTasksCmd> implements Callable<I
 			split = "\\s*,\\s*",
 			splitSynopsisLabel = ",",
 			paramLabel = "jobState")
-	ClaimableJobState jobStates[];
+	ClaimableJobState[] jobStates;
 
 	@Option(names = {"-M", "--max"},
 			description = "return at most this many results", paramLabel = "max")
