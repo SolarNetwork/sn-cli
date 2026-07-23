@@ -13,6 +13,7 @@ import s10k.tool.datum.cmd.DatumCmd;
 		ListImportJobsCmd.class,
 		PreviewStagedImportCmd.class,
 		RetractImportCmd.class,
+		UpdateImportJobCmd.class,
 		ViewImportJobCmd.class,
 })
 // @formatter:on

@@ -1,8 +1,12 @@
 package s10k.tool.datum.imp.domain;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.jspecify.annotations.Nullable;
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 
+import net.solarnetwork.codec.JsonUtils;
 import s10k.tool.common.domain.ServiceConfiguration;
 
 /*-
@@ -51,6 +55,23 @@ public class DatumInputServiceConfiguration extends ServiceConfiguration {
 	 */
 	public final void setTimeZoneId(@Nullable String timeZoneId) {
 		this.timeZoneId = timeZoneId;
+	}
+
+	/**
+	 * Get a mapping of this entity's settings.
+	 * 
+	 * @return the settings
+	 */
+	public Map<String, Object> toSettings() {
+		Map<String, Object> result = new LinkedHashMap<>(9);
+		result.put("name", getName());
+		result.put("serviceIdentifier", getServiceIdentifier());
+		result.put("timeZoneId", timeZoneId);
+		if (getServiceProperties() != null) {
+			// perform a deep copy here
+			result.put(SERVICE_PROPERTIES_KEY, JsonUtils.getStringMapFromObject(getServiceProperties()));
+		}
+		return result;
 	}
 
 }

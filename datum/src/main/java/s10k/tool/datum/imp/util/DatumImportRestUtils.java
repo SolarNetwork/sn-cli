@@ -52,7 +52,8 @@ public final class DatumImportRestUtils {
 
 		try {
 			DatumImportTaskInfo[] result = objectMapper.treeToValue(response.path("data"), DatumImportTaskInfo[].class);
-			return (result != null ? List.of(result) : List.of());
+			return (result != null ? List.of(result).stream().map(DatumImportTaskInfo::normalized).toList()
+					: List.of());
 		} catch (JsonProcessingException | IllegalArgumentException e) {
 			throw new IllegalStateException("Error parsing datum import task list response: " + e.getMessage(), e);
 		}
@@ -82,7 +83,7 @@ public final class DatumImportRestUtils {
 			// @formatter:on
 
 		try {
-			return objectMapper.treeToValue(response.path("data"), DatumImportTaskInfo.class);
+			return objectMapper.treeToValue(response.path("data"), DatumImportTaskInfo.class).normalized();
 		} catch (JsonProcessingException | IllegalArgumentException e) {
 			throw new IllegalStateException("Error parsing confirm datum import response: " + e.getMessage(), e);
 		}

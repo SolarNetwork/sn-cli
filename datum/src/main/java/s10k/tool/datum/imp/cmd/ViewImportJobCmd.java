@@ -4,7 +4,7 @@ import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
 import static s10k.tool.common.util.DateUtils.nonEpochInstant;
 import static s10k.tool.common.util.StringUtils.onlyTrueValue;
-import static s10k.tool.datum.util.DatumUtils.datumImportServiceLocalizedName;
+import static s10k.tool.datum.imp.util.DatumImportRestUtils.viewDatumImportTask;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -23,12 +23,13 @@ import s10k.tool.common.util.TableUtils;
 import s10k.tool.datum.imp.domain.DatumImportConfiguration;
 import s10k.tool.datum.imp.domain.DatumImportTaskInfo;
 import s10k.tool.datum.imp.domain.DatumInputServiceConfiguration;
-import s10k.tool.datum.imp.util.DatumImportRestUtils;
+import s10k.tool.datum.imp.util.DatumImportUtils;
 
 /**
  * View datum import job status.
  */
-@Command(name = "view", sortSynopsis = false)
+@Command(name = "view", sortSynopsis = false, descriptionHeading = "%n", optionListHeading = "%n", description = {
+		"View the details of a previously submitted datum import job.%n" })
 public class ViewImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements Callable<Integer> {
 
 	// @formatter:off
@@ -57,8 +58,7 @@ public class ViewImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements Cal
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
 		try {
-			final DatumImportTaskInfo result = DatumImportRestUtils.viewDatumImportTask(restClient, objectMapper,
-					jobId);
+			final DatumImportTaskInfo result = viewDatumImportTask(restClient, objectMapper, jobId);
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? List.of(result)
 					: List.of((Object) tableDataRow(result)));
@@ -91,7 +91,7 @@ public class ViewImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements Cal
 				new Column().header("Completed At").dataAlign(LEFT),
 				new Column().header("Loaded").dataAlign(RIGHT),
 				new Column().header("% Complete").dataAlign(RIGHT),
-				new Column().header("Batch Size").dataAlign(LEFT),
+				new Column().header("Batch Size").dataAlign(RIGHT),
 				new Column().header("Input Service").dataAlign(LEFT),
 				new Column().header("Input Time Zone").dataAlign(LEFT),
 				new Column().header("Input Properties").dataAlign(LEFT),
@@ -123,7 +123,7 @@ public class ViewImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements Cal
 				info.loadedCount(),
 				"%.0f".formatted(info.percentComplete() * 100.0),
 				conf.batchSize(),
-				datumImportServiceLocalizedName(inputConf.getServiceIdentifier()),
+				DatumImportUtils.datumImportServiceLocalizedName(inputConf.getServiceIdentifier()),
 				inputConf.getTimeZoneId(),
 				TableUtils.basicTable(inputConf.getServiceProperties(), null, null, false),
 			};

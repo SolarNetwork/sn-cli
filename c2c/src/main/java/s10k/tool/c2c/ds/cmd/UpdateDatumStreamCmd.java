@@ -2,6 +2,7 @@ package s10k.tool.c2c.ds.cmd;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static s10k.tool.c2c.util.CloudIntegrationRestUtils.viewCloudDatumStream;
+import static s10k.tool.common.domain.ServiceConfiguration.SERVICE_PROPERTIES_KEY;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 import static s10k.tool.common.util.StringUtils.stringOrFileContents;
 
@@ -260,7 +261,7 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 
 		if (serviceProperties != null) {
 			@SuppressWarnings({ "unchecked", "rawtypes" })
-			final Map<String, Object> sprops = (Map) settings.compute("serviceProperties",
+			final Map<String, Object> sprops = (Map) settings.compute(SERVICE_PROPERTIES_KEY,
 					(_, v) -> v instanceof Map<?, ?> t ? (Map) t : new LinkedHashMap<>(8));
 
 			CollectionUtils.populateServiceProperties(serviceProperties, sprops, objectMapper);

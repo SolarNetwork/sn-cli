@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.joining;
 import static net.solarnetwork.util.StringNaturalSortComparator.CASE_INSENSITIVE_NATURAL_SORT;
 import static net.solarnetwork.util.StringUtils.commaDelimitedStringToList;
 import static net.solarnetwork.util.StringUtils.commaDelimitedStringToMap;
+import static s10k.tool.common.domain.ServiceConfiguration.SERVICE_PROPERTIES_KEY;
 
 import java.time.Instant;
 import java.util.Collection;
@@ -103,7 +104,7 @@ public record CloudDatumStreamConfiguration(Long configId, String name, String s
 		}
 		if (serviceProperties != null) {
 			// perform a deep copy here
-			result.put("serviceProperties", JsonUtils.getStringMapFromObject(serviceProperties));
+			result.put(SERVICE_PROPERTIES_KEY, JsonUtils.getStringMapFromObject(serviceProperties));
 		}
 		return result;
 	}

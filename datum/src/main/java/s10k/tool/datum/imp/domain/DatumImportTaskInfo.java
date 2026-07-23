@@ -1,5 +1,7 @@
 package s10k.tool.datum.imp.domain;
 
+import static s10k.tool.common.util.DateUtils.nonEpochInstant;
+
 import java.time.Instant;
 
 import org.jspecify.annotations.Nullable;
@@ -50,6 +52,34 @@ public record DatumImportTaskInfo(
 ) {
 
 	/**
+	 * Normalize the info.
+	 * 
+	 * <p>
+	 * The optional properties will be normalized to {@code null} as appropriate.
+	 * </p>
+	 * 
+	 * @return the normalized info
+	 */
+	public DatumImportTaskInfo normalized() {
+		// @formatter:off
+		return new DatumImportTaskInfo(
+				userId,
+				jobId,
+				jobState,
+				importDate,
+				groupKey,
+				success,
+				submitDate,
+				nonEpochInstant(startedDate),
+				nonEpochInstant(completionDate),
+				loadedCount,
+				percentComplete,
+				configuration
+			);
+		// @formatter:on
+	}
+
+	/**
 	 * Create a copy with a different state.
 	 * 
 	 * @param newState the desired state
@@ -58,6 +88,17 @@ public record DatumImportTaskInfo(
 	public DatumImportTaskInfo copyWithState(DatumImportState newState) {
 		return new DatumImportTaskInfo(userId, jobId, newState, importDate, groupKey, success, submitDate, startedDate,
 				completionDate, loadedCount, percentComplete, configuration);
+	}
+
+	/**
+	 * Create a copy with a different configuration.
+	 * 
+	 * @param newConfiguration the desired configuration
+	 * @return the copy
+	 */
+	public DatumImportTaskInfo copyWithConfiguration(DatumImportConfiguration newConfiguration) {
+		return new DatumImportTaskInfo(userId, jobId, jobState, importDate, groupKey, success, submitDate, startedDate,
+				completionDate, loadedCount, percentComplete, newConfiguration);
 	}
 
 }

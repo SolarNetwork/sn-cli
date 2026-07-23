@@ -101,8 +101,6 @@ The updated job info.
 	    "groupKey": "0300b452-0000-0000-0000-43e7c715601d",
 	    "success": false,
 	    "submitDate": "2026-07-22 00:37:12.548Z",
-	    "startedDate": "1970-01-01 00:00:00Z",
-	    "completionDate": "1970-01-01 00:00:00Z",
 	    "loadedCount": 0,
 	    "percentComplete": 0.0,
 	    "configuration": {

@@ -9,6 +9,9 @@ import org.jspecify.annotations.Nullable;
  */
 public class ServiceConfiguration {
 
+	/** The service properties key. */
+	public static final String SERVICE_PROPERTIES_KEY = "serviceProperties";
+
 	private @Nullable String name;
 	private @Nullable String serviceIdentifier;
 	private @Nullable Map<String, Object> serviceProperties;
