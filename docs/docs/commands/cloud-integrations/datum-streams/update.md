@@ -168,6 +168,6 @@ The updated datum stream (or a preview of the update if the `--dry-run` option w
 	```
 
 [datum-stream]: https://github.com/SolarNetwork/solarnetwork/wiki/SolarUser-Cloud-Integrations-API#cloud-datum-stream
-[merge-option]: ../../../service-properties.md#--merge-mode-option
-[prop-option]: ../../../service-properties.md#--service-property-option
+[merge-option]: ../../../service-properties.md#-merge-mode-option
+[prop-option]: ../../../service-properties.md#-service-property-option
 [update-api]: https://github.com/SolarNetwork/solarnetwork/wiki/SolarUser-Cloud-Integrations-API#cloud-datum-stream-update

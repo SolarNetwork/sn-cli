@@ -132,6 +132,6 @@ The updated integration service properties (or a preview of the update if the `-
 
 
 [integration]: https://github.com/SolarNetwork/solarnetwork/wiki/SolarUser-Cloud-Integrations-API#cloud-integration
-[merge-option]: ../../../service-properties.md#--merge-mode-option
-[prop-option]: ../../../service-properties.md#--service-property-option
+[merge-option]: ../../../service-properties.md#-merge-mode-option
+[prop-option]: ../../../service-properties.md#-service-property-option
 [sprops]: ../../../service-properties.md
