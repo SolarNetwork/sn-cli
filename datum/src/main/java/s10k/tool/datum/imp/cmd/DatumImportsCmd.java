@@ -8,10 +8,11 @@ import s10k.tool.datum.cmd.DatumCmd;
  * Datum import commands.
  */
 // @formatter:off
-@Command(name = "imports", subcommands = {
+@Command(name = "imports", aliases = "imp", subcommands = {
 		ListImportJobsCmd.class,
+		PreviewStagedImportCmd.class,
 })
 // @formatter:on
-public class DatumImportCmd extends BaseSubCmd<DatumCmd> {
+public class DatumImportsCmd extends BaseSubCmd<DatumCmd> {
 
 }

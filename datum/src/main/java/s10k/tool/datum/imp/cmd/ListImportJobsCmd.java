@@ -35,7 +35,7 @@ import s10k.tool.datum.imp.domain.DatumInputServiceConfiguration;
  * List datum import jobs.
  */
 @Command(name = "list", sortSynopsis = false)
-public class ListImportJobsCmd extends BaseSubCmd<DatumImportCmd> implements Callable<Integer> {
+public class ListImportJobsCmd extends BaseSubCmd<DatumImportsCmd> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-state", "--job-state" },

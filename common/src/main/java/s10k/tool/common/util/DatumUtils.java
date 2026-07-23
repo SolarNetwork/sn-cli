@@ -1,9 +1,24 @@
 package s10k.tool.common.util;
 
+import static com.github.freva.asciitable.HorizontalAlign.LEFT;
+import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
+import static net.solarnetwork.domain.datum.DatumSamplesType.Accumulating;
+import static net.solarnetwork.domain.datum.DatumSamplesType.Instantaneous;
+import static net.solarnetwork.domain.datum.DatumSamplesType.Status;
 import static net.solarnetwork.util.StringNaturalSortComparator.CASE_INSENSITIVE_NATURAL_SORT;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NavigableMap;
+import java.util.SequencedMap;
+import java.util.SequencedSet;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeMap;
@@ -12,6 +27,12 @@ import java.util.TreeSet;
 import org.jspecify.annotations.Nullable;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
+
+import com.github.freva.asciitable.Column;
+
+import net.solarnetwork.domain.datum.Datum;
+import net.solarnetwork.domain.datum.DatumSamplesOperations;
+import net.solarnetwork.domain.datum.DatumSamplesType;
 
 /**
  * Datum related utilities.
@@ -166,6 +187,83 @@ public final class DatumUtils {
 			filterSources(sources, pathMatcher, pattern, result);
 		}
 		return result;
+	}
+
+	private static final Set<DatumSamplesType> PROP_TYPES = EnumSet.of(Instantaneous, Accumulating, Status);
+
+	/**
+	 * A datum result structure.
+	 */
+	public record DatumResultStructure(Iterable<Datum> datum,
+			SequencedMap<DatumSamplesType, SequencedSet<String>> propertyNames, List<Column> columns) {
+
+		/**
+		 * Convert a datum into a tabular structure.
+		 * 
+		 * @param datum the datum to convert
+		 * @return the data
+		 */
+		public Object[] tableDataRow(Datum datum) {
+			List<Object> result = new ArrayList<>(8);
+			result.add(datum.getTimestamp() != null ? datum.getTimestamp().toString() : null);
+			result.add(datum.getKind() != null ? datum.getKind().getKey() : null);
+			result.add(datum.getObjectId());
+			result.add(datum.getSourceId());
+
+			final DatumSamplesOperations ops = datum.asSampleOperations();
+
+			for (Entry<DatumSamplesType, SequencedSet<String>> e : propertyNames.entrySet()) {
+				DatumSamplesType propType = e.getKey();
+				for (String propName : e.getValue()) {
+					Object val = ops.getSampleValue(propType, propName);
+					result.add(val instanceof BigDecimal num ? num.toPlainString() : val);
+				}
+			}
+			return result.toArray(Object[]::new);
+		}
+
+	}
+
+	private static SequencedMap<DatumSamplesType, SequencedSet<String>> resolvePropertyNames(Iterable<Datum> datum) {
+		// extract complete set of property names from entire datum set
+		SequencedMap<DatumSamplesType, SequencedSet<String>> propNames = new LinkedHashMap<>(3);
+		for (Datum d : datum) {
+			for (DatumSamplesType propType : PROP_TYPES) {
+				Map<String, ?> props = d.asSampleOperations().getSampleData(propType);
+				if (props != null) {
+					propNames.computeIfAbsent(propType, _ -> new LinkedHashSet<>(4)).addAll(props.keySet());
+				}
+			}
+		}
+		return propNames;
+	}
+
+	private static List<Column> resolveColumns(Map<DatumSamplesType, SequencedSet<String>> propNames) {
+		final List<Column> result = new ArrayList<>(8);
+		result.add(new Column().header("Timestamp").dataAlign(LEFT));
+		result.add(new Column().header("Kind").dataAlign(RIGHT));
+		result.add(new Column().header("Object ID").dataAlign(RIGHT));
+		result.add(new Column().header("Source ID").dataAlign(LEFT));
+
+		for (Entry<DatumSamplesType, SequencedSet<String>> e : propNames.entrySet()) {
+			DatumSamplesType propType = e.getKey();
+			for (String propName : e.getValue()) {
+				result.add(new Column().header(propName).dataAlign(propType == Status ? LEFT : RIGHT));
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Create a structure for a set of datum, to help with display.
+	 * 
+	 * @param datum the set of datum
+	 * @return the structure
+	 */
+	public static DatumResultStructure resultStructure(Iterable<Datum> datum) {
+		SequencedMap<DatumSamplesType, SequencedSet<String>> propNames = resolvePropertyNames(datum);
+		List<Column> columns = resolveColumns(propNames);
+		return new DatumResultStructure(datum, propNames, columns);
 	}
 
 }

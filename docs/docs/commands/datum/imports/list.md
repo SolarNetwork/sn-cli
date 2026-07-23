@@ -44,7 +44,7 @@ View staged imports (yet to be actioned):
 	+------------------------------------------+--------------------------------------+--------------------------------------+--------------------------+--------+--------------------------+---------+------------+--------------+--------+------------+------------+---------------+-----------------+----------------------------------------------+
 	| Job Name                                 | Job ID                               | Group ID                             | Submit Date              | State  | Import Date              | Success | Started At | Completed At | Loaded | % Complete | Batch Size | Input Service | Input Time Zone | Input Properties                             |
 	+------------------------------------------+--------------------------------------+--------------------------------------+--------------------------+--------+--------------------------+---------+------------+--------------+--------+------------+------------+---------------+-----------------+----------------------------------------------+
-	| 1052_%2FSAN5%2FS1%2FSY2%2FPYR%2F1_Import | 49a2f730-7015-4e59-96c7-233d085c799a | 0300b452-f957-4dd2-b8fd-43e7c715601d | 2026-07-22T00:37:12.548Z | Staged | 2026-07-22T00:37:09.862Z |         |            |              |      0 | 0.0        |            | CSV - Simple  | UTC             | dateFormat               yyyy-MM-dd HH:mm:ss |
+	| 1052_%2FSAN5%2FS1%2FSY2%2FPYR%2F1_Import | 49a2f730-0000-0000-0000-233d085c799a | 0300b452-f957-4dd2-b8fd-43e7c715601d | 2026-07-22T00:37:12.548Z | Staged | 2026-07-22T00:37:09.862Z |         |            |              |      0 | 0.0        |            | CSV - Simple  | UTC             | dateFormat               yyyy-MM-dd HH:mm:ss |
 	|                                          |                                      |                                      |                          |        |                          |         |            |              |        |            |            |               |                 | nodeIdColumn             1                   |
 	|                                          |                                      |                                      |                          |        |                          |         |            |              |        |            |            |               |                 | headerRowCount           1                   |
 	|                                          |                                      |                                      |                          |        |                          |         |            |              |        |            |            |               |                 | sourceIdColumn           2                   |
@@ -59,7 +59,7 @@ View staged imports (yet to be actioned):
 
 	```csv
 	Job Name,Job ID,Group ID,Submit Date,State,Import Date,Success,Started At,Completed At,Loaded,% Complete,Batch Size,Input Service,Input Time Zone,Input Properties
-	1052_%2FSAN5%2FS1%2FSY2%2FPYR%2F1_Import,49a2f730-7015-4e59-96c7-233d085c799a,0300b452-f957-4dd2-b8fd-43e7c715601d,2026-07-22T00:37:12.548Z,Staged,2026-07-22T00:37:09.862Z,,,,0,0.0,,CSV - Simple,UTC,"dateFormat               yyyy-MM-dd HH:mm:ss
+	1052_%2FSAN5%2FS1%2FSY2%2FPYR%2F1_Import,49a2f730-0000-0000-0000-233d085c799a,0300b452-f957-4dd2-b8fd-43e7c715601d,2026-07-22T00:37:12.548Z,Staged,2026-07-22T00:37:09.862Z,,,,0,0.0,,CSV - Simple,UTC,"dateFormat               yyyy-MM-dd HH:mm:ss
 	nodeIdColumn             1
 	headerRowCount           1
 	sourceIdColumn           2
@@ -75,7 +75,7 @@ View staged imports (yet to be actioned):
 	[
 		{
 			"userId" : 857,
-			"jobId" : "49a2f730-7015-4e59-96c7-233d085c799a",
+			"jobId" : "49a2f730-0000-0000-0000-233d085c799a",
 			"jobState" : "Staged",
 			"importDate" : "2026-07-22 00:37:09.862Z",
 			"groupKey" : "0300b452-f957-4dd2-b8fd-43e7c715601d",
@@ -121,7 +121,7 @@ View completed imports:
 	+------------------------------------------+--------------------------------------+--------------------------------------+--------------------------+-----------+--------------------------+---------+--------------------------+--------------------------+--------+---------------------+------------+-------------------+------------------+----------------------------------------------+
 	| Job Name                                 | Job ID                               | Group ID                             | Submit Date              | State     | Import Date              | Success | Started At               | Completed At             | Loaded | % Complete          | Batch Size | Input Service     | Input Time Zone  | Input Properties                             |
 	+------------------------------------------+--------------------------------------+--------------------------------------+--------------------------+-----------+--------------------------+---------+--------------------------+--------------------------+--------+---------------------+------------+-------------------+------------------+----------------------------------------------+
-	| Stream-Import-2026-07-22T20:50:08.122Z   | c812b552-3be7-4b99-be18-7ab31a35c6a0 | stream-1000                          | 2026-07-22T20:50:08.815Z | Completed | 2026-07-22T20:50:08.816Z | true    | 2026-07-22T20:50:12.199Z | 2026-07-22T20:50:25.463Z |   6286 | 1.0                 | 1          | Cloud Integration | Pacific/Auckland | endDate       2026-07-22T20:47:34.143Z       |
+	| Stream-Import-2026-07-22T20:50:08.122Z   | c812b552-0000-0000-0000-7ab31a35c6a0 | stream-1000                          | 2026-07-22T20:50:08.815Z | Completed | 2026-07-22T20:50:08.816Z | true    | 2026-07-22T20:50:12.199Z | 2026-07-22T20:50:25.463Z |   6286 | 1.0                 | 1          | Cloud Integration | Pacific/Auckland | endDate       2026-07-22T20:47:34.143Z       |
 	|                                          |                                      |                                      |                          |           |                          |         |                          |                          |        |                     |            |                   |                  | startDate     2026-07-01T01:00:00.000Z       |
 	|                                          |                                      |                                      |                          |           |                          |         |                          |                          |        |                     |            |                   |                  | datumStreamId 1000                           |
 	|                                          |                                      |                                      |                          |           |                          |         |                          |                          |        |                     |            |                   |                  |                                              |
@@ -132,7 +132,7 @@ View completed imports:
 
 	```csv
 	Job Name,Job ID,Group ID,Submit Date,State,Import Date,Success,Started At,Completed At,Loaded,% Complete,Batch Size,Input Service,Input Time Zone,Input Properties
-	Stream-Import-2026-07-22T20:50:08.122Z,c812b552-3be7-4b99-be18-7ab31a35c6a0,stream-1045,2026-07-22T20:50:08.815Z,Completed,2026-07-22T20:50:08.816Z,true,2026-07-22T20:50:12.199Z,2026-07-22T20:50:25.463Z,6286,1.0,1,Cloud Integration,Pacific/Auckland,"endDate       2026-07-22T20:47:34.143Z
+	Stream-Import-2026-07-22T20:50:08.122Z,c812b552-0000-0000-0000-7ab31a35c6a0,stream-1045,2026-07-22T20:50:08.815Z,Completed,2026-07-22T20:50:08.816Z,true,2026-07-22T20:50:12.199Z,2026-07-22T20:50:25.463Z,6286,1.0,1,Cloud Integration,Pacific/Auckland,"endDate       2026-07-22T20:47:34.143Z
 	startDate     2026-07-01T01:00:00.000Z
 	datumStreamId 1045
 	"
@@ -144,7 +144,7 @@ View completed imports:
 	[
 		{
 			"userId": 857,
-			"jobId": "c812b552-3be7-4b99-be18-7ab31a35c6a0",
+			"jobId": "c812b552-0000-0000-0000-7ab31a35c6a0",
 			"jobState": "Completed",
 			"importDate": "2026-07-22 20:50:08.816Z",
 			"groupKey": "stream-1000",
