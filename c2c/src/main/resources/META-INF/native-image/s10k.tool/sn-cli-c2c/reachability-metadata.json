@@ -1,7 +1,7 @@
 {
 	"resources": [
 		{
-			"glob": "s10k/**/*.properties"
+			"glob": "s10k/tool/c2c/**/*.properties"
 		}
 	]
 }
