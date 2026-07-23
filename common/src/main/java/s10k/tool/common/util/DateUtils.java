@@ -1,9 +1,12 @@
 package s10k.tool.common.util;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+
+import org.jspecify.annotations.Nullable;
 
 /**
  * Date helper methods.
@@ -36,6 +39,17 @@ public final class DateUtils {
 			return null;
 		}
 		return date.atZone(zone != null ? zone : ZoneId.systemDefault());
+	}
+
+	/**
+	 * Get an instant, but only if it is not equal to {@link Instant#EPOCH}.
+	 * 
+	 * @param ts the instant to check
+	 * @return the non-epoch instant, or {@code null} if {@code ts} is {@code null}
+	 *         or equal to {@link Instant#EPOCH}
+	 */
+	public static @Nullable Instant nonEpochInstant(@Nullable Instant ts) {
+		return (ts == null || ts.compareTo(Instant.EPOCH) == 0 ? null : ts);
 	}
 
 }

@@ -1,0 +1,7 @@
+{
+	"resources": [
+		{
+			"glob": "s10k/tool/datum/**/*.properties"
+		}
+	]
+}

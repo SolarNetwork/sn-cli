@@ -22,6 +22,7 @@ import s10k.tool.common.domain.ClaimableJobState;
 import s10k.tool.common.domain.EnabledOrDisabled;
 import s10k.tool.common.util.StringUtils;
 import s10k.tool.datum.cmd.DatumCmd;
+import s10k.tool.datum.imp.domain.DatumImportState;
 import s10k.tool.flux.cmd.FluxCmd;
 import s10k.tool.instructions.cmd.InstructionsCmd;
 import s10k.tool.nodes.cmd.NodesCmd;
@@ -65,6 +66,7 @@ public class SnCliTool implements CommandLineRunner, ExitCodeGenerator {
 				.addSubcommand(new SecTokensCmd())
 				.setCaseInsensitiveEnumValuesAllowed(true)
 				.registerConverter(ClaimableJobState.class, ClaimableJobState::fromValue)
+				.registerConverter(DatumImportState.class, DatumImportState::fromValue)
 				.registerConverter(EnabledOrDisabled.class, EnabledOrDisabled::fromValue)
 				.registerConverter(LocalDateTime.class, StringUtils::parseLocalDateTime)
 				.registerConverter(ObjectDatumKind.class, ObjectDatumKind::fromValue)
