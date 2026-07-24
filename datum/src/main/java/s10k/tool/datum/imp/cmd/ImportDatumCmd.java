@@ -1,6 +1,3 @@
-/**
- * 
- */
 package s10k.tool.datum.imp.cmd;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
