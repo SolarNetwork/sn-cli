@@ -29,7 +29,7 @@ s10k cloud-integrations datum-streams update --stream-id 100 --disabled
 
 The methods can be combined, with each method overriding settings duplicated in previous methods.
 For example the following ends up changing the schedule to `300` because the command line parameter
-override both the `--schedule` option and standard input values:
+overrides both the `--schedule` option and standard input values:
 
 ```sh
 echo '{"schedule":900}' |s10k cloud-integrations datum-streams update --stream-id 100 \

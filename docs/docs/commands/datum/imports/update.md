@@ -56,6 +56,8 @@ s10k datum imports update
 | `-j=` | `--job-id=` | the ID of the job to update |
 | `-m=` | `--name=` | the job name to set |
 | `-prop=` | `--service-property` | a service property, in the form `path:value` or `@@file.json`; see [here][prop-option] for details |
+| `-S=` | `--service=` | the service ID of the [input format][input-formats] to use |
+| `-tz=` | `--time-zone=` | a time zone ID to interpret datum timestamps that lack zone information with, like `Pacific/Auckland` or `-05:00` or `UTC` |
 | `-mode=` | `--display-mode=` | the format to display the data as, one of `CSV`, `JSON`, or `PRETTY`; defaults to `PRETTY` |
 
 </div>

@@ -33,8 +33,8 @@ s10k cloud-integrations datum-streams update-service-properties \
 ```
 
 The methods can be combined, with each method overriding settings duplicated in previous methods.
-For example the following ends up changing `alternateName` to `Small Site` because the command line parameter
-override both the `--service-property` option and standard input values:
+For example the following ends up changing `alternateName` to `Small Site` because the command line
+parameter overrides both the `--service-property` option and standard input values:
 
 ```sh
 echo '{"alternateName":"Big Site"}' \
