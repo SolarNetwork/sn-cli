@@ -22,7 +22,7 @@ import s10k.tool.datum.imp.domain.DatumImportsFilter;
 /**
  * List datum import jobs.
  */
-@Command(name = "list", sortSynopsis = false, descriptionHeading = "%n", optionListHeading = "%n", description = {
+@Command(name = "list", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"List the details of datum import jobs matching search criteria.%n" })
 public class ListImportJobsCmd extends BaseSubCmd<DatumImportsCmd> implements Callable<Integer> {
 

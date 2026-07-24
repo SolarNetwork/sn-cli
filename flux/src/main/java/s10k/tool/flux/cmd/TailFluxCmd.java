@@ -62,7 +62,7 @@ import s10k.tool.common.util.TableUtils;
  * Unix {@code tail} utility.
  */
 @Component
-@Command(name = "tail", sortSynopsis = false)
+@Command(name = "tail", sortSynopsis = false, showDefaultValues = true)
 public class TailFluxCmd extends BaseSubCmd<FluxCmd> implements Callable<Integer> {
 
 	// @formatter:off

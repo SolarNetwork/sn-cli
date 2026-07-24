@@ -38,7 +38,7 @@ import s10k.tool.common.util.TableUtils;
  * View Cloud Datum Stream details.
  */
 @Component
-@Command(name = "view", sortSynopsis = false)
+@Command(name = "view", sortSynopsis = false, showDefaultValues = true)
 public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements Callable<Integer> {
 
 	// @formatter:off

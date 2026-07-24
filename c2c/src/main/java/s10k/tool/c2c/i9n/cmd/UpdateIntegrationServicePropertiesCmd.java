@@ -36,7 +36,7 @@ import s10k.tool.common.util.TableUtils;
  * Update cloud integration entity service properties.
  */
 @Component
-@Command(name = "update-service-properties", aliases = "update-props", sortSynopsis = false, descriptionHeading = "%n", optionListHeading = "%n", description = {
+@Command(name = "update-service-properties", aliases = "update-props", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"Update a cloud integration's service properties using a @|bold merge|@ operation.%n" })
 public class UpdateIntegrationServicePropertiesCmd extends BaseSubCmd<IntegrationsCmd> implements Callable<Integer> {
 

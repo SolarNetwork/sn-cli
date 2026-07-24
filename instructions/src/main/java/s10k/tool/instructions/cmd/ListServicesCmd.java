@@ -33,7 +33,7 @@ import s10k.tool.instructions.util.InstructionsUtils.ServiceInfo;
  * List available services or component service instances.
  */
 @Component
-@Command(name = "list-services", sortSynopsis = false)
+@Command(name = "list-services", sortSynopsis = false, showDefaultValues = true)
 public class ListServicesCmd extends BaseSubCmd<InstructionsCmd> implements Callable<Integer> {
 
 	// @formatter:off

@@ -43,7 +43,7 @@ import s10k.tool.common.util.TableUtils;
  * Create Cloud Datum Stream Poll Task configurations.
  */
 @Component("createPollTasksCmd")
-@Command(name = "create", sortSynopsis = false)
+@Command(name = "create", sortSynopsis = false, showDefaultValues = true)
 public class CreateTasksCmd extends BaseSubCmd<PollTasksCmd> implements Callable<Integer> {
 
 	// @formatter:off

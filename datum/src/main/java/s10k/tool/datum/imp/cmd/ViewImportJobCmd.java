@@ -28,7 +28,7 @@ import s10k.tool.datum.imp.util.DatumImportUtils;
 /**
  * View datum import job status.
  */
-@Command(name = "view", sortSynopsis = false, descriptionHeading = "%n", optionListHeading = "%n", description = {
+@Command(name = "view", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"View the details of a previously submitted datum import job.%n" })
 public class ViewImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements Callable<Integer> {
 

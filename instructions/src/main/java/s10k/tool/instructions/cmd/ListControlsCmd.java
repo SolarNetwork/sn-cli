@@ -32,7 +32,7 @@ import s10k.tool.instructions.domain.InstructionRequest;
  * List node controls.
  */
 @Component
-@Command(name = "list-controls", sortSynopsis = false)
+@Command(name = "list-controls", sortSynopsis = false, showDefaultValues = true)
 public class ListControlsCmd extends BaseSubCmd<InstructionsCmd> implements Callable<Integer> {
 
 	/** The service name for listing controls. */

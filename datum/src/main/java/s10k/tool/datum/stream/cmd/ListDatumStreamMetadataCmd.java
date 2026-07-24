@@ -39,7 +39,7 @@ import s10k.tool.datum.domain.DatumStreamFilter;
  * View datum stream metadata matching a search criteria.
  */
 @Component
-@Command(name = "list", sortSynopsis = false)
+@Command(name = "list", sortSynopsis = false, showDefaultValues = true)
 public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> implements Callable<Integer> {
 
 	// @formatter:off

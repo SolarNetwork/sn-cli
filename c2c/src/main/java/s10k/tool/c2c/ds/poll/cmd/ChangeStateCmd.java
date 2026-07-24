@@ -38,7 +38,7 @@ import s10k.tool.common.util.TableUtils;
  * Change the runtime state of poll tasks.
  */
 @Component("changePollTasksStateCmd")
-@Command(name = "change-state", sortSynopsis = false)
+@Command(name = "change-state", sortSynopsis = false, showDefaultValues = true)
 public class ChangeStateCmd extends BaseSubCmd<PollTasksCmd> implements Callable<Integer> {
 
 	// @formatter:off

@@ -61,7 +61,7 @@ import s10k.tool.nodes.domain.NodeInfo;
  * Create Cloud Datum Stream Rake Task configurations.
  */
 @Component("createRakeTasksCmd")
-@Command(name = "create", sortSynopsis = false)
+@Command(name = "create", sortSynopsis = false, showDefaultValues = true)
 public class CreateTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable<Integer> {
 
 	// @formatter:off

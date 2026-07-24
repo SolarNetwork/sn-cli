@@ -32,7 +32,7 @@ import s10k.tool.instructions.util.InstructionsUtils.ServiceInfo;
  * List available components.
  */
 @Component
-@Command(name = "list-components", sortSynopsis = false)
+@Command(name = "list-components", sortSynopsis = false, showDefaultValues = true)
 public class ListComponents extends BaseSubCmd<InstructionsCmd> implements Callable<Integer> {
 
 	// @formatter:off

@@ -28,7 +28,7 @@ import s10k.tool.instructions.domain.InstructionRequest;
  * Activate a Control Conductor service.
  */
 @Component
-@Command(name = "orchestrate", sortSynopsis = false)
+@Command(name = "orchestrate", sortSynopsis = false, showDefaultValues = true)
 public class OrchestrateControlsCmd extends BaseSubCmd<ControlsCmd> implements Callable<Integer> {
 
 	// @formatter:off

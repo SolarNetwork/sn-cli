@@ -30,7 +30,7 @@ import s10k.tool.nodes.domain.NodeCertificateInfo;
  * Renew a node certificate.
  */
 @Component
-@Command(name = "renew", sortSynopsis = false, header = {
+@Command(name = "renew", sortSynopsis = false, showDefaultValues = true, header = {
 // @formatter:off
 		"",
 		"""

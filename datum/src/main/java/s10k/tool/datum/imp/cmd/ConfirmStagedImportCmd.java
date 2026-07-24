@@ -25,7 +25,7 @@ import s10k.tool.datum.imp.util.DatumImportRestUtils;
 /**
  * Confirm a staged datum import.
  */
-@Command(name = "confirm-staged", aliases = "confirm", sortSynopsis = false, descriptionHeading = "%n", optionListHeading = "%n", description = {
+@Command(name = "confirm-staged", aliases = "confirm", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"Confirm a @|bold staged|@ datum import job so it may being the import process.%n",
 
 		"Once confirmed, the job will transition to the @|bold Queued|@ state, and begin processing",

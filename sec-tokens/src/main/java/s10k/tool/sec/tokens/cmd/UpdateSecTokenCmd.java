@@ -37,7 +37,7 @@ import s10k.tool.sec.tokens.domain.SecurityTokenInfo;
  * Update security token info.
  */
 @Component
-@Command(name = "update", sortSynopsis = false)
+@Command(name = "update", sortSynopsis = false, showDefaultValues = true)
 public class UpdateSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Callable<Integer> {
 
 	// @formatter:off

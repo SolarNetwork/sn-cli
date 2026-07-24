@@ -54,7 +54,7 @@ import s10k.tool.nodes.domain.NodeCertificateInfo;
  * Generate a report on account node certificates.
  */
 @Component
-@Command(name = "report", sortSynopsis = false, header = {
+@Command(name = "report", sortSynopsis = false, showDefaultValues = true, header = {
 // @formatter:off
 		"",
 		"""

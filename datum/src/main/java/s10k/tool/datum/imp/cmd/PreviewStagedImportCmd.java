@@ -28,7 +28,7 @@ import s10k.tool.common.util.TableUtils;
 /**
  * Preview a staged datum import.
  */
-@Command(name = "preview-staged", aliases = "preview", sortSynopsis = false, descriptionHeading = "%n", optionListHeading = "%n", description = {
+@Command(name = "preview-staged", aliases = "preview", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"Preview a sample of the datum included in @|bold staged|@ datum import job.%n" })
 public class PreviewStagedImportCmd extends BaseSubCmd<DatumImportsCmd> implements Callable<Integer> {
 

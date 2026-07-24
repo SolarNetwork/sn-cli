@@ -42,7 +42,7 @@ import s10k.tool.common.util.TableUtils;
  * Update cloud datum stream entity.
  */
 @Component
-@Command(name = "update", sortSynopsis = false, descriptionHeading = "%n", optionListHeading = "%n", description = {
+@Command(name = "update", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"Update a cloud datum stream. The various optional options can be used to update",
 		"specific settings of a datum stream, leaving all other settings of the stream", "unchagned.%n",
 

@@ -39,7 +39,7 @@ import s10k.tool.common.util.TableUtils;
  * Change the runtime state of pake tasks.
  */
 @Component("changeRakeTasksStateCmd")
-@Command(name = "change-state", sortSynopsis = false)
+@Command(name = "change-state", sortSynopsis = false, showDefaultValues = true)
 public class ChangeStateCmd extends BaseSubCmd<RakeTasksCmd> implements Callable<Integer> {
 
 	// @formatter:off

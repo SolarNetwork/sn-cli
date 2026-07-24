@@ -53,6 +53,7 @@ import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.DateUtils;
+import s10k.tool.common.util.EncodingUtils;
 import s10k.tool.common.util.SystemUtils;
 import s10k.tool.datum.domain.DatumFilter;
 
@@ -60,7 +61,7 @@ import s10k.tool.datum.domain.DatumFilter;
  * Query for datum.
  */
 @Component
-@Command(name = "list", sortSynopsis = false)
+@Command(name = "list", sortSynopsis = false, showDefaultValues = true)
 public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integer> {
 
 	// @formatter:off
@@ -449,7 +450,7 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 				return b.build(filter.getReadingType() != null ? "reading" : "datum");
 			})
 			.accept(displayMode == ResultDisplayMode.CSV
-					? MediaType.valueOf("text/csv")
+					? MediaType.asMediaType(EncodingUtils.TEXT_CSV_MIME_TYPE)
 					: MediaType.APPLICATION_CBOR)
 			.exchange((_, res) -> {
 				if (res.getStatusCode().is2xxSuccessful()) {

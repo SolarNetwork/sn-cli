@@ -30,7 +30,7 @@ import s10k.tool.instructions.domain.InstructionsFilter;
  * List instruction status.
  */
 @Component
-@Command(name = "list", sortSynopsis = false)
+@Command(name = "list", sortSynopsis = false, showDefaultValues = true)
 public class ListInstructionsCmd extends BaseSubCmd<InstructionsCmd> implements Callable<Integer> {
 
 	// @formatter:off

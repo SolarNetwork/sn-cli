@@ -29,7 +29,7 @@ import s10k.tool.common.util.TableUtils;
  * View Cloud Integration configurations.
  */
 @Component
-@Command(name = "list", sortSynopsis = false)
+@Command(name = "list", sortSynopsis = false, showDefaultValues = true)
 public class ListIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implements Callable<Integer> {
 
 	// @formatter:off

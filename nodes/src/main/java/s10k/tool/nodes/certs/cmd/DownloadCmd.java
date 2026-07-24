@@ -29,7 +29,7 @@ import s10k.tool.common.util.OutputUtils;
  * Download node certificates.
  */
 @Component
-@Command(name = "download", sortSynopsis = false, header = {
+@Command(name = "download", sortSynopsis = false, showDefaultValues = true, header = {
 // @formatter:off
 		"",
 		"""

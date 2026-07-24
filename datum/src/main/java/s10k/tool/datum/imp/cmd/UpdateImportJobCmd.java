@@ -43,7 +43,7 @@ import s10k.tool.datum.imp.util.DatumImportUtils;
 /**
  * Update datum import job configuration.
  */
-@Command(name = "update", sortSynopsis = false, descriptionHeading = "%n", optionListHeading = "%n", description = {
+@Command(name = "update", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"Update the input configuration of a @|bold staged|@ datum import job.%n" })
 public class UpdateImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements Callable<Integer> {
 
@@ -235,4 +235,5 @@ public class UpdateImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements C
 			throw new IllegalStateException("Error parsing retract datum import response: " + e.getMessage(), e);
 		}
 	}
+
 }

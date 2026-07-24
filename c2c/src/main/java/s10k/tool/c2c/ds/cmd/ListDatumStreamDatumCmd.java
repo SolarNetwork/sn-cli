@@ -42,7 +42,7 @@ import s10k.tool.common.util.TableUtils;
  * Query for Cloud Datum Stream datum.
  */
 @Component
-@Command(name = "datum", sortSynopsis = false)
+@Command(name = "datum", sortSynopsis = false, showDefaultValues = true)
 public class ListDatumStreamDatumCmd extends BaseSubCmd<DatumStreamsCmd> implements Callable<Integer> {
 
 	// @formatter:off

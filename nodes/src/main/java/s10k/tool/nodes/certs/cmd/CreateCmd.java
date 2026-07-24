@@ -34,7 +34,7 @@ import s10k.tool.nodes.domain.NodeInfo;
  * Create node certificates.
  */
 @Component
-@Command(name = "create", sortSynopsis = false, header = {
+@Command(name = "create", sortSynopsis = false, showDefaultValues = true, header = {
 // @formatter:off
 		"",
 		"""

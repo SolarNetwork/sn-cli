@@ -31,7 +31,7 @@ import s10k.tool.instructions.domain.InstructionRequest;
  * Enable and disable operational modes.
  */
 @Component
-@Command(name = "toggle-op-mode", sortSynopsis = false)
+@Command(name = "toggle-op-mode", sortSynopsis = false, showDefaultValues = true)
 public class ToggleOperationalModeCmd extends BaseSubCmd<InstructionsCmd> implements Callable<Integer> {
 
 	// @formatter:off

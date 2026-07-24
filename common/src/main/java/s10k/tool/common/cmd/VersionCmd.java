@@ -11,7 +11,7 @@ import picocli.CommandLine.IVersionProvider;
 /**
  * Print out the application version.
  */
-@Command(name = "version", sortSynopsis = false)
+@Command(name = "version", sortSynopsis = false, showDefaultValues = true)
 public class VersionCmd implements Callable<Integer>, IVersionProvider {
 
 	/**

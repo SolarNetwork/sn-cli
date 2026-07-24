@@ -34,7 +34,7 @@ import s10k.tool.common.util.TableUtils;
  * View datum stream metadata IDs matching a search criteria.
  */
 @Component
-@Command(name = "sources", sortSynopsis = false)
+@Command(name = "sources", sortSynopsis = false, showDefaultValues = true)
 public class ListSourcesCmd extends BaseSubCmd<NodesCmd> implements Callable<Integer> {
 
 	// @formatter:off	

@@ -32,7 +32,7 @@ import s10k.tool.instructions.domain.InstructionRequest;
  * List installed packages.
  */
 @Component
-@Command(name = "list-packages", sortSynopsis = false)
+@Command(name = "list-packages", sortSynopsis = false, showDefaultValues = true)
 public class ListPackagesCmd extends BaseSubCmd<InstructionsCmd> implements Callable<Integer> {
 
 	/** The service name for listing packages. */

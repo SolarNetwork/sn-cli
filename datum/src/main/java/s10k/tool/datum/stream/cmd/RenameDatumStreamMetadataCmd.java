@@ -38,7 +38,7 @@ import s10k.tool.common.util.TableUtils;
  * Rename node datum stream IDs and/or property names.
  */
 @Component
-@Command(name = "rename", sortSynopsis = false, header = {
+@Command(name = "rename", sortSynopsis = false, showDefaultValues = true, header = {
 // @formatter:off
 		"",
 		"""

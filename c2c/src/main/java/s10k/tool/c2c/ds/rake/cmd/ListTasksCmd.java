@@ -33,7 +33,7 @@ import s10k.tool.common.util.TableUtils;
  * List Cloud Datum Stream Rake Task configurations.
  */
 @Component("listRakeTasksCmd")
-@Command(name = "list", sortSynopsis = false)
+@Command(name = "list", sortSynopsis = false, showDefaultValues = true)
 public class ListTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable<Integer> {
 
 	// @formatter:off

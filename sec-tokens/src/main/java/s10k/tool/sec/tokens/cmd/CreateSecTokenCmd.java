@@ -35,7 +35,7 @@ import s10k.tool.sec.tokens.domain.SecurityTokenType;
  * Create a new security token.
  */
 @Component
-@Command(name = "create", sortSynopsis = false)
+@Command(name = "create", sortSynopsis = false, showDefaultValues = true)
 public class CreateSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Callable<Integer> {
 
 	// @formatter:off

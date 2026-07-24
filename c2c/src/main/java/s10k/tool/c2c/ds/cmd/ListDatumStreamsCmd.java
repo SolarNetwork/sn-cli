@@ -30,7 +30,7 @@ import s10k.tool.common.util.TableUtils;
  * List Cloud Datum Stream configurations.
  */
 @Component
-@Command(name = "list", sortSynopsis = false)
+@Command(name = "list", sortSynopsis = false, showDefaultValues = true)
 public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements Callable<Integer> {
 
 	// @formatter:off

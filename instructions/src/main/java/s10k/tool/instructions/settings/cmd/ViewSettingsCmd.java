@@ -36,7 +36,7 @@ import s10k.tool.instructions.domain.InstructionRequest;
  * View settings.
  */
 @Component
-@Command(name = "view", sortSynopsis = false)
+@Command(name = "view", sortSynopsis = false, showDefaultValues = true)
 public class ViewSettingsCmd extends BaseSubCmd<SettingsCmd> implements Callable<Integer> {
 
 	// @formatter:off

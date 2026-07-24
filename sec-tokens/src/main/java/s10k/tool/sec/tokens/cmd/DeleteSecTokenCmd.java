@@ -20,7 +20,7 @@ import s10k.tool.common.cmd.BaseSubCmd;
  * Delete a security token.
  */
 @Component
-@Command(name = "delete", sortSynopsis = false)
+@Command(name = "delete", sortSynopsis = false, showDefaultValues = true)
 public class DeleteSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Callable<Integer> {
 
 	// @formatter:off

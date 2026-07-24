@@ -41,7 +41,7 @@ import s10k.tool.instructions.util.InstructionsUtils;
  */
 @Component
 // @formatter:off
-@Command(name = "update", sortSynopsis = false, descriptionHeading = "%n", optionListHeading = "%n", description = {
+@Command(name = "update", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"Update one or more settings on a node. The settings can be provided for a",
 		"specific service or component instance using the @|bold --service-id|@ and",
 		"@|bold --component-id|@ options, followed by key and value parameter pairs. For",
