@@ -11,6 +11,7 @@ Show [Cloud Datum Stream Poll Task][poll-task] entities matching a search filter
 s10k cloud-integrations datum-streams poll-tasks list
 	[-stream=datumStreamId[,datumStreamId...]]...
 	[-node=nodeId[,nodeId...]]...
+	[-source=sourceId[,sourceId...]]...
 	[-state=jobState[,jobState...]]...
 	[-M=max]
 	[-O=<resultOffset>]
@@ -23,6 +24,7 @@ s10k cloud-integrations datum-streams poll-tasks list
 |:-------|:-------------|:------------|
 | `-stream=` | `--stream-id=` | the datum stream ID(s) to show tasks for |
 | `-node=` | `--node-id=` | the node ID of datum streams to show tasks for (matching against datum stream `objectId` values) |
+| `-source=` | `--source=` | the source ID(s) to match; will match mapped and virtual source IDs and wildcard patterns are supported |
 | `-state=` | `--job-state=` | the [claimable job state][job-states] names to show tasks for, for example `Queued` or `Completed` |
 | `-M=` | `--max=` | the maximum number of results to return |
 | `-O=` | `--offset=` | start returning results from this offset, `0` being the first result |

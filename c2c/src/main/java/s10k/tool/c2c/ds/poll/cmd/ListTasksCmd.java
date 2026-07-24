@@ -51,6 +51,13 @@ public class ListTasksCmd extends BaseSubCmd<PollTasksCmd> implements Callable<I
 			paramLabel = "nodeId")
 	Long[] nodeIds;
 
+	@Option(names = { "-source", "--source-id" },
+			description = "a source ID pattern to match",
+			split = "\\s*,\\s*",
+			splitSynopsisLabel = ",",
+			paramLabel = "sourceId")
+	String[] sourceIds;
+	
 	@Option(names = { "-state", "--job-state" },
 			description = "a job state to match",
 			split = "\\s*,\\s*",
@@ -112,6 +119,9 @@ public class ListTasksCmd extends BaseSubCmd<PollTasksCmd> implements Callable<I
 		}
 		if (nodeIds != null && nodeIds.length > 0) {
 			filter.setNodeIds(List.of(nodeIds));
+		}
+		if (sourceIds != null && sourceIds.length > 0) {
+			filter.setSourceIds(List.of(sourceIds));
 		}
 		if (maxResults > 0) {
 			filter.setMax(maxResults);

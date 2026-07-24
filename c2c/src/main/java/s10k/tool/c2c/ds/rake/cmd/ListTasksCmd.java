@@ -51,6 +51,13 @@ public class ListTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable<I
 			paramLabel = "rakeTaskId")
 	Long[] taskIds;
 
+	@Option(names = { "-source", "--source-id" },
+			description = "a source ID pattern to match",
+			split = "\\s*,\\s*",
+			splitSynopsisLabel = ",",
+			paramLabel = "sourceId")
+	String[] sourceIds;
+	
 	@Option(names = { "-node", "--node-id" },
 			description = "a node ID to match (on datum stream's objectId property)",
 			split = "\\s*,\\s*",
@@ -122,6 +129,9 @@ public class ListTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable<I
 		}
 		if (nodeIds != null && nodeIds.length > 0) {
 			filter.setNodeIds(List.of(nodeIds));
+		}
+		if (sourceIds != null && sourceIds.length > 0) {
+			filter.setSourceIds(List.of(sourceIds));
 		}
 		if (maxResults > 0) {
 			filter.setMax(maxResults);
