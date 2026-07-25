@@ -5,11 +5,18 @@ title: change-state
 
 Change the runtime state of [Cloud Datum Stream Rake Task][rake-task] entities (enable or disable).
 
+The `--min-offset`, `--max-offset`, and `--offset` options can be used to target specific rake
+tasks on the given datum stream. When provided, they are combined with a logical _and_ to narrow
+the possible rake tasks that will be updated.
+
 ## Usage
 
 ```
 s10k cloud-integrations datum-streams rake-tasks change-state
 	-stream=datumStreamId[,datumStreamId...]
+	[-min=<minOffset>]
+	[-max=<maxOffset>]
+	[-o=offset[,offset...]]...
 	<desiredState>
 ```
 
@@ -24,6 +31,9 @@ Pass the desired state as the first (and only) parameter. You can specify the st
 
 | Option | Long Version | Description |
 |:-------|:-------------|:------------|
+| `-max=` | `--max-offset=` | a maximum offset of tasks to update, inclusive |
+| `-min=` | `--min-offset=` | a minimum offset of tasks to update, inclusive |
+| `-o=` | `--offset=` | specific offset(s) to update |
 | `-stream=` | `--stream-id=` | the datum stream ID(s) to create tasks for; if unspecified then create tasks for all available datum streams |
 
 </div>

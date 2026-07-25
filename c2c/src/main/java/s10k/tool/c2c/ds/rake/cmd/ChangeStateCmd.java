@@ -6,10 +6,12 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 import static s10k.tool.c2c.ds.rake.cmd.ListTasksCmd.listCloudDatumStreamRakeTasks;
 import static s10k.tool.c2c.util.CloudIntegrationRestUtils.listCloudDatumStreams;
+import static s10k.tool.c2c.util.CloudIntegrationsUtils.comparePeriods;
 import static s10k.tool.c2c.util.CloudIntegrationsUtils.datumStreamServiceLocalizedName;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 import static s10k.tool.common.util.TableUtils.tableConfig;
 
+import java.time.Period;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +39,7 @@ import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.TableUtils;
 
 /**
- * Change the runtime state of pake tasks.
+ * Change the runtime state of rake tasks.
  */
 @Component("changeRakeTasksStateCmd")
 @Command(name = "change-state", sortSynopsis = false, showDefaultValues = true)
@@ -51,6 +53,21 @@ public class ChangeStateCmd extends BaseSubCmd<RakeTasksCmd> implements Callable
 				paramLabel = "datumStreamId",
 				required = true)
 		Long[] datumStreamIds;
+
+		@Option(names = { "-min", "--min-offset" },
+				description = "a minimum offset to update (inclusive)")
+		Period minOffset;
+
+		@Option(names = { "-max", "--max-offset" },
+				description = "a maximum offset to update (inclusive)")
+		Period maxOffset;
+
+		@Option(names = { "-o", "--offset" },
+				description = "specific offset to update",
+				split = "\\s*,\\s*",
+				splitSynopsisLabel = ",",
+				paramLabel = "offset")
+		Period[] offsets;
 
 		@Option(names = { "-mode", "--display-mode" },
 				description = "how to display the data")
@@ -80,8 +97,27 @@ public class ChangeStateCmd extends BaseSubCmd<RakeTasksCmd> implements Callable
 
 		try {
 			final List<CloudDatumStreamRakeTaskConfiguration> tasks = listCloudDatumStreamRakeTasks(restClient,
-					objectMapper, filter).stream()
-					.sorted(Comparator.comparing(CloudDatumStreamRakeTaskConfiguration::datumStreamId)
+					objectMapper, filter).stream().filter(task -> {
+						if (minOffset != null && comparePeriods(task.offset(), minOffset) < 0) {
+							return false;
+						}
+						if (maxOffset != null && comparePeriods(task.offset(), maxOffset) > 0) {
+							return false;
+						}
+						if (offsets != null) {
+							boolean found = false;
+							for (Period offset : offsets) {
+								if (offset.equals(task.offset())) {
+									found = true;
+									break;
+								}
+							}
+							if (!found) {
+								return false;
+							}
+						}
+						return true;
+					}).sorted(Comparator.comparing(CloudDatumStreamRakeTaskConfiguration::datumStreamId)
 							.thenComparing(CloudDatumStreamRakeTaskConfiguration::configId))
 					.toList();
 			final Map<Long, CloudDatumStreamConfiguration> streams = (displayMode != ResultDisplayMode.JSON
