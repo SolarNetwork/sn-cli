@@ -571,7 +571,7 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 			RestClient restClient, CloudIntegrationsFilter filter) {
 		return listCloudDatumStreamRakeTasks(restClient, objectMapper, filter).stream()
 				.collect(groupingBy(CloudDatumStreamRakeTaskConfiguration::datumStreamId, TreeMap::new,
-						mapping(Function.identity(), toMap(t -> Period.parse(t.offset()), identity(), (_, n) -> n,
+						mapping(Function.identity(), toMap(t -> t.offset(), identity(), (_, n) -> n,
 								() -> new TreeMap<>(CloudIntegrationsUtils::comparePeriods)))));
 	}
 

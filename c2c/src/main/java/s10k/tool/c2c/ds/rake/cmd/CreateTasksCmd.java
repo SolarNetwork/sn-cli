@@ -151,7 +151,7 @@ public class CreateTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable
 			CloudIntegrationsFilter filter) {
 		return listCloudDatumStreamRakeTasks(restClient, objectMapper, filter).stream()
 				.collect(groupingBy(CloudDatumStreamRakeTaskConfiguration::datumStreamId, TreeMap::new,
-						mapping(Function.identity(), toMap(t -> Period.parse(t.offset()), identity(), (_, n) -> n,
+						mapping(Function.identity(), toMap(t -> t.offset(), identity(), (_, n) -> n,
 								() -> new TreeMap<>(CloudIntegrationsUtils::comparePeriods)))));
 	}
 
@@ -280,7 +280,7 @@ public class CreateTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable
 					, null
 					, ClaimableJobState.Queued.keyValue()
 					, executeAt
-					, p.toString()
+					, p
 					, null
 					, null
 					// @formatter:on
@@ -312,7 +312,7 @@ public class CreateTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable
 					, datumStreamId
 					, ClaimableJobState.Queued.keyValue()
 					, executeAt
-					, offset.toString()
+					, offset
 					, null
 					, null
 					// @formatter:on
@@ -373,7 +373,7 @@ public class CreateTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable
 									, actions.datumStreamId()
 									, ClaimableJobState.Queued.keyValue()
 									, executeAt
-									, p.toString()
+									, p
 									, null
 									, null
 									// @formatter:on

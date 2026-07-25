@@ -1,6 +1,7 @@
 package s10k.tool.c2c.domain;
 
 import java.time.Instant;
+import java.time.Period;
 import java.util.Map;
 
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
@@ -12,7 +13,7 @@ import s10k.tool.common.domain.ClaimableJobState;
  */
 @RegisterReflectionForBinding
 public record CloudDatumStreamRakeTaskConfiguration(Long configId, Long datumStreamId, String state, Instant executeAt,
-		String offset, String message, Map<String, Object> serviceProperties) {
+		Period offset, String message, Map<String, Object> serviceProperties) {
 
 	/**
 	 * Get the error count service property.
