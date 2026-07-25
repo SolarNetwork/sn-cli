@@ -1,5 +1,6 @@
 package s10k.tool.common.domain;
 
+import java.time.ZoneId;
 import java.util.Map;
 
 import org.jspecify.annotations.Nullable;
@@ -35,6 +36,30 @@ public record ProfileInfo(String name, SnTokenCredentials tokenCredentials, @Nul
 			return (Map) m;
 		}
 		return Map.of();
+	}
+
+	@Override
+	public ResultDisplayMode displayMode() {
+		if (config != null && config.get("display-mode") instanceof String mode) {
+			try {
+				return ResultDisplayMode.valueFor(mode);
+			} catch (Exception e) {
+				// ignore and fall back to UTC
+			}
+		}
+		return ResultDisplayMode.PRETTY;
+	}
+
+	@Override
+	public ZoneId zone() {
+		if (config != null && config.get("zone") instanceof String tz) {
+			try {
+				return ZoneId.of(tz);
+			} catch (Exception e) {
+				// ignore and fall back to UTC
+			}
+		}
+		return ZoneId.systemDefault();
 	}
 
 }

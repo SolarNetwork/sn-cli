@@ -2,11 +2,15 @@ package s10k.tool.common.util;
 
 import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
+import static net.solarnetwork.util.DateUtils.ISO_DATE_OPT_TIME_ALT_LOCAL;
 import static org.springframework.util.StreamUtils.nonClosing;
+import static s10k.tool.common.util.DateUtils.local;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -27,6 +31,7 @@ import com.github.freva.asciitable.Column;
 
 import de.siegmar.fastcsv.writer.CsvWriter;
 import net.solarnetwork.util.StringUtils;
+import s10k.tool.common.domain.ProfileProvider;
 import s10k.tool.common.domain.ResultDisplayMode;
 
 /**
@@ -206,6 +211,54 @@ public class TableUtils {
 	}
 
 	/**
+	 * A tabular display configuration.
+	 */
+	public record TableConfiguration(ResultDisplayMode mode, ZoneId zone) {
+
+	}
+
+	/**
+	 * Resolve a table configuration.
+	 * 
+	 * @param profileProvider the profile provider for configuration
+	 * @param mode            the specifically desired display mode
+	 * @return the configuration
+	 */
+	public static TableConfiguration tableConfig(final @Nullable ProfileProvider profileProvider,
+			final @Nullable ResultDisplayMode mode) {
+		return tableConfig(profileProvider, mode, null);
+	}
+
+	/**
+	 * Resolve a table configuration.
+	 * 
+	 * @param profileProvider the profile provider for configuration
+	 * @param mode            the specifically desired display mode
+	 * @param zone            the specifically desired display time zone
+	 * @return the configuration
+	 */
+	public static TableConfiguration tableConfig(final @Nullable ProfileProvider profileProvider,
+			final @Nullable ResultDisplayMode mode, final @Nullable ZoneId zone) {
+		ResultDisplayMode dispMode = mode;
+		ZoneId tz = zone;
+		if (profileProvider != null) {
+			dispMode = profileProvider.displayMode();
+			tz = profileProvider.zone();
+		}
+		if (mode != null) {
+			dispMode = mode;
+		} else if (dispMode == null) {
+			dispMode = ResultDisplayMode.PRETTY;
+		}
+		if (zone != null) {
+			tz = zone;
+		} else if (tz == null) {
+			tz = ZoneId.systemDefault();
+		}
+		return new TableConfiguration(dispMode, tz);
+	}
+
+	/**
 	 * Render tabular data to an output stream.
 	 * 
 	 * @param data         the data to render; the collection value type can be
@@ -214,15 +267,15 @@ public class TableUtils {
 	 *                     {@code Map} value, the map entries will be enumerated
 	 *                     into a 2-column table, or written directly in
 	 *                     {@code JSON} mode
-	 * @param mode         the output mode
+	 * @param config       the table configuration
 	 * @param objectMapper the JSON mapper to use (only required for if {@code mode}
 	 *                     is {@code JSON})
 	 * @param out          the output stream
 	 * @throws IOException if any IO error occurs
 	 */
-	public static void renderTableData(@Nullable SequencedCollection<?> data, ResultDisplayMode mode,
+	public static void renderTableData(@Nullable SequencedCollection<?> data, TableConfiguration config,
 			ObjectMapper objectMapper, OutputStream out) throws IOException {
-		renderTableData(null, data, mode, objectMapper, null, out);
+		renderTableData(null, data, config, objectMapper, null, out);
 	}
 
 	/**
@@ -235,15 +288,15 @@ public class TableUtils {
 	 *                     {@code Map} value, the map entries will be enumerated
 	 *                     into a 2-column table, or written directly in
 	 *                     {@code JSON} mode
-	 * @param mode         the output mode
+	 * @param config       the table configuration
 	 * @param objectMapper the JSON mapper to use (only required for if {@code mode}
 	 *                     is {@code JSON})
 	 * @param out          the output stream
 	 * @throws IOException if any IO error occurs
 	 */
 	public static void renderTableData(Column @Nullable [] columns, @Nullable SequencedCollection<?> data,
-			ResultDisplayMode mode, ObjectMapper objectMapper, OutputStream out) throws IOException {
-		renderTableData(columns, data, mode, objectMapper, null, out);
+			TableConfiguration config, ObjectMapper objectMapper, OutputStream out) throws IOException {
+		renderTableData(columns, data, config, objectMapper, null, out);
 	}
 
 	/**
@@ -257,7 +310,7 @@ public class TableUtils {
 	 *                            single {@code Map} value, the map entries will be
 	 *                            enumerated into a 2-column table, or written
 	 *                            directly in {@code JSON} mode
-	 * @param mode                the output mode
+	 * @param config              the table configuration
 	 * @param objectMapper        the JSON mapper to use (only required for if
 	 *                            {@code mode} is {@code JSON})
 	 * @param customJsonFormatter an optional formatter to use, or {@code null} for
@@ -266,11 +319,15 @@ public class TableUtils {
 	 * @throws IOException if any IO error occurs
 	 */
 	public static void renderTableData(Column @Nullable [] columns, @Nullable SequencedCollection<?> data,
-			ResultDisplayMode mode, @Nullable ObjectMapper objectMapper, @Nullable PrettyPrinter customJsonFormatter,
+			TableConfiguration config, @Nullable ObjectMapper objectMapper, @Nullable PrettyPrinter customJsonFormatter,
 			OutputStream out) throws IOException {
 		if (data == null || data.isEmpty()) {
 			return;
 		}
+
+		final ResultDisplayMode mode = config.mode();
+		final ZoneId zone = config.zone();
+
 		Map<?, ?> mapData = null;
 		if (data.size() == 1 && data.getFirst() instanceof Map<?, ?> m) {
 			mapData = m;
@@ -282,19 +339,18 @@ public class TableUtils {
 				}
 				if (mapData != null) {
 					for (Entry<?, ?> e : mapData.entrySet()) {
-						csv.writeRecord(optionalStringValue(e.getKey()), cellValue(e.getValue()));
+						csv.writeRecord(optionalStringValue(e.getKey()), cellValue(e.getValue(), zone));
 					}
 				} else {
 					for (Object row : data) {
 						if (row instanceof String[] a) {
-							csv.writeRecord(a);
+							csv.writeRecord(Arrays.stream(a).map(e -> cellValue(e, zone)).toArray(String[]::new));
 						} else if (row instanceof Object[] a) {
-							String[] s = Arrays.stream(a).map(TableUtils::optionalStringValue).toArray(String[]::new);
-							csv.writeRecord(s);
+							csv.writeRecord(Arrays.stream(a).map(e -> cellValue(e, zone)).toArray(String[]::new));
 						} else if (row instanceof Collection<?> l) {
-							csv.writeRecord(l.stream().map(TableUtils::optionalStringValue).toArray(String[]::new));
+							csv.writeRecord(l.stream().map(e -> cellValue(e, zone)).toArray(String[]::new));
 						} else {
-							csv.writeRecord(cellValue(row));
+							csv.writeRecord(cellValue(row, zone));
 						}
 					}
 				}
@@ -314,8 +370,8 @@ public class TableUtils {
 		} else {
 			Object[][] tableData;
 			if (mapData != null) {
-				tableData = mapData.entrySet().stream().map(e -> new Object[] { e.getKey(), cellValue(e.getValue()) })
-						.toArray(Object[][]::new);
+				tableData = mapData.entrySet().stream()
+						.map(e -> new Object[] { e.getKey(), cellValue(e.getValue(), zone) }).toArray(Object[][]::new);
 			} else {
 				tableData = data.stream().map(row -> {
 					if (row instanceof Object[] a) {
@@ -324,6 +380,16 @@ public class TableUtils {
 						return l.toArray(Object[]::new);
 					}
 					return new Object[] { row };
+				}).map(row -> {
+					if (row == null) {
+						return row;
+					}
+					@Nullable
+					String[] cells = new String[row.length];
+					for (int i = 0; i < cells.length; i++) {
+						cells[i] = cellValue(row[i], zone);
+					}
+					return cells;
 				}).toArray(Object[][]::new);
 			}
 			AsciiTableBuilder atb = AsciiTable.builder();
@@ -341,11 +407,13 @@ public class TableUtils {
 		return (v != null ? v.toString() : null);
 	}
 
-	private static @Nullable String cellValue(@Nullable Object val) {
+	private static @Nullable String cellValue(@Nullable Object val, ZoneId zone) {
 		if (val instanceof Collection<?> c) {
 			val = StringUtils.commaDelimitedStringFromCollection(c);
 		} else if (val instanceof Map<?, ?> m) {
 			val = StringUtils.delimitedStringFromMap(m);
+		} else if (val instanceof Instant date) {
+			val = ISO_DATE_OPT_TIME_ALT_LOCAL.format(local(date, zone));
 		}
 		return optionalStringValue(val);
 	}

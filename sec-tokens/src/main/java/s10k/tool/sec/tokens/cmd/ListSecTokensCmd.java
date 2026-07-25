@@ -4,6 +4,7 @@ import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 import static s10k.tool.common.util.RestUtils.populateQueryParameters;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,9 +54,8 @@ public class ListSecTokensCmd extends BaseSubCmd<SecTokensCmd> implements Callab
 	SecurityTokenType tokenType;
 	
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -91,7 +91,7 @@ public class ListSecTokensCmd extends BaseSubCmd<SecTokensCmd> implements Callab
 				(tokenType != null ? new String[] { tokenType.name() } : null));
 
 		final RestClient restClient = restClient();
-
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		final ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
 
 		try {
@@ -103,7 +103,7 @@ public class ListSecTokensCmd extends BaseSubCmd<SecTokensCmd> implements Callab
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? infos
 					: infos.stream().map(info -> tokenRow(info, pretty)).toList());
-			TableUtils.renderTableData(tokenColumns(), tableData, displayMode, objectMapper,
+			TableUtils.renderTableData(tokenColumns(), tableData, tableConfig(this, displayMode), objectMapper,
 					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {

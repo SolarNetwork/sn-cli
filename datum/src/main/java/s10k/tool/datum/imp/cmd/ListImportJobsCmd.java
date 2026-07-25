@@ -1,5 +1,6 @@
 package s10k.tool.datum.imp.cmd;
 
+import static s10k.tool.common.util.TableUtils.tableConfig;
 import static s10k.tool.datum.imp.util.DatumImportRestUtils.listDatumImportTasks;
 
 import java.util.List;
@@ -35,9 +36,8 @@ public class ListImportJobsCmd extends BaseSubCmd<DatumImportsCmd> implements Ca
 	DatumImportState[] jobStates;
 
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -53,14 +53,15 @@ public class ListImportJobsCmd extends BaseSubCmd<DatumImportsCmd> implements Ca
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		final DatumImportsFilter filter = filter();
 		try {
 			final List<DatumImportTaskInfo> tasks = listDatumImportTasks(restClient, objectMapper, filter);
 
 			final List<?> tableData = (displayMode == ResultDisplayMode.JSON ? tasks
 					: tasks.stream().map(c -> ViewImportJobCmd.tableDataRow(c)).toList());
-			TableUtils.renderTableData(ViewImportJobCmd.tableDataColumns(), tableData, displayMode, objectMapper,
-					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			TableUtils.renderTableData(ViewImportJobCmd.tableDataColumns(), tableData, tableConfig(this, displayMode),
+					objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error listing datum: %s".formatted(e.getMessage()));

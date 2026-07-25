@@ -1,5 +1,7 @@
 package s10k.tool.common.domain;
 
+import java.time.ZoneId;
+
 /**
  * API for something that provides a profile.
  */
@@ -25,6 +27,26 @@ public interface ProfileProvider {
 			throw new IllegalStateException("No credentials available.");
 		}
 		return profile;
+	}
+
+	/**
+	 * Get the profile display mode.
+	 * 
+	 * @return the display mode, or {@code PRETTY}
+	 */
+	default ResultDisplayMode displayMode() {
+		final var profile = profile();
+		return (profile != null ? profile.displayMode() : ResultDisplayMode.PRETTY);
+	}
+
+	/**
+	 * Get the profile time zone.
+	 * 
+	 * @return the time zone
+	 */
+	default ZoneId zone() {
+		final var profile = profile();
+		return (profile != null ? profile.zone() : ZoneId.systemDefault());
 	}
 
 }

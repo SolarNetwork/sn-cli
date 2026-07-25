@@ -4,6 +4,7 @@ import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
 import static s10k.tool.common.util.DateUtils.nonEpochInstant;
 import static s10k.tool.common.util.StringUtils.onlyTrueValue;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 import static s10k.tool.datum.imp.util.DatumImportRestUtils.viewDatumImportTask;
 
 import java.util.List;
@@ -39,9 +40,8 @@ public class ViewImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements Cal
 	String jobId;
 
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -57,12 +57,13 @@ public class ViewImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements Cal
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		try {
 			final DatumImportTaskInfo result = viewDatumImportTask(restClient, objectMapper, jobId);
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? List.of(result)
 					: List.of((Object) tableDataRow(result)));
-			TableUtils.renderTableData(tableDataColumns(), tableData, displayMode, objectMapper,
+			TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode), objectMapper,
 					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {

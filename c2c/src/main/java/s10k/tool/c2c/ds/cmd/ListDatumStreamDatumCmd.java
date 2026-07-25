@@ -4,7 +4,9 @@ import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
 import static java.util.stream.StreamSupport.stream;
 import static org.springframework.util.StreamUtils.nonClosing;
+import static s10k.tool.common.util.DateUtils.local;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
@@ -37,6 +40,7 @@ import s10k.tool.common.util.DateUtils;
 import s10k.tool.common.util.DatumUtils;
 import s10k.tool.common.util.DatumUtils.DatumResultStructure;
 import s10k.tool.common.util.TableUtils;
+import s10k.tool.common.util.TableUtils.TableConfiguration;
 
 /**
  * Query for Cloud Datum Stream datum.
@@ -59,9 +63,8 @@ public class ListDatumStreamDatumCmd extends BaseSubCmd<DatumStreamsCmd> impleme
 	ZoneId zone;
 	
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -96,6 +99,7 @@ public class ListDatumStreamDatumCmd extends BaseSubCmd<DatumStreamsCmd> impleme
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
 		final CloudIntegrationsFilter filter = filter();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 
 		try {
 			CloudDatumStreamQueryResult datum = listCloudDatumStreamDatum(restClient, objectMapper, datumStreamId,
@@ -109,16 +113,17 @@ public class ListDatumStreamDatumCmd extends BaseSubCmd<DatumStreamsCmd> impleme
 				objectMapper.writeValue(nonClosing(System.out), datum);
 			} else {
 				final DatumResultStructure structure = DatumUtils.resultStructure(datum);
+				final TableConfiguration tableConfig = tableConfig(this, displayMode, zone);
 				List<?> tableData = stream(datum.spliterator(), false).map(d -> structure.tableDataRow(d)).toList();
 				TableUtils.renderTableData(structure != null ? structure.columns().toArray(Column[]::new) : null,
-						tableData, displayMode, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
+						tableData, tableConfig, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
 						System.out);
 				if (displayMode == ResultDisplayMode.PRETTY && datum.getAuxiliary() != null
 						&& !datum.getAuxiliary().isEmpty()) {
-					tableData = datum.getAuxiliary().stream()
-							.map(d -> datumAuxiliaryTableDataRow(d, objectMapper.writerWithDefaultPrettyPrinter()))
+					tableData = datum.getAuxiliary().stream().map(
+							d -> datumAuxiliaryTableDataRow(d, objectMapper.writerWithDefaultPrettyPrinter(), zone))
 							.toList();
-					TableUtils.renderTableData(datumAuxiliaryTableDataColumns(), tableData, displayMode, objectMapper,
+					TableUtils.renderTableData(datumAuxiliaryTableDataColumns(), tableData, tableConfig, objectMapper,
 							TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 				}
 			}
@@ -217,14 +222,18 @@ public class ListDatumStreamDatumCmd extends BaseSubCmd<DatumStreamsCmd> impleme
 	/**
 	 * Convert datum auxiliary listing into a tabular structure.
 	 * 
-	 * @param aux the configuration to convert
+	 * @param aux        the configuration to convert
+	 * @param jsonWriter the JSON writer
+	 * @param zone       the desired time zone, or {@code null} to use the system
+	 *                   default
 	 * @return the metadata data
 	 */
-	public static Object[] datumAuxiliaryTableDataRow(DatumAuxiliaryRecord aux, ObjectWriter jsonWriter) {
+	public static Object[] datumAuxiliaryTableDataRow(DatumAuxiliaryRecord aux, ObjectWriter jsonWriter,
+			@Nullable ZoneId zone) {
 		try {
 			// @formatter:off
 			return new Object[] {
-					aux.getTimestamp(),
+					local(aux.getTimestamp(), zone),
 					aux.getKind(),
 					aux.getObjectId(),
 					aux.getSourceId(),

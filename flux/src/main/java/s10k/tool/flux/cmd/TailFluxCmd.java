@@ -6,6 +6,7 @@ import static net.solarnetwork.util.NumberUtils.narrow;
 import static net.solarnetwork.util.NumberUtils.round;
 import static s10k.tool.common.domain.ResultDisplayMode.JSON;
 import static s10k.tool.common.domain.ResultDisplayMode.PRETTY;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -52,6 +53,7 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ProfileInfo;
+import s10k.tool.common.domain.ProfileProvider;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.domain.SnTokenCredentialsInfo;
 import s10k.tool.common.util.RestUtils;
@@ -101,9 +103,8 @@ public class TailFluxCmd extends BaseSubCmd<FluxCmd> implements Callable<Integer
 	MqttVersion mqttVersion = MqttVersion.Mqtt5;
 
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the results",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the results")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	private String mqttTopicFilter;
@@ -186,7 +187,7 @@ public class TailFluxCmd extends BaseSubCmd<FluxCmd> implements Callable<Integer
 					new ConcurrentTaskScheduler(executor, scheduler));
 
 			final CompletableFuture<Object> closeFuture = new CompletableFuture<Object>();
-			final var client = new MqttConnectionService(connectionFactory, stats, closeFuture);
+			final var client = new MqttConnectionService(connectionFactory, stats, this, closeFuture);
 			final var mqttConfig = client.getMqttConfig();
 			mqttConfig.setCleanSession(true);
 			mqttConfig.setReconnect(false);
@@ -233,18 +234,22 @@ public class TailFluxCmd extends BaseSubCmd<FluxCmd> implements Callable<Integer
 			implements MqttConnectionObserver, MqttMessageHandler {
 
 		private final CompletableFuture<Object> future;
+		private final ProfileProvider profileProvider;
 		private final ObjectWriter jsonOut;
 		private final OutputStream out;
+		private final ResultDisplayMode displayMode;
 
 		private AtomicLong count = new AtomicLong();
 		private List<Column> globalColumns;
 
 		private MqttConnectionService(MqttConnectionFactory connectionFactory, StatTracker mqttStats,
-				CompletableFuture<Object> future) {
+				ProfileProvider profileProvider, CompletableFuture<Object> future) {
 			super(connectionFactory, mqttStats);
 			this.future = future;
+			this.profileProvider = profileProvider;
 			jsonOut = objectMapper.writerWithDefaultPrettyPrinter();
 			out = StreamUtils.nonClosing(System.out);
+			displayMode = profileProvider.displayMode();
 		}
 
 		@Override
@@ -277,7 +282,7 @@ public class TailFluxCmd extends BaseSubCmd<FluxCmd> implements Callable<Integer
 					TableUtils.renderTableData(displayMode == PRETTY || !csvGlobalHeader || msgNum == 1
 								? cols.toArray(Column[]::new)
 								: null,
-							List.of(displayMap.values()), displayMode, objectMapper, out);
+							List.of(displayMap.values()), tableConfig(profileProvider, displayMode), objectMapper, out);
 					// @formatter:on
 				}
 			} catch (IOException e) {

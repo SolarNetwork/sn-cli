@@ -5,6 +5,7 @@ import static net.solarnetwork.domain.datum.DatumSamplesType.Instantaneous;
 import static net.solarnetwork.domain.datum.DatumSamplesType.Status;
 import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 import static s10k.tool.datum.stream.cmd.ListDatumStreamMetadataCmd.metadataColumns;
 import static s10k.tool.datum.stream.cmd.ListDatumStreamMetadataCmd.metadataRow;
 
@@ -84,9 +85,8 @@ public class RenameDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imp
 	String[] statusPropertyNames;	
 
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -116,6 +116,7 @@ public class RenameDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imp
 				instantaneousPropertyNames, accumulatingPropertyNames, statusPropertyNames);
 
 		final RestClient restClient = restClient();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		try {
 			ObjectDatumStreamMetadata result = updateNodeDatumStreamAttributes(restClient, objectMapper, streamMeta);
 
@@ -123,7 +124,7 @@ public class RenameDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imp
 				OutputUtils.writeJsonObject(objectMapper, result);
 			} else {
 				List<?> tableData = Collections.singletonList(result).stream().map(m -> metadataRow(m, true)).toList();
-				TableUtils.renderTableData(metadataColumns(), tableData, displayMode, objectMapper,
+				TableUtils.renderTableData(metadataColumns(), tableData, tableConfig(this, displayMode), objectMapper,
 						TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			}
 			return 0;

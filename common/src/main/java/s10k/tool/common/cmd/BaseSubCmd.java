@@ -2,6 +2,7 @@ package s10k.tool.common.cmd;
 
 import java.time.Instant;
 
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.client.ClientHttpRequestFactory;
@@ -13,6 +14,7 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.ParentCommand;
 import s10k.tool.common.domain.ProfileInfo;
 import s10k.tool.common.domain.ProfileProvider;
+import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.RestUtils;
 
 /**
@@ -54,7 +56,7 @@ public abstract class BaseSubCmd<P extends ProfileProvider> implements ProfilePr
 	}
 
 	@Override
-	public ProfileInfo profile() {
+	public @Nullable ProfileInfo profile() {
 		return (parentCmd != null ? parentCmd.profile() : null);
 	}
 
@@ -129,6 +131,20 @@ public abstract class BaseSubCmd<P extends ProfileProvider> implements ProfilePr
 				profile.tokenCredentials().credentialsProvider(now), objectMapper,
 				RestUtils.DEFAULT_SOLARNETWORK_BASE_URL, isTraceHttp());
 		return restClient;
+	}
+
+	/**
+	 * Get the display mode.
+	 * 
+	 * @param mode the optional mode to override the profile default
+	 * @return the mode
+	 */
+	protected ResultDisplayMode displayMode(@Nullable ResultDisplayMode mode) {
+		if (mode != null) {
+			return mode;
+		}
+		ProfileInfo profile = profile();
+		return (profile != null ? profile.displayMode() : ResultDisplayMode.PRETTY);
 	}
 
 }

@@ -4,6 +4,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static s10k.tool.c2c.util.CloudIntegrationRestUtils.viewCloudDatumStream;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 import static s10k.tool.common.util.StringUtils.stringOrFileContents;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 
 import java.io.InputStreamReader;
 import java.util.LinkedHashMap;
@@ -61,9 +62,8 @@ public class UpdateDatumStreamServicePropertiesCmd extends BaseSubCmd<DatumStrea
 	public boolean ignoreStdIn;
 	
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 
 	@Parameters(index = "0", paramLabel = "<config>", description = "the properties to save, or @file for file to load", arity = "0..1")
 	String value;
@@ -121,8 +121,9 @@ public class UpdateDatumStreamServicePropertiesCmd extends BaseSubCmd<DatumStrea
 						settings);
 			}
 
-			TableUtils.renderTableData(TableUtils.mapColumns("Property", "Value", false), List.of(result), displayMode,
-					objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			TableUtils.renderTableData(TableUtils.mapColumns("Property", "Value", false), List.of(result),
+					tableConfig(this, displayMode), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
+					System.out);
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error viewing cloud datum streams: %s".formatted(e.getMessage()));

@@ -4,7 +4,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.jspecify.annotations.Nullable;
@@ -53,31 +52,27 @@ public final class ProfileUtils {
 	 * @param name the name of the profile to load the configuration for
 	 * @return the profile configuration, or {@code null} if none available
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static @Nullable Map<String, ?> profileConfiguration(@Nullable String name) {
 		final Path configPath = userConfigurationDir().resolve(CONFIG_FILENAME);
 		if (Files.isReadable(configPath)) {
 			try {
 				TomlMapper mapper = new TomlMapper();
 				try (InputStream in = Files.newInputStream(configPath)) {
-					JsonNode root = mapper.readTree(in);
-					JsonNode profileNode;
-					if (name == null || name.isBlank()) {
-						profileNode = root;
-					} else {
-						profileNode = root.path("profile").path(name);
+					Map<String, Object> globalConfig = mapper.readValue(in, JsonUtils.STRING_MAP_TYPE);
+					Object profiles = globalConfig.remove("profile");
+					Map<String, Object> profileConfig = null;
+					if (name != null && !name.isBlank() && profiles instanceof Map<?, ?> profilesMap
+							&& profilesMap.get(name) instanceof Map<?, ?> profileMap) {
+						profileConfig = (Map) profileMap;
 					}
-					if (profileNode.isObject()) {
-						if (name == null || name.isBlank()) {
-							// extract all but "profile"
-							Map<String, Object> result = new LinkedHashMap<>(profileNode.size());
-							profileNode.forEachEntry((k, v) -> {
-								if (!"profile".equals(k)) {
-									result.put(k, v);
-								}
-							});
-							return result;
-						}
-						return mapper.treeToValue(profileNode, JsonUtils.STRING_MAP_TYPE);
+					if (profileConfig != null && globalConfig != null) {
+						globalConfig.putAll(profileConfig);
+						return globalConfig;
+					} else if (profileConfig != null) {
+						return profileConfig;
+					} else {
+						return globalConfig;
 					}
 				}
 			} catch (Exception e) {

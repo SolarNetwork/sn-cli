@@ -5,6 +5,7 @@ import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
 import static s10k.tool.c2c.util.CloudIntegrationRestUtils.listCloudDatumStreams;
 import static s10k.tool.c2c.util.CloudIntegrationsUtils.datumStreamServiceLocalizedName;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,9 +56,8 @@ public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements C
 	String sourceId;
 	
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -73,6 +73,7 @@ public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements C
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		final CloudIntegrationsFilter filter = filter();
 		if (filter.getDatumStreamId() == null && filter.getNodeId() == null && filter.getSourceId() == null) {
 			System.err.println("At least one search criteria option is required.");
@@ -105,7 +106,7 @@ public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements C
 								.map(p -> new CloudDatumStreamPropertyDetail(datumStream, mapping, integration, p))
 								.toList());
 				final List<?> tableData = details.stream().map(c -> tableDataRow(c, false)).toList();
-				TableUtils.renderTableData(tableDataColumns(), tableData, displayMode, objectMapper,
+				TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode), objectMapper,
 						TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			}
 			return 0;

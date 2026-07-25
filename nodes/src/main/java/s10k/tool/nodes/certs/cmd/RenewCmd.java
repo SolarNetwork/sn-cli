@@ -1,5 +1,7 @@
 package s10k.tool.nodes.certs.cmd;
 
+import static s10k.tool.common.util.TableUtils.tableConfig;
+
 import java.time.ZoneId;
 import java.util.Collections;
 import java.util.List;
@@ -53,9 +55,8 @@ public class RenewCmd extends BaseSubCmd<CertificatesCmd> implements Callable<In
 	String password;
 
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the result",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -71,7 +72,8 @@ public class RenewCmd extends BaseSubCmd<CertificatesCmd> implements Callable<In
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
-		final ZoneId zone = ZoneId.systemDefault();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
+		final ZoneId zone = zone();
 		try {
 			NodeCertificateInfo info = renewNodeCertificate(restClient, nodeId, new String(password));
 
@@ -79,8 +81,8 @@ public class RenewCmd extends BaseSubCmd<CertificatesCmd> implements Callable<In
 				OutputUtils.writeJsonObject(objectMapper, info);
 			} else {
 				List<?> tableData = Collections.singletonList(ReportCmd.reportRow(info, zone));
-				TableUtils.renderTableData(ReportCmd.reportColumns(), tableData, displayMode, objectMapper,
-						TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+				TableUtils.renderTableData(ReportCmd.reportColumns(), tableData, tableConfig(this, displayMode),
+						objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			}
 			return 0;
 		} catch (Exception e) {

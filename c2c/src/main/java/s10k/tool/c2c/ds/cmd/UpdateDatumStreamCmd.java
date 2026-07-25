@@ -5,6 +5,7 @@ import static s10k.tool.c2c.util.CloudIntegrationRestUtils.viewCloudDatumStream;
 import static s10k.tool.common.domain.ServiceConfiguration.SERVICE_PROPERTIES_KEY;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 import static s10k.tool.common.util.StringUtils.stringOrFileContents;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 
 import java.io.InputStreamReader;
 import java.time.Instant;
@@ -104,9 +105,8 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 	public boolean ignoreStdIn;
 	
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 
 	@Parameters(index = "0", paramLabel = "<config>", description = "the updates to save, or @file for file to load", arity = "0..1")
 	String value;
@@ -176,6 +176,7 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		final ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
 		try {
 			CloudDatumStreamConfiguration existing = viewCloudDatumStream(restClient, objectMapper, datumStreamId);
@@ -220,8 +221,9 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? List.of(result)
 					: List.of((Object) ListDatumStreamsCmd.tableDataRow(result, false, pretty)));
-			TableUtils.renderTableData(ListDatumStreamsCmd.tableDataColumns(), tableData, displayMode, objectMapper,
-					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			TableUtils.renderTableData(ListDatumStreamsCmd.tableDataColumns(), tableData,
+					tableConfig(this, displayMode), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
+					System.out);
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error viewing cloud datum streams: %s".formatted(e.getMessage()));

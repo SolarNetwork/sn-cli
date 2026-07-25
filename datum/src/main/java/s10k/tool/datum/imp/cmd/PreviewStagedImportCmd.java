@@ -3,6 +3,7 @@ package s10k.tool.datum.imp.cmd;
 import static java.util.stream.StreamSupport.stream;
 import static org.springframework.util.StreamUtils.nonClosing;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -39,9 +40,8 @@ public class PreviewStagedImportCmd extends BaseSubCmd<DatumImportsCmd> implemen
 	String jobId;
 
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -57,6 +57,7 @@ public class PreviewStagedImportCmd extends BaseSubCmd<DatumImportsCmd> implemen
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		try {
 			final List<Datum> datum = previewStagedDatumImportTask(restClient, objectMapper, jobId);
 
@@ -71,8 +72,8 @@ public class PreviewStagedImportCmd extends BaseSubCmd<DatumImportsCmd> implemen
 				final DatumResultStructure structure = DatumUtils.resultStructure(datum);
 				List<?> tableData = stream(datum.spliterator(), false).map(d -> structure.tableDataRow(d)).toList();
 				TableUtils.renderTableData(structure != null ? structure.columns().toArray(Column[]::new) : null,
-						tableData, displayMode, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
-						System.out);
+						tableData, tableConfig(this, displayMode), objectMapper,
+						TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			}
 			return 0;
 		} catch (Exception e) {

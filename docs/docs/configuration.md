@@ -25,6 +25,16 @@ some-setting = "some-value-for-home"
 some-setting = "some-value-for-work"
 ```
 
+## Default display mode
+
+The `display-mode` setting allows configuring a default display mode for command results.
+Many commands offer a `--display-mode` option that can override this global configuration.
+
+## Display time zone
+
+The `zone` setting allows configuring a default display time zone, to use when rendering
+date values. Note that in `JSON` display mode this setting is ignored.
+
 ## Service URLs
 
 The `service-urls` setting allows configuring alternate base URLs for SolarNetwork services.

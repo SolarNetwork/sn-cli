@@ -4,6 +4,7 @@ import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 import static s10k.tool.common.util.RestUtils.populateQueryParameters;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -100,9 +101,8 @@ public class ListSourcesCmd extends BaseSubCmd<NodesCmd> implements Callable<Int
 	String[] statusPropertyNames;
 	
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -133,6 +133,7 @@ public class ListSourcesCmd extends BaseSubCmd<NodesCmd> implements Callable<Int
 		// @formatter:on
 
 		final RestClient restClient = restClient();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 
 		try {
 			List<ObjectAndSource> sources = listSources(restClient, objectMapper, ObjectDatumKind.Node, filter);
@@ -147,7 +148,7 @@ public class ListSourcesCmd extends BaseSubCmd<NodesCmd> implements Callable<Int
 			TableUtils.renderTableData(new Column[] {
 					new Column().header("Node ID").dataAlign(RIGHT),
 					new Column().header("Source ID").dataAlign(LEFT),
-				}, tableData, displayMode, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+				}, tableData, tableConfig(this, displayMode), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			// @formatter:on
 			return 0;
 		} catch (Exception e) {

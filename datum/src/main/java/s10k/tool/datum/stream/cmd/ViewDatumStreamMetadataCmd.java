@@ -8,6 +8,7 @@ import static net.solarnetwork.domain.datum.ObjectDatumKind.Location;
 import static net.solarnetwork.domain.datum.ObjectDatumKind.Node;
 import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,9 +45,8 @@ public class ViewDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 	UUID streamId;
 	
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -88,7 +88,7 @@ public class ViewDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 			TableUtils.renderTableData(new Column[] {
 					new Column().header("Property").dataAlign(LEFT),
 					new Column().header("Value").dataAlign(LEFT),
-				}, tableData, displayMode, objectMapper, System.out);
+				}, tableData, tableConfig(this, displayMode), objectMapper, System.out);
 			// @formatter:on
 			return 0;
 		} catch (Exception e) {

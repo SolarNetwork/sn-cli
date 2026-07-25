@@ -4,6 +4,7 @@ import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
 import static s10k.tool.c2c.util.CloudIntegrationRestUtils.listCloudDatumStreams;
 import static s10k.tool.c2c.util.CloudIntegrationsUtils.datumStreamServiceLocalizedName;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -87,9 +88,8 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 	String[] sourceIds;
 	
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -124,6 +124,7 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 		final RestClient restClient = restClient();
 		final ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
 		final CloudIntegrationsFilter filter = filter();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		try {
 			List<CloudDatumStreamConfiguration> confs = listCloudDatumStreams(restClient, objectMapper, filter);
 			if (confs.isEmpty()) {
@@ -133,7 +134,7 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? confs
 					: confs.stream().map(c -> tableDataRow(c, false, pretty)).toList());
-			TableUtils.renderTableData(tableDataColumns(), tableData, displayMode, objectMapper,
+			TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode), objectMapper,
 					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {

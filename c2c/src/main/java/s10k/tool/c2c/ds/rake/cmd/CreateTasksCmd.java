@@ -11,6 +11,7 @@ import static s10k.tool.c2c.ds.rake.cmd.ListTasksCmd.listCloudDatumStreamRakeTas
 import static s10k.tool.c2c.util.CloudIntegrationRestUtils.datumStreamsOfType;
 import static s10k.tool.c2c.util.CloudIntegrationsUtils.datumStreamServiceLocalizedName;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -90,9 +91,8 @@ public class CreateTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable
 	String[] types;
 	
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -108,6 +108,7 @@ public class CreateTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		try {
 			final CloudIntegrationsFilter filter = filter();
 
@@ -381,7 +382,8 @@ public class CreateTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable
 				rows.addAll(actions.undesiredOffsets.values().stream()
 						.map(c -> tableDataRow(datumStreams.get(actions.datumStreamId()), c, "Remove")).toList());
 				return rows.stream();
-			}).toList(), displayMode, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, out);
+			}).toList(), tableConfig(this, displayMode), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
+					out);
 		}
 	}
 

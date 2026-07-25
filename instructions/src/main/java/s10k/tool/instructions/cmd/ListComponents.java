@@ -1,5 +1,6 @@
 package s10k.tool.instructions.cmd;
 
+import static s10k.tool.common.util.TableUtils.tableConfig;
 import static s10k.tool.instructions.cmd.InstructionsCmd.TOPIC_SYSTEM_CONFIGURATION;
 import static s10k.tool.instructions.util.InstructionsUtils.executeInstruction;
 import static s10k.tool.instructions.util.InstructionsUtils.parseCompressedResultList;
@@ -42,9 +43,8 @@ public class ListComponents extends BaseSubCmd<InstructionsCmd> implements Calla
 	Long nodeId;
 
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -84,7 +84,7 @@ public class ListComponents extends BaseSubCmd<InstructionsCmd> implements Calla
 				TableUtils.renderTableData(new Column[] {
 						new Column().header("ID").dataAlign(HorizontalAlign.LEFT),
 						new Column().header("Title").dataAlign(HorizontalAlign.LEFT),
-				}, data, displayMode, objectMapper, System.out);
+				}, data, tableConfig(this, displayMode), objectMapper, System.out);
 				// @formatter:on
 				return 0;
 			} else if (status.getInstructionState() == InstructionState.Declined) {

@@ -4,6 +4,7 @@ import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
 import static net.solarnetwork.util.StringUtils.commaDelimitedStringFromCollection;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,9 +51,8 @@ public class ListNodeMetadataCmd extends BaseSubCmd<NodeMetadataCmd> implements 
 	String filter;
 
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the CSV data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 
 	// @formatter:on
 
@@ -69,8 +69,9 @@ public class ListNodeMetadataCmd extends BaseSubCmd<NodeMetadataCmd> implements 
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 
-		ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
+		final ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
 
 		try {
 			List<NodeMetadata> metas = listNodeMetadata(restClient, objectMapper, nodeIds, filter);
@@ -87,7 +88,7 @@ public class ListNodeMetadataCmd extends BaseSubCmd<NodeMetadataCmd> implements 
 					new Column().header("Node ID").dataAlign(RIGHT),
 					new Column().header("Updated").dataAlign(LEFT),
 					new Column().header("Metadata").dataAlign(LEFT),
-				}, tableData, displayMode, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+				}, tableData, tableConfig(this, displayMode), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			// @formatter:on
 
 			return 0;

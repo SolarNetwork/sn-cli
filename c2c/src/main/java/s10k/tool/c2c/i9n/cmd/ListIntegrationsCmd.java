@@ -4,6 +4,7 @@ import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
 import static s10k.tool.c2c.util.CloudIntegrationRestUtils.listCloudIntegrations;
 import static s10k.tool.c2c.util.CloudIntegrationsUtils.integrationServiceLocalizedName;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -72,9 +73,8 @@ public class ListIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implements 
 	String[] serviceIdentifiers;
 	
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -107,6 +107,7 @@ public class ListIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implements 
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		final CloudIntegrationsFilter filter = filter();
 
 		try {
@@ -118,7 +119,7 @@ public class ListIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implements 
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? confs
 					: confs.stream().map(c -> tableDataRow(c, false)).toList());
-			TableUtils.renderTableData(tableDataColumns(), tableData, displayMode, objectMapper,
+			TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode), objectMapper,
 					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {

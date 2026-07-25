@@ -3,6 +3,7 @@ package s10k.tool.sec.tokens.cmd;
 import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 
 import java.util.Collections;
 import java.util.List;
@@ -56,9 +57,8 @@ public class CreateSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Calla
 	SecurityPolicyOptions policyOptions;
 
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -75,6 +75,7 @@ public class CreateSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Calla
 	public Integer call() throws Exception {
 		final SecurityPolicy policy = (policyOptions != null ? policyOptions.toPolicy() : null);
 		final RestClient restClient = restClient();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		final ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
 
 		try {
@@ -84,7 +85,7 @@ public class CreateSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Calla
 				OutputUtils.writeJsonObject(objectMapper, result);
 			} else {
 				List<?> tableData = Collections.singletonList(tokenRow(result, pretty));
-				TableUtils.renderTableData(tokenColumns(), tableData, displayMode, objectMapper,
+				TableUtils.renderTableData(tokenColumns(), tableData, tableConfig(this, displayMode), objectMapper,
 						TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			}
 			return 0;

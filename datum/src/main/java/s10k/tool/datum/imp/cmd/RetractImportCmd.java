@@ -1,6 +1,7 @@
 package s10k.tool.datum.imp.cmd;
 
 import static s10k.tool.common.util.RestUtils.checkSuccess;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 import static s10k.tool.datum.imp.domain.DatumImportState.Retracted;
 
 import java.util.List;
@@ -43,9 +44,8 @@ public class RetractImportCmd extends BaseSubCmd<DatumImportsCmd> implements Cal
 		boolean force;
 
 		@Option(names = { "-mode", "--display-mode" },
-				description = "how to display the data",
-				defaultValue = "PRETTY")
-		ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+				description = "how to display the data")
+		ResultDisplayMode displayMode;
 		// @formatter:on
 
 	/**
@@ -61,6 +61,7 @@ public class RetractImportCmd extends BaseSubCmd<DatumImportsCmd> implements Cal
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		try {
 
 			final DatumImportTaskInfo result;
@@ -74,8 +75,8 @@ public class RetractImportCmd extends BaseSubCmd<DatumImportsCmd> implements Cal
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? List.of(result)
 					: List.of((Object) ViewImportJobCmd.tableDataRow(result)));
-			TableUtils.renderTableData(ViewImportJobCmd.tableDataColumns(), tableData, displayMode, objectMapper,
-					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			TableUtils.renderTableData(ViewImportJobCmd.tableDataColumns(), tableData, tableConfig(this, displayMode),
+					objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error confirming staged datum import job: %s".formatted(e.getMessage()));

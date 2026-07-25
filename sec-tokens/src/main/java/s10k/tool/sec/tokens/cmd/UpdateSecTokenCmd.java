@@ -1,6 +1,7 @@
 package s10k.tool.sec.tokens.cmd;
 
 import static s10k.tool.common.util.RestUtils.checkSuccess;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 import static s10k.tool.sec.tokens.cmd.ListSecTokensCmd.listSecurityTokens;
 import static s10k.tool.sec.tokens.cmd.ListSecTokensCmd.tokenColumns;
 import static s10k.tool.sec.tokens.cmd.ListSecTokensCmd.tokenRow;
@@ -66,9 +67,8 @@ public class UpdateSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Calla
 	boolean replacePolicy;
 
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -101,6 +101,7 @@ public class UpdateSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Calla
 	public Integer call() throws Exception {
 		final SecurityPolicy policy = (policyOptions != null ? policyOptions.toPolicy() : null);
 		final RestClient restClient = restClient();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		final ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
 
 		if ((name == null || name.isBlank()) && (description == null || description.isBlank())
@@ -121,7 +122,7 @@ public class UpdateSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Calla
 				OutputUtils.writeJsonObject(objectMapper, result);
 			} else {
 				List<?> tableData = Collections.singletonList(tokenRow(result, pretty));
-				TableUtils.renderTableData(tokenColumns(), tableData, displayMode, objectMapper,
+				TableUtils.renderTableData(tokenColumns(), tableData, tableConfig(this, displayMode), objectMapper,
 						TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			}
 			return 0;

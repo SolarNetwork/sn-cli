@@ -4,6 +4,7 @@ import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 import static s10k.tool.common.util.RestUtils.populateQueryParameters;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,9 +85,8 @@ public class ListDatumStreamMetadataIdsCmd extends BaseSubCmd<DatumStreamCmd> im
 	String[] statusPropertyNames;
 	
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -142,6 +142,7 @@ public class ListDatumStreamMetadataIdsCmd extends BaseSubCmd<DatumStreamCmd> im
 						statusPropertyNames);
 
 		final RestClient restClient = restClient();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 
 		try {
 			List<ObjectDatumStreamMetadata> metas = listStreamMetadataIds(restClient, objectMapper,
@@ -161,7 +162,7 @@ public class ListDatumStreamMetadataIdsCmd extends BaseSubCmd<DatumStreamCmd> im
 					new Column().header("Kind").dataAlign(LEFT),
 					new Column().header("ID").dataAlign(RIGHT),
 					new Column().header("Source ID").dataAlign(LEFT),
-				}, tableData, displayMode, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+				}, tableData, tableConfig(this, displayMode), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			// @formatter:on
 			return 0;
 		} catch (Exception e) {

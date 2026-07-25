@@ -6,6 +6,7 @@ import static s10k.tool.c2c.util.CloudIntegrationRestUtils.viewCloudDatumStream;
 import static s10k.tool.c2c.util.CloudIntegrationRestUtils.viewDatumStreamFilters;
 import static s10k.tool.c2c.util.CloudIntegrationsUtils.findDatumStreamServiceId;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,9 +67,8 @@ public class ViewDataValuesCmd extends BaseSubCmd<DatumStreamsCmd> implements Ca
 	boolean identifiersAsPaths;
 
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -84,6 +84,7 @@ public class ViewDataValuesCmd extends BaseSubCmd<DatumStreamsCmd> implements Ca
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 
 		final List<String> pathIdentifiers = StringUtils.delimitedStringToList(path, "/");
 
@@ -133,7 +134,7 @@ public class ViewDataValuesCmd extends BaseSubCmd<DatumStreamsCmd> implements Ca
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? confs
 					: CloudDataValue.flatList(confs).stream().map(c -> tableDataRow(c, identifiersAsPaths)).toList());
-			TableUtils.renderTableData(tableDataColumns(), tableData, displayMode, objectMapper,
+			TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode), objectMapper,
 					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {

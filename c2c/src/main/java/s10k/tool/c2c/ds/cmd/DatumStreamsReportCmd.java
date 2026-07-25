@@ -13,6 +13,7 @@ import static s10k.tool.c2c.ds.rake.cmd.ListTasksCmd.listCloudDatumStreamRakeTas
 import static s10k.tool.c2c.ds.rake.cmd.ListTasksCmd.rakeTaskMessage;
 import static s10k.tool.c2c.util.CloudIntegrationRestUtils.datumStreamsOfType;
 import static s10k.tool.c2c.util.CloudIntegrationsUtils.datumStreamServiceLocalizedName;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -51,6 +52,7 @@ import s10k.tool.common.domain.ClaimableJobState;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.OutputUtils;
 import s10k.tool.common.util.TableUtils;
+import s10k.tool.common.util.TableUtils.TableConfiguration;
 
 /**
  * Identify Cloud Datum Stream potential issues.
@@ -81,9 +83,8 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 	String[] types;
 	
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -100,6 +101,7 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 
 		try {
 			final var checkup = createCheckup(restClient);
@@ -122,7 +124,7 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 			} else {
 				// overall report
 				try (OutputStream out = (outputDir != null
-						? Files.newOutputStream(outputDir.resolve(fileName("datum-stream-overall-report")))
+						? Files.newOutputStream(outputDir.resolve(fileName("datum-stream-overall-report", displayMode)))
 						: nonClosing(System.out))) {
 					// @formatter:off
 					TableUtils.renderTableData(new Column[] {
@@ -139,7 +141,7 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 						, checkup.pollTasks.warningCount()
 						, checkup.rakeTasks.taskCount()
 						, checkup.rakeTasks.warningCount()
-					)), displayMode, objectMapper,
+					)), tableConfig(this, displayMode), objectMapper,
 							TableUtils.TableDataJsonPrettyPrinter.INSTANCE, out);
 					// @formatter:on
 				}
@@ -184,11 +186,13 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 			if (outputDir == null) {
 				System.out.printf("\n\nDatum Streams %s:\n", title);
 			}
-			try (OutputStream out = (outputDir != null ? Files.newOutputStream(outputDir.resolve(fileName(fileName)))
+			final TableConfiguration tableConfig = tableConfig(this, displayMode);
+			try (OutputStream out = (outputDir != null
+					? Files.newOutputStream(outputDir.resolve(fileName(fileName, tableConfig.mode())))
 					: nonClosing(System.out))) {
 				TableUtils.renderTableData(Checkup.datumStreamTableDataColumns(),
 						datumStreams.values().stream().map(c -> Checkup.datumStreamTableDataRow(c)).toList(),
-						displayMode, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, out);
+						tableConfig, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, out);
 			}
 		}
 	}
@@ -201,11 +205,13 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 			if (outputDir == null) {
 				System.out.printf("\n\nPoll Tasks %s:\n", title);
 			}
-			try (OutputStream out = (outputDir != null ? Files.newOutputStream(outputDir.resolve(fileName(fileName)))
+			final TableConfiguration tableConfig = tableConfig(this, displayMode);
+			try (OutputStream out = (outputDir != null
+					? Files.newOutputStream(outputDir.resolve(fileName(fileName, tableConfig.mode())))
 					: nonClosing(System.out))) {
 				TableUtils.renderTableData(PollTaskCheckup.tableDataColumns(), tasks.values().stream()
 						.map(c -> PollTaskCheckup.tableDataRow(datumStreams.get(c.datumStreamId()), c)).toList(),
-						displayMode, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, out);
+						tableConfig, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, out);
 			}
 		}
 	}
@@ -218,18 +224,20 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 			if (outputDir == null) {
 				System.out.printf("\n\nRake Tasks %s:\n", title);
 			}
-			try (OutputStream out = (outputDir != null ? Files.newOutputStream(outputDir.resolve(fileName(fileName)))
+			final TableConfiguration tableConfig = tableConfig(this, displayMode);
+			try (OutputStream out = (outputDir != null
+					? Files.newOutputStream(outputDir.resolve(fileName(fileName, tableConfig.mode())))
 					: nonClosing(System.out))) {
 				TableUtils.renderTableData(RakeTaskCheckup.tableDataColumns(),
 						tasks.values().stream().flatMap(m -> m.values().stream())
 								.map(c -> RakeTaskCheckup.tableDataRow(datumStreams.get(c.datumStreamId()), c))
 								.toList(),
-						displayMode, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, out);
+						tableConfig, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, out);
 			}
 		}
 	}
 
-	private String fileName(String name) {
+	private static String fileName(String name, ResultDisplayMode displayMode) {
 		return "%s.%s".formatted(name, displayMode == ResultDisplayMode.CSV ? "csv" : "txt");
 	}
 

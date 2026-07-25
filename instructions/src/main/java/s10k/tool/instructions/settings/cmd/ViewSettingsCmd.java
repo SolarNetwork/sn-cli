@@ -1,5 +1,6 @@
 package s10k.tool.instructions.settings.cmd;
 
+import static s10k.tool.common.util.TableUtils.tableConfig;
 import static s10k.tool.instructions.cmd.InstructionsCmd.TOPIC_SYSTEM_CONFIGURATION;
 import static s10k.tool.instructions.util.InstructionsUtils.executeInstruction;
 import static s10k.tool.instructions.util.InstructionsUtils.parseCompressedResultList;
@@ -58,9 +59,8 @@ public class ViewSettingsCmd extends BaseSubCmd<SettingsCmd> implements Callable
 	boolean specification;
 
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -85,6 +85,7 @@ public class ViewSettingsCmd extends BaseSubCmd<SettingsCmd> implements Callable
 	public Integer call() throws Exception {
 		final boolean viewComponentInstance = (componentId != null && !componentId.isBlank());
 		final RestClient restClient = restClient();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 
 		final BasicInstruction instr = new BasicInstruction(null, TOPIC_SYSTEM_CONFIGURATION, null, null);
 		instr.addParameter(InstructionsCmd.PARAM_SERVICE, InstructionsCmd.SYSTEM_CONFIGURATION_SETTINGS_SERVICE);
@@ -107,7 +108,8 @@ public class ViewSettingsCmd extends BaseSubCmd<SettingsCmd> implements Callable
 			if (status.getInstructionState() == InstructionState.Completed) {
 				if (specification) {
 					List<JsonNode> specs = parseCompressedResultList(resultParams, objectMapper, JsonNode[].class);
-					TableUtils.renderTableData(List.of(specs), ResultDisplayMode.JSON, objectMapper, System.out);
+					TableUtils.renderTableData(List.of(specs), tableConfig(this, ResultDisplayMode.JSON), objectMapper,
+							System.out);
 				} else {
 					List<ServiceSettingInfo> services = parseCompressedResultList(resultParams, objectMapper,
 							ServiceSettingInfo[].class);
@@ -166,7 +168,7 @@ public class ViewSettingsCmd extends BaseSubCmd<SettingsCmd> implements Callable
 						data = newData;
 					}
 
-					TableUtils.renderTableData(cols, data, displayMode, objectMapper, System.out);
+					TableUtils.renderTableData(cols, data, tableConfig(this, displayMode), objectMapper, System.out);
 				}
 				// @formatter:on
 				return 0;

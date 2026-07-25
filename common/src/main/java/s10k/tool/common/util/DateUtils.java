@@ -52,4 +52,20 @@ public final class DateUtils {
 		return (ts == null || ts.compareTo(Instant.EPOCH) == 0 ? null : ts);
 	}
 
+	/**
+	 * Convert an {@link Instant} into a {@link LocalDateTime} at a specific time
+	 * zone.
+	 * 
+	 * @param timestamp the timestamp to convert
+	 * @param zone      the desired zone, or {@code null} to use the system default
+	 * @return the local date time, or {@code null} if {@code timestamp} is
+	 *         {@code null}
+	 */
+	public static @Nullable LocalDateTime local(@Nullable Instant timestamp, @Nullable ZoneId zone) {
+		if (timestamp == null) {
+			return null;
+		}
+		return timestamp.atZone(zone != null ? zone : ZoneId.systemDefault()).toLocalDateTime();
+	}
+
 }

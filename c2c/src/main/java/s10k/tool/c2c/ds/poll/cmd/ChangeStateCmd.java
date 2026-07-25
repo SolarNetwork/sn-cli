@@ -8,6 +8,7 @@ import static s10k.tool.c2c.ds.poll.cmd.ListTasksCmd.listCloudDatumStreamPollTas
 import static s10k.tool.c2c.util.CloudIntegrationRestUtils.listCloudDatumStreams;
 import static s10k.tool.c2c.util.CloudIntegrationsUtils.datumStreamServiceLocalizedName;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 
 import java.util.List;
 import java.util.Map;
@@ -51,9 +52,8 @@ public class ChangeStateCmd extends BaseSubCmd<PollTasksCmd> implements Callable
 		Long[] datumStreamIds;
 
 		@Option(names = { "-mode", "--display-mode" },
-				description = "how to display the data",
-				defaultValue = "PRETTY")
-		ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+				description = "how to display the data")
+		ResultDisplayMode displayMode;
 		
 		@Parameters(arity = "1")
 		EnabledOrDisabled desiredState;
@@ -72,6 +72,7 @@ public class ChangeStateCmd extends BaseSubCmd<PollTasksCmd> implements Callable
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 
 		final var filter = new CloudIntegrationsFilter();
 		filter.setDatumStreamIds(List.of(datumStreamIds));
@@ -95,8 +96,8 @@ public class ChangeStateCmd extends BaseSubCmd<PollTasksCmd> implements Callable
 							: tasks)
 					: tasks.stream().map(c -> stateChangeTableDataRow(c, desiredState, streams.get(c.datumStreamId())))
 							.toList());
-			TableUtils.renderTableData(stateChangeTableDataColumns(), tableData, displayMode, objectMapper,
-					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			TableUtils.renderTableData(stateChangeTableDataColumns(), tableData, tableConfig(this, displayMode),
+					objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error changing cloud datum stream poll task state: %s".formatted(e.getMessage()));

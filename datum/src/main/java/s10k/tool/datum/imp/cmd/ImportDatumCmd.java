@@ -5,6 +5,7 @@ import static net.solarnetwork.codec.JsonUtils.getTreeFromObject;
 import static s10k.tool.common.domain.ServiceConfiguration.SERVICE_PROPERTIES_KEY;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 import static s10k.tool.common.util.StringUtils.stringOrFileContents;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 import static s10k.tool.datum.imp.util.DatumImportUtils.importBatchSize;
 
 import java.io.IOException;
@@ -116,9 +117,8 @@ public class ImportDatumCmd extends BaseSubCmd<DatumImportsCmd> implements Calla
 	public boolean ignoreStdIn;
 	
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	
 	@Parameters(index = "0", paramLabel = "<config>", description = "the configuration to submit, or @file for file to load", arity = "0..1")
 	String value;
@@ -137,6 +137,7 @@ public class ImportDatumCmd extends BaseSubCmd<DatumImportsCmd> implements Calla
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		try {
 			final Map<String, Object> settings = new LinkedHashMap<>(4);
 
@@ -176,8 +177,9 @@ public class ImportDatumCmd extends BaseSubCmd<DatumImportsCmd> implements Calla
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? List.of(result)
 					: List.of((Object) ViewImportJobCmd.tableDataRow(result)));
-			TableUtils.renderTableData(ViewImportJobCmd.tableDataColumns(), tableData, displayMode, objectMapper,
-					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			TableUtils.renderTableData(ViewImportJobCmd.tableDataColumns(), tableData,
+					tableConfig(this, displayMode, zone), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
+					System.out);
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error confirming staged datum import job: %s".formatted(e.getMessage()));

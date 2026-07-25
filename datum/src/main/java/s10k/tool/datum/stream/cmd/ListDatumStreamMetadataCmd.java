@@ -9,6 +9,7 @@ import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 import static s10k.tool.common.util.RestUtils.populateQueryParameters;
 import static s10k.tool.common.util.StringUtils.naturallyCaseInsensitiveSorted;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,9 +94,8 @@ public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 	boolean unsortedPropertyNames;
 	
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -151,6 +151,7 @@ public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 						statusPropertyNames);
 
 		final RestClient restClient = restClient();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 
 		try {
 			List<ObjectDatumStreamMetadata> metas = listStreamMetadata(restClient, objectMapper,
@@ -164,7 +165,7 @@ public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? metas
 					: metas.stream().map(m -> metadataRow(m, unsortedPropertyNames)).toList());
-			TableUtils.renderTableData(metadataColumns(), tableData, displayMode, objectMapper,
+			TableUtils.renderTableData(metadataColumns(), tableData, tableConfig(this, displayMode), objectMapper,
 					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {

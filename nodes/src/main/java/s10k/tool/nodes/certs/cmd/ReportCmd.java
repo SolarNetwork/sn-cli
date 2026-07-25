@@ -4,6 +4,7 @@ import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.util.FileCopyUtils.copyToString;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 import static s10k.tool.nodes.cmd.ListNodeIdsCmd.listNodeIds;
 
 import java.io.IOException;
@@ -90,9 +91,8 @@ public class ReportCmd extends BaseSubCmd<CertificatesCmd> implements Callable<I
 	String nodeIdRegex;
 	
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the result",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 
 	@Parameters(index = "0",
 			paramLabel = "<table>",
@@ -143,7 +143,8 @@ public class ReportCmd extends BaseSubCmd<CertificatesCmd> implements Callable<I
 			return 1;
 		}
 
-		final ZoneId zone = ZoneId.systemDefault();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
+		final ZoneId zone = zone();
 
 		try {
 			final SortedMap<Long, String> certPasswords = certPasswords(certPasswordTable, nodeIdPattern);
@@ -170,7 +171,7 @@ public class ReportCmd extends BaseSubCmd<CertificatesCmd> implements Callable<I
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? infos
 					: infos.stream().map(info -> reportRow(info, zone)).toList());
-			TableUtils.renderTableData(reportColumns(), tableData, displayMode, objectMapper,
+			TableUtils.renderTableData(reportColumns(), tableData, tableConfig(this, displayMode), objectMapper,
 					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 
 			return 0;

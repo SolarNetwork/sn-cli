@@ -2,6 +2,7 @@ package s10k.tool.nodes.meta.cmd;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.util.FileCopyUtils.copyToString;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -47,9 +48,8 @@ public class CsvSetCmd extends BaseSubCmd<NodeMetadataCmd> implements Callable<I
 	@Option(names = { "-path", "--path" }, description = "metadata path to CSV data to read")
 	String metadataPath;
 
-	@Option(names = { "-mode",
-			"--display-mode" }, description = "how to display the CSV data", required = false, defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+	@Option(names = { "-mode", "--display-mode" }, description = "how to display the data")
+	ResultDisplayMode displayMode;
 
 	@Option(names = { "-s", "--string" }, description = "encode the CSV as a JSON string, intead of JSON arrays")
 	boolean encodeAsString;
@@ -110,7 +110,7 @@ public class CsvSetCmd extends BaseSubCmd<NodeMetadataCmd> implements Callable<I
 			SaveNodeMetadataCmd.saveMetadata(restClient, nodeId, gdm, false);
 			System.out.println("CSV saved to to path [%s].".formatted(metadataPath));
 			if (verbosity() > 0) {
-				TableUtils.renderTableData(data, displayMode, objectMapper, System.out);
+				TableUtils.renderTableData(data, tableConfig(this, displayMode), objectMapper, System.out);
 			}
 			return 0;
 		} catch (Exception e) {

@@ -1,5 +1,6 @@
 package s10k.tool.nodes.meta.cmd;
 
+import static s10k.tool.common.util.TableUtils.tableConfig;
 import static s10k.tool.nodes.meta.cmd.ListNodeMetadataCmd.listNodeMetadata;
 
 import java.io.IOException;
@@ -39,9 +40,8 @@ public class CsvGetCmd extends BaseSubCmd<NodeMetadataCmd> implements Callable<I
 	@Option(names = { "-path", "--path" }, description = "metadata path to CSV data to read")
 	String metadataPath;
 
-	@Option(names = { "-mode",
-			"--display-mode" }, description = "how to display the CSV data", required = false, defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+	@Option(names = { "-mode", "--display-mode" }, description = "how to display the data")
+	ResultDisplayMode displayMode;
 
 	/**
 	 * Constructor.
@@ -72,7 +72,7 @@ public class CsvGetCmd extends BaseSubCmd<NodeMetadataCmd> implements Callable<I
 			}
 
 			List<List<String>> data = parseCsvMetadata(gdm.metadataAtPath(metadataPath));
-			TableUtils.renderTableData(data, displayMode, objectMapper, System.out);
+			TableUtils.renderTableData(data, tableConfig(this, displayMode), objectMapper, System.out);
 
 			return 0;
 		} catch (Exception e) {

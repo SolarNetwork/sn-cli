@@ -1,5 +1,6 @@
 package s10k.tool.instructions.cmd;
 
+import static s10k.tool.common.util.TableUtils.tableConfig;
 import static s10k.tool.instructions.cmd.InstructionsCmd.TOPIC_SYSTEM_CONFIGURATION;
 import static s10k.tool.instructions.util.InstructionsUtils.executeInstruction;
 import static s10k.tool.instructions.util.InstructionsUtils.parseCompressedResultList;
@@ -55,9 +56,8 @@ public class ListPackagesCmd extends BaseSubCmd<InstructionsCmd> implements Call
 	PackageStatus packageStatus = PackageStatus.Installed;
 
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -95,6 +95,7 @@ public class ListPackagesCmd extends BaseSubCmd<InstructionsCmd> implements Call
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 
 		final BasicInstruction instr = new BasicInstruction(null, TOPIC_SYSTEM_CONFIGURATION, null, null);
 		instr.addParameter(InstructionsCmd.PARAM_SERVICE, PACKAGES_SERVICE);
@@ -126,7 +127,7 @@ public class ListPackagesCmd extends BaseSubCmd<InstructionsCmd> implements Call
 						new Column().header("Name").dataAlign(HorizontalAlign.LEFT),
 						new Column().header("Version").dataAlign(HorizontalAlign.RIGHT),
 						new Column().header("Installed").dataAlign(HorizontalAlign.RIGHT)
-				}, data, displayMode, objectMapper, System.out);
+				}, data, tableConfig(this, displayMode), objectMapper, System.out);
 				// @formatter:on
 				return 0;
 			} else if (status.getInstructionState() == InstructionState.Declined) {

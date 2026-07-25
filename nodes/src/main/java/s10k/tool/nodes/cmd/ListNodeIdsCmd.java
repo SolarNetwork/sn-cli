@@ -1,6 +1,7 @@
 package s10k.tool.nodes.cmd;
 
 import static s10k.tool.common.util.RestUtils.checkSuccess;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 
 import java.util.LinkedHashSet;
 import java.util.SequencedCollection;
@@ -31,9 +32,8 @@ public class ListNodeIdsCmd extends BaseSubCmd<NodesCmd> implements Callable<Int
 
 	// @formatter:off
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -58,7 +58,7 @@ public class ListNodeIdsCmd extends BaseSubCmd<NodesCmd> implements Callable<Int
 			// @formatter:off
 			TableUtils.renderTableData(new Column[] {
 					new Column().header("Node ID"),
-			}, nodeIds, displayMode, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			}, nodeIds, tableConfig(this, displayMode), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			// @formatter:on
 			return 0;
 		} catch (Exception e) {

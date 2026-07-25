@@ -8,6 +8,7 @@ import static s10k.tool.c2c.ds.poll.cmd.ListTasksCmd.listCloudDatumStreamPollTas
 import static s10k.tool.c2c.util.CloudIntegrationRestUtils.datumStreamsOfType;
 import static s10k.tool.c2c.util.CloudIntegrationsUtils.datumStreamServiceLocalizedName;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
+import static s10k.tool.common.util.TableUtils.tableConfig;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -72,9 +73,8 @@ public class CreateTasksCmd extends BaseSubCmd<PollTasksCmd> implements Callable
 	ZoneId zone;
 
 	@Option(names = { "-mode", "--display-mode" },
-			description = "how to display the data",
-			defaultValue = "PRETTY")
-	ResultDisplayMode displayMode = ResultDisplayMode.PRETTY;
+			description = "how to display the data")
+	ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -90,6 +90,7 @@ public class CreateTasksCmd extends BaseSubCmd<PollTasksCmd> implements Callable
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		try {
 			final CloudIntegrationsFilter filter = filter();
 			final Instant start = DateUtils
@@ -120,8 +121,8 @@ public class CreateTasksCmd extends BaseSubCmd<PollTasksCmd> implements Callable
 			final List<?> tableData = (displayMode == ResultDisplayMode.JSON ? tasksToCreate.values().stream().toList()
 					: tasksToCreate.entrySet().stream()
 							.map(e -> tableDataRow(datumStreams.get(e.getKey()), e.getValue())).toList());
-			TableUtils.renderTableData(tableDataColumns(), tableData, displayMode, objectMapper,
-					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode, zone),
+					objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (
 
