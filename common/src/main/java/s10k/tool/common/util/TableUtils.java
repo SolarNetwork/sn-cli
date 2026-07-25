@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -413,7 +414,8 @@ public class TableUtils {
 		} else if (val instanceof Map<?, ?> m) {
 			val = StringUtils.delimitedStringFromMap(m);
 		} else if (val instanceof Instant date) {
-			val = ISO_DATE_OPT_TIME_ALT_LOCAL.format(local(date, zone));
+			ZoneOffset offset = (zone instanceof ZoneOffset o ? o : zone.getRules().getOffset(date));
+			val = ISO_DATE_OPT_TIME_ALT_LOCAL.format(local(date, zone)) + offset;
 		}
 		return optionalStringValue(val);
 	}
