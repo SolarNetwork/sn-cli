@@ -151,8 +151,8 @@ public class ListTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable<I
 	public static Column[] tableDataColumns() {
 		// @formatter:off
 		return new Column[] {
-				new Column().header("Task ID").dataAlign(RIGHT),
 				new Column().header("Stream ID").dataAlign(RIGHT),
+				new Column().header("Task ID").dataAlign(RIGHT),
 				new Column().header("State").dataAlign(LEFT),
 				new Column().header("Execute At").dataAlign(LEFT),
 				new Column().header("Offset").dataAlign(LEFT),
@@ -170,8 +170,8 @@ public class ListTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable<I
 	public static Object[] tableDataRow(CloudDatumStreamRakeTaskConfiguration conf) {
 		// @formatter:off
 		return new Object[] {
-				conf.configId(),
 				conf.datumStreamId(),
+				conf.configId(),
 				conf.state(),
 				conf.executeAt(),
 				conf.offset(),
