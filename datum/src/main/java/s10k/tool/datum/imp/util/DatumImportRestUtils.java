@@ -71,16 +71,16 @@ public final class DatumImportRestUtils {
 	public static DatumImportTaskInfo viewDatumImportTask(RestClient restClient, ObjectMapper objectMapper,
 			String jobId) {
 		// @formatter:off
-			final JsonNode response = checkSuccess(restClient.get()
-					.uri(b -> {
-						b.path("/solaruser/api/v1/sec/user/import/jobs/{jobId}");
-						return b.build(jobId);
-					})
-				.accept(MediaType.APPLICATION_JSON)
-				.retrieve()
-				.body(JsonNode.class)
-				);		
-			// @formatter:on
+		final JsonNode response = checkSuccess(restClient.get()
+				.uri(b -> {
+					b.path("/solaruser/api/v1/sec/user/import/jobs/{jobId}");
+					return b.build(jobId);
+				})
+			.accept(MediaType.APPLICATION_JSON)
+			.retrieve()
+			.body(JsonNode.class)
+			);		
+		// @formatter:on
 
 		try {
 			return objectMapper.treeToValue(response.path("data"), DatumImportTaskInfo.class).normalized();
