@@ -13,6 +13,7 @@ import s10k.tool.datum.stream.cmd.DatumStreamCmd;
 @Command(name = "datum", subcommands = {
 		ListDatumCmd.class,
 		DatumImportsCmd.class,
+		DatumRangeCmd.class,
 		DatumStreamCmd.class
 })
 // @formatter:on

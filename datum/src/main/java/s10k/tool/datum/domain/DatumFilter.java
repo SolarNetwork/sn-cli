@@ -80,9 +80,14 @@ public final class DatumFilter extends SimplePagination {
 		if (sourceIds != null && !sourceIds.isEmpty()) {
 			postBody.set("sourceIds", commaDelimitedStringFromCollection(sourceIds));
 		}
-		if (localStartDate != null && localEndDate != null) {
-			postBody.set("localStartDate", isMidnight(localStartDate) ? localStartDate.toLocalDate() : localStartDate);
-			postBody.set("localEndDate", isMidnight(localEndDate) ? localEndDate.toLocalDate() : localEndDate);
+		if (localStartDate != null || localEndDate != null) {
+			if (localStartDate != null) {
+				postBody.set("localStartDate",
+						isMidnight(localStartDate) ? localStartDate.toLocalDate() : localStartDate);
+			}
+			if (localEndDate != null) {
+				postBody.set("localEndDate", isMidnight(localEndDate) ? localEndDate.toLocalDate() : localEndDate);
+			}
 		} else {
 			if (startDate != null) {
 				LocalDateTime utcDate = startDate.withZoneSameInstant(UTC).toLocalDateTime();
@@ -139,6 +144,15 @@ public final class DatumFilter extends SimplePagination {
 		NavigableMap<Long, SortedSet<String>> mappings = DatumUtils.parseStreamIdentifiers(identifiers);
 		setObjectIds(mappings.sequencedKeySet());
 		setSourceIds(mappings.sequencedValues().stream().flatMap(c -> c.stream()).toList());
+	}
+
+	/**
+	 * Test if the query is for location IDs, instead of node IDs.
+	 * 
+	 * @return {@code true} if any location ID is configured
+	 */
+	public boolean isLocationQuery() {
+		return (objectKind != null && objectKind == ObjectDatumKind.Location);
 	}
 
 	/**

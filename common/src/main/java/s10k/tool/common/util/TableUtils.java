@@ -10,8 +10,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -214,7 +216,16 @@ public class TableUtils {
 	/**
 	 * A tabular display configuration.
 	 */
-	public record TableConfiguration(ResultDisplayMode mode, ZoneId zone) {
+	public record TableConfiguration(ResultDisplayMode mode, ZoneId zone, boolean singletonJsonObject) {
+
+		/**
+		 * Create a copy with "singlton JSON mode" enabled.
+		 * 
+		 * @return the copy
+		 */
+		public TableConfiguration asJsonSingleton() {
+			return new TableConfiguration(mode, zone, true);
+		}
 
 	}
 
@@ -256,7 +267,7 @@ public class TableUtils {
 		} else if (tz == null) {
 			tz = ZoneId.systemDefault();
 		}
-		return new TableConfiguration(dispMode, tz);
+		return new TableConfiguration(dispMode, tz, false);
 	}
 
 	/**
@@ -357,16 +368,19 @@ public class TableUtils {
 				}
 			}
 		} else if (mode == ResultDisplayMode.JSON && objectMapper != null) {
-			final Object jsonData = (mapData != null ? mapData : data);
-			if (SystemUtils.systemConsoleIsTerminal()) {
-				if (customJsonFormatter != null) {
-					objectMapper.writer(TableDataJsonPrettyPrinter.INSTANCE).writeValue(nonClosing(out), jsonData);
+			final Object jsonData = (mapData != null ? mapData
+					: config.singletonJsonObject() ? (!data.isEmpty() ? data.getFirst() : null) : data);
+			if (jsonData != null) {
+				if (SystemUtils.systemConsoleIsTerminal()) {
+					if (customJsonFormatter != null) {
+						objectMapper.writer(TableDataJsonPrettyPrinter.INSTANCE).writeValue(nonClosing(out), jsonData);
+					} else {
+						objectMapper.writerWithDefaultPrettyPrinter().writeValue(nonClosing(System.out), jsonData);
+					}
+					out.write(System.lineSeparator().getBytes(Charset.defaultCharset()));
 				} else {
-					objectMapper.writerWithDefaultPrettyPrinter().writeValue(nonClosing(System.out), jsonData);
+					objectMapper.writeValue(nonClosing(System.out), jsonData);
 				}
-				out.write(System.lineSeparator().getBytes(Charset.defaultCharset()));
-			} else {
-				objectMapper.writeValue(nonClosing(System.out), jsonData);
 			}
 		} else {
 			Object[][] tableData;
@@ -416,6 +430,11 @@ public class TableUtils {
 		} else if (val instanceof Instant date) {
 			ZoneOffset offset = (zone instanceof ZoneOffset o ? o : zone.getRules().getOffset(date));
 			val = ISO_DATE_OPT_TIME_ALT_LOCAL.format(local(date, zone)) + offset;
+		} else if (val instanceof LocalDateTime date) {
+			val = ISO_DATE_OPT_TIME_ALT_LOCAL.format(date);
+		} else if (val instanceof ZonedDateTime date) {
+			ZoneOffset offset = (zone instanceof ZoneOffset o ? o : zone.getRules().getOffset(date.toInstant()));
+			val = ISO_DATE_OPT_TIME_ALT_LOCAL.format(date.withZoneSameInstant(zone).toLocalDateTime()) + offset;
 		}
 		return optionalStringValue(val);
 	}
