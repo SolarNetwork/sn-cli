@@ -7,6 +7,7 @@ import static net.solarnetwork.domain.datum.DatumSamplesType.Accumulating;
 import static net.solarnetwork.util.NumberUtils.bigDecimalForNumber;
 import static net.solarnetwork.util.NumberUtils.narrow;
 import static net.solarnetwork.util.NumberUtils.round;
+import static net.solarnetwork.util.ObjectUtils.nonnull;
 import static org.springframework.util.StreamUtils.nonClosing;
 import static s10k.tool.common.util.RestUtils.cborToJson;
 import static s10k.tool.common.util.RestUtils.populateQueryParameters;
@@ -25,6 +26,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
@@ -47,6 +49,7 @@ import net.solarnetwork.domain.datum.ObjectDatumKind;
 import net.solarnetwork.domain.datum.ObjectDatumStreamDataSet;
 import net.solarnetwork.domain.datum.ObjectDatumStreamMetadata;
 import net.solarnetwork.domain.datum.StreamDatum;
+import net.solarnetwork.util.ObjectUtils;
 import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -70,38 +73,39 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 			split = "\\s*,\\s*",
 			splitSynopsisLabel = ",",
 			paramLabel = "streamId")
-	UUID streamIds[];
+	UUID streamIds @Nullable [];
 	
 	@ArgGroup(exclusive = true, multiplicity = "0..1")
-	NodeOrLocationIds nodeOrLocationIds;
+	@Nullable NodeOrLocationIds nodeOrLocationIds;
 
 	@Option(names = { "-source", "--source-id" },
 			description = "a source ID to return datum for",
 			split = "\\s*,\\s*",
 			splitSynopsisLabel = ",",
 			paramLabel = "sourceId")
-	String[] sourceIds;
+	String@Nullable [] sourceIds;
 	
 	@Option(names = { "-ident", "--stream-ident" },
 			description = "an object:source stream identifier to return datum for; if provided then -node and -source are ignored",
 			split = "\\s*,\\s*",
 			splitSynopsisLabel = ",",
 			paramLabel = "identifier")
-	String[] streamIdentifiers;
+	String@Nullable [] streamIdentifiers;
 	
 	@Option(names = { "--stream-ident-kind" },
 			description = "the type of objects represented in the -ident option",
 			paramLabel = "kind",
 			defaultValue = "Node")
-	ObjectDatumKind streamIdentifierKind = ObjectDatumKind.Node;
+	@SuppressWarnings("NullAway.Init")
+	ObjectDatumKind streamIdentifierKind;
 	
 	@Option(names = { "-min", "--min-date" },
 			description = "a minimum datum date to match")
-	LocalDateTime minDate;
+	@Nullable LocalDateTime minDate;
 
 	@Option(names = { "-max", "--max-date" },
 			description = "a maximum datum date (exclusive) to match")
-	LocalDateTime maxDate;
+	@Nullable LocalDateTime maxDate;
 	
 	@Option(names = {"-local", "--local-dates"},
 			description = "treat the min/max dates as 'node local' dates, instead of UTC (or local time zone when -tz used)")
@@ -109,7 +113,7 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 
 	@Option(names = { "-tz", "--time-zone" },
 			description = "a time zone to interpret the min and max dates as, instead of the local time zone")
-	ZoneId zone;
+	@Nullable ZoneId zone;
 	
 	@Option(names = {"-recent", "--most-recent"},
 			description = "show just the most recently available data, within min/max dates if specified")
@@ -117,26 +121,26 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 
 	@Option(names = {"-agg", "--aggregation"},
 			description = "an aggregation level to return")
-	Aggregation aggregation;
+	@Nullable Aggregation aggregation;
 	
 	@Option(names = {"-pagg", "--partial-aggregation"},
 			description = "a partial aggregation level to return")
-	Aggregation partialAggregation;
+	@Nullable Aggregation partialAggregation;
 	
 	@Option(names = {"-read", "--reading"},
 			description = "return a reading aggregation result instead of a listing result")
-	DatumReadingType readingType;
+	@Nullable DatumReadingType readingType;
 	
 	@Option(names = {"-tol", "--tolerance"},
 			description = "a time tolerance to use with reading-style queries that support it")
-	Period timeTolerance;
+	@Nullable Period timeTolerance;
 
 	@Option(names = { "-prop", "--property" },
 			description = "show only this property name in the results (applies only to PRETTY display mode)",
 			split = "\\s*,\\s*",
 			splitSynopsisLabel = ",",
 			paramLabel = "propName")
-	String[] propertyNames;
+	String@Nullable [] propertyNames;
 	
 	@Option(names = {"-S", "--show-stream-ids"},
 			description = "show stream IDs in PRETTY results")
@@ -152,7 +156,7 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data")
-	ResultDisplayMode displayMode;
+	@Nullable ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -162,18 +166,18 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 	static class NodeOrLocationIds {
 		// @formatter:off
     	@Option(names = { "-node", "--node-id" },
-    			description = "a node ID to return metadata for",
+    			description = "a node ID to return datum for",
     			split = "\\s*,\\s*",
     			splitSynopsisLabel = ",",
     			paramLabel = "nodeId")
-    	Long[] nodeIds;
+    	Long @Nullable [] nodeIds;
 
     	@Option(names = { "-loc", "--location-id" },
-    			description = "a location ID to return metadata for",
+    			description = "a location ID to return datum for",
     			split = "\\s*,\\s*",
     			splitSynopsisLabel = ",",
     			paramLabel = "locId")
-    	Long[] locationIds;
+    	Long @Nullable [] locationIds;
     	// @formatter:on
 
 		/**
@@ -200,10 +204,10 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 
 	@Override
 	public Integer call() throws Exception {
-		final DatumFilter filter = datumFilter();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-
 		final RestClient restClient = restClient();
+		final ObjectMapper objectMapper = objectMapper();
+		final ResultDisplayMode displayMode = displayMode(this.displayMode);
+		final DatumFilter filter = datumFilter();
 
 		try {
 			if (displayMode == ResultDisplayMode.PRETTY) {
@@ -298,8 +302,9 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 			// generate stable list from all stream properties
 			for (UUID streamId : result.metadataStreamIds()) {
 				ObjectDatumStreamMetadata meta = result.metadataForStreamId(streamId);
-				String[] names = filter.isReadingRecordStyle() ? meta.propertyNamesForType(Accumulating)
-						: meta.getPropertyNames();
+				String[] names = meta == null ? null
+						: filter.isReadingRecordStyle() ? meta.propertyNamesForType(Accumulating)
+								: meta.getPropertyNames();
 				if (names != null) {
 					properties.addAll(asList(names));
 				}
@@ -348,7 +353,7 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 		for (StreamDatum d : result) {
 			final AggregateStreamDatum agg = (d instanceof AggregateStreamDatum a ? a : null);
 			final ObjectDatumStreamMetadata meta = result.metadataForStreamId(d.getStreamId());
-			final Object[] row = new Object[rowSize];
+			final @Nullable Object[] row = new Object[rowSize];
 			int idx = 0;
 			row[idx++] = d.getTimestamp();
 			if (filter.isReadingRecordStyle()) {
@@ -357,13 +362,15 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 			if (showStreamIds) {
 				row[idx++] = d.getStreamId();
 			}
-			row[idx++] = meta.getObjectId();
-			row[idx++] = meta.getSourceId();
+			row[idx++] = (meta != null ? meta.getObjectId() : null);
+			row[idx++] = (meta != null ? meta.getSourceId() : null);
 			for (String propName : propNames) {
 				final DatumSamplesType propType = propTypes.computeIfAbsent(propName, _ -> {
-					for (DatumSamplesType type : PROP_TYPES) {
-						if (meta.propertyIndex(type, propName) >= 0) {
-							return type;
+					if (meta != null) {
+						for (DatumSamplesType type : PROP_TYPES) {
+							if (meta.propertyIndex(type, propName) >= 0) {
+								return type;
+							}
 						}
 					}
 					return null;
@@ -377,7 +384,7 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 					continue;
 				}
 				DatumProperties props = d.getProperties();
-				final int propIdx = meta.propertyIndex(propType, propName);
+				final int propIdx = (meta != null ? meta.propertyIndex(propType, propName) : -1);
 				if (propIdx < 0) {
 					continue;
 				}
@@ -396,7 +403,7 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 				};
 
 				if (propVal instanceof Number n) {
-					propVal = bigDecimalForNumber(narrow(round(n, 3), 2)).toPlainString();
+					propVal = nonnull(bigDecimalForNumber(narrow(round(n, 3), 2)), "Number").toPlainString();
 				}
 				row[idx++] = propVal;
 			}
@@ -418,7 +425,7 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 	 */
 	public static ObjectDatumStreamDataSet<StreamDatum> listDatum(RestClient restClient, DatumFilter filter) {
 		// @formatter:off
-		return restClient.get()
+		return ObjectUtils.nonnull(restClient.get()
 			.uri(b -> {
 				b.path("/solarquery/api/v1/sec/datum/stream/{style}");
 				populateQueryParameters(b, filter::toRequestMap);
@@ -427,7 +434,7 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 			.accept(MediaType.APPLICATION_CBOR)
 			.retrieve()
 			.body(STREAM_DATUM_SET_TYPEREF)
-			;
+			, "Result");
 		// @formatter:on
 	}
 
