@@ -10,6 +10,7 @@ import static s10k.tool.datum.imp.util.DatumImportRestUtils.viewDatumImportTask;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
@@ -37,11 +38,12 @@ public class ViewImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements Cal
 	@Option(names = { "-j", "--job-id" },
 			description = "the ID of the job to view",
 			required = true)
+	@SuppressWarnings("NullAway.Init")
 	String jobId;
 
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data")
-	ResultDisplayMode displayMode;
+	@Nullable ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -57,6 +59,7 @@ public class ViewImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements Cal
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final ObjectMapper objectMapper = objectMapper();
 		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		try {
 			final DatumImportTaskInfo result = viewDatumImportTask(restClient, objectMapper, jobId);

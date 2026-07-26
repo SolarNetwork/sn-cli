@@ -3,6 +3,8 @@ package s10k.tool.common.cmd;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import org.jspecify.annotations.Nullable;
+
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -25,7 +27,7 @@ public class ToolCmd implements ProfileProvider {
 	public static final String SN_TOKEN_SECRET_ENV = "SN_TOKEN_SECRET";
 
 	@Option(names = { "-v", "--verbose" }, description = "verbose output")
-	boolean[] verbosity;
+	boolean @Nullable [] verbosity;
 
 	@Option(names = { "-n", "--dry-run" }, description = "do not make any changes")
 	boolean dryRun;
@@ -37,18 +39,20 @@ public class ToolCmd implements ProfileProvider {
 	boolean usageHelpRequested;
 
 	@Option(names = { "-P", "--profile" }, description = "profile to use")
+	@Nullable
 	String profileName;
 
 	@Option(names = { "-u", "--token" }, description = "the SolarNetwork API token")
+	@Nullable
 	String tokenId;
 
 	@Option(names = { "-p", "--secret" }, description = "the SolarNetwork API token secret", interactive = true)
-	char[] tokenSecret;
+	char @Nullable [] tokenSecret;
 
 	@Option(names = { "-V", "--version" }, versionHelp = true, description = "print version information and exit")
 	boolean versionRequested;
 
-	private ProfileInfo profile;
+	private @Nullable ProfileInfo profile;
 
 	/**
 	 * Constructor.
@@ -129,7 +133,7 @@ public class ToolCmd implements ProfileProvider {
 	}
 
 	@Override
-	public ProfileInfo profile() {
+	public @Nullable ProfileInfo profile() {
 		return profile;
 	}
 
@@ -138,7 +142,7 @@ public class ToolCmd implements ProfileProvider {
 	 * 
 	 * @return the verbosity (length of array)
 	 */
-	public boolean[] getVerbosity() {
+	public boolean @Nullable [] getVerbosity() {
 		return verbosity;
 	}
 

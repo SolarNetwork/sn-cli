@@ -30,6 +30,7 @@ public record ProfileInfo(String name, SnTokenCredentials tokenCredentials, @Nul
 	 * 
 	 * @return the service URL mapping
 	 */
+	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Map<String, ?> serviceUrls() {
 		if (config != null && config.get("service-urls") instanceof Map<?, ?> m) {

@@ -6,6 +6,7 @@ import static s10k.tool.datum.imp.util.DatumImportRestUtils.listDatumImportTasks
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
@@ -33,11 +34,11 @@ public class ListImportJobsCmd extends BaseSubCmd<DatumImportsCmd> implements Ca
 			split = "\\s*,\\s*",
 			splitSynopsisLabel = ",",
 			paramLabel = "jobState")
-	DatumImportState[] jobStates;
+	DatumImportState @Nullable[] jobStates;
 
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data")
-	ResultDisplayMode displayMode;
+	@Nullable ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -53,6 +54,7 @@ public class ListImportJobsCmd extends BaseSubCmd<DatumImportsCmd> implements Ca
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final ObjectMapper objectMapper = objectMapper();
 		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		final DatumImportsFilter filter = filter();
 		try {

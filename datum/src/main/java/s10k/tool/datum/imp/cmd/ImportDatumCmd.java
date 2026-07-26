@@ -74,43 +74,47 @@ public class ImportDatumCmd extends BaseSubCmd<DatumImportsCmd> implements Calla
 	@Option(names = {"-f", "--data-file"},
 			description = "the data to import",
 			required = false)
-	Path dataFile;
+	@Nullable Path dataFile;
 	
 	@Option(names = { "-s", "--stage" },
 			description = "the import job name to set")
 	boolean stage;
 	
 	@Option(names = { "-m", "--name" },
-			description = "the import job name to set")
+			description = "the import job name to set",
+			required = true)
+	@SuppressWarnings("NullAway.Init")
 	String name;
 
 	@Option(names = { "-b", "--batch-size" },
 			description = "the import batch size to set",
 			defaultValue = "10000")
-	Integer batchSize;
+	@Nullable Integer batchSize;
 
 	@Option(names = { "-G", "--group-key" },
 			description = "the group key to set")
-	String groupKey;
+	@Nullable String groupKey;
 
 	@Option(names = { "-tz", "--time-zone" },
 			description = "a time zone to interpret the dates in the import data as")
-	ZoneId zone;
+	@Nullable ZoneId zone;
 	
 	@Option(names = { "-S", "--service" },
 			description = "the input service identifier to use; a substring of the service type can be used",
 			required = true)
+	@SuppressWarnings("NullAway.Init")
 	String serviceIdentifier;
 
 	@Option(names = { "-g", "--merge-mode" },
 			description = "the merge style to perform",
 			defaultValue = "RecursiveObjects")
+	@SuppressWarnings("NullAway.Init")
 	MergeMode mode;
 
 	@Option(names = { "-prop", "--service-property" },
 			description = "a service property, in the form path:value",
 			paramLabel = "serviceProperty")
-	String serviceProperties[];
+	String serviceProperties@Nullable [];
 
 	@Option(names = {"-I", "--ignore-input"},
 			description = "do not try to read settings from standard input")
@@ -118,10 +122,10 @@ public class ImportDatumCmd extends BaseSubCmd<DatumImportsCmd> implements Calla
 	
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data")
-	ResultDisplayMode displayMode;
+	@Nullable ResultDisplayMode displayMode;
 	
 	@Parameters(index = "0", paramLabel = "<config>", description = "the configuration to submit, or @file for file to load", arity = "0..1")
-	String value;
+	@Nullable String value;
 	// @formatter:on
 
 	/**
@@ -137,6 +141,7 @@ public class ImportDatumCmd extends BaseSubCmd<DatumImportsCmd> implements Calla
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final ObjectMapper objectMapper = objectMapper();
 		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		try {
 			final Map<String, Object> settings = new LinkedHashMap<>(4);
@@ -149,7 +154,7 @@ public class ImportDatumCmd extends BaseSubCmd<DatumImportsCmd> implements Calla
 			}
 
 			try {
-				populateSettings(settings);
+				populateSettings(settings, objectMapper);
 			} catch (RuntimeException e) {
 				System.err.println(e.getMessage());
 				return 1;
@@ -161,7 +166,7 @@ public class ImportDatumCmd extends BaseSubCmd<DatumImportsCmd> implements Calla
 				mergeServiceProperties(inputProps, settings);
 			}
 
-			final DatumImportConfiguration importConfig = createConfiguration(settings);
+			final DatumImportConfiguration importConfig = createConfiguration(settings, objectMapper);
 
 			final DatumImportTaskInfo result;
 
@@ -209,7 +214,7 @@ public class ImportDatumCmd extends BaseSubCmd<DatumImportsCmd> implements Calla
 		};
 	}
 
-	private void populateSettings(Map<String, Object> settings) {
+	private void populateSettings(Map<String, Object> settings, ObjectMapper objectMapper) {
 		settings.put("name", dataFileResource().getFilename());
 		if (serviceIdentifier != null) {
 			String type = DatumImportUtils.findDatumImportServiceId(serviceIdentifier).getKey();
@@ -227,7 +232,7 @@ public class ImportDatumCmd extends BaseSubCmd<DatumImportsCmd> implements Calla
 		}
 	}
 
-	private DatumImportConfiguration createConfiguration(Map<String, Object> settings) {
+	private DatumImportConfiguration createConfiguration(Map<String, Object> settings, ObjectMapper objectMapper) {
 		try {
 			final DatumInputServiceConfiguration inputConfig = objectMapper.treeToValue(getTreeFromObject(settings),
 					DatumInputServiceConfiguration.class);

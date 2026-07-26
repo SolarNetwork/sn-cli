@@ -8,6 +8,7 @@ import static s10k.tool.common.util.TableUtils.tableConfig;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
@@ -37,11 +38,12 @@ public class PreviewStagedImportCmd extends BaseSubCmd<DatumImportsCmd> implemen
 	@Option(names = { "-j", "--job-id" },
 			description = "the staged job to preview",
 			required = true)
+	@SuppressWarnings("NullAway.Init")
 	String jobId;
 
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data")
-	ResultDisplayMode displayMode;
+	@Nullable ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -57,6 +59,7 @@ public class PreviewStagedImportCmd extends BaseSubCmd<DatumImportsCmd> implemen
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final ObjectMapper objectMapper = objectMapper();
 		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		try {
 			final List<Datum> datum = previewStagedDatumImportTask(restClient, objectMapper, jobId);

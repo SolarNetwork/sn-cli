@@ -1,6 +1,9 @@
 package s10k.tool.common.domain;
 
 import java.time.ZoneId;
+import java.util.Map;
+
+import org.jspecify.annotations.Nullable;
 
 /**
  * API for something that provides a profile.
@@ -12,6 +15,7 @@ public interface ProfileProvider {
 	 * 
 	 * @return the profile
 	 */
+	@Nullable
 	ProfileInfo profile();
 
 	/**
@@ -27,6 +31,16 @@ public interface ProfileProvider {
 			throw new IllegalStateException("No credentials available.");
 		}
 		return profile;
+	}
+
+	/**
+	 * Get the profile service URLs.
+	 * 
+	 * @return the URLs
+	 */
+	default Map<String, ?> serviceUrls() {
+		final var profile = profile();
+		return (profile != null ? profile.serviceUrls() : Map.of());
 	}
 
 	/**

@@ -89,7 +89,7 @@ public final class ProfileUtils {
 	 *             "default" profile
 	 * @return the profile, or {@code null} if the profile does not exist
 	 */
-	public static @Nullable ProfileInfo profile(String name) {
+	public static @Nullable ProfileInfo profile(@Nullable String name) {
 		// load from user configuration
 		Path credPath = userConfigurationDir().resolve(CREDENTIALS_FILENAME);
 		if (Files.isReadable(credPath)) {
@@ -107,7 +107,7 @@ public final class ProfileUtils {
 						SnTokenCredentials creds = mapper.treeToValue(credsNode, SnTokenCredentials.class);
 						if (creds.hasCredentials()) {
 							Map<String, ?> config = profileConfiguration(name);
-							return new ProfileInfo(name, creds, config);
+							return new ProfileInfo(name != null ? name : "", creds, config);
 						}
 					}
 				}

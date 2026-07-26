@@ -7,6 +7,7 @@ import static s10k.tool.datum.imp.domain.DatumImportState.Queued;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
@@ -34,15 +35,16 @@ import s10k.tool.datum.imp.util.DatumImportRestUtils;
 public class ConfirmStagedImportCmd extends BaseSubCmd<DatumImportsCmd> implements Callable<Integer> {
 
 	// @formatter:off
-		@Option(names = { "-j", "--job-id" },
-				description = "the staged job to confirm",
-				required = true)
-		String jobId;
+	@Option(names = { "-j", "--job-id" },
+			description = "the staged job to confirm",
+			required = true)
+	@SuppressWarnings("NullAway.Init")
+	String jobId;
 
-		@Option(names = { "-mode", "--display-mode" },
-				description = "how to display the data")
-		ResultDisplayMode displayMode;
-		// @formatter:on
+	@Option(names = { "-mode", "--display-mode" },
+			description = "how to display the data")
+	@Nullable ResultDisplayMode displayMode;
+	// @formatter:on
 
 	/**
 	 * Constructor.
@@ -57,6 +59,7 @@ public class ConfirmStagedImportCmd extends BaseSubCmd<DatumImportsCmd> implemen
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final ObjectMapper objectMapper = objectMapper();
 		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		try {
 

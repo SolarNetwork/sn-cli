@@ -86,7 +86,7 @@ echo '{"instantaneousDataColumns":"D-F"}' \
 s10k datum imports submit
 	[-sI]
 	[-f=<dataFile>]
-	[-m=<name>]
+	-m=<name>
 	[-b=<batchSize>]
 	[-G=<groupKey>]
 	[-tz=<zone>]

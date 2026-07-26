@@ -34,7 +34,8 @@ public final class DatumImportUtils {
 	 * @return if the service is for Cloud Integrations, then {@code 1} will always
 	 *         be returned, otherwise {@code batchSize} will be returned as-is
 	 */
-	public static @Nullable Integer importBatchSize(final String inputServiceId, @Nullable Integer batchSize) {
+	public static @Nullable Integer importBatchSize(final @Nullable String inputServiceId,
+			@Nullable Integer batchSize) {
 		if (CLOUD_INTEGRATIONS_INPUT_SERVICE_ID.equals(inputServiceId)) {
 			return 1;
 		}

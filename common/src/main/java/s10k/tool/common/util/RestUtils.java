@@ -1,6 +1,7 @@
 package s10k.tool.common.util;
 
 import static net.solarnetwork.util.ObjectUtils.nonnull;
+import static net.solarnetwork.util.ObjectUtils.requireNonNullArgument;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -75,19 +76,24 @@ public final class RestUtils {
 	 * @param baseUrl         the base URL
 	 * @param traceHttp       {@code true} to enable HTTP trace logging
 	 * @return the client
+	 * @throws IllegalArgumentException if any argument is {@code null}
 	 */
 	public static RestClient createSolarNetworkRestClient(ClientHttpRequestFactory reqFactory,
 			ProfileProvider profileProvider, AuthorizationCredentialsProvider credProvider, ObjectMapper objectMapper,
 			String baseUrl, boolean traceHttp) {
+		reqFactory = requireNonNullArgument(reqFactory, "reqFactory");
+		profileProvider = requireNonNullArgument(profileProvider, "profileProvider");
+		credProvider = requireNonNullArgument(credProvider, "credProvider");
+		objectMapper = requireNonNullArgument(objectMapper, "objectMapper");
 		if (traceHttp) {
 			RestTemplate template = new RestTemplate(new BufferingClientHttpRequestFactory(reqFactory));
-			template.setInterceptors(List.of(new ServiceUrlResolver(profileProvider.profile().serviceUrls()),
+			template.setInterceptors(List.of(new ServiceUrlResolver(profileProvider.serviceUrls()),
 					new AuthorizationV2RequestInterceptor(credProvider), new LoggingHttpRequestInterceptor()));
 			RestUtils.setObjectMapper(template, objectMapper);
 			return RestClient.builder(template).baseUrl(baseUrl).build();
 		}
 		RestTemplate template = new RestTemplate(reqFactory);
-		template.setInterceptors(List.of(new ServiceUrlResolver(profileProvider.profile().serviceUrls()),
+		template.setInterceptors(List.of(new ServiceUrlResolver(profileProvider.serviceUrls()),
 				new AuthorizationV2RequestInterceptor(credProvider)));
 		RestUtils.setObjectMapper(template, objectMapper);
 		return RestClient.builder(template).baseUrl(baseUrl).build();

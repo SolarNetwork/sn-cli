@@ -1,5 +1,7 @@
 package s10k.tool.common.cmd;
 
+import static net.solarnetwork.util.ObjectUtils.nonnull;
+
 import java.time.Instant;
 
 import org.jspecify.annotations.Nullable;
@@ -24,13 +26,13 @@ import s10k.tool.common.util.RestUtils;
 public abstract class BaseSubCmd<P extends ProfileProvider> implements ProfileProvider {
 
 	@ParentCommand
-	protected P parentCmd;
+	protected @Nullable P parentCmd;
 
 	/** The client HTTP request factory. */
-	protected final ClientHttpRequestFactory reqFactory;
+	protected final @Nullable ClientHttpRequestFactory reqFactory;
 
 	/** The ObjectMapper. */
-	protected final ObjectMapper objectMapper;
+	protected final @Nullable ObjectMapper objectMapper;
 
 	/** A class-level logger. */
 	protected final Logger log = LoggerFactory.getLogger(getClass());
@@ -49,7 +51,7 @@ public abstract class BaseSubCmd<P extends ProfileProvider> implements ProfilePr
 	 * @param reqFactory   the HTTP request factory to use
 	 * @param objectMapper the mapper to use
 	 */
-	public BaseSubCmd(ClientHttpRequestFactory reqFactory, ObjectMapper objectMapper) {
+	public BaseSubCmd(@Nullable ClientHttpRequestFactory reqFactory, @Nullable ObjectMapper objectMapper) {
 		super();
 		this.reqFactory = reqFactory;
 		this.objectMapper = objectMapper;
@@ -65,7 +67,7 @@ public abstract class BaseSubCmd<P extends ProfileProvider> implements ProfilePr
 	 * 
 	 * @return the root tool command, or {@code null}
 	 */
-	protected ToolCmd toolCmd() {
+	protected @Nullable ToolCmd toolCmd() {
 		Object cmd = parentCmd;
 		while (true) {
 			if (cmd == null) {
@@ -119,16 +121,33 @@ public abstract class BaseSubCmd<P extends ProfileProvider> implements ProfilePr
 	}
 
 	/**
+	 * Get the {@link ObjectMapper}.
+	 *
+	 * <p>
+	 * This method is designed to be used when the {@code ObjectMapper} is known not
+	 * to be {@code null}, to avoid nullness warnings.
+	 * </p>
+	 *
+	 * @return the mapper (presumed non-null)
+	 */
+	@SuppressWarnings("NullAway")
+	public final ObjectMapper objectMapper() {
+		return objectMapper;
+	}
+
+	/**
 	 * Get a REST client.
 	 * 
 	 * @return the client
-	 * @throws IllegalArgumentException if profile credentials are not available
+	 * @throws IllegalArgumentException if profile credentials, request factory, or
+	 *                                  object mapper are not available
 	 */
 	protected RestClient restClient() {
 		final ProfileInfo profile = profileWithCredentials();
 		final Instant now = Instant.now();
-		final RestClient restClient = RestUtils.createSolarNetworkRestClient(reqFactory, profile,
-				profile.tokenCredentials().credentialsProvider(now), objectMapper,
+		final RestClient restClient = RestUtils.createSolarNetworkRestClient(
+				nonnull(reqFactory, "ClientHttpRequestFactory"), profile,
+				profile.tokenCredentials().credentialsProvider(now), nonnull(objectMapper, "ObjectMapper"),
 				RestUtils.DEFAULT_SOLARNETWORK_BASE_URL, isTraceHttp());
 		return restClient;
 	}

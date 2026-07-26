@@ -7,6 +7,7 @@ import static s10k.tool.datum.imp.domain.DatumImportState.Retracted;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
@@ -34,19 +35,20 @@ import s10k.tool.datum.imp.util.DatumImportRestUtils;
 public class RetractImportCmd extends BaseSubCmd<DatumImportsCmd> implements Callable<Integer> {
 
 	// @formatter:off
-		@Option(names = { "-j", "--job-id" },
-				description = "the job to retract",
-				required = true)
-		String jobId;
-		
-		@Option(names = { "-f", "--force" },
-				description = "allow updating executing jobs")
-		boolean force;
+	@Option(names = { "-j", "--job-id" },
+			description = "the job to retract",
+			required = true)
+	@SuppressWarnings("NullAway.Init")
+	String jobId;
+	
+	@Option(names = { "-f", "--force" },
+			description = "allow updating executing jobs")
+	boolean force;
 
-		@Option(names = { "-mode", "--display-mode" },
-				description = "how to display the data")
-		ResultDisplayMode displayMode;
-		// @formatter:on
+	@Option(names = { "-mode", "--display-mode" },
+			description = "how to display the data")
+	@Nullable ResultDisplayMode displayMode;
+	// @formatter:on
 
 	/**
 	 * Constructor.
@@ -61,6 +63,7 @@ public class RetractImportCmd extends BaseSubCmd<DatumImportsCmd> implements Cal
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final ObjectMapper objectMapper = objectMapper();
 		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		try {
 

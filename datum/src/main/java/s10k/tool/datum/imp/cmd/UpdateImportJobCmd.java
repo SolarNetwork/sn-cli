@@ -52,37 +52,39 @@ public class UpdateImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements C
 	@Option(names = { "-j", "--job-id" },
 			description = "the ID of the job to update",
 			required = true)
+	@SuppressWarnings("NullAway.Init")
 	String jobId;
 	
 	@Option(names = { "-m", "--name" },
 			description = "the import job name to set")
-	String name;
+	@Nullable String name;
 
 	@Option(names = { "-b", "--batch-size" },
 			description = "the import batch size to set")
-	Integer batchSize;
+	@Nullable Integer batchSize;
 
 	@Option(names = { "-G", "--group-key" },
 			description = "the group key to set")
-	String groupKey;
+	@Nullable String groupKey;
 
 	@Option(names = { "-tz", "--time-zone" },
 			description = "a time zone to interpret the dates in the import data as")
-	ZoneId zone;
+	@Nullable ZoneId zone;
 	
 	@Option(names = { "-S", "--service" },
 			description = "the input service identifier to set; a substring of the service type can be used")
-	String serviceIdentifier;
+	@Nullable String serviceIdentifier;
 
 	@Option(names = { "-g", "--merge-mode" },
 			description = "the merge style to perform",
 			defaultValue = "RecursiveObjects")
+	@SuppressWarnings("NullAway.Init")
 	MergeMode mode;
 
 	@Option(names = { "-prop", "--service-property" },
 			description = "a service property, in the form path:value",
 			paramLabel = "serviceProperty")
-	String serviceProperties[];
+	String serviceProperties@Nullable [];
 
 	@Option(names = {"-I", "--ignore-input"},
 			description = "do not try to read settings from standard input")
@@ -90,10 +92,10 @@ public class UpdateImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements C
 	
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data")
-	ResultDisplayMode displayMode;
+	@Nullable ResultDisplayMode displayMode;
 
 	@Parameters(index = "0", paramLabel = "<config>", description = "the configuration to save, or @file for file to load", arity = "0..1")
-	String value;
+	@Nullable String value;
 	// @formatter:on
 
 	/**
@@ -109,6 +111,7 @@ public class UpdateImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements C
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
+		final ObjectMapper objectMapper = objectMapper();
 		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		try {
 			final DatumImportTaskInfo existing = viewDatumImportTask(restClient, objectMapper, jobId);
@@ -125,7 +128,7 @@ public class UpdateImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements C
 			}
 
 			try {
-				populateSettings(settings);
+				populateSettings(settings, objectMapper);
 			} catch (RuntimeException e) {
 				System.err.println(e.getMessage());
 				return 1;
@@ -137,7 +140,7 @@ public class UpdateImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements C
 				mergeServiceProperties(inputProps, settings);
 			}
 
-			final DatumImportConfiguration newConfig = createConfiguration(existing, settings);
+			final DatumImportConfiguration newConfig = createConfiguration(existing, settings, objectMapper);
 
 			final DatumImportTaskInfo result;
 
@@ -168,7 +171,7 @@ public class UpdateImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements C
 		}
 	}
 
-	private void populateSettings(Map<String, Object> settings) {
+	private void populateSettings(Map<String, Object> settings, ObjectMapper objectMapper) {
 		if (name != null) {
 			settings.put("name", name);
 		}
@@ -188,7 +191,8 @@ public class UpdateImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements C
 		}
 	}
 
-	private DatumImportConfiguration createConfiguration(DatumImportTaskInfo existing, Map<String, Object> settings) {
+	private DatumImportConfiguration createConfiguration(DatumImportTaskInfo existing, Map<String, Object> settings,
+			ObjectMapper objectMapper) {
 		try {
 			final DatumInputServiceConfiguration inputConfig = objectMapper.treeToValue(getTreeFromObject(settings),
 					DatumInputServiceConfiguration.class);
