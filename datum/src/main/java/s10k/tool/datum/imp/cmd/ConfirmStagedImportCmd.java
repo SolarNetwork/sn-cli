@@ -74,8 +74,9 @@ public class ConfirmStagedImportCmd extends BaseSubCmd<DatumImportsCmd> implemen
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? List.of(result)
 					: List.of((Object) ViewImportJobCmd.tableDataRow(result)));
-			TableUtils.renderTableData(ViewImportJobCmd.tableDataColumns(), tableData, tableConfig(this, displayMode),
-					objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			TableUtils.renderTableData(ViewImportJobCmd.tableDataColumns(), tableData,
+					tableConfig(this, displayMode).asJsonSingleton(), objectMapper,
+					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error confirming staged datum import job: %s".formatted(e.getMessage()));

@@ -90,8 +90,7 @@ The updated job info.
 === "JSON Output"
 
 	```json
-	[
-	  {
+	{
 	    "userId": 857,
 	    "jobId": "49a2f730-0000-0000-0000-233d085c799a",
 	    "jobState": "Retracted",
@@ -119,8 +118,7 @@ The updated job info.
 	        "timeZoneId": "UTC"
 	      }
 	    }
-	  }
-	]
+	}
 	```
 
 [import-state]: https://github.com/SolarNetwork/solarnetwork/wiki/SolarUser-API-enumerated-types#datum-import-task-state-type

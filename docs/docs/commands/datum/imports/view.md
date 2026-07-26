@@ -78,8 +78,7 @@ The updated job info.
 === "JSON Output"
 
 	```json
-	[
-	  {
+	{
 	    "userId": 857,
 	    "jobId": "49a2f730-0000-0000-0000-233d085c799a",
 	    "jobState": "Staged",
@@ -107,6 +106,5 @@ The updated job info.
 	        "timeZoneId": "UTC"
 	      }
 	    }
-	  }
-	]
+	}
 	```
