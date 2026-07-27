@@ -89,7 +89,8 @@ public class ImportDatumCmd extends BaseSubCmd<DatumImportsCmd> implements Calla
 	@Option(names = { "-b", "--batch-size" },
 			description = "the import batch size to set",
 			defaultValue = "10000")
-	@Nullable Integer batchSize;
+	@SuppressWarnings("NullAway.Init")
+	Integer batchSize;
 
 	@Option(names = { "-G", "--group-key" },
 			description = "the group key to set")
@@ -183,8 +184,8 @@ public class ImportDatumCmd extends BaseSubCmd<DatumImportsCmd> implements Calla
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? List.of(result)
 					: List.of((Object) ViewImportJobCmd.tableDataRow(result)));
 			TableUtils.renderTableData(ViewImportJobCmd.tableDataColumns(), tableData,
-					tableConfig(this, displayMode, zone), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
-					System.out);
+					tableConfig(this, displayMode, zone).asJsonSingleton(), objectMapper,
+					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error confirming staged datum import job: %s".formatted(e.getMessage()));
