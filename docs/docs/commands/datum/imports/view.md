@@ -26,7 +26,7 @@ s10k datum imports view
 
 ## Output
 
-The updated job info.
+The job info.
 
 ## Examples
 
