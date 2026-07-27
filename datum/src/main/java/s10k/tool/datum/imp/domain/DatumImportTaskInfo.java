@@ -9,27 +9,6 @@ import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/*-
-
-{
-    "jobId": "7e426ffb-5928-420d-90c6-c7c0404c6da1",
-    "jobState": "Staged",
-    "groupKey": "4dff899d-0fee-47e1-8f74-a0e74941ac1f",
-    "success": false,
-    "cancelled": false,
-    "done": false,
-    "userId": 147,
-    "submitDate": 1615929546543,
-    "startedDate": 0,
-    "completionDate": 0,
-    "loadedCount": 0,
-    "percentComplete": 0.0,
-    "importDate": 1615929545362,
-    "configuration": { ... }
-  }
-
- */
-
 /**
  * Import task information.
  */
