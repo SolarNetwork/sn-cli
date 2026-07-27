@@ -73,7 +73,7 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 			split = "\\s*,\\s*",
 			splitSynopsisLabel = ",",
 			paramLabel = "streamId")
-	UUID streamIds @Nullable [];
+	UUID @Nullable [] streamIds;
 	
 	@ArgGroup(exclusive = true, multiplicity = "0..1")
 	@Nullable NodeOrLocationIds nodeOrLocationIds;
@@ -83,14 +83,14 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 			split = "\\s*,\\s*",
 			splitSynopsisLabel = ",",
 			paramLabel = "sourceId")
-	String@Nullable [] sourceIds;
+	String @Nullable [] sourceIds;
 	
 	@Option(names = { "-ident", "--stream-ident" },
 			description = "an object:source stream identifier to return datum for; if provided then -node and -source are ignored",
 			split = "\\s*,\\s*",
 			splitSynopsisLabel = ",",
 			paramLabel = "identifier")
-	String@Nullable [] streamIdentifiers;
+	String @Nullable [] streamIdentifiers;
 	
 	@Option(names = { "--stream-ident-kind" },
 			description = "the type of objects represented in the -ident option",
