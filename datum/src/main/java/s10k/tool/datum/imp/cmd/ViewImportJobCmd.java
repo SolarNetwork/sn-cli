@@ -48,7 +48,7 @@ public class ViewImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements Cal
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param reqFactory   the HTTP request factory to use
 	 * @param objectMapper the mapper to use
 	 */
@@ -77,7 +77,7 @@ public class ViewImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements Cal
 
 	/**
 	 * Get datum import job tabular structure columns.
-	 * 
+	 *
 	 * @return the columns
 	 * @see #tableDataRow(DatumImportTaskInfo)
 	 */
@@ -105,7 +105,7 @@ public class ViewImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements Cal
 
 	/**
 	 * Convert a datum import job into a tabular structure.
-	 * 
+	 *
 	 * @param info the configuration to convert
 	 * @return the metadata data
 	 * @see #tableDataColumns()
