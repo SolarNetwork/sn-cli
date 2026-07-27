@@ -32,7 +32,7 @@ s10k datum imports preview-staged
 
 A sample of datum from the start of the staged datum import resoruce.
 
-# Examples
+## Examples
 
 === "Preview staged datum import"
 

@@ -66,7 +66,7 @@ s10k datum imports update
 
 The updated job info (or a preview of the update if the `--dry-run` option was given).
 
-# Examples
+## Examples
 
 === "Preview changes"
 
