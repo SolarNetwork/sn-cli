@@ -8,6 +8,7 @@ import static s10k.tool.common.util.DateUtils.isMidnight;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -20,8 +21,13 @@ import java.util.SortedSet;
 import java.util.UUID;
 
 import org.jspecify.annotations.Nullable;
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+
+import com.fasterxml.jackson.annotation.JsonDeserializeAs;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 import net.solarnetwork.domain.SimplePagination;
 import net.solarnetwork.domain.datum.Aggregation;
@@ -35,6 +41,7 @@ import s10k.tool.common.util.DatumUtils;
 /**
  * A mutable search filter for datum.
  */
+@RegisterReflectionForBinding
 public final class DatumFilter extends SimplePagination {
 
 	private @Nullable ObjectDatumKind objectKind;
@@ -262,6 +269,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @return the object IDs
 	 */
+	@JsonIgnore
 	public @Nullable SequencedCollection<Long> getObjectIds() {
 		return objectIds;
 	}
@@ -271,8 +279,50 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @param objectIds the object IDs to set
 	 */
+	@JsonSetter
+	@JsonDeserializeAs(value = ArrayList.class)
 	public void setObjectIds(@Nullable SequencedCollection<Long> objectIds) {
 		this.objectIds = objectIds;
+	}
+
+	/**
+	 * Get the object IDs as node IDs.
+	 * 
+	 * @return the object IDs
+	 */
+	public @Nullable SequencedCollection<Long> getNodeIds() {
+		return (objectKind != ObjectDatumKind.Location ? objectIds : null);
+	}
+
+	/**
+	 * Set the node IDs.
+	 * 
+	 * @param nodeIds the node IDs to set
+	 */
+	@JsonDeserializeAs(value = ArrayList.class)
+	public void setNodeIds(@Nullable SequencedCollection<Long> nodeIds) {
+		setObjectKind(ObjectDatumKind.Node);
+		setObjectIds(nodeIds);
+	}
+
+	/**
+	 * Get the object IDs as location IDs.
+	 * 
+	 * @return the object IDs
+	 */
+	public @Nullable SequencedCollection<Long> getLocationIds() {
+		return (objectKind == ObjectDatumKind.Location ? objectIds : null);
+	}
+
+	/**
+	 * Set the location IDs.
+	 * 
+	 * @param locationIds the location IDs to set
+	 */
+	@JsonDeserializeAs(value = ArrayList.class)
+	public void setLocationIds(@Nullable SequencedCollection<Long> locationIds) {
+		setObjectKind(ObjectDatumKind.Location);
+		setObjectIds(locationIds);
 	}
 
 	/**
@@ -289,6 +339,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @param sourceIds the source IDs to set
 	 */
+	@JsonDeserializeAs(value = ArrayList.class)
 	public void setSourceIds(@Nullable SequencedCollection<String> sourceIds) {
 		this.sourceIds = sourceIds;
 	}
@@ -403,6 +454,7 @@ public final class DatumFilter extends SimplePagination {
 	 *
 	 * @param streamIds the location IDs to set
 	 */
+	@JsonDeserializeAs(value = ArrayList.class)
 	public void setStreamIds(@Nullable SequencedCollection<UUID> streamIds) {
 		this.streamIds = streamIds;
 	}
@@ -520,6 +572,7 @@ public final class DatumFilter extends SimplePagination {
 	 *
 	 * @param datumRollupTypes the types to set
 	 */
+	@JsonDeserializeAs(value = ArrayList.class)
 	public void setDatumRollupTypes(@Nullable SequencedCollection<DatumRollupType> datumRollupTypes) {
 		this.datumRollupTypes = datumRollupTypes;
 	}
