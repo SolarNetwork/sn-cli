@@ -33,6 +33,7 @@ dependencies {
 	// Utilities
 	implementation "com.github.freva:ascii-table:${asciiTableVersion}"
 	implementation "de.siegmar:fastcsv:${fastCsvVersion}"
+	implementation "me.tongfei:progressbar:${progressbarVersion}"
 	
 	// Annotations
 	annotationProcessor "info.picocli:picocli-codegen:${picoCliVersion}"

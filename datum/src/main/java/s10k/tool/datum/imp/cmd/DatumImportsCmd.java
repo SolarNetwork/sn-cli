@@ -12,6 +12,7 @@ import s10k.tool.datum.cmd.DatumCmd;
 		ConfirmStagedImportCmd.class,
 		ImportDatumCmd.class,
 		ListImportJobsCmd.class,
+		MonitorImportCmd.class,
 		PreviewStagedImportCmd.class,
 		RetractImportCmd.class,
 		UpdateImportJobCmd.class,

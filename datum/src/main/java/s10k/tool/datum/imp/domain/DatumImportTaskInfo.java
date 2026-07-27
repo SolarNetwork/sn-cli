@@ -52,6 +52,17 @@ public record DatumImportTaskInfo(
 ) {
 
 	/**
+	 * Test if the job is in an importing state.
+	 * 
+	 * @return {@code true} if the state is <b>not</b> completed, staged, or
+	 *         retracted
+	 */
+	public boolean isImporting() {
+		return !(jobState == DatumImportState.Completed || jobState == DatumImportState.Staged
+				|| jobState == DatumImportState.Retracted);
+	}
+
+	/**
 	 * Normalize the info.
 	 * 
 	 * <p>
