@@ -84,7 +84,7 @@ public class UpdateImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements C
 	@Option(names = { "-prop", "--service-property" },
 			description = "a service property, in the form path:value",
 			paramLabel = "serviceProperty")
-	String serviceProperties@Nullable [];
+	String @Nullable [] serviceProperties;
 
 	@Option(names = {"-I", "--ignore-input"},
 			description = "do not try to read settings from standard input")
