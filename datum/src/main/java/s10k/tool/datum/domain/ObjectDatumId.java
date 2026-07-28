@@ -1,0 +1,450 @@
+package s10k.tool.datum.domain;
+
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.EXISTING_PROPERTY;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
+import static net.solarnetwork.util.ObjectUtils.requireNonNullArgument;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.time.Instant;
+import java.util.Objects;
+import java.util.UUID;
+
+import org.jspecify.annotations.Nullable;
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import net.solarnetwork.domain.datum.Aggregation;
+import net.solarnetwork.domain.datum.ObjectDatumKind;
+import net.solarnetwork.util.StringUtils;
+
+/**
+ * A general object datum identifier.
+ */
+@RegisterReflectionForBinding
+@JsonPropertyOrder({ "kind", "streamId", "objectId", "sourceId", "timestamp", "aggregation" })
+@JsonTypeInfo(use = NAME, include = EXISTING_PROPERTY, property = "kind", defaultImpl = ObjectDatumId.NodeDatumId.class)
+@JsonSubTypes({ @JsonSubTypes.Type(names = { "l", "Location" }, value = ObjectDatumId.LocationDatumId.class),
+		@JsonSubTypes.Type(names = { "n", "Node" }, value = ObjectDatumId.NodeDatumId.class),
+		@JsonSubTypes.Type(value = ObjectDatumId.NodeDatumId.class) })
+public sealed class ObjectDatumId implements Cloneable, Serializable, Comparable<ObjectDatumId>
+		permits ObjectDatumId.LocationDatumId, ObjectDatumId.NodeDatumId {
+
+	@Serial
+	private static final long serialVersionUID = 7571299682812609193L;
+
+	private final ObjectDatumKind kind;
+	private final @Nullable UUID streamId;
+	private final @Nullable Long objectId;
+	private final @Nullable String sourceId;
+	private final Instant timestamp;
+	private final @Nullable Aggregation aggregation;
+
+	/**
+	 * Create a new node datum stream key.
+	 *
+	 * @param streamId    the stream ID
+	 * @param nodeId      the node ID
+	 * @param sourceId    the source ID
+	 * @param timestamp   the timestamp
+	 * @param aggregation the aggregation
+	 * @return the instance
+	 * @throws IllegalArgumentException if {@code timestamp} is {@code null}
+	 */
+	public static NodeDatumId nodeId(@Nullable UUID streamId, @Nullable Long nodeId, @Nullable String sourceId,
+			Instant timestamp, @Nullable Aggregation aggregation) {
+		return new NodeDatumId(streamId, nodeId, sourceId, timestamp, aggregation);
+	}
+
+	/**
+	 * Create a new location datum stream key.
+	 *
+	 * @param streamId    the stream ID
+	 * @param locationId  the node ID
+	 * @param sourceId    the source ID
+	 * @param timestamp   the timestamp
+	 * @param aggregation the aggregation
+	 * @return the instance
+	 * @throws IllegalArgumentException if {@code timestamp} is {@code null}
+	 */
+	public static LocationDatumId locationId(@Nullable UUID streamId, @Nullable Long locationId,
+			@Nullable String sourceId, Instant timestamp, @Nullable Aggregation aggregation) {
+		return new LocationDatumId(streamId, locationId, sourceId, timestamp, aggregation);
+	}
+
+	/**
+	 * Create a new datum stream key.
+	 *
+	 * @param kind        the object kind
+	 * @param streamId    the stream ID
+	 * @param objectId    the object ID
+	 * @param sourceId    the source ID
+	 * @param timestamp   the timestamp
+	 * @param aggregation the aggregation
+	 * @return the instance, will be either a {@link LocationDatumId} or
+	 *         {@link NodeDatumId} instance, depending on {@code kind}
+	 * @throws IllegalArgumentException if {@code kind} or {@code timestamp} is
+	 *                                  {@code null}
+	 * @since 1.2
+	 */
+	public static ObjectDatumId datumId(ObjectDatumKind kind, @Nullable UUID streamId, @Nullable Long objectId,
+			@Nullable String sourceId, Instant timestamp, @Nullable Aggregation aggregation) {
+		return switch (requireNonNullArgument(kind, "kind")) {
+		case Location -> locationId(streamId, objectId, sourceId, timestamp, aggregation);
+		case Node -> nodeId(streamId, objectId, sourceId, timestamp, aggregation);
+		};
+	}
+
+	/**
+	 * Extension of {@link ObjectDatumId} for node data streams.
+	 */
+	public static final class NodeDatumId extends ObjectDatumId {
+
+		@Serial
+		private static final long serialVersionUID = -851538635627971228L;
+
+		/**
+		 * Constructor.
+		 *
+		 * @param streamId    the stream ID
+		 * @param nodeId      the node ID
+		 * @param sourceId    the source ID
+		 * @param timestamp   the timestamp
+		 * @param aggregation the aggregation
+		 */
+		@JsonCreator
+		public NodeDatumId(@JsonProperty(value = "streamId", required = false) @Nullable UUID streamId,
+				@JsonProperty(value = "objectId", required = false) @Nullable Long nodeId,
+				@JsonProperty(value = "sourceId", required = false) @Nullable String sourceId,
+				@JsonProperty("timestamp") Instant timestamp,
+				@JsonProperty(value = "aggregation", required = false) @Nullable Aggregation aggregation) {
+			super(ObjectDatumKind.Node, streamId, nodeId, sourceId, timestamp, aggregation);
+		}
+
+		@Override
+		public NodeDatumId clone() {
+			return (NodeDatumId) super.clone();
+		}
+
+		/**
+		 * Alias for {@link #getObjectId()}.
+		 *
+		 * @return the node ID
+		 */
+		@JsonIgnore
+		public @Nullable Long getNodeId() {
+			return getObjectId();
+		}
+
+	}
+
+	/**
+	 * Extension of {@link ObjectDatumId} for location data streams.
+	 */
+	public static final class LocationDatumId extends ObjectDatumId {
+
+		@Serial
+		private static final long serialVersionUID = 2579981391355724098L;
+
+		/**
+		 * Constructor.
+		 *
+		 * @param streamId    the stream ID
+		 * @param locationId  the location ID
+		 * @param sourceId    the source ID
+		 * @param timestamp   the timestamp
+		 * @param aggregation the aggregation
+		 */
+		@JsonCreator
+		public LocationDatumId(@JsonProperty(value = "streamId", required = false) @Nullable UUID streamId,
+				@JsonProperty(value = "objectId", required = false) @Nullable Long locationId,
+				@JsonProperty(value = "sourceId", required = false) @Nullable String sourceId,
+				@JsonProperty("timestamp") Instant timestamp,
+				@JsonProperty(value = "aggregation", required = false) @Nullable Aggregation aggregation) {
+			super(ObjectDatumKind.Location, streamId, locationId, sourceId, timestamp, aggregation);
+		}
+
+		@Override
+		public LocationDatumId clone() {
+			return (LocationDatumId) super.clone();
+		}
+
+		/**
+		 * Alias for {@link #getObjectId()}.
+		 *
+		 * @return the location ID
+		 */
+		@JsonIgnore
+		public @Nullable Long getLocationId() {
+			return getObjectId();
+		}
+
+	}
+
+	/**
+	 * Constructor.
+	 *
+	 * @param kind        the object kind
+	 * @param streamId    the stream ID
+	 * @param objectId    the object ID
+	 * @param sourceId    the source ID
+	 * @param timestamp   the timestamp
+	 * @param aggregation the aggregation
+	 * @throws IllegalArgumentException if {@code kind} or {@code timestamp} is
+	 *                                  {@code null}
+	 */
+	public ObjectDatumId(ObjectDatumKind kind, @Nullable UUID streamId, @Nullable Long objectId,
+			@Nullable String sourceId, Instant timestamp, @Nullable Aggregation aggregation) {
+		super();
+		this.kind = requireNonNullArgument(kind, "kind");
+		this.streamId = streamId;
+		this.objectId = objectId;
+		this.sourceId = sourceId;
+		this.timestamp = requireNonNullArgument(timestamp, "timestamp");
+		this.aggregation = aggregation;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("ObjectDatumId{");
+		if (kind != null) {
+			builder.append("kind=");
+			builder.append(kind);
+			builder.append(", ");
+		}
+		if (streamId != null) {
+			builder.append("streamId=");
+			builder.append(streamId);
+			builder.append(", ");
+		}
+		if (objectId != null) {
+			builder.append("objectId=");
+			builder.append(objectId);
+			builder.append(", ");
+		}
+		if (sourceId != null) {
+			builder.append("sourceId=");
+			builder.append(sourceId);
+			builder.append(", ");
+		}
+		if (timestamp != null) {
+			builder.append("timestamp=");
+			builder.append(timestamp);
+			builder.append(", ");
+		}
+		if (aggregation != null) {
+			builder.append("aggregation=");
+			builder.append(aggregation);
+		}
+		builder.append("}");
+		return builder.toString();
+	}
+
+	@Override
+	public ObjectDatumId clone() {
+		try {
+			return (ObjectDatumId) super.clone();
+		} catch (CloneNotSupportedException e) {
+			// should not get here
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(aggregation, kind, streamId, objectId, sourceId, timestamp);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof ObjectDatumId other)) {
+			return false;
+		}
+		return aggregation == other.aggregation && kind == other.kind && Objects.equals(streamId, other.streamId)
+				&& Objects.equals(objectId, other.objectId) && Objects.equals(sourceId, other.sourceId)
+				&& Objects.equals(timestamp, other.timestamp);
+	}
+
+	@Override
+	public int compareTo(ObjectDatumId o) {
+		if (o == null) {
+			return 1;
+		}
+		int comparison = kind.compareTo(o.kind);
+		if (comparison != 0) {
+			return comparison;
+		}
+		if (aggregation != o.aggregation) {
+			if (aggregation == null) {
+				return -1;
+			}
+			return aggregation.compareTo(o.aggregation);
+		}
+		if (streamId != o.streamId) {
+			if (streamId == null) {
+				return -1;
+			}
+			comparison = streamId.compareTo(o.streamId);
+			if (comparison != 0) {
+				return comparison;
+			}
+		}
+		if (objectId != o.objectId) {
+			if (objectId == null) {
+				return -1;
+			}
+			comparison = objectId.compareTo(o.objectId);
+			if (comparison != 0) {
+				return comparison;
+			}
+		}
+		if (sourceId != o.sourceId) {
+			if (sourceId == null) {
+				return -1;
+			}
+			comparison = StringUtils.naturalSortCompare(sourceId, o.sourceId, true);
+			if (comparison != 0) {
+				return comparison;
+			}
+		}
+		if (timestamp != o.timestamp) {
+			if (timestamp == null) {
+				return -1;
+			}
+			comparison = timestamp.compareTo(o.timestamp);
+			if (comparison != 0) {
+				return comparison;
+			}
+		}
+		return 0;
+	}
+
+	/**
+	 * Test if this object ID is fully specified.
+	 *
+	 * @param expectedKind the kind to match
+	 * @return {@literal true} if {@code expectedKind} is the same as this object's
+	 *         {@code kind} and {@code objectId}, {@code sourceId}, and
+	 *         {@code timestamp} are all non-null and non-empty
+	 */
+	public boolean isValidObjectId(ObjectDatumKind expectedKind) {
+		return (expectedKind == kind && objectId != null && sourceId != null && !sourceId.isEmpty()
+				&& timestamp != null);
+	}
+
+	/**
+	 * Test if this object ID is fully specified as an aggregate.
+	 *
+	 * @param expectedKind the kind to match
+	 * @return {@literal true} if {@link #isValidObjectId(ObjectDatumKind)} returns
+	 *         {@literal true} and {@code aggregation} is non-null
+	 * @see #isValidObjectId(ObjectDatumKind)
+	 */
+	public boolean isValidAggregateObjectId(ObjectDatumKind expectedKind) {
+		return isValidObjectId(expectedKind) && aggregation != null;
+	}
+
+	/**
+	 * Test if this ID is fully specified by having a {@code kind} and
+	 * {@code timestamp} and then either a {@code streamId} or the combination of
+	 * {@code objectId} and {@code sourceId}.
+	 *
+	 * @return {@code true} if the ID is fully specified
+	 */
+	@JsonIgnore
+	public boolean isFullySpecified() {
+		return (kind != null && timestamp != null && (streamId != null || isValidObjectId(kind)));
+	}
+
+	/**
+	 * Compare two IDs for equivalence.
+	 *
+	 * <p>
+	 * Ths is similar to {@link #equals(Object)} however if both this instance and
+	 * {@code other} have a {@code streamId} value then the {@code streamId} values
+	 * of each are compared, ignoring the {@code objectId} and {@code sourceId}
+	 * properties. Conversely, if neither this instance or {@code other} has a
+	 * {@code streamId} then the {@code streamId} properties are ignored and the
+	 * {@code objectId} and {@code sourceId} properties are compared.
+	 * </p>
+	 *
+	 * @param other the other ID to compare to this instance
+	 * @return {@code true} if {@code other} is an equivalent ID to this instance
+	 * @since 1.2
+	 */
+	@SuppressWarnings("ReferenceEquality")
+	public boolean isEquivalent(ObjectDatumId other) {
+		if (this == other) {
+			return true;
+		}
+		return aggregation == other.aggregation && kind == other.kind
+				&& ((streamId != null && other.streamId != null) ? Objects.equals(streamId, other.streamId)
+						: Objects.equals(objectId, other.objectId) && Objects.equals(sourceId, other.sourceId))
+				&& Objects.equals(timestamp, other.timestamp);
+	}
+
+	/**
+	 * Get the kind.
+	 *
+	 * @return the kind
+	 */
+	public ObjectDatumKind getKind() {
+		return kind;
+	}
+
+	/**
+	 * Get the stream ID.
+	 *
+	 * @return the stream ID
+	 */
+	public @Nullable UUID getStreamId() {
+		return streamId;
+	}
+
+	/**
+	 * Get the object ID.
+	 *
+	 * @return the object ID
+	 */
+	public @Nullable Long getObjectId() {
+		return objectId;
+	}
+
+	/**
+	 * Get the source ID.
+	 *
+	 * @return the source ID
+	 */
+	public @Nullable String getSourceId() {
+		return sourceId;
+	}
+
+	/**
+	 * Get the timestamp.
+	 *
+	 * @return the timestamp
+	 */
+	public Instant getTimestamp() {
+		return timestamp;
+	}
+
+	/**
+	 * Get the aggregation.
+	 *
+	 * @return the aggregation
+	 */
+	public @Nullable Aggregation getAggregation() {
+		return aggregation;
+	}
+
+}

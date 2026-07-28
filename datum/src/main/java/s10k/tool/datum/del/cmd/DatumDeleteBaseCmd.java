@@ -10,6 +10,7 @@ import s10k.tool.datum.cmd.DatumCmd;
 // @formatter:off
 @Command(name = "delete", aliases = { "del" }, subcommands = {
 		DeleteDatumCmd.class,
+		DeleteDatumIdsCmd.class,
 		ViewDeleteJobCmd.class,
 })
 // @formatter:on

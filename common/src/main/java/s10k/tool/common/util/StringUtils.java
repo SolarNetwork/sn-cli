@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.DateTimeException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -65,6 +66,24 @@ public final class StringUtils {
 		} catch (DateTimeException e) {
 			return LocalDate.from(ta).atStartOfDay(ZoneId.from(ta)).toLocalDateTime();
 		}
+	}
+
+	/**
+	 * Parse a local date time string into an instant at a given time zone.
+	 * 
+	 * <p>
+	 * The string must provide a minimum of an ISO 8601 local date, in
+	 * {@code YYYY-MM-DD} form. This can be optionally followed by a {@code T} or
+	 * space character and then an ISO 8601 time like {@code hh:mm:ss.SSS}.
+	 * </p>
+	 * 
+	 * @param s the date string to parse
+	 * @return the parsed date
+	 * @throws DateTimeParseException if the date cannot be parsed
+	 */
+	public static @Nullable Instant parseLocalTimestamp(@Nullable String s, ZoneId zone) {
+		final LocalDateTime ts = StringUtils.parseLocalDateTime(s);
+		return ts.atZone(zone).toInstant();
 	}
 
 	/**
