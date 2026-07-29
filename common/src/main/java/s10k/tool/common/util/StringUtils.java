@@ -83,7 +83,7 @@ public final class StringUtils {
 	 */
 	public static @Nullable Instant parseLocalTimestamp(@Nullable String s, ZoneId zone) {
 		final LocalDateTime ts = StringUtils.parseLocalDateTime(s);
-		return ts.atZone(zone).toInstant();
+		return (ts != null ? ts.atZone(zone).toInstant() : null);
 	}
 
 	/**

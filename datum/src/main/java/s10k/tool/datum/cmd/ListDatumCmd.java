@@ -3,6 +3,8 @@ package s10k.tool.datum.cmd;
 import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
 import static java.util.Arrays.asList;
+import static java.util.Objects.requireNonNullElse;
+import static net.solarnetwork.domain.datum.Aggregation.None;
 import static net.solarnetwork.domain.datum.DatumSamplesType.Accumulating;
 import static net.solarnetwork.util.NumberUtils.bigDecimalForNumber;
 import static net.solarnetwork.util.NumberUtils.narrow;
@@ -35,6 +37,7 @@ import org.springframework.util.StreamUtils;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.freva.asciitable.AsciiTable;
 import com.github.freva.asciitable.Column;
@@ -45,6 +48,7 @@ import net.solarnetwork.domain.datum.DatumProperties;
 import net.solarnetwork.domain.datum.DatumPropertiesStatistics;
 import net.solarnetwork.domain.datum.DatumReadingType;
 import net.solarnetwork.domain.datum.DatumSamplesType;
+import net.solarnetwork.domain.datum.GeneralDatum;
 import net.solarnetwork.domain.datum.ObjectDatumKind;
 import net.solarnetwork.domain.datum.ObjectDatumStreamDataSet;
 import net.solarnetwork.domain.datum.ObjectDatumStreamMetadata;
@@ -154,6 +158,10 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 			description = "start returning results from this offset, 0 being the first result")
 	long resultOffset;
 
+	@Option(names = {"-J", "--expand-json"},
+			description = "generate expanded JSON objects in JSON mode, rather than stream results")
+	boolean expandJson;
+	
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data")
 	@Nullable ResultDisplayMode displayMode;
@@ -202,6 +210,7 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 		super(reqFactory, objectMapper);
 	}
 
+	@SuppressWarnings("ClosingStandardOutputStreams")
 	@Override
 	public Integer call() throws Exception {
 		final RestClient restClient = restClient();
@@ -222,6 +231,26 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 					;
 				// @formatter:on
 				System.out.println();
+			} else if (displayMode == ResultDisplayMode.JSON && expandJson) {
+				ObjectDatumStreamDataSet<StreamDatum> result = listDatum(restClient, filter);
+				try (JsonGenerator json = objectMapper.createGenerator(nonClosing(System.out))) {
+					boolean first = true;
+					for (StreamDatum sd : result) {
+						if (first) {
+							json.writeStartArray();
+							first = false;
+						}
+						ObjectDatumStreamMetadata meta = nonnull(result.metadataForStreamId(sd.getStreamId()),
+								"Stream metadat");
+						GeneralDatum d = (sd instanceof AggregateStreamDatum asd
+								? asd.toGeneralDatum(meta, requireNonNullElse(aggregation, None), readingType)
+								: sd.toGeneralDatum(meta));
+						json.writeObject(d);
+					}
+					if (!first) {
+						json.writeEndArray();
+					}
+				}
 			} else {
 				listDatumDirect(restClient, objectMapper, filter, displayMode);
 			}

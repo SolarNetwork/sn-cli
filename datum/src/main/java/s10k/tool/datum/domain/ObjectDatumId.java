@@ -104,6 +104,7 @@ public sealed class ObjectDatumId implements Cloneable, Serializable, Comparable
 	/**
 	 * Extension of {@link ObjectDatumId} for node data streams.
 	 */
+	@RegisterReflectionForBinding
 	public static final class NodeDatumId extends ObjectDatumId {
 
 		@Serial
@@ -147,6 +148,7 @@ public sealed class ObjectDatumId implements Cloneable, Serializable, Comparable
 	/**
 	 * Extension of {@link ObjectDatumId} for location data streams.
 	 */
+	@RegisterReflectionForBinding
 	public static final class LocationDatumId extends ObjectDatumId {
 
 		@Serial
@@ -275,6 +277,7 @@ public sealed class ObjectDatumId implements Cloneable, Serializable, Comparable
 				&& Objects.equals(timestamp, other.timestamp);
 	}
 
+	@SuppressWarnings({ "BoxedPrimitiveEquality", "ReferenceEquality" })
 	@Override
 	public int compareTo(ObjectDatumId o) {
 		if (o == null) {
