@@ -4,7 +4,9 @@ import static com.github.freva.asciitable.HorizontalAlign.LEFT;
 import static com.github.freva.asciitable.HorizontalAlign.RIGHT;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNullElse;
+import static net.solarnetwork.util.ObjectUtils.nonnull;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
+import static s10k.tool.common.util.StringUtils.parseLocalTimestamp;
 import static s10k.tool.common.util.StringUtils.stringOrFileContents;
 import static s10k.tool.common.util.TableUtils.tableConfig;
 
@@ -32,7 +34,6 @@ import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
-import s10k.tool.common.util.StringUtils;
 import s10k.tool.common.util.SystemUtils;
 import s10k.tool.common.util.TableUtils;
 import s10k.tool.datum.del.domain.DatumDeleteTaskInfo;
@@ -143,7 +144,7 @@ public class DeleteDatumIdsCmd extends BaseSubCmd<DatumDeleteBaseCmd> implements
 				if (firstDelim > 0 && secondDelim > (firstDelim + 1) && secondDelim < key.length() - 1) {
 					ObjectDatumId id = ObjectDatumId.nodeId(null, Long.valueOf(key.substring(0, firstDelim)),
 							key.substring(firstDelim + 1, secondDelim),
-							StringUtils.parseLocalTimestamp(key.substring(secondDelim + 1), zone), null);
+							nonnull(parseLocalTimestamp(key.substring(secondDelim + 1), zone), "Timestamp"), null);
 					ids.add(id);
 				}
 			}
@@ -153,7 +154,7 @@ public class DeleteDatumIdsCmd extends BaseSubCmd<DatumDeleteBaseCmd> implements
 				final int delim = key.indexOf(':');
 				if (delim > 0 && delim < key.length() - 1) {
 					ObjectDatumId id = ObjectDatumId.nodeId(UUID.fromString(key.substring(0, delim)), null, null,
-							StringUtils.parseLocalTimestamp(key.substring(delim + 1), zone), null);
+							nonnull(parseLocalTimestamp(key.substring(delim + 1), zone), "Timestamp"), null);
 					ids.add(id);
 				}
 			}
