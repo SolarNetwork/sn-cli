@@ -132,8 +132,7 @@ public class ChangeStateCmd extends BaseSubCmd<RakeTasksCmd> implements Callable
 			}
 
 			final List<?> tableData = (displayMode == ResultDisplayMode.JSON
-					? (isDryRun() ? tasks.stream().map(c -> c.copyWithState(desiredState.asJobState())).toList()
-							: tasks)
+					? tasks.stream().map(c -> c.copyWithState(desiredState.asJobState())).toList()
 					: tasks.stream().map(c -> stateChangeTableDataRow(c, desiredState, streams.get(c.datumStreamId())))
 							.toList());
 			TableUtils.renderTableData(stateChangeTableDataColumns(), tableData, tableConfig(this, displayMode),
