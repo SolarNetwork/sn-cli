@@ -154,6 +154,22 @@ public final class DatumFilter extends SimplePagination {
 	}
 
 	/**
+	 * Remove the start/end date settings.
+	 */
+	public void clearDates() {
+		startDate = null;
+		endDate = null;
+	}
+
+	/**
+	 * Remove the local start/end date settings.
+	 */
+	public void clearLocalDates() {
+		localStartDate = null;
+		localEndDate = null;
+	}
+
+	/**
 	 * Test if the query is for location IDs, instead of node IDs.
 	 * 
 	 * @return {@code true} if any location ID is configured
@@ -265,6 +281,16 @@ public final class DatumFilter extends SimplePagination {
 	}
 
 	/**
+	 * Test if any object IDs are configured.
+	 * 
+	 * @return {@code true} if object IDs are available
+	 */
+	@JsonIgnore
+	public boolean hasObjectIds() {
+		return (objectIds != null && !objectIds.isEmpty());
+	}
+
+	/**
 	 * Get the object IDs
 	 * 
 	 * @return the object IDs
@@ -283,6 +309,17 @@ public final class DatumFilter extends SimplePagination {
 	@JsonDeserializeAs(value = ArrayList.class)
 	public void setObjectIds(@Nullable SequencedCollection<Long> objectIds) {
 		this.objectIds = objectIds;
+	}
+
+	/**
+	 * Test if any node IDs are configured.
+	 * 
+	 * @return {@code true} if node IDs are available
+	 */
+	@JsonIgnore
+	public boolean hasNodeIds() {
+		final var ids = getNodeIds();
+		return (ids != null && !ids.isEmpty());
 	}
 
 	/**
@@ -326,6 +363,17 @@ public final class DatumFilter extends SimplePagination {
 	}
 
 	/**
+	 * Test if any source IDs are configured.
+	 * 
+	 * @return {@code true} if source IDs are available
+	 */
+	@JsonIgnore
+	public boolean hasSourceIds() {
+		final var ids = getNodeIds();
+		return (ids != null && !ids.isEmpty());
+	}
+
+	/**
 	 * Get the source IDs.
 	 * 
 	 * @return the source IDs
@@ -342,6 +390,27 @@ public final class DatumFilter extends SimplePagination {
 	@JsonDeserializeAs(value = ArrayList.class)
 	public void setSourceIds(@Nullable SequencedCollection<String> sourceIds) {
 		this.sourceIds = sourceIds;
+	}
+
+	/**
+	 * Test if the filter as an absolute date range or a local date range specified.
+	 *
+	 * @return {@literal true} if either an absolute or local date range is
+	 *         specified
+	 */
+	@JsonIgnore
+	public boolean hasSomeDateRange() {
+		return (hasDateRange() || hasLocalDateRange());
+	}
+
+	/**
+	 * Test if the filter as an absolute date range specified.
+	 *
+	 * @return {@literal true} if both a start and end date are non-null
+	 */
+	@JsonIgnore
+	public boolean hasDateRange() {
+		return (getStartDate() != null && getEndDate() != null);
 	}
 
 	/**
@@ -378,6 +447,16 @@ public final class DatumFilter extends SimplePagination {
 	 */
 	public void setEndDate(@Nullable ZonedDateTime endDate) {
 		this.endDate = endDate;
+	}
+
+	/**
+	 * Test if the filter has a local date range specified.
+	 *
+	 * @return {@literal true} if both a local start and end date are non-null
+	 */
+	@JsonIgnore
+	public boolean hasLocalDateRange() {
+		return (getLocalStartDate() != null && getLocalEndDate() != null);
 	}
 
 	/**

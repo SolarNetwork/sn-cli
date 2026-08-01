@@ -10,6 +10,7 @@ import s10k.tool.datum.cmd.DatumCmd;
 // @formatter:off
 @Command(name = "stale-aggregates", aliases = { "stale-agg", "stale" }, subcommands = {
 		ListStaleAggregatesCmd.class,
+		MarkAggregatesStaleCmd.class,
 })
 // @formatter:on
 public class DatumStaleBaseCmd extends BaseSubCmd<DatumCmd> {
