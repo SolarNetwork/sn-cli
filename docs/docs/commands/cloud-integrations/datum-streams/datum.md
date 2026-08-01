@@ -42,7 +42,8 @@ s10k cloud-integrations datum-streams datum
 
 ## Output
 
-TODO
+A listing of datum records. The properties returned will be based on the datum stream's property
+mapping configuration.
 
 ## Examples
 
