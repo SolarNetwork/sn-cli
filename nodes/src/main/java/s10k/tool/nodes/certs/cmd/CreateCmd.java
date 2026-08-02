@@ -28,8 +28,8 @@ import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.OutputUtils;
 import s10k.tool.common.util.TableUtils;
-import s10k.tool.nodes.cmd.ListNodesCmd;
 import s10k.tool.nodes.domain.NodeInfo;
+import s10k.tool.nodes.util.NodeUtils;
 
 /**
  * Create node certificates.
@@ -110,8 +110,8 @@ public class CreateCmd extends BaseSubCmd<CertificatesCmd> implements Callable<I
 				}
 			}
 
-			List<Object[]> tableData = Collections.singletonList(ListNodesCmd.nodeInfoRow(node));
-			TableUtils.renderTableData(ListNodesCmd.nodeInfoColumns(), tableData, tableConfig(this, displayMode, zone),
+			List<Object[]> tableData = Collections.singletonList(NodeUtils.nodeInfoRow(node));
+			TableUtils.renderTableData(NodeUtils.nodeInfoColumns(), tableData, tableConfig(this, displayMode, zone),
 					objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {

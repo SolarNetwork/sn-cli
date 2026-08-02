@@ -56,7 +56,7 @@ import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.OutputUtils;
 import s10k.tool.common.util.TableUtils;
 import s10k.tool.nodes.cmd.ListNodesCmd;
-import s10k.tool.nodes.domain.NodeInfo;
+import s10k.tool.nodes.domain.UserNodeInfo;
 
 /**
  * Create Cloud Datum Stream Rake Task configurations.
@@ -240,10 +240,10 @@ public class CreateTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable
 			}
 		}
 		if (needNodeInfos) {
-			SequencedCollection<NodeInfo> infos = ListNodesCmd.listNodes(restClient, objectMapper);
+			SequencedCollection<UserNodeInfo> infos = ListNodesCmd.listUserNodes(restClient, objectMapper, null);
 			if (infos != null) {
-				for (NodeInfo info : infos) {
-					result.put(info.nodeId(), ZoneId.of(info.timeZoneId()));
+				for (UserNodeInfo info : infos) {
+					result.put(info.nodeId(), info.timeZone());
 				}
 			}
 		}

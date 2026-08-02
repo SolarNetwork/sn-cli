@@ -131,6 +131,7 @@ public final class DatumFilter extends SimplePagination {
 		if (readingType != null) {
 			postBody.set("readingType", readingType.name());
 		}
+		postBody.set("withoutTotalResultsCount", withoutTotalResultsCount);
 		if (getMax() != null && getMax() > 0) {
 			postBody.set("max", getMax());
 		}

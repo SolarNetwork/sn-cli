@@ -17,6 +17,7 @@ import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -25,6 +26,7 @@ import java.util.ResourceBundle;
 
 import org.jspecify.annotations.Nullable;
 
+import net.solarnetwork.domain.SortDescriptor;
 import net.solarnetwork.util.DateUtils;
 
 /**
@@ -215,6 +217,55 @@ public final class StringUtils {
 			}
 		}
 		throw new IllegalStateException("Value not found for [" + query + "]");
+	}
+
+	/**
+	 * Get a list of valid
+	 * 
+	 * @param <E>   the enum type with the valid order keys
+	 * @param keys  the order keys to validate
+	 * @param clazz the enum class with the valid order keys
+	 * @return the order by list, or {@code null} if no valid keys are provided
+	 */
+	public static <E extends Enum<E>> @Nullable List<String> orderByList(final String @Nullable [] keys,
+			Class<E> clazz) {
+		if (keys == null || keys.length < 1) {
+			return null;
+		}
+		final List<String> result = new ArrayList<>(keys.length);
+		for (String key : keys) {
+			final boolean descending = key.endsWith("~") && key.length() > 1;
+			final String k = (descending ? key.substring(0, key.length() - 1) : key);
+			for (E enumVal : clazz.getEnumConstants()) {
+				if (k.equalsIgnoreCase(enumVal.name())) {
+					result.add(key.toLowerCase(Locale.ROOT));
+				}
+			}
+		}
+		return (!result.isEmpty() ? result : null);
+	}
+
+	/**
+	 * Convert a collection of {@code SortDescriptor} into a list of {@code orderBy}
+	 * values.
+	 * 
+	 * @param sorts the sort descriptors to convert
+	 * @return the order by list
+	 */
+	public static List<String> orderByList(final Collection<? extends SortDescriptor> sorts) {
+		final List<String> result = new ArrayList<>(sorts.size());
+		for (SortDescriptor sort : sorts) {
+			String key = sort.getSortKey();
+			if (key == null || key.isEmpty()) {
+				continue;
+			}
+			if (sort.isDescending()) {
+				key += '~';
+			}
+			result.add(key);
+
+		}
+		return result;
 	}
 
 }
