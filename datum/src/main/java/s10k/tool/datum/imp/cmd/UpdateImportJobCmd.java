@@ -110,10 +110,11 @@ public class UpdateImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements C
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ObjectMapper objectMapper = objectMapper();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		try {
+			final RestClient restClient = restClient();
+			final ObjectMapper objectMapper = objectMapper();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+
 			final DatumImportTaskInfo existing = viewDatumImportTask(restClient, objectMapper, jobId);
 
 			final Map<String, Object> settings = (existing != null

@@ -141,10 +141,11 @@ public class ImportDatumCmd extends BaseSubCmd<DatumImportsCmd> implements Calla
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ObjectMapper objectMapper = objectMapper();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		try {
+			final RestClient restClient = restClient();
+			final ObjectMapper objectMapper = objectMapper();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+
 			final Map<String, Object> settings = new LinkedHashMap<>(4);
 
 			// look for JSON on stdin if allowed

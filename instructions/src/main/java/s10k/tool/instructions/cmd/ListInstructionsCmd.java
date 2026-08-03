@@ -80,22 +80,23 @@ public class ListInstructionsCmd extends BaseSubCmd<InstructionsCmd> implements 
 
 	@Override
 	public Integer call() throws Exception {
-		if ((instructionIds == null || instructionIds.length < 1) && (nodeIds == null || nodeIds.length < 1)
-				&& (instructionStates == null || instructionStates.length < 1) && minDate == null && maxDate == null) {
-			System.err.println("Must provide at least one query filter option.");
-			return 1;
-		}
-
-		final RestClient restClient = restClient();
-		// @formatter:off
-		final InstructionsFilter filter = new InstructionsFilter(
-				instructionIds != null ? asList(instructionIds) : null,
-				nodeIds != null ? asList(nodeIds) : null,
-				instructionStates != null ? asList(instructionStates) : null,
-				DateUtils.zonedDate(minDate, zone),
-				DateUtils.zonedDate(maxDate, zone));
-		// @formatter:on
 		try {
+			if ((instructionIds == null || instructionIds.length < 1) && (nodeIds == null || nodeIds.length < 1)
+					&& (instructionStates == null || instructionStates.length < 1) && minDate == null
+					&& maxDate == null) {
+				System.err.println("Must provide at least one query filter option.");
+				return 1;
+			}
+
+			final RestClient restClient = restClient();
+			// @formatter:off
+			final InstructionsFilter filter = new InstructionsFilter(
+					instructionIds != null ? asList(instructionIds) : null,
+					nodeIds != null ? asList(nodeIds) : null,
+					instructionStates != null ? asList(instructionStates) : null,
+					DateUtils.zonedDate(minDate, zone),
+					DateUtils.zonedDate(maxDate, zone));
+			// @formatter:on
 			Collection<Instruction> instrs = listInstructions(restClient, objectMapper, filter);
 			if (instrs == null) {
 				System.out.println("No instructions matched your criteria.");

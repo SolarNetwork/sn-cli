@@ -45,16 +45,16 @@ public class SetControlParameterCmd extends BaseSubCmd<ControlsCmd> implements C
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-
-		final BasicInstruction instr = new BasicInstruction(null, "SetControlParameter", null, null);
-		instr.addParameter(parentCmd.controlId, value);
-		populateExecutionDateParameter(instr, zonedDate(parentCmd.executionDate, parentCmd.zone));
-
-		final InstructionRequest req = new InstructionRequest(parentCmd.nodeId, instr,
-				zonedDate(parentCmd.expiration, parentCmd.zone));
-
 		try {
+			final RestClient restClient = restClient();
+
+			final BasicInstruction instr = new BasicInstruction(null, "SetControlParameter", null, null);
+			instr.addParameter(parentCmd.controlId, value);
+			populateExecutionDateParameter(instr, zonedDate(parentCmd.executionDate, parentCmd.zone));
+
+			final InstructionRequest req = new InstructionRequest(parentCmd.nodeId, instr,
+					zonedDate(parentCmd.expiration, parentCmd.zone));
+
 			InstructionStatus status = executeInstruction(restClient, objectMapper, req);
 			if (status.getInstructionState() == InstructionState.Completed) {
 				System.out.println("Control [%s] set to [%s]".formatted(parentCmd.controlId, value));

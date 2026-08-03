@@ -52,35 +52,35 @@ public class OrchestrateControlsCmd extends BaseSubCmd<ControlsCmd> implements C
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
+		try {
+			final RestClient restClient = restClient();
 
-		final LocalDateTime executionDate = parentCmd.executionDate;
-		if (executionDate == null) {
-			System.err.println("The --exec-at option is required.");
-			return 1;
-		}
+			final LocalDateTime executionDate = parentCmd.executionDate;
+			if (executionDate == null) {
+				System.err.println("The --exec-at option is required.");
+				return 1;
+			}
 
-		final BasicInstruction instr = new BasicInstruction(null, "OrchestrateControls", null, null);
-		instr.addParameter("service", parentCmd.controlId);
+			final BasicInstruction instr = new BasicInstruction(null, "OrchestrateControls", null, null);
+			instr.addParameter("service", parentCmd.controlId);
 
-		final String dateParam = zonedDate(parentCmd.executionDate, parentCmd.zone).toInstant().toString();
-		instr.addParameter("date", dateParam);
+			final String dateParam = zonedDate(parentCmd.executionDate, parentCmd.zone).toInstant().toString();
+			instr.addParameter("date", dateParam);
 
-		if (parameters != null) {
-			for (String parameter : parameters) {
-				Map<String, String> paramMap = StringUtils.delimitedStringToMap(parameter, ",", ":");
-				if (paramMap != null && !paramMap.isEmpty()) {
-					for (Entry<String, String> e : paramMap.entrySet()) {
-						instr.addParameter(e.getKey(), e.getValue());
+			if (parameters != null) {
+				for (String parameter : parameters) {
+					Map<String, String> paramMap = StringUtils.delimitedStringToMap(parameter, ",", ":");
+					if (paramMap != null && !paramMap.isEmpty()) {
+						for (Entry<String, String> e : paramMap.entrySet()) {
+							instr.addParameter(e.getKey(), e.getValue());
+						}
 					}
 				}
 			}
-		}
 
-		final InstructionRequest req = new InstructionRequest(parentCmd.nodeId, instr,
-				zonedDate(parentCmd.expiration, parentCmd.zone));
+			final InstructionRequest req = new InstructionRequest(parentCmd.nodeId, instr,
+					zonedDate(parentCmd.expiration, parentCmd.zone));
 
-		try {
 			InstructionStatus status = executeInstruction(restClient, objectMapper, req);
 			if (status.getInstructionState() == InstructionState.Completed) {
 				System.out.println(Ansi.AUTO.string("Control [%s] received orchestrate instruction @|bold %d|@."

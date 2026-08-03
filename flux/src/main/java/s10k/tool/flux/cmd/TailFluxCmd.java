@@ -176,11 +176,9 @@ public class TailFluxCmd extends BaseSubCmd<FluxCmd> implements Callable<Integer
 
 	@Override
 	public Integer call() throws Exception {
-		final ProfileInfo profile = profileWithCredentials();
-
 		try (final var executor = Executors.newCachedThreadPool();
 				final var scheduler = Executors.newSingleThreadScheduledExecutor()) {
-
+			final ProfileInfo profile = profileWithCredentials();
 			final StatTracker stats = new StatTracker("SolarFlux", null, null, 1000);
 
 			final var connectionFactory = new NettyMqttConnectionFactory(executor,

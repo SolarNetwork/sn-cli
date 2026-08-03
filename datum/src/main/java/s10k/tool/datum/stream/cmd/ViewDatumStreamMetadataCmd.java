@@ -61,10 +61,10 @@ public class ViewDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-
-		// try node stream first, and if not found try location stream
 		try {
+			final RestClient restClient = restClient();
+
+			// try node stream first, and if not found try location stream
 			ObjectDatumStreamMetadata meta = viewStreamMetadata(restClient, objectMapper, Node, streamId);
 			if (meta == null) {
 				meta = viewStreamMetadata(restClient, objectMapper, Location, streamId);

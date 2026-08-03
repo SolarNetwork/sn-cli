@@ -97,11 +97,11 @@ public class ListDatumStreamDatumCmd extends BaseSubCmd<DatumStreamsCmd> impleme
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final CloudIntegrationsFilter filter = filter();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-
 		try {
+			final RestClient restClient = restClient();
+			final CloudIntegrationsFilter filter = filter();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+
 			CloudDatumStreamQueryResult datum = listCloudDatumStreamDatum(restClient, objectMapper, datumStreamId,
 					filter);
 			if (datum.isEmpty()) {

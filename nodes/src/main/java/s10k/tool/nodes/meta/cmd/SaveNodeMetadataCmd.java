@@ -80,9 +80,9 @@ public class SaveNodeMetadataCmd extends BaseSubCmd<NodeMetadataCmd> implements 
 			return 1;
 		}
 
-		final RestClient restClient = restClient();
-
 		try {
+			final RestClient restClient = restClient();
+
 			saveMetadata(restClient, nodeId, gdm, replace);
 			System.out.println("Node metadata %s:".formatted(replace ? "replaced" : "added"));
 			objectMapper.writerWithDefaultPrettyPrinter().writeValue(System.out, gdm);

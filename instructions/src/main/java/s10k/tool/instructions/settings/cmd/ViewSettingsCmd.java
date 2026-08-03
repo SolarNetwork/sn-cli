@@ -83,26 +83,26 @@ public class ViewSettingsCmd extends BaseSubCmd<SettingsCmd> implements Callable
 
 	@Override
 	public Integer call() throws Exception {
-		final boolean viewComponentInstance = (componentId != null && !componentId.isBlank());
-		final RestClient restClient = restClient();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-
-		final BasicInstruction instr = new BasicInstruction(null, TOPIC_SYSTEM_CONFIGURATION, null, null);
-		instr.addParameter(InstructionsCmd.PARAM_SERVICE, InstructionsCmd.SYSTEM_CONFIGURATION_SETTINGS_SERVICE);
-		instr.addParameter("compress", "true");
-		if (viewComponentInstance) {
-			instr.addParameter("uid", componentId);
-			instr.addParameter("id", serviceId);
-		} else {
-			instr.addParameter("uid", serviceId);
-		}
-		if (specification) {
-			instr.addParameter("spec", "true");
-		}
-
-		final InstructionRequest req = new InstructionRequest(parentCmd.nodeId, instr, null);
-
 		try {
+			final boolean viewComponentInstance = (componentId != null && !componentId.isBlank());
+			final RestClient restClient = restClient();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+
+			final BasicInstruction instr = new BasicInstruction(null, TOPIC_SYSTEM_CONFIGURATION, null, null);
+			instr.addParameter(InstructionsCmd.PARAM_SERVICE, InstructionsCmd.SYSTEM_CONFIGURATION_SETTINGS_SERVICE);
+			instr.addParameter("compress", "true");
+			if (viewComponentInstance) {
+				instr.addParameter("uid", componentId);
+				instr.addParameter("id", serviceId);
+			} else {
+				instr.addParameter("uid", serviceId);
+			}
+			if (specification) {
+				instr.addParameter("spec", "true");
+			}
+
+			final InstructionRequest req = new InstructionRequest(parentCmd.nodeId, instr, null);
+
 			InstructionStatus status = executeInstruction(restClient, objectMapper, req);
 			Map<String, ?> resultParams = status.getResultParameters();
 			if (status.getInstructionState() == InstructionState.Completed) {

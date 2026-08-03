@@ -213,12 +213,12 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 	@SuppressWarnings("ClosingStandardOutputStreams")
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ObjectMapper objectMapper = objectMapper();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-		final DatumFilter filter = datumFilter();
-
 		try {
+			final RestClient restClient = restClient();
+			final ObjectMapper objectMapper = objectMapper();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+			final DatumFilter filter = datumFilter();
+
 			if (displayMode == ResultDisplayMode.PRETTY) {
 				ObjectDatumStreamDataSet<StreamDatum> result = listDatum(restClient, filter);
 				SequencedSet<String> propertyColumns = prettyProperties(filter, result);

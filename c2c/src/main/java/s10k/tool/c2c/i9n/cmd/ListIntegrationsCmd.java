@@ -106,11 +106,11 @@ public class ListIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implements 
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-		final CloudIntegrationsFilter filter = filter();
-
 		try {
+			final RestClient restClient = restClient();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+			final CloudIntegrationsFilter filter = filter();
+
 			List<CloudIntegrationConfiguration> confs = listCloudIntegrations(restClient, objectMapper, filter);
 			if (confs.isEmpty()) {
 				System.err.println("No sources matched your criteria.");

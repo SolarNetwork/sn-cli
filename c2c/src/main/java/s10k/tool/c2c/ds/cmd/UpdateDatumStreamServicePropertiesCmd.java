@@ -81,8 +81,9 @@ public class UpdateDatumStreamServicePropertiesCmd extends BaseSubCmd<DatumStrea
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
 		try {
+			final RestClient restClient = restClient();
+
 			final CloudDatumStreamConfiguration existing;
 			if (isDryRun()) {
 				existing = viewCloudDatumStream(restClient, objectMapper, datumStreamId);

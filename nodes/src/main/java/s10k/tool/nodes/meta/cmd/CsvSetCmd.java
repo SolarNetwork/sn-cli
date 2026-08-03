@@ -105,8 +105,8 @@ public class CsvSetCmd extends BaseSubCmd<NodeMetadataCmd> implements Callable<I
 			}
 		}
 
-		final RestClient restClient = restClient();
 		try {
+			final RestClient restClient = restClient();
 			SaveNodeMetadataCmd.saveMetadata(restClient, nodeId, gdm, false);
 			System.out.println("CSV saved to to path [%s].".formatted(metadataPath));
 			if (verbosity() > 0) {

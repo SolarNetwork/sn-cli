@@ -107,9 +107,9 @@ public class CreateTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		try {
+			final RestClient restClient = restClient();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
 			final CloudIntegrationsFilter filter = filter();
 
 			// get datum streams

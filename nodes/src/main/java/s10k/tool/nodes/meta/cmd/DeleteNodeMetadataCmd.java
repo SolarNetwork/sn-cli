@@ -38,9 +38,9 @@ public class DeleteNodeMetadataCmd extends BaseSubCmd<NodeMetadataCmd> implement
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-
 		try {
+			final RestClient restClient = restClient();
+
 			deleteMetadata(restClient, nodeId);
 			System.out.println("Node metadata deleted.");
 			return 0;

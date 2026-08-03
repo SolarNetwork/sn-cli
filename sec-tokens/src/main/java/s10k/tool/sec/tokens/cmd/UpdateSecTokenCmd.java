@@ -99,18 +99,18 @@ public class UpdateSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Calla
 
 	@Override
 	public Integer call() throws Exception {
-		final SecurityPolicy policy = (policyOptions != null ? policyOptions.toPolicy() : null);
-		final RestClient restClient = restClient();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-		final ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
-
-		if ((name == null || name.isBlank()) && (description == null || description.isBlank())
-				&& activeOrDisabled == null && policy == null) {
-			System.err.println("No update options provided.");
-			return 3;
-		}
-
 		try {
+			final SecurityPolicy policy = (policyOptions != null ? policyOptions.toPolicy() : null);
+			final RestClient restClient = restClient();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+			final ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
+
+			if ((name == null || name.isBlank()) && (description == null || description.isBlank())
+					&& activeOrDisabled == null && policy == null) {
+				System.err.println("No update options provided.");
+				return 3;
+			}
+
 			SecurityTokenInfo result = updateSecurityToken(restClient, objectMapper, identifier, name, description,
 					(activeOrDisabled != null
 							? (activeOrDisabled.active ? "Active" : activeOrDisabled.disabled ? "Disabled" : null)

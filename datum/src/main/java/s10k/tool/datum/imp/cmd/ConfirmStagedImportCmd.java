@@ -58,10 +58,10 @@ public class ConfirmStagedImportCmd extends BaseSubCmd<DatumImportsCmd> implemen
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ObjectMapper objectMapper = objectMapper();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		try {
+			final RestClient restClient = restClient();
+			final ObjectMapper objectMapper = objectMapper();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
 
 			final DatumImportTaskInfo result;
 

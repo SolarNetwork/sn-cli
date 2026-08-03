@@ -64,23 +64,23 @@ public class ListServicesCmd extends BaseSubCmd<InstructionsCmd> implements Call
 
 	@Override
 	public Integer call() throws Exception {
-		final boolean listComponentInstance = (componentId != null && !componentId.isBlank());
-		final RestClient restClient = restClient();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-
-		final BasicInstruction instr = new BasicInstruction(null, TOPIC_SYSTEM_CONFIGURATION, null, null);
-		instr.addParameter(InstructionsCmd.PARAM_SERVICE, InstructionsCmd.SYSTEM_CONFIGURATION_SETTINGS_SERVICE);
-		instr.addParameter("compress", "true");
-		if (listComponentInstance) {
-			instr.addParameter("uid", componentId);
-			instr.addParameter("id", "*");
-		} else {
-			instr.addParameter("uid", "*");
-		}
-
-		final InstructionRequest req = new InstructionRequest(nodeId, instr, null);
-
 		try {
+			final boolean listComponentInstance = (componentId != null && !componentId.isBlank());
+			final RestClient restClient = restClient();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+
+			final BasicInstruction instr = new BasicInstruction(null, TOPIC_SYSTEM_CONFIGURATION, null, null);
+			instr.addParameter(InstructionsCmd.PARAM_SERVICE, InstructionsCmd.SYSTEM_CONFIGURATION_SETTINGS_SERVICE);
+			instr.addParameter("compress", "true");
+			if (listComponentInstance) {
+				instr.addParameter("uid", componentId);
+				instr.addParameter("id", "*");
+			} else {
+				instr.addParameter("uid", "*");
+			}
+
+			final InstructionRequest req = new InstructionRequest(nodeId, instr, null);
+
 			InstructionStatus status = executeInstruction(restClient, objectMapper, req);
 			Map<String, ?> resultParams = status.getResultParameters();
 			if (status.getInstructionState() == InstructionState.Completed) {

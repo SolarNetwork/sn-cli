@@ -100,10 +100,10 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 	@SuppressWarnings("ClosingStandardOutputStreams")
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-
 		try {
+			final RestClient restClient = restClient();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+
 			final var checkup = createCheckup(restClient);
 			if (checkup.isWithoutWarnings()) {
 				System.err.println("No warnings found.");

@@ -175,10 +175,11 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-		final ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
 		try {
+			final RestClient restClient = restClient();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+			final ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
+
 			CloudDatumStreamConfiguration existing = viewCloudDatumStream(restClient, objectMapper, datumStreamId);
 
 			final Map<String, Object> settings = (replace ? new LinkedHashMap<>(4) : existing.toSettings());

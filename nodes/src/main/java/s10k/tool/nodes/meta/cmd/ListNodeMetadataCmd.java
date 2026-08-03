@@ -68,12 +68,12 @@ public class ListNodeMetadataCmd extends BaseSubCmd<NodeMetadataCmd> implements 
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-
-		final ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
-
 		try {
+			final RestClient restClient = restClient();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+
+			final ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
+
 			List<NodeMetadata> metas = listNodeMetadata(restClient, objectMapper, nodeIds, filter);
 			if (metas.isEmpty()) {
 				System.out.println("No metadata matched your criteria.");

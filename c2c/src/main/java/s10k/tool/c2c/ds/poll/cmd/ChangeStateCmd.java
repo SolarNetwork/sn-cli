@@ -71,13 +71,13 @@ public class ChangeStateCmd extends BaseSubCmd<PollTasksCmd> implements Callable
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-
-		final var filter = new CloudIntegrationsFilter();
-		filter.setDatumStreamIds(List.of(datumStreamIds));
-
 		try {
+			final RestClient restClient = restClient();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+
+			final var filter = new CloudIntegrationsFilter();
+			filter.setDatumStreamIds(List.of(datumStreamIds));
+
 			final List<CloudDatumStreamPollTaskConfiguration> tasks = listCloudDatumStreamPollTasks(restClient,
 					objectMapper, filter);
 			final Map<Long, CloudDatumStreamConfiguration> streams = (displayMode != ResultDisplayMode.JSON

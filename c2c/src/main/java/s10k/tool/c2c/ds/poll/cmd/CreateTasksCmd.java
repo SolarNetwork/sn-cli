@@ -89,9 +89,10 @@ public class CreateTasksCmd extends BaseSubCmd<PollTasksCmd> implements Callable
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		try {
+			final RestClient restClient = restClient();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+
 			final CloudIntegrationsFilter filter = filter();
 			final Instant start = DateUtils
 					.zonedDate(startDate != null ? startDate

@@ -59,17 +59,17 @@ public class ListComponents extends BaseSubCmd<InstructionsCmd> implements Calla
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-
-		final BasicInstruction instr = new BasicInstruction(null, TOPIC_SYSTEM_CONFIGURATION, null, null);
-		instr.addParameter(InstructionsCmd.PARAM_SERVICE, InstructionsCmd.SYSTEM_CONFIGURATION_SETTINGS_SERVICE);
-		instr.addParameter("compress", "true");
-		instr.addParameter("uid", "*");
-		instr.addParameter("id", "*");
-
-		final InstructionRequest req = new InstructionRequest(nodeId, instr, null);
-
 		try {
+			final RestClient restClient = restClient();
+
+			final BasicInstruction instr = new BasicInstruction(null, TOPIC_SYSTEM_CONFIGURATION, null, null);
+			instr.addParameter(InstructionsCmd.PARAM_SERVICE, InstructionsCmd.SYSTEM_CONFIGURATION_SETTINGS_SERVICE);
+			instr.addParameter("compress", "true");
+			instr.addParameter("uid", "*");
+			instr.addParameter("id", "*");
+
+			final InstructionRequest req = new InstructionRequest(nodeId, instr, null);
+
 			InstructionStatus status = executeInstruction(restClient, objectMapper, req);
 			Map<String, ?> resultParams = status.getResultParameters();
 			if (status.getInstructionState() == InstructionState.Completed) {

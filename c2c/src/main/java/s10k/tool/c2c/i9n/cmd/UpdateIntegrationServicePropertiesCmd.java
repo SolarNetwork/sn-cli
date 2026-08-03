@@ -81,8 +81,9 @@ public class UpdateIntegrationServicePropertiesCmd extends BaseSubCmd<Integratio
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
 		try {
+			final RestClient restClient = restClient();
+
 			final CloudIntegrationConfiguration existing;
 			if (isDryRun()) {
 				existing = viewCloudIntegration(restClient, objectMapper, integrationId);

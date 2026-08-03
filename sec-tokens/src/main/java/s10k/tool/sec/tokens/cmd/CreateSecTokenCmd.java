@@ -73,12 +73,12 @@ public class CreateSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Calla
 
 	@Override
 	public Integer call() throws Exception {
-		final SecurityPolicy policy = (policyOptions != null ? policyOptions.toPolicy() : null);
-		final RestClient restClient = restClient();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-		final ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
-
 		try {
+			final SecurityPolicy policy = (policyOptions != null ? policyOptions.toPolicy() : null);
+			final RestClient restClient = restClient();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+			final ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
+
 			SecurityTokenInfo result = createSecurityToken(restClient, objectMapper, tokenType, name, description,
 					policy);
 			if (displayMode == ResultDisplayMode.JSON) {

@@ -89,13 +89,13 @@ public class ChangeStateCmd extends BaseSubCmd<RakeTasksCmd> implements Callable
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-
-		final var filter = new CloudIntegrationsFilter();
-		filter.setDatumStreamIds(List.of(datumStreamIds));
-
 		try {
+			final RestClient restClient = restClient();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+
+			final var filter = new CloudIntegrationsFilter();
+			filter.setDatumStreamIds(List.of(datumStreamIds));
+
 			final List<CloudDatumStreamRakeTaskConfiguration> tasks = listCloudDatumStreamRakeTasks(restClient,
 					objectMapper, filter).stream().filter(task -> {
 						if (minOffset != null && comparePeriods(task.offset(), minOffset) < 0) {

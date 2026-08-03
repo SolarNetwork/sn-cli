@@ -132,10 +132,10 @@ public class ListSourcesCmd extends BaseSubCmd<NodesCmd> implements Callable<Int
 		);
 		// @formatter:on
 
-		final RestClient restClient = restClient();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-
 		try {
+			final RestClient restClient = restClient();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+
 			List<ObjectAndSource> sources = listSources(restClient, objectMapper, ObjectDatumKind.Node, filter);
 			if (sources.isEmpty()) {
 				System.err.println("No sources matched your criteria.");

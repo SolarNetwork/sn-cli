@@ -71,10 +71,10 @@ public class RenewCmd extends BaseSubCmd<CertificatesCmd> implements Callable<In
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-		final ZoneId zone = zone();
 		try {
+			final RestClient restClient = restClient();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+			final ZoneId zone = zone();
 			NodeCertificateInfo info = renewNodeCertificate(restClient, nodeId, new String(password));
 
 			if (displayMode == ResultDisplayMode.JSON) {

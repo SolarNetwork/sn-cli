@@ -53,11 +53,12 @@ public class ListImportJobsCmd extends BaseSubCmd<DatumImportsCmd> implements Ca
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ObjectMapper objectMapper = objectMapper();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-		final DatumImportsFilter filter = filter();
 		try {
+			final RestClient restClient = restClient();
+			final ObjectMapper objectMapper = objectMapper();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+			final DatumImportsFilter filter = filter();
+
 			final List<DatumImportTaskInfo> tasks = listDatumImportTasks(restClient, objectMapper, filter);
 
 			final List<?> tableData = (displayMode == ResultDisplayMode.JSON ? tasks

@@ -121,11 +121,12 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
-		final CloudIntegrationsFilter filter = filter();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		try {
+			final RestClient restClient = restClient();
+			final ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
+			final CloudIntegrationsFilter filter = filter();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+
 			List<CloudDatumStreamConfiguration> confs = listCloudDatumStreams(restClient, objectMapper, filter);
 			if (confs.isEmpty()) {
 				System.err.println("No datum streams matched your criteria.");

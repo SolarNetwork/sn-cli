@@ -79,25 +79,25 @@ public class ToggleOperationalModeCmd extends BaseSubCmd<InstructionsCmd> implem
 
 	@Override
 	public Integer call() throws Exception {
-		if (disable && modeExpiration != null) {
-			System.err.println("Mode expiration can only be specified when enabling an operational mode.");
-			return 1;
-		}
-		final BasicInstruction instr = new BasicInstruction(null,
-				(disable ? "DisableOperationalModes" : "EnableOperationalModes"), null, null);
-		for (String opMode : operationalModes) {
-			instr.addParameter("OpMode", opMode);
-		}
-		if (!disable && modeExpiration != null) {
-			instr.addParameter("Expiration",
-					String.valueOf(zonedDate(modeExpiration, zone).toInstant().toEpochMilli()));
-		}
-		populateExecutionDateParameter(instr, zonedDate(executionDate, zone));
-
-		final InstructionRequest req = new InstructionRequest(nodeId, instr, zonedDate(expiration, zone));
-
-		final RestClient restClient = restClient();
 		try {
+			if (disable && modeExpiration != null) {
+				System.err.println("Mode expiration can only be specified when enabling an operational mode.");
+				return 1;
+			}
+			final BasicInstruction instr = new BasicInstruction(null,
+					(disable ? "DisableOperationalModes" : "EnableOperationalModes"), null, null);
+			for (String opMode : operationalModes) {
+				instr.addParameter("OpMode", opMode);
+			}
+			if (!disable && modeExpiration != null) {
+				instr.addParameter("Expiration",
+						String.valueOf(zonedDate(modeExpiration, zone).toInstant().toEpochMilli()));
+			}
+			populateExecutionDateParameter(instr, zonedDate(executionDate, zone));
+
+			final InstructionRequest req = new InstructionRequest(nodeId, instr, zonedDate(expiration, zone));
+
+			final RestClient restClient = restClient();
 			InstructionStatus status = executeInstruction(restClient, objectMapper, req);
 			if (status.getInstructionState() == InstructionState.Completed) {
 				var buf = new StringBuilder();

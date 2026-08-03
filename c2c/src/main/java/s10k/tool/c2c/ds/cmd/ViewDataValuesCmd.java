@@ -83,48 +83,48 @@ public class ViewDataValuesCmd extends BaseSubCmd<DatumStreamsCmd> implements Ca
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-
-		final List<String> pathIdentifiers = StringUtils.delimitedStringToList(path, "/");
-
-		final Long integrationId = resolveIntegrationId(restClient);
-		if (integrationId == null) {
-			System.err.print("""
-					An integration ID is required, from either the --integration-id or option or the
-					--stream-id option that resolves to a datum stream with a mapping configured.
-					""");
-			return 1;
-		}
-
-		if (pathIdentifiers != null && !pathIdentifiers.isEmpty() && type == null && datumStreamId == null) {
-			System.err.print("""
-					The --stream-type or --stream-id option must be provided when --path is specified.
-					""");
-			return 1;
-		}
-
-		// determine datum stream service ID (if needed)
-		final String datumStreamServiceId;
 		try {
-			if (datumStreamId != null) {
-				datumStreamServiceId = viewCloudDatumStream(restClient, objectMapper, datumStreamId)
-						.serviceIdentifier();
-			} else if (type != null) {
-				datumStreamServiceId = findDatumStreamServiceId(type).getKey();
-			} else {
-				datumStreamServiceId = null;
+			final RestClient restClient = restClient();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+
+			final List<String> pathIdentifiers = StringUtils.delimitedStringToList(path, "/");
+
+			final Long integrationId = resolveIntegrationId(restClient);
+			if (integrationId == null) {
+				System.err.print("""
+						An integration ID is required, from either the --integration-id or option or the
+						--stream-id option that resolves to a datum stream with a mapping configured.
+						""");
+				return 1;
 			}
-		} catch (IllegalStateException e) {
-			System.err.printf("Error looking up stream type information: %s", e.getMessage());
-			return 1;
-		}
-		if (pathIdentifiers != null && !pathIdentifiers.isEmpty() && datumStreamServiceId == null) {
-			System.err.printf("The stream type [%s] is not supported.\n", type);
-			return 1;
-		}
 
-		try {
+			if (pathIdentifiers != null && !pathIdentifiers.isEmpty() && type == null && datumStreamId == null) {
+				System.err.print("""
+						The --stream-type or --stream-id option must be provided when --path is specified.
+						""");
+				return 1;
+			}
+
+			// determine datum stream service ID (if needed)
+			final String datumStreamServiceId;
+			try {
+				if (datumStreamId != null) {
+					datumStreamServiceId = viewCloudDatumStream(restClient, objectMapper, datumStreamId)
+							.serviceIdentifier();
+				} else if (type != null) {
+					datumStreamServiceId = findDatumStreamServiceId(type).getKey();
+				} else {
+					datumStreamServiceId = null;
+				}
+			} catch (IllegalStateException e) {
+				System.err.printf("Error looking up stream type information: %s", e.getMessage());
+				return 1;
+			}
+			if (pathIdentifiers != null && !pathIdentifiers.isEmpty() && datumStreamServiceId == null) {
+				System.err.printf("The stream type [%s] is not supported.\n", type);
+				return 1;
+			}
+
 			List<CloudDataValue> confs = viewDatumDataValues(restClient, objectMapper, integrationId, datumStreamId,
 					datumStreamServiceId, pathIdentifiers);
 			if (confs.isEmpty()) {

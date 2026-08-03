@@ -72,15 +72,15 @@ public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements C
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-		final CloudIntegrationsFilter filter = filter();
-		if (filter.getDatumStreamId() == null && filter.getNodeId() == null && filter.getSourceId() == null) {
-			System.err.println("At least one search criteria option is required.");
-			return 1;
-		}
-
 		try {
+			final RestClient restClient = restClient();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+			final CloudIntegrationsFilter filter = filter();
+			if (filter.getDatumStreamId() == null && filter.getNodeId() == null && filter.getSourceId() == null) {
+				System.err.println("At least one search criteria option is required.");
+				return 1;
+			}
+
 			final CloudDatumStreamConfiguration datumStream = viewCloudDatumStream(restClient, objectMapper, filter);
 			if (datumStream == null) {
 				System.err.println("No datum stream matched your criteria.");

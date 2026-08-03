@@ -88,11 +88,12 @@ public class DeleteDatumCmd extends BaseSubCmd<DatumDeleteBaseCmd> implements Ca
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ObjectMapper objectMapper = objectMapper();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-		final DatumFilter filter = datumFilter();
 		try {
+			final RestClient restClient = restClient();
+			final ObjectMapper objectMapper = objectMapper();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+			final DatumFilter filter = datumFilter();
+
 			if (isDryRun()) {
 				DatumRecordCounts preview = previewDatumDeleteTask(restClient, objectMapper, filter);
 

@@ -55,9 +55,9 @@ public class CsvGetCmd extends BaseSubCmd<NodeMetadataCmd> implements Callable<I
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-
 		try {
+			final RestClient restClient = restClient();
+
 			List<NodeMetadata> metas = listNodeMetadata(restClient, objectMapper, new Long[] { nodeId }, null);
 			if (metas.isEmpty()) {
 				System.out.println("No metadata matched your criteria.");

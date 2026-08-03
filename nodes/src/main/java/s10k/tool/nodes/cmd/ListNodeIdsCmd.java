@@ -48,8 +48,8 @@ public class ListNodeIdsCmd extends BaseSubCmd<NodesCmd> implements Callable<Int
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
 		try {
+			final RestClient restClient = restClient();
 			SequencedCollection<Long> nodeIds = listNodeIds(restClient);
 			if (nodeIds.isEmpty()) {
 				System.err.println("No node IDs matched your criteria.");

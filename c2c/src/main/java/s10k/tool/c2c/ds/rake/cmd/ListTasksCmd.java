@@ -98,11 +98,11 @@ public class ListTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable<I
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-		final CloudIntegrationsFilter filter = filter();
-
 		try {
+			final RestClient restClient = restClient();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+			final CloudIntegrationsFilter filter = filter();
+
 			final List<CloudDatumStreamRakeTaskConfiguration> tasks = listCloudDatumStreamRakeTasks(restClient,
 					objectMapper, filter);
 

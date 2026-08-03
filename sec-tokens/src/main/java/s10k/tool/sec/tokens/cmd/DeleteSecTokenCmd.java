@@ -43,9 +43,9 @@ public class DeleteSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Calla
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-
 		try {
+			final RestClient restClient = restClient();
+
 			// @formatter:off
 			final JsonNode response = restClient.delete()
 					.uri(b -> {

@@ -112,12 +112,12 @@ public class DatumRangeCmd extends BaseSubCmd<DatumCmd> implements Callable<Inte
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ObjectMapper objectMapper = objectMapper();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-		final DatumFilter filter = datumFilter();
-
 		try {
+			final RestClient restClient = restClient();
+			final ObjectMapper objectMapper = objectMapper();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+			final DatumFilter filter = datumFilter();
+
 			final DateRangeInfo result = viewReportableInterval(restClient, objectMapper, filter);
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? List.of(result)

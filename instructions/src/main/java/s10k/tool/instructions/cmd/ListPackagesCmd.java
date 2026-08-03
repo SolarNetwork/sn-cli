@@ -94,23 +94,23 @@ public class ListPackagesCmd extends BaseSubCmd<InstructionsCmd> implements Call
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-
-		final BasicInstruction instr = new BasicInstruction(null, TOPIC_SYSTEM_CONFIGURATION, null, null);
-		instr.addParameter(InstructionsCmd.PARAM_SERVICE, PACKAGES_SERVICE);
-		instr.addParameter("compress", "true");
-
-		if (filter != null && !filter.isBlank()) {
-			instr.addParameter("filter", filter);
-		}
-		if (packageStatus != null) {
-			instr.addParameter("status", packageStatus.name());
-		}
-
-		final InstructionRequest req = new InstructionRequest(nodeId, instr, null);
-
 		try {
+			final RestClient restClient = restClient();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+
+			final BasicInstruction instr = new BasicInstruction(null, TOPIC_SYSTEM_CONFIGURATION, null, null);
+			instr.addParameter(InstructionsCmd.PARAM_SERVICE, PACKAGES_SERVICE);
+			instr.addParameter("compress", "true");
+
+			if (filter != null && !filter.isBlank()) {
+				instr.addParameter("filter", filter);
+			}
+			if (packageStatus != null) {
+				instr.addParameter("status", packageStatus.name());
+			}
+
+			final InstructionRequest req = new InstructionRequest(nodeId, instr, null);
+
 			InstructionStatus status = executeInstruction(restClient, objectMapper, req);
 			Map<String, ?> resultParams = status.getResultParameters();
 			if (status.getInstructionState() == InstructionState.Completed) {

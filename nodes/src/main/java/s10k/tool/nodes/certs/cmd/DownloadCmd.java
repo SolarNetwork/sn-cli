@@ -74,43 +74,47 @@ public class DownloadCmd extends BaseSubCmd<CertificatesCmd> implements Callable
 			return 1;
 		}
 
-		final RestClient restClient = restClient();
-		final List<Path> outputFiles = new ArrayList<>(nodeIds.length);
-		final Map<Long, String> errors = new TreeMap<>();
+		try {
+			final RestClient restClient = restClient();
+			final List<Path> outputFiles = new ArrayList<>(nodeIds.length);
+			final Map<Long, String> errors = new TreeMap<>();
 
-		if (nodeIds.length > 1) {
-			try (ProgressBar pb = new ProgressBar("Downloading", nodeIds.length)) {
-				for (Long nodeId : nodeIds) {
-					try {
-						outputFiles.add(downloadNodeCertificate(restClient, nodeId, outputDir));
-					} catch (Exception e) {
-						errors.put(nodeId, e.getMessage());
+			if (nodeIds.length > 1) {
+				try (ProgressBar pb = new ProgressBar("Downloading", nodeIds.length)) {
+					for (Long nodeId : nodeIds) {
+						try {
+							outputFiles.add(downloadNodeCertificate(restClient, nodeId, outputDir));
+						} catch (Exception e) {
+							errors.put(nodeId, e.getMessage());
+						}
+						pb.step();
 					}
-					pb.step();
+				}
+			} else {
+				try {
+					outputFiles.add(downloadNodeCertificate(restClient, nodeIds[0], outputDir));
+				} catch (Exception e) {
+					errors.put(nodeIds[0], e.getMessage());
 				}
 			}
-		} else {
-			try {
-				outputFiles.add(downloadNodeCertificate(restClient, nodeIds[0], outputDir));
-			} catch (Exception e) {
-				errors.put(nodeIds[0], e.getMessage());
-			}
-		}
 
-		if (verbosity() > 0) {
-			// print out list of saved files
-			for (Path file : outputFiles) {
-				System.out.println(file);
+			if (verbosity() > 0) {
+				// print out list of saved files
+				for (Path file : outputFiles) {
+					System.out.println(file);
+				}
 			}
-		}
 
-		if (!errors.isEmpty()) {
-			for (Entry<Long, String> e : errors.entrySet()) {
-				System.err.println("Error downloading node %d certificate: %s".formatted(e.getKey(), e.getValue()));
+			if (!errors.isEmpty()) {
+				for (Entry<Long, String> e : errors.entrySet()) {
+					System.err.println("Error downloading node %d certificate: %s".formatted(e.getKey(), e.getValue()));
+				}
+				return 2;
 			}
-			return 2;
-		}
 
+		} catch (Exception e) {
+			System.err.println("Error downloading node certificates: %s".formatted(e.getMessage()));
+		}
 		return 1;
 	}
 

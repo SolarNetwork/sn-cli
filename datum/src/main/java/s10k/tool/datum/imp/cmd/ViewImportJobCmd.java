@@ -58,10 +58,11 @@ public class ViewImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements Cal
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ObjectMapper objectMapper = objectMapper();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		try {
+			final RestClient restClient = restClient();
+			final ObjectMapper objectMapper = objectMapper();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+
 			final DatumImportTaskInfo result = viewDatumImportTask(restClient, objectMapper, jobId);
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? List.of(result)

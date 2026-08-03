@@ -104,20 +104,20 @@ public class RenameDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imp
 
 	@Override
 	public Integer call() throws Exception {
-		if (nodeId == null && (sourceId == null || sourceId.isBlank())
-				&& (instantaneousPropertyNames == null || instantaneousPropertyNames.length < 1)
-				&& (accumulatingPropertyNames == null || accumulatingPropertyNames.length < 1)
-				&& (statusPropertyNames == null || statusPropertyNames.length < 1)) {
-			System.err.println("Nothing provided to update.");
-			return 2;
-		}
-		final var streamMeta = new BasicObjectDatumStreamMetadata(streamId, null, ObjectDatumKind.Node,
-				nodeId != null ? nodeId : UNSPECIFIED_LONG_ID, sourceId != null ? sourceId : UNSPECIFIED_STRING_ID,
-				instantaneousPropertyNames, accumulatingPropertyNames, statusPropertyNames);
-
-		final RestClient restClient = restClient();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		try {
+			if (nodeId == null && (sourceId == null || sourceId.isBlank())
+					&& (instantaneousPropertyNames == null || instantaneousPropertyNames.length < 1)
+					&& (accumulatingPropertyNames == null || accumulatingPropertyNames.length < 1)
+					&& (statusPropertyNames == null || statusPropertyNames.length < 1)) {
+				System.err.println("Nothing provided to update.");
+				return 2;
+			}
+			final var streamMeta = new BasicObjectDatumStreamMetadata(streamId, null, ObjectDatumKind.Node,
+					nodeId != null ? nodeId : UNSPECIFIED_LONG_ID, sourceId != null ? sourceId : UNSPECIFIED_STRING_ID,
+					instantaneousPropertyNames, accumulatingPropertyNames, statusPropertyNames);
+
+			final RestClient restClient = restClient();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
 			ObjectDatumStreamMetadata result = updateNodeDatumStreamAttributes(restClient, objectMapper, streamMeta);
 
 			if (displayMode == ResultDisplayMode.JSON) {

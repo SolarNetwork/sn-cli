@@ -86,24 +86,25 @@ public class UpdateInstructionsState extends BaseSubCmd<InstructionsCmd> impleme
 
 	@Override
 	public Integer call() throws Exception {
-		if ((instructionIds == null || instructionIds.length < 1) && (nodeIds == null || nodeIds.length < 1)
-				&& (instructionStates == null || instructionStates.length < 1) && minDate == null && maxDate == null) {
-			System.err.println("Must provide at least one query filter option.");
-			return 1;
-		}
-
-		// @formatter:off
-		final InstructionsFilter filter = new InstructionsFilter(
-				instructionIds != null ? asList(instructionIds) : null,
-				nodeIds != null ? asList(nodeIds) : null,
-				instructionStates != null ? asList(instructionStates) : null,
-				DateUtils.zonedDate(minDate, zone),
-				DateUtils.zonedDate(maxDate, zone));
-		// @formatter:on
-
-		final RestClient restClient = restClient();
-
 		try {
+			if ((instructionIds == null || instructionIds.length < 1) && (nodeIds == null || nodeIds.length < 1)
+					&& (instructionStates == null || instructionStates.length < 1) && minDate == null
+					&& maxDate == null) {
+				System.err.println("Must provide at least one query filter option.");
+				return 1;
+			}
+
+			// @formatter:off
+			final InstructionsFilter filter = new InstructionsFilter(
+					instructionIds != null ? asList(instructionIds) : null,
+					nodeIds != null ? asList(nodeIds) : null,
+					instructionStates != null ? asList(instructionStates) : null,
+					DateUtils.zonedDate(minDate, zone),
+					DateUtils.zonedDate(maxDate, zone));
+			// @formatter:on
+
+			final RestClient restClient = restClient();
+
 			Collection<Long> updatedIds = updateInstructionState(restClient, filter, desiredState);
 			if (updatedIds.isEmpty()) {
 				System.out.println("No instructions matched your criteria.");

@@ -90,8 +90,8 @@ public class CreateCmd extends BaseSubCmd<CertificatesCmd> implements Callable<I
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
 		try {
+			final RestClient restClient = restClient();
 			NodeInfo node = createNodeCertificate(restClient, objectMapper, zone, country, password);
 			if (node == null) {
 				System.err.println("Failed to create node certificate.");

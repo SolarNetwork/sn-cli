@@ -95,27 +95,27 @@ public class MarkAggregatesStaleCmd extends BaseSubCmd<DatumCmd> implements Call
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ObjectMapper objectMapper = objectMapper();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-		final DatumFilter filter = datumFilter();
-
-		if (!filter.hasNodeIds()) {
-			System.err.println("At least one node ID must be provided.");
-			return 1;
-		}
-
-		if (!filter.hasSourceIds()) {
-			System.err.println("At least one source ID must be provided.");
-			return 1;
-		}
-
-		if (!filter.hasSomeDateRange()) {
-			System.err.println("A date range must be provided.");
-			return 1;
-		}
-
 		try {
+			final RestClient restClient = restClient();
+			final ObjectMapper objectMapper = objectMapper();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+			final DatumFilter filter = datumFilter();
+
+			if (!filter.hasNodeIds()) {
+				System.err.println("At least one node ID must be provided.");
+				return 1;
+			}
+
+			if (!filter.hasSourceIds()) {
+				System.err.println("At least one source ID must be provided.");
+				return 1;
+			}
+
+			if (!filter.hasSomeDateRange()) {
+				System.err.println("A date range must be provided.");
+				return 1;
+			}
+
 			markNodeDatumAggregatesStale(restClient, objectMapper, filter);
 
 			// because we don't support local date ranges in the list command, just query

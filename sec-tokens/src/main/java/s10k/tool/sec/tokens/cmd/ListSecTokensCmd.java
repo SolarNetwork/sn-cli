@@ -86,15 +86,15 @@ public class ListSecTokensCmd extends BaseSubCmd<SecTokensCmd> implements Callab
 
 	@Override
 	public Integer call() throws Exception {
-		final SecurityTokenFilter filter = SecurityTokenFilter.securityTokenFilter(
-				activeOrDisabled != null ? activeOrDisabled.active : null, identifiers,
-				(tokenType != null ? new String[] { tokenType.name() } : null));
-
-		final RestClient restClient = restClient();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-		final ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
-
 		try {
+			final SecurityTokenFilter filter = SecurityTokenFilter.securityTokenFilter(
+					activeOrDisabled != null ? activeOrDisabled.active : null, identifiers,
+					(tokenType != null ? new String[] { tokenType.name() } : null));
+
+			final RestClient restClient = restClient();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+			final ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
+
 			List<SecurityTokenInfo> infos = listSecurityTokens(restClient, objectMapper, filter);
 			if (infos.isEmpty()) {
 				System.err.println("No security tokens matched your criteria.");

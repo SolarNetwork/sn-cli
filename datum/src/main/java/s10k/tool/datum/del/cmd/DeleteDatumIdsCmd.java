@@ -86,10 +86,11 @@ public class DeleteDatumIdsCmd extends BaseSubCmd<DatumDeleteBaseCmd> implements
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ObjectMapper objectMapper = objectMapper();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
 		try {
+			final RestClient restClient = restClient();
+			final ObjectMapper objectMapper = objectMapper();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+
 			final SortedSet<ObjectDatumId> ids = new TreeSet<>();
 
 			// look for JSON on stdin if allowed

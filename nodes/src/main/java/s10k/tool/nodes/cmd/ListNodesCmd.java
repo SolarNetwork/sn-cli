@@ -105,11 +105,11 @@ public class ListNodesCmd extends BaseSubCmd<NodesCmd> implements Callable<Integ
 
 	@Override
 	public Integer call() throws Exception {
-		final RestClient restClient = restClient();
-		final ObjectMapper objectMapper = objectMapper();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-		final NodeFilter filter = nodeFilter();
 		try {
+			final RestClient restClient = restClient();
+			final ObjectMapper objectMapper = objectMapper();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+			final NodeFilter filter = nodeFilter();
 			final List<UserNodeInfo> nodes = listUserNodes(restClient, objectMapper, filter);
 			if (nodes.isEmpty()) {
 				System.err.println("No nodes available.");

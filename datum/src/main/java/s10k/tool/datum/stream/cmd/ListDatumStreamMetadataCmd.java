@@ -143,17 +143,17 @@ public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 
 	@Override
 	public Integer call() throws Exception {
-		final DatumStreamFilter filter = DatumStreamFilter
-				.datumStreamFilter(streamIds,
-						nodeOrLocationIds != null ? nodeOrLocationIds.isLocation() ? nodeOrLocationIds.locationIds
-								: nodeOrLocationIds.nodeIds : null,
-						sourceIds, propertyNames, instantaneousPropertyNames, accumulatingPropertyNames,
-						statusPropertyNames);
-
-		final RestClient restClient = restClient();
-		final ResultDisplayMode displayMode = displayMode(this.displayMode);
-
 		try {
+			final DatumStreamFilter filter = DatumStreamFilter
+					.datumStreamFilter(streamIds,
+							nodeOrLocationIds != null ? nodeOrLocationIds.isLocation() ? nodeOrLocationIds.locationIds
+									: nodeOrLocationIds.nodeIds : null,
+							sourceIds, propertyNames, instantaneousPropertyNames, accumulatingPropertyNames,
+							statusPropertyNames);
+
+			final RestClient restClient = restClient();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+
 			List<ObjectDatumStreamMetadata> metas = listStreamMetadata(restClient, objectMapper,
 					nodeOrLocationIds != null && nodeOrLocationIds.isLocation() ? ObjectDatumKind.Location
 							: ObjectDatumKind.Node,
