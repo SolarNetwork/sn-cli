@@ -27,6 +27,7 @@ import s10k.tool.flux.cmd.FluxCmd;
 import s10k.tool.instructions.cmd.InstructionsCmd;
 import s10k.tool.nodes.cmd.NodesCmd;
 import s10k.tool.sec.tokens.cmd.SecTokensCmd;
+import s10k.tool.user.cmd.BaseUserCmd;
 
 /**
  * SolarNetwork command-line tool.
@@ -64,6 +65,7 @@ public class SnCliTool implements CommandLineRunner, ExitCodeGenerator {
 				.addSubcommand(new InstructionsCmd())
 				.addSubcommand(new NodesCmd())
 				.addSubcommand(new SecTokensCmd())
+				.addSubcommand(new BaseUserCmd())
 				.setCaseInsensitiveEnumValuesAllowed(true)
 				.registerConverter(ClaimableJobState.class, ClaimableJobState::fromValue)
 				.registerConverter(DatumImportState.class, DatumImportState::fromValue)

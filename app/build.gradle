@@ -51,6 +51,7 @@ dependencies {
 	implementation project(':sn-cli-instructions')
 	implementation project(':sn-cli-nodes')
 	implementation project(':sn-cli-sec-tokens')
+	implementation project(':sn-cli-user')
 
 	implementation "info.picocli:picocli-spring-boot-starter:${picoCliVersion}"
 	implementation 'org.springframework.boot:spring-boot-starter'

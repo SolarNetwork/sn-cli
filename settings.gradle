@@ -13,6 +13,7 @@ include "flux"
 include "instructions"
 include "nodes"
 include "sec-tokens"
+include "user"
 
 project(':app').name = "sn-cli-app"
 project(':c2c').name = "sn-cli-c2c"
@@ -23,4 +24,4 @@ project(':common-test').name = "sn-cli-common-test"
 project(':instructions').name = "sn-cli-instructions"
 project(':nodes').name = "sn-cli-nodes"
 project(':sec-tokens').name = "sn-cli-sec-tokens"
-
+project(':user').name = "sn-cli-user"
