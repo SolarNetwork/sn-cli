@@ -7,7 +7,9 @@ import static s10k.tool.common.util.TableUtils.tableConfig;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 import org.jspecify.annotations.Nullable;
@@ -19,7 +21,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.freva.asciitable.Column;
+import com.github.freva.asciitable.HorizontalAlign;
 
+import net.solarnetwork.util.CollectionUtils;
 import net.solarnetwork.util.StringUtils;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -39,9 +43,9 @@ import s10k.tool.user.events.domain.UserEventsFilter;
 public class ListUserEventsCmd extends BaseSubCmd<BaseUserEventsCmd> implements Callable<Integer> {
 
 	// @formatter:off
-	@Option(names = { "-E", "--show-event-ids" },
+	@Option(names = { "-E", "--show-event-id" },
 			description = "show event IDs in the tabular output modes")
-	boolean includeEventIds;
+	boolean includeEventId;
 
 	@Option(names = { "-F", "--search-filter" },
 			description = "an event data search filter to match")
@@ -74,6 +78,17 @@ public class ListUserEventsCmd extends BaseSubCmd<BaseUserEventsCmd> implements 
 			description = "start returning results from this offset, 0 being the first result")
 	long resultOffset;
 
+	@Option(names = { "-c", "--column" },
+			description = "a name:path reference to extract from the event data as a column in tabular output mode",
+			split = "\\s*,\\s*",
+			splitSynopsisLabel = ",",
+			paramLabel = "tag")
+	String @Nullable [] columnReferences;
+	
+	@Option(names = { "-D", "--show-data" },
+			description = "show event data in the tabular output modes when --column options are given")
+	boolean includeData;
+
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data")
 	@Nullable ResultDisplayMode displayMode;
@@ -96,13 +111,15 @@ public class ListUserEventsCmd extends BaseSubCmd<BaseUserEventsCmd> implements 
 			final ObjectMapper objectMapper = objectMapper();
 			final ResultDisplayMode displayMode = displayMode(this.displayMode);
 			final UserEventsFilter filter = filter();
+			final Map<String, String> columnMapping = columnMapping(columnReferences);
 
 			final List<UserEvent> tasks = listUserEvents(restClient, objectMapper, filter);
 
 			final List<?> tableData = (displayMode == ResultDisplayMode.JSON ? tasks
-					: tasks.stream().map(c -> tableDataRow(c, includeEventIds)).toList());
-			TableUtils.renderTableData(tableDataColumns(includeEventIds), tableData, tableConfig(this, displayMode),
-					objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+					: tasks.stream().map(c -> tableDataRow(c, includeEventId, columnMapping, includeData)).toList());
+			TableUtils.renderTableData(tableDataColumns(includeEventId, columnMapping, includeData), tableData,
+					tableConfig(this, displayMode), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
+					System.out);
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error listing user events: %s".formatted(e.getMessage()));
@@ -168,14 +185,34 @@ public class ListUserEventsCmd extends BaseSubCmd<BaseUserEventsCmd> implements 
 		}
 	}
 
+	private Map<String, String> columnMapping(final String @Nullable [] columnReferences) {
+		if (columnReferences == null || columnReferences.length < 1) {
+			return Map.of();
+		}
+		var result = new LinkedHashMap<String, String>(columnReferences.length);
+		for (String colRef : columnReferences) {
+			Map<String, String> refMap = StringUtils.delimitedStringToMap(colRef, ",", ":");
+			if (refMap != null) {
+				result.putAll(refMap);
+			}
+		}
+		return result;
+	}
+
 	/**
 	 * Get datum import job tabular structure columns.
 	 *
 	 * @param includeEventId {@code true} to include the event ID column
+	 * @param columnMapping  optional column name to data references to extract as
+	 *                       additional columns; a {@code SequencedMap} should be
+	 *                       used for consistent ordering
+	 * @param includeData    if {@code columnReferences} are provided, then
+	 *                       {@code true} to still include the <b>Data</b> column
 	 * @return the columns
 	 * @see #tableDataRow(DatumImportTaskInfo)
 	 */
-	public static Column[] tableDataColumns(boolean includeEventId) {
+	public static Column[] tableDataColumns(final boolean includeEventId,
+			final @Nullable Map<String, String> columnMapping, boolean includeData) {
 		List<Column> result = new ArrayList<>(5);
 		if (includeEventId) {
 			result.add(new Column().header("Event ID").dataAlign(LEFT));
@@ -183,7 +220,22 @@ public class ListUserEventsCmd extends BaseSubCmd<BaseUserEventsCmd> implements 
 		result.add(new Column().header("Event Date").dataAlign(LEFT));
 		result.add(new Column().header("Tags").dataAlign(LEFT));
 		result.add(new Column().header("Message").dataAlign(LEFT));
-		result.add(new Column().header("Data").dataAlign(LEFT));
+
+		if (columnMapping != null && !columnMapping.isEmpty()) {
+			for (String colName : columnMapping.keySet()) {
+				HorizontalAlign align;
+				if (colName.endsWith(">")) {
+					colName = colName.substring(0, colName.length() - 1);
+					align = HorizontalAlign.RIGHT;
+				} else {
+					align = HorizontalAlign.LEFT;
+				}
+				result.add(new Column().header(colName).dataAlign(align));
+			}
+		}
+		if (includeData || columnMapping == null || columnMapping.isEmpty()) {
+			result.add(new Column().header("Data").dataAlign(LEFT));
+		}
 		return result.toArray(Column[]::new);
 	}
 
@@ -192,10 +244,16 @@ public class ListUserEventsCmd extends BaseSubCmd<BaseUserEventsCmd> implements 
 	 *
 	 * @param info           the event to convert
 	 * @param includeEventId {@code true} to include the event ID column
+	 * @param columnMapping  optional column name to data references to extract as
+	 *                       additional columns; a {@code SequencedMap} should be
+	 *                       used for consistent ordering
+	 * @param includeData    if {@code columnReferences} are provided, then
+	 *                       {@code true} to still include the <b>Data</b> column
 	 * @return the tabular data row
 	 * @see #tableDataColumns()
 	 */
-	public static Object[] tableDataRow(UserEvent info, boolean includeEventId) {
+	public static Object[] tableDataRow(final UserEvent info, final boolean includeEventId,
+			final @Nullable Map<String, String> columnMapping, boolean includeData) {
 		List<Object> result = new ArrayList<>(5);
 		if (includeEventId) {
 			result.add(info.eventId());
@@ -203,7 +261,14 @@ public class ListUserEventsCmd extends BaseSubCmd<BaseUserEventsCmd> implements 
 		result.add(info.eventDate());
 		result.add(StringUtils.commaDelimitedStringFromCollection(info.tags()));
 		result.add(info.message());
-		result.add(TableUtils.basicTable(info.data(), null, null, false));
+		if (columnMapping != null && !columnMapping.isEmpty()) {
+			for (String path : columnMapping.values()) {
+				result.add(CollectionUtils.valueAtPath(path, info.data()));
+			}
+		}
+		if (includeData || columnMapping == null || columnMapping.isEmpty()) {
+			result.add(TableUtils.basicTable(info.data(), null, null, false));
+		}
 		return result.toArray(Object[]::new);
 	}
 

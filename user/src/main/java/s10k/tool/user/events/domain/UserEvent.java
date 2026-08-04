@@ -21,7 +21,7 @@ import net.solarnetwork.util.UuidUtils;
  * User event record.
  */
 @RegisterReflectionForBinding
-@JsonPropertyOrder({ "userId", "eventId", "eventDate", "tags", "message", "data" })
+@JsonPropertyOrder({ "userId", "eventId", "created", "tags", "message", "data" })
 public record UserEvent(// @formatter:off
 		  @JsonProperty("userId") Long userId
 		, @JsonProperty("eventId") UUID eventId
@@ -36,7 +36,7 @@ public record UserEvent(// @formatter:off
 	 * 
 	 * @return the creation timestamp
 	 */
-	@JsonProperty("eventDate")
+	@JsonProperty("created")
 	public final Instant eventDate() {
 		return nonnull(UuidUtils.extractTimestamp(eventId(), UuidUtils.V7_MICRO_COUNT_PRECISION), "Event ID");
 	}
