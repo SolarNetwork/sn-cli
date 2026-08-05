@@ -7,12 +7,18 @@ import static s10k.tool.common.util.TableUtils.tableConfig;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.SequencedSet;
 import java.util.concurrent.Callable;
 
 import org.jspecify.annotations.Nullable;
+import org.springframework.expression.Expression;
+import org.springframework.expression.ExpressionException;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
@@ -30,6 +36,7 @@ import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.DateUtils;
+import s10k.tool.common.util.ExpressionUtils;
 import s10k.tool.common.util.RestUtils;
 import s10k.tool.common.util.TableUtils;
 import s10k.tool.user.events.domain.UserEvent;
@@ -59,11 +66,13 @@ public class ListUserEventsCmd extends BaseSubCmd<BaseUserEventsCmd> implements 
 	String @Nullable [] tags;
 	
 	@Option(names = { "-min", "--min-date" },
-			description = "a minimum datum date to match")
+			description = "a minimum datum date to match",
+			required = true)
 	@Nullable LocalDateTime minDate;
 
 	@Option(names = { "-max", "--max-date" },
-			description = "a maximum datum date (exclusive) to match")
+			description = "a maximum datum date (exclusive) to match",
+			required = true)
 	@Nullable LocalDateTime maxDate;
 
 	@Option(names = { "-tz", "--time-zone" },
@@ -82,9 +91,20 @@ public class ListUserEventsCmd extends BaseSubCmd<BaseUserEventsCmd> implements 
 			description = "a name:path reference to extract from the event data as a column in tabular output mode",
 			split = "\\s*,\\s*",
 			splitSynopsisLabel = ",",
-			paramLabel = "tag")
+			paramLabel = "columReference")
 	String @Nullable [] columnReferences;
 	
+	@Option(names = { "-x", "--expression" },
+			description = "a name:expression reference to extract from the event data as a column in tabular output mode",
+			split = "\\s*,\\s*",
+			splitSynopsisLabel = ",",
+			paramLabel = "columExpression")
+	String @Nullable [] columExpressions;
+	
+	@Option(names = { "-q", "--quiet" },
+			description = "suppress expression evaluation errors")
+	boolean quiet;
+
 	@Option(names = { "-D", "--show-data" },
 			description = "show event data in the tabular output modes when --column options are given")
 	boolean includeData;
@@ -112,12 +132,19 @@ public class ListUserEventsCmd extends BaseSubCmd<BaseUserEventsCmd> implements 
 			final ResultDisplayMode displayMode = displayMode(this.displayMode);
 			final UserEventsFilter filter = filter();
 			final Map<String, String> columnMapping = columnMapping(columnReferences);
+			final Map<String, Expression> expressions = columnExpressions(columExpressions);
+			final SequencedSet<String> extraColumns = new LinkedHashSet<String>(
+					columnMapping.size() + expressions.size());
+			extraColumns.addAll(columnMapping.keySet());
+			extraColumns.addAll(expressions.keySet());
 
 			final List<UserEvent> tasks = listUserEvents(restClient, objectMapper, filter);
 
 			final List<?> tableData = (displayMode == ResultDisplayMode.JSON ? tasks
-					: tasks.stream().map(c -> tableDataRow(c, includeEventId, columnMapping, includeData)).toList());
-			TableUtils.renderTableData(tableDataColumns(includeEventId, columnMapping, includeData), tableData,
+					: tasks.stream()
+							.map(c -> tableDataRow(c, includeEventId, columnMapping, expressions, quiet, includeData))
+							.toList());
+			TableUtils.renderTableData(tableDataColumns(includeEventId, extraColumns, includeData), tableData,
 					tableConfig(this, displayMode), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
 					System.out);
 			return 0;
@@ -185,7 +212,7 @@ public class ListUserEventsCmd extends BaseSubCmd<BaseUserEventsCmd> implements 
 		}
 	}
 
-	private Map<String, String> columnMapping(final String @Nullable [] columnReferences) {
+	private static Map<String, String> columnMapping(final String @Nullable [] columnReferences) {
 		if (columnReferences == null || columnReferences.length < 1) {
 			return Map.of();
 		}
@@ -199,20 +226,30 @@ public class ListUserEventsCmd extends BaseSubCmd<BaseUserEventsCmd> implements 
 		return result;
 	}
 
+	private static Map<String, Expression> columnExpressions(final String @Nullable [] columnExpressions) {
+		final Map<String, String> mappings = columnMapping(columnExpressions);
+		if (mappings.isEmpty()) {
+			return Map.of();
+		}
+		var result = new LinkedHashMap<String, Expression>(mappings.size());
+		for (Entry<String, String> e : mappings.entrySet()) {
+			result.put(e.getKey(), ExpressionUtils.spelExpression(e.getValue()));
+		}
+		return result;
+	}
+
 	/**
 	 * Get datum import job tabular structure columns.
 	 *
 	 * @param includeEventId {@code true} to include the event ID column
-	 * @param columnMapping  optional column name to data references to extract as
-	 *                       additional columns; a {@code SequencedMap} should be
-	 *                       used for consistent ordering
+	 * @param columnNames    optional column names to use as additional columns
 	 * @param includeData    if {@code columnReferences} are provided, then
 	 *                       {@code true} to still include the <b>Data</b> column
 	 * @return the columns
 	 * @see #tableDataRow(DatumImportTaskInfo)
 	 */
 	public static Column[] tableDataColumns(final boolean includeEventId,
-			final @Nullable Map<String, String> columnMapping, boolean includeData) {
+			final @Nullable Collection<String> columnNames, boolean includeData) {
 		List<Column> result = new ArrayList<>(5);
 		if (includeEventId) {
 			result.add(new Column().header("Event ID").dataAlign(LEFT));
@@ -221,8 +258,8 @@ public class ListUserEventsCmd extends BaseSubCmd<BaseUserEventsCmd> implements 
 		result.add(new Column().header("Tags").dataAlign(LEFT));
 		result.add(new Column().header("Message").dataAlign(LEFT));
 
-		if (columnMapping != null && !columnMapping.isEmpty()) {
-			for (String colName : columnMapping.keySet()) {
+		if (columnNames != null && !columnNames.isEmpty()) {
+			for (String colName : columnNames) {
 				HorizontalAlign align;
 				if (colName.endsWith(">")) {
 					colName = colName.substring(0, colName.length() - 1);
@@ -233,7 +270,7 @@ public class ListUserEventsCmd extends BaseSubCmd<BaseUserEventsCmd> implements 
 				result.add(new Column().header(colName).dataAlign(align));
 			}
 		}
-		if (includeData || columnMapping == null || columnMapping.isEmpty()) {
+		if (includeData || columnNames == null || columnNames.isEmpty()) {
 			result.add(new Column().header("Data").dataAlign(LEFT));
 		}
 		return result.toArray(Column[]::new);
@@ -247,13 +284,15 @@ public class ListUserEventsCmd extends BaseSubCmd<BaseUserEventsCmd> implements 
 	 * @param columnMapping  optional column name to data references to extract as
 	 *                       additional columns; a {@code SequencedMap} should be
 	 *                       used for consistent ordering
+	 * @param quiet          suppress expression evaluation errors
 	 * @param includeData    if {@code columnReferences} are provided, then
 	 *                       {@code true} to still include the <b>Data</b> column
 	 * @return the tabular data row
 	 * @see #tableDataColumns()
 	 */
 	public static Object[] tableDataRow(final UserEvent info, final boolean includeEventId,
-			final @Nullable Map<String, String> columnMapping, boolean includeData) {
+			final @Nullable Map<String, String> columnMapping, Map<String, Expression> expressions, boolean quiet,
+			boolean includeData) {
 		List<Object> result = new ArrayList<>(5);
 		if (includeEventId) {
 			result.add(info.eventId());
@@ -266,7 +305,19 @@ public class ListUserEventsCmd extends BaseSubCmd<BaseUserEventsCmd> implements 
 				result.add(CollectionUtils.valueAtPath(path, info.data()));
 			}
 		}
-		if (includeData || columnMapping == null || columnMapping.isEmpty()) {
+		if (expressions != null && !expressions.isEmpty()) {
+			for (Expression expr : expressions.values()) {
+				Object exprResult;
+				try {
+					exprResult = ExpressionUtils.evaluateExpression(expr, null, info, Object.class);
+				} catch (ExpressionException e) {
+					exprResult = (quiet ? null : e.getMessage());
+				}
+				result.add(exprResult);
+			}
+		}
+		if (includeData || ((columnMapping == null || columnMapping.isEmpty())
+				&& (expressions == null || expressions.isEmpty()))) {
 			result.add(TableUtils.basicTable(info.data(), null, null, false));
 		}
 		return result.toArray(Object[]::new);

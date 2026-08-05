@@ -38,6 +38,7 @@ dependencies {
 	
 	// SolarNetwork
 	api "net.solarnetwork.common:net.solarnetwork.common:${snCommonVersion}"
+	implementation "net.solarnetwork.common:net.solarnetwork.common.expr.spel:${snCommonExprSpelVersion}"
 	implementation "net.solarnetwork.common:net.solarnetwork.common.web.jakarta:${snCommonWebJakartaVersion}"
 	
 	annotationProcessor "info.picocli:picocli-codegen:${picoCliVersion}"
