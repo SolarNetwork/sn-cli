@@ -212,7 +212,7 @@ Here are some example search filters to match against that style of event:
 | `(cp=chgr7)` | Yes | Simple equality match on the `cp` property. |
 | `(cp~=^chgr)` | Yes | Regular expression match on the `cp` property for any value starting with `chgr`. |
 | `(&(cp=chgr7)(action=StartTransaction))` | Yes | Logical _AND_ match on both the `cp` and `action` properties. |
-| `(message/idTag=tag01)` | Yes | Simple equality match in the `cp/idTag` property. |
+| `(message/idTag=tag01)` | Yes | Simple equality match in the `message/idTag` property. |
 | `(message/connectorId>1)` | No | Matches only when `message/connectorId` is greater than `1`. |
 | `(&(cp=chgr7)(!(message/idTag~=^tag)))` | No | Matches only when `cp` is `chgr7` and `message/idTag` does _not_ start with `tag`. |
 
