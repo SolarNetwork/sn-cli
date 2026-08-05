@@ -56,7 +56,7 @@ For example, imagine this event generated when a Cloud Integration Rake Task beg
 ```json title="Example user event"
 {
   "userId" : 123,
-  "eventId" : "019fcb57-bea3-7ac6-b972-6af8743af668",
+  "eventId" : "019fcb57-0000-0000-0000-6af8743af668",
   "created" : "2026-08-04 05:55:53.123689Z",
   "tags" :   [ "c2c", "ds", "rake" ],
   "message" : "Rake for datum",
@@ -115,7 +115,7 @@ Take this OCPP inbound message event as an example:
 ```json title="Example OCPP inbound message event"
 {
   "userId" : 123,
-  "eventId" : "019fc630-9ae7-7c67-b110-7b27c85a07cc",
+  "eventId" : "019fc630-0000-0000-0000-7b27c85a07cc",
   "created" : "2026-08-03 05:55:01.991793Z",
   "tags" :   [ "ocpp", "message", "received" ],
   "data" : {
@@ -139,20 +139,22 @@ Take this OCPP inbound message event as an example:
       "connectorId" : 1,
       "transactionId" : 605279
     },
-    "messageId" : "cc5b6ab1-49be-4f62-815b-3a378c2de2dd"
+    "messageId" : "cc5b6ab1-0000-0000-0000-3a378c2de2dd"
   }
 }
 ```
 
-If you were interested in the `cp` and `SoC` measurand data values, you could extract them into columns
-with options like:
+If you were interested in the `cp` value and the `value` associated with the `SoC` measurand, you
+could extract them into columns with options like:
 
 === "Extract expression"
 
 	```sh
 	s10k user events list ...  \
 	    --column 'Charger:cp' \
-		--column "SoC>:data.action == 'MeterValues' ? data.message.meterValue[0].sampledValue.^[measurand == 'SoC']?.value : null"
+		--column "SoC>:data.action == 'MeterValues'
+			? data.message.meterValue[0].sampledValue.^[measurand == 'SoC']?.value
+			: null"
 	```
 
 === "Pretty Output"
@@ -175,14 +177,49 @@ with options like:
 
 ### Search filters
 
-The `--search-filter` option allows you to filter the events based on values in the data. It uses an LDAP-like
-filter syntax.
+The `--search-filter` option allows you to filter the events based on values in the data. It uses
+the SolarNetwork [Metadata Filter][meta-filter] syntax, without the path wildcard support. The key
+paths apply to the event data object. Typically you would use the `--tag` option to narrow the event
+category to a specific type of event and then add a `--search-filter` to narrow the results further
+based on the event data.
 
-TODO
+Take the following example OCPP event:
+
+```json title="Example OCPP StartTransaction event"
+{
+  "userId" : 123,
+  "eventId" : "019fc630-0000-0000-0000-ae6160846d7d",
+  "created" : "2026-08-03 05:55:07.652136Z",
+  "tags" :   [ "ocpp", "message", "received" ],
+  "data" : {
+    "cp" : "chgr7",
+    "action" : "StartTransaction",
+    "message" : {
+      "idTag" : "tag01",
+      "timestamp" : "2026-08-03T05:55:06.000Z",
+      "meterStart" : 155668770,
+      "connectorId" : 1
+    },
+    "messageId" : "50368fe0-0000-0000-0000-e4616c7a18c9"
+  }
+}
+```
+
+Here are some example search filters to match against that style of event:
+
+| Search filter | Matches | Description |
+|:--------------|:--------|:------------|
+| `(cp=chgr7)` | Yes | Simple equality match on the `cp` property. |
+| `(cp~=^chgr)` | Yes | Regular expression match on the `cp` property for any value starting with `chgr`. |
+| `(&(cp=chgr7)(action=StartTransaction))` | Yes | Logical _AND_ match on both the `cp` and `action` properties. |
+| `(message/idTag=tag01)` | Yes | Simple equality match in the `cp/idTag` property. |
+| `(message/connectorId>1)` | No | Matches only when `message/connectorId` is greater than `1`. |
+| `(&(cp=chgr7)(!(message/idTag~=^tag)))` | No | Matches only when `cp` is `chgr7` and `message/idTag` does _not_ start with `tag`. |
+
 
 ## Output
 
-A listing of all available nodes. Each record contains the following properties:
+A listing of matching events. Each record contains the following properties:
 
 | Property | Description |
 |:---------|:------------|
@@ -195,28 +232,163 @@ A listing of all available nodes. Each record contains the following properties:
 
 ## Examples
 
-=== "List nodes"
+=== "List OCPP StartTransaction events"
+
+	Show events for OCPP `StartTransaction` messages with chargers whose identity starts with `chgr`:
 
 	```sh
-	s10k user events list --min-date X --max-date Y
+	s10k user events list --min-date 2026-08-03 --max-date 2026-08-04 \
+	    --tag ocpp,message,received \
+		--search-filter '(&(cp~=^chgr)(action=StartTransaction))'
 	```
 
 === "Pretty Output"
 
 	```
-
+	+----------------------------------+-----------------------+---------+----------------------------------------------------------------------------+
+	| Event Date                       | Tags                  | Message | Data                                                                       |
+	+----------------------------------+-----------------------+---------+----------------------------------------------------------------------------+
+	| 2026-08-03 17:55:07.652136+12:00 | ocpp,message,received |         | cp        chgr7                                                            |
+	|                                  |                       |         | action    StartTransaction                                                 |
+	|                                  |                       |         | message   {idTag=tag01, timestamp=2026-08-03T05:55:06.000Z,                |
+	|                                  |                       |         | meterStart=155668770, connectorId=1}                                       |
+	|                                  |                       |         | messageId 50368fe0-0000-0000-0000-e4616c7a18c9                             |
+	|                                  |                       |         |                                                                            |
+	+----------------------------------+-----------------------+---------+----------------------------------------------------------------------------+
+	| 2026-08-03 18:03:13.980869+12:00 | ocpp,message,received |         | cp        chgr10                                                           |
+	|                                  |                       |         | action    StartTransaction                                                 |
+	|                                  |                       |         | message   {idTag=tag01, timestamp=2026-08-03T06:03:11.000Z,                |
+	|                                  |                       |         | meterStart=215457160, connectorId=2}                                       |
+	|                                  |                       |         | messageId ed0336b7-0000-0000-0000-9cb4de91ed4b                             |
+	|                                  |                       |         |                                                                            |
+	+----------------------------------+-----------------------+---------+----------------------------------------------------------------------------+
+	| 2026-08-03 18:04:48.151958+12:00 | ocpp,message,received |         | cp        chgr10                                                           |
+	|                                  |                       |         | action    StartTransaction                                                 |
+	|                                  |                       |         | message   {idTag=tag01, timestamp=2026-08-03T06:04:45.000Z,                |
+	|                                  |                       |         | meterStart=231959680, connectorId=1}                                       |
+	|                                  |                       |         | messageId eb296cef-0000-0000-0000-376880f68efa                             |
+	|                                  |                       |         |                                                                            |
+	+----------------------------------+-----------------------+---------+----------------------------------------------------------------------------+
 	```
 
 === "CSV Output"
 
 	```csv
-
+	Event Date,Tags,Message,Data
+	2026-08-03 17:55:07.652136+12:00,"ocpp,message,received",,"cp        chgr7
+	action    StartTransaction
+	message   {idTag=tag01, timestamp=2026-08-03T05:55:06.000Z, meterStart=155668770, connectorId=1}
+	messageId 50368fe0-0000-0000-0000-e4616c7a18c9
+	"
+	2026-08-03 18:03:13.980869+12:00,"ocpp,message,received",,"cp        chgr10
+	action    StartTransaction
+	message   {idTag=tag01, timestamp=2026-08-03T06:03:11.000Z, meterStart=215457160, connectorId=2}
+	messageId ed0336b7-0000-0000-0000-9cb4de91ed4b
+	"
+	2026-08-03 18:04:48.151958+12:00,"ocpp,message,received",,"cp        chgr10
+	action    StartTransaction
+	message   {idTag=tag01, timestamp=2026-08-03T06:04:45.000Z, meterStart=231959680, connectorId=1}
+	messageId eb296cef-0000-0000-0000-376880f68efa
+	"
 	```
 
 === "JSON Output"
 
 	```json
-
+	[
+	  {
+	    "userId" : 504,
+	    "eventId" : "019fc630-0000-0000-0000-ae6160846d7d",
+	    "created" : "2026-08-03 05:55:07.652136Z",
+	    "tags" :   [ "ocpp", "message", "received" ],
+	    "data" : {
+	      "cp" : "chgr7",
+	      "action" : "StartTransaction",
+	      "message" : {
+	        "idTag" : "tag01",
+	        "timestamp" : "2026-08-03T05:55:06.000Z",
+	        "meterStart" : 155668770,
+	        "connectorId" : 1
+	      },
+	      "messageId" : "50368fe0-0000-0000-0000-e4616c7a18c9"
+	    }
+	  },
+	  {
+	    "userId" : 504,
+	    "eventId" : "019fc638-0000-0000-0000-6171f3c98b17",
+	    "created" : "2026-08-03 06:03:13.980869Z",
+	    "tags" :   [ "ocpp", "message", "received" ],
+	    "data" : {
+	      "cp" : "chgr10",
+	      "action" : "StartTransaction",
+	      "message" : {
+	        "idTag" : "tag01",
+	        "timestamp" : "2026-08-03T06:03:11.000Z",
+	        "meterStart" : 215457160,
+	        "connectorId" : 2
+	      },
+	      "messageId" : "ed0336b7-0000-0000-0000-9cb4de91ed4b"
+	    }
+	  },
+	  {
+	    "userId" : 504,
+	    "eventId" : "019fc639-0000-0000-0000-c1b95fae23cb",
+	    "created" : "2026-08-03 06:04:48.151958Z",
+	    "tags" :   [ "ocpp", "message", "received" ],
+	    "data" : {
+	      "cp" : "chgr10",
+	      "action" : "StartTransaction",
+	      "message" : {
+	        "idTag" : "tag01",
+	        "timestamp" : "2026-08-03T06:04:45.000Z",
+	        "meterStart" : 231959680,
+	        "connectorId" : 1
+	      },
+	      "messageId" : "eb296cef-0000-0000-0000-376880f68efa"
+	    }
+	  }
+	]
 	```
 
+The same query as before, but this time extract the `cp`, `message/connectorId`, `message/idTag`,
+and `message/meterStart` values into columns:
+
+=== "List OCPP StartTransaction events, custom columns"
+
+	```sh
+	s10k user events list --min-date 2026-08-03 --max-date 2026-08-04 \
+	    --tag ocpp,message,received \
+		--search-filter '(&(cp~=^chgr)(action=StartTransaction))' \
+		--column 'Charger:cp' \
+		--column 'Connector>:message/connectorId' \
+		--column 'RFID:message/idTag' \
+		--column 'Meter>:message/meterStart'
+	```
+
+=== "Pretty Output"
+
+	```
+	+----------------------------------+-----------------------+---------+---------+-----------+-------+-----------+
+	| Event Date                       | Tags                  | Message | Charger | Connector | RFID  | Meter     |
+	+----------------------------------+-----------------------+---------+---------+-----------+-------+-----------+
+	| 2026-08-03 17:55:07.652136+12:00 | ocpp,message,received |         | chgr7   |         1 | tag01 | 155668770 |
+	+----------------------------------+-----------------------+---------+---------+-----------+-------+-----------+
+	| 2026-08-03 18:03:13.980869+12:00 | ocpp,message,received |         | chgr10  |         2 | tag01 | 215457160 |
+	+----------------------------------+-----------------------+---------+---------+-----------+-------+-----------+
+	| 2026-08-03 18:04:48.151958+12:00 | ocpp,message,received |         | chgr10  |         1 | tag01 | 231959680 |
+	+----------------------------------+-----------------------+---------+---------+-----------+-------+-----------+
+	```
+
+=== "CSV Output"
+
+	```csv
+	Event Date,Tags,Message,Charger,Connector,RFID,Meter
+	2026-08-03 17:55:07.652136+12:00,"ocpp,message,received",,chgr7,1,tag01,155668770
+	2026-08-03 18:03:13.980869+12:00,"ocpp,message,received",,chgr10,2,tag01,215457160
+	2026-08-03 18:04:48.151958+12:00,"ocpp,message,received",,chgr10,1,tag01,231959680
+	```
+
+
+
+[meta-filter]: https://github.com/SolarNetwork/solarnetwork/wiki/SolarNet-API-global-objects#metadata-filter
 [spel]: https://github.com/SolarNetwork/solarnetwork/wiki/Spring-Expression-Language-Syntax
