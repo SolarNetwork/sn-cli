@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.jspecify.annotations.Nullable;
 
+import net.solarnetwork.util.StringUtils;
+
 /**
  * A profile.
  */
@@ -61,6 +63,19 @@ public record ProfileInfo(String name, SnTokenCredentials tokenCredentials, @Nul
 			}
 		}
 		return ZoneId.systemDefault();
+	}
+
+	@Override
+	public boolean includeStreamAliases() {
+		if (config != null && config.get("datum-stream-aliases") instanceof Object o) {
+			if (o instanceof Boolean b) {
+				return b;
+			} else if (o instanceof Number n) {
+				return n.intValue() != 0;
+			}
+			return StringUtils.parseBoolean(o.toString());
+		}
+		return true;
 	}
 
 }

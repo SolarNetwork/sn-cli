@@ -269,6 +269,9 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 		if (streamIdentifiers != null && streamIdentifiers.length > 0) {
 			filter.setObjectKind(streamIdentifierKind);
 			filter.populateIdsFromStreamIdentifiers(asList(streamIdentifiers));
+			if (streamIdentifierKind == ObjectDatumKind.Node) {
+				filter.setIncludeStreamAliases(profile().includeStreamAliases());
+			}
 		} else {
 			if (nodeOrLocationIds != null) {
 				if (nodeOrLocationIds.isLocation()) {
@@ -281,6 +284,9 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 			}
 			if (sourceIds != null && sourceIds.length > 0) {
 				filter.setSourceIds(asList(sourceIds));
+			}
+			if (nodeOrLocationIds == null || !nodeOrLocationIds.isLocation()) {
+				filter.setIncludeStreamAliases(profile().includeStreamAliases());
 			}
 		}
 		if (minDate != null) {

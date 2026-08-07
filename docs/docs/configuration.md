@@ -25,6 +25,12 @@ some-setting = "some-value-for-home"
 some-setting = "some-value-for-work"
 ```
 
+## Datum stream aliases
+
+The `datum-stream-aliases` setting allows configuring a default "include datum stream aliases" mode
+when querying for datum. This is `true` by default, so you can turn off aliases inclusion by
+configuring this setting to `false`.
+
 ## Default display mode
 
 The `display-mode` setting allows configuring a default display mode for command results.

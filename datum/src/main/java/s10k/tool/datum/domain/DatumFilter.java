@@ -62,6 +62,7 @@ public final class DatumFilter extends SimplePagination {
 	private @Nullable CombiningType combiningType;
 	private @Nullable Map<Long, Set<Long>> objectIdMappings;
 	private @Nullable Map<String, Set<String>> sourceIdMappings;
+	private @Nullable Boolean includeStreamAliases;
 
 	/**
 	 * Default constructor.
@@ -132,6 +133,9 @@ public final class DatumFilter extends SimplePagination {
 			postBody.set("readingType", readingType.name());
 		}
 		postBody.set("withoutTotalResultsCount", withoutTotalResultsCount);
+		if (includeStreamAliases != null) {
+			postBody.set("includeStreamAliases", includeStreamAliases);
+		}
 		if (getMax() != null && getMax() > 0) {
 			postBody.set("max", getMax());
 		}
@@ -902,6 +906,24 @@ public final class DatumFilter extends SimplePagination {
 			}
 		}
 		return (result == null || result.isEmpty() ? null : result);
+	}
+
+	/**
+	 * Get the "include stream aliases" mode.
+	 * 
+	 * @return the "include stream aliases" mode
+	 */
+	public final Boolean getIncludeStreamAliases() {
+		return includeStreamAliases;
+	}
+
+	/**
+	 * Set the "include stream aliases" mode.
+	 * 
+	 * @param includeStreamAliases the mode to set
+	 */
+	public final void setIncludeStreamAliases(Boolean includeStreamAliases) {
+		this.includeStreamAliases = includeStreamAliases;
 	}
 
 }

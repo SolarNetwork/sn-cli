@@ -63,4 +63,15 @@ public interface ProfileProvider {
 		return (profile != null ? profile.zone() : ZoneId.systemDefault());
 	}
 
+	/**
+	 * Get the default "include stream aliases" setting.
+	 * 
+	 * @return {@code true} if stream aliases should be included when querying for
+	 *         datum; defaults to {@code true} if not explicitly configured
+	 */
+	default boolean includeStreamAliases() {
+		final var profile = profile();
+		return (profile != null ? profile.includeStreamAliases() : true);
+	}
+
 }
