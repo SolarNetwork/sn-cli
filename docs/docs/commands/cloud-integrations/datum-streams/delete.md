@@ -3,7 +3,8 @@ title: delete
 ---
 # Cloud Datum Stream Delete
 
-Delete [Cloud Datum Stream][datum-stream] entities.
+Delete [Cloud Datum Stream][datum-stream] entities. All associated Poll and Rake Task entities will
+be deleted as well.
 
 ## Usage
 
@@ -24,11 +25,11 @@ s10k cloud-integrations datum-streams delete
 
 !!! tip
 
-	Use the `--dry-run` [global option](../../../../global-options.md) to simulate what entities would be deleted,
+	Use the `--dry-run` [global option](../../../global-options.md) to simulate what entities would be deleted,
 	without actually deleting anything. For example:
 
 	```sh
-	s10k --dry-run cloud-integrations datum-streams poll-tasks change-state --stream-id 100
+	s10k --dry-run cloud-integrations datum-streams delete --stream-id 100
 	```
 
 ## Output
