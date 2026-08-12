@@ -913,7 +913,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @return the "include stream aliases" mode
 	 */
-	public final Boolean getIncludeStreamAliases() {
+	public final @Nullable Boolean getIncludeStreamAliases() {
 		return includeStreamAliases;
 	}
 
@@ -922,7 +922,7 @@ public final class DatumFilter extends SimplePagination {
 	 * 
 	 * @param includeStreamAliases the mode to set
 	 */
-	public final void setIncludeStreamAliases(Boolean includeStreamAliases) {
+	public final void setIncludeStreamAliases(@Nullable Boolean includeStreamAliases) {
 		this.includeStreamAliases = includeStreamAliases;
 	}
 

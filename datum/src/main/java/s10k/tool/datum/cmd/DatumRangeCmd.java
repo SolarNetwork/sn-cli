@@ -140,7 +140,7 @@ public class DatumRangeCmd extends BaseSubCmd<DatumCmd> implements Callable<Inte
 		} else {
 			filter.setObjectKind(ObjectDatumKind.Node);
 			filter.setObjectIds(List.of(nodeOrLocationId.nodeId));
-			filter.setIncludeStreamAliases(profile().includeStreamAliases());
+			filter.setIncludeStreamAliases(includeStreamAliases());
 		}
 		if (sourceId != null) {
 			filter.setSourceIds(List.of(sourceId));

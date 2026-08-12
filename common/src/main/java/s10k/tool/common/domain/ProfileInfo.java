@@ -67,13 +67,14 @@ public record ProfileInfo(String name, SnTokenCredentials tokenCredentials, @Nul
 
 	@Override
 	public boolean includeStreamAliases() {
-		if (config != null && config.get("datum-stream-aliases") instanceof Object o) {
-			if (o instanceof Boolean b) {
+		final Object val = (config != null ? config.get("datum-stream-aliases") : null);
+		if (val != null) {
+			if (val instanceof Boolean b) {
 				return b;
-			} else if (o instanceof Number n) {
+			} else if (val instanceof Number n) {
 				return n.intValue() != 0;
 			}
-			return StringUtils.parseBoolean(o.toString());
+			return StringUtils.parseBoolean(val.toString());
 		}
 		return true;
 	}
