@@ -7,9 +7,9 @@ import static s10k.tool.common.util.TableUtils.tableConfig;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -25,9 +25,8 @@ import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.TableUtils;
 
 /**
- * List Cloud Datum Stream configurations.
+ * Delete Cloud Datum Stream configurations.
  */
-@Component
 @Command(name = "delete", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"Delete Cloud Datum Stream entities.%n" })
 public class DeleteDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements Callable<Integer> {
@@ -39,11 +38,12 @@ public class DeleteDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implement
 			splitSynopsisLabel = ",",
 			paramLabel = "datumStreamId",
 			required = true)
+	@SuppressWarnings("NullAway.Init")
 	Long[] datumStreamIds;
 
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data")
-	ResultDisplayMode displayMode;
+	@Nullable ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -61,6 +61,7 @@ public class DeleteDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implement
 		try {
 			final RestClient restClient = restClient();
 			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+			final ObjectMapper objectMapper = objectMapper();
 			final ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
 
 			final var filter = new CloudIntegrationsFilter();
@@ -85,7 +86,7 @@ public class DeleteDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implement
 					System.out);
 			return 0;
 		} catch (Exception e) {
-			System.err.println("Error viewing cloud datum streams: %s".formatted(e.getMessage()));
+			System.err.println("Error deleting cloud datum streams: %s".formatted(e.getMessage()));
 		}
 		return 1;
 	}
@@ -96,7 +97,6 @@ public class DeleteDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implement
 	 * @param restClient    the REST client
 	 * @param objectMapper  the object mapper
 	 * @param datumStreamId the datum stream ID to delete
-	 * @return the result
 	 * @throws IllegalStateException if an error occurs fetching the stream
 	 */
 	public static void deleteCloudDatumStream(RestClient restClient, ObjectMapper objectMapper, Long datumStreamId) {

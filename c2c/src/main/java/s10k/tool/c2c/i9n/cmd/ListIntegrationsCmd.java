@@ -9,6 +9,7 @@ import static s10k.tool.common.util.TableUtils.tableConfig;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -35,46 +36,46 @@ public class ListIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implements 
 
 	// @formatter:off
 	@ArgGroup(exclusive = true, multiplicity = "0..1")
-	EnabledOrDisabled enabledOrDisabled;
+	@Nullable EnabledOrDisabled enabledOrDisabled;
 
 	@Option(names = { "-i", "--integration-id" },
 			description = "an integration ID to match",
 			split = "\\s*,\\s*",
 			splitSynopsisLabel = ",",
 			paramLabel = "integrationId")
-	Long[] integrationIds;
+	Long @Nullable [] integrationIds;
 
 	@Option(names = { "-stream", "--stream-id" },
 			description = "a datum stream ID to match",
 			split = "\\s*,\\s*",
 			splitSynopsisLabel = ",",
 			paramLabel = "datumStreamId")
-	Long[] datumStreamIds;
+	Long @Nullable [] datumStreamIds;
 
 	@Option(names = { "-map", "--mapping-id" },
 			description = "an datum stream mapping ID to match",
 			split = "\\s*,\\s*",
 			splitSynopsisLabel = ",",
 			paramLabel = "mappingId")
-	Long[] mappingIds;
+	Long @Nullable [] mappingIds;
 
 	@Option(names = { "-m", "--name" },
 			description = "a name to match",
 			split = "\\s*,\\s*",
 			splitSynopsisLabel = ",",
 			paramLabel = "name")
-	String[] names;
+	String @Nullable [] names;
 	
 	@Option(names = { "-S", "--service" },
 			description = "a service identifier to match",
 			split = "\\s*,\\s*",
 			splitSynopsisLabel = ",",
 			paramLabel = "serviceIdent")
-	String[] serviceIdentifiers;
+	String @Nullable [] serviceIdentifiers;
 	
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data")
-	ResultDisplayMode displayMode;
+	@Nullable ResultDisplayMode displayMode;
 	// @formatter:on
 
 	/**
@@ -108,6 +109,7 @@ public class ListIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implements 
 	public Integer call() throws Exception {
 		try {
 			final RestClient restClient = restClient();
+			final ObjectMapper objectMapper = objectMapper();
 			final ResultDisplayMode displayMode = displayMode(this.displayMode);
 			final CloudIntegrationsFilter filter = filter();
 

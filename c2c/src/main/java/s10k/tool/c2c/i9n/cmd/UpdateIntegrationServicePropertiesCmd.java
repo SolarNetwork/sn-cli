@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
@@ -45,17 +46,19 @@ public class UpdateIntegrationServicePropertiesCmd extends BaseSubCmd<Integratio
 	@Option(names = { "-i", "--integration-id" },
 			description = "the ID of the integration to update",
 			required =  true)
+	@SuppressWarnings("NullAway.Init")
 	Long integrationId;
 	
 	@Option(names = { "-g", "--merge-mode" },
 			description = "the merge style to perform",
 			defaultValue = "RecursiveObjects")
+	@SuppressWarnings("NullAway.Init")
 	MergeMode mode;
 
 	@Option(names = { "-prop", "--service-property" },
 			description = "a service property, in the form path:value",
 			paramLabel = "serviceProperty")
-	String serviceProperties[];
+	String @Nullable [] serviceProperties;
 
 	@Option(names = {"-I", "--ignore-input"},
 			description = "do not try to read settings from standard input")
@@ -63,10 +66,10 @@ public class UpdateIntegrationServicePropertiesCmd extends BaseSubCmd<Integratio
 	
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data")
-	ResultDisplayMode displayMode;
+	@Nullable ResultDisplayMode displayMode;
 
 	@Parameters(index = "0", paramLabel = "<config>", description = "the properties to save, or @file for file to load", arity = "0..1")
-	String value;
+	@Nullable String value;
 	// @formatter:on
 
 	/**
@@ -83,6 +86,7 @@ public class UpdateIntegrationServicePropertiesCmd extends BaseSubCmd<Integratio
 	public Integer call() throws Exception {
 		try {
 			final RestClient restClient = restClient();
+			final ObjectMapper objectMapper = objectMapper();
 
 			final CloudIntegrationConfiguration existing;
 			if (isDryRun()) {
@@ -102,7 +106,7 @@ public class UpdateIntegrationServicePropertiesCmd extends BaseSubCmd<Integratio
 			}
 
 			try {
-				populateSettings(settings);
+				populateSettings(settings, objectMapper);
 			} catch (RuntimeException e) {
 				System.err.println(e.getMessage());
 				return 1;
@@ -132,14 +136,14 @@ public class UpdateIntegrationServicePropertiesCmd extends BaseSubCmd<Integratio
 		return 1;
 	}
 
-	private void populateSettings(Map<String, Object> settings) {
+	private void populateSettings(Map<String, Object> settings, ObjectMapper objectMapper) {
 		CollectionUtils.populateServiceProperties(serviceProperties, settings, objectMapper);
 	}
 
 	private static final Map<String, Object> updateCloudIntegrationServiceProperties(RestClient restClient,
 			ObjectMapper objectMapper, Long integrationId, MergeMode mode, Map<String, Object> serviceProperties) {
 		// @formatter:off
-		final JsonNode response = restClient.patch()
+		final JsonNode response = checkSuccess(restClient.patch()
 				.uri(b -> {
 					return b.path("/solaruser/api/v1/sec/user/c2c/integrations/{integrationId}/serviceProperties")
 						.queryParam("mode", mode)
@@ -150,10 +154,8 @@ public class UpdateIntegrationServicePropertiesCmd extends BaseSubCmd<Integratio
 				.accept(MediaType.APPLICATION_JSON)
 				.retrieve()
 				.body(JsonNode.class)
-				;
+				);
 		// @formatter:on
-
-		checkSuccess(response);
 
 		try {
 			return objectMapper.treeToValue(response.path("data"), JsonUtils.STRING_MAP_TYPE);
