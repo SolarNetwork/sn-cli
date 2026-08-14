@@ -165,7 +165,7 @@ public class ListDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? metas
 					: metas.stream().map(m -> metadataRow(m, unsortedPropertyNames)).toList());
-			TableUtils.renderTableData(metadataColumns(), tableData, tableConfig(this, displayMode), objectMapper,
+			TableUtils.renderTableData(metadataColumns(), tableData, tableConfig(this, displayMode, prettyStyle()), objectMapper,
 					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {

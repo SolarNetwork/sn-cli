@@ -108,8 +108,8 @@ public class ViewSettingsCmd extends BaseSubCmd<SettingsCmd> implements Callable
 			if (status.getInstructionState() == InstructionState.Completed) {
 				if (specification) {
 					List<JsonNode> specs = parseCompressedResultList(resultParams, objectMapper, JsonNode[].class);
-					TableUtils.renderTableData(List.of(specs), tableConfig(this, ResultDisplayMode.JSON), objectMapper,
-							System.out);
+					TableUtils.renderTableData(List.of(specs), tableConfig(this, ResultDisplayMode.JSON, prettyStyle()),
+							objectMapper, System.out);
 				} else {
 					List<ServiceSettingInfo> services = parseCompressedResultList(resultParams, objectMapper,
 							ServiceSettingInfo[].class);
@@ -168,7 +168,8 @@ public class ViewSettingsCmd extends BaseSubCmd<SettingsCmd> implements Callable
 						data = newData;
 					}
 
-					TableUtils.renderTableData(cols, data, tableConfig(this, displayMode), objectMapper, System.out);
+					TableUtils.renderTableData(cols, data, tableConfig(this, displayMode, prettyStyle()), objectMapper,
+							System.out);
 				}
 				// @formatter:on
 				return 0;

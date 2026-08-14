@@ -100,7 +100,7 @@ public class DeleteDatumCmd extends BaseSubCmd<DatumDeleteBaseCmd> implements Ca
 				List<?> tableData = (displayMode == ResultDisplayMode.JSON ? List.of(preview)
 						: List.of((Object) datumRecordCountsTableDataRow(preview)));
 				TableUtils.renderTableData(datumRecordCountsTableDataColumns(), tableData,
-						tableConfig(this, displayMode).asJsonSingleton(), objectMapper,
+						tableConfig(this, displayMode, prettyStyle()).asJsonSingleton(), objectMapper,
 						TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			} else {
 				DatumDeleteTaskInfo info = submitDeleteDatumTask(restClient, objectMapper, filter);
@@ -108,7 +108,7 @@ public class DeleteDatumCmd extends BaseSubCmd<DatumDeleteBaseCmd> implements Ca
 				List<?> tableData = (displayMode == ResultDisplayMode.JSON ? List.of(info)
 						: List.of((Object) ViewDeleteJobCmd.tableDataRow(info)));
 				TableUtils.renderTableData(ViewDeleteJobCmd.tableDataColumns(), tableData,
-						tableConfig(this, displayMode).asJsonSingleton(), objectMapper,
+						tableConfig(this, displayMode, prettyStyle()).asJsonSingleton(), objectMapper,
 						TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			}
 			return 0;

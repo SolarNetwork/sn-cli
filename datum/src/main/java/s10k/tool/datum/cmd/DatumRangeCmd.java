@@ -123,7 +123,7 @@ public class DatumRangeCmd extends BaseSubCmd<DatumCmd> implements Callable<Inte
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? List.of(result)
 					: List.of((Object) tableDataRow(result)));
 			TableUtils.renderTableData(tableDataColumns(), tableData,
-					tableConfig(this, displayMode, zone).asJsonSingleton(), objectMapper,
+					tableConfig(this, displayMode, prettyStyle(), zone).asJsonSingleton(), objectMapper,
 					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {

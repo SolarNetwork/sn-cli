@@ -58,7 +58,7 @@ public class ListNodeIdsCmd extends BaseSubCmd<NodesCmd> implements Callable<Int
 			// @formatter:off
 			TableUtils.renderTableData(new Column[] {
 					new Column().header("Node ID"),
-			}, nodeIds, tableConfig(this, displayMode), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			}, nodeIds, tableConfig(this, displayMode, prettyStyle()), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			// @formatter:on
 			return 0;
 		} catch (Exception e) {

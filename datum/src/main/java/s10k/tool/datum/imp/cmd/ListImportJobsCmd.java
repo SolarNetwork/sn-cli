@@ -63,7 +63,7 @@ public class ListImportJobsCmd extends BaseSubCmd<DatumImportsCmd> implements Ca
 
 			final List<?> tableData = (displayMode == ResultDisplayMode.JSON ? tasks
 					: tasks.stream().map(c -> ViewImportJobCmd.tableDataRow(c)).toList());
-			TableUtils.renderTableData(ViewImportJobCmd.tableDataColumns(), tableData, tableConfig(this, displayMode),
+			TableUtils.renderTableData(ViewImportJobCmd.tableDataColumns(), tableData, tableConfig(this, displayMode, prettyStyle()),
 					objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {

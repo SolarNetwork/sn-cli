@@ -79,7 +79,7 @@ public class DeleteIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implement
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? confs
 					: confs.stream().map(c -> ListIntegrationsCmd.tableDataRow(c, false)).toList());
 			TableUtils.renderTableData(ListIntegrationsCmd.tableDataColumns(), tableData,
-					tableConfig(this, displayMode), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
+					tableConfig(this, displayMode, prettyStyle()), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
 					System.out);
 			return 0;
 		} catch (Exception e) {

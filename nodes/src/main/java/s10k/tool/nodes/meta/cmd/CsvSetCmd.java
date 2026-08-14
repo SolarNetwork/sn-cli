@@ -110,7 +110,7 @@ public class CsvSetCmd extends BaseSubCmd<NodeMetadataCmd> implements Callable<I
 			SaveNodeMetadataCmd.saveMetadata(restClient, nodeId, gdm, false);
 			System.out.println("CSV saved to to path [%s].".formatted(metadataPath));
 			if (verbosity() > 0) {
-				TableUtils.renderTableData(data, tableConfig(this, displayMode), objectMapper, System.out);
+				TableUtils.renderTableData(data, tableConfig(this, displayMode, prettyStyle()), objectMapper, System.out);
 			}
 			return 0;
 		} catch (Exception e) {

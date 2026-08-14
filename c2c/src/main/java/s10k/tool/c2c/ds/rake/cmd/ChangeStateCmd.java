@@ -135,7 +135,7 @@ public class ChangeStateCmd extends BaseSubCmd<RakeTasksCmd> implements Callable
 					? tasks.stream().map(c -> c.copyWithState(desiredState.asJobState())).toList()
 					: tasks.stream().map(c -> stateChangeTableDataRow(c, desiredState, streams.get(c.datumStreamId())))
 							.toList());
-			TableUtils.renderTableData(stateChangeTableDataColumns(), tableData, tableConfig(this, displayMode),
+			TableUtils.renderTableData(stateChangeTableDataColumns(), tableData, tableConfig(this, displayMode, prettyStyle()),
 					objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {

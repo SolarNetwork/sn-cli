@@ -145,7 +145,7 @@ public class ListUserEventsCmd extends BaseSubCmd<BaseUserEventsCmd> implements 
 							.map(c -> tableDataRow(c, includeEventId, columnMapping, expressions, quiet, includeData))
 							.toList());
 			TableUtils.renderTableData(tableDataColumns(includeEventId, extraColumns, includeData), tableData,
-					tableConfig(this, displayMode), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
+					tableConfig(this, displayMode, prettyStyle()), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
 					System.out);
 			return 0;
 		} catch (Exception e) {

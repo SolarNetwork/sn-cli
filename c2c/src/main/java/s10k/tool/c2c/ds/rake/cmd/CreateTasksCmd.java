@@ -382,7 +382,7 @@ public class CreateTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable
 				rows.addAll(actions.undesiredOffsets.values().stream()
 						.map(c -> tableDataRow(datumStreams.get(actions.datumStreamId()), c, "Remove")).toList());
 				return rows.stream();
-			}).toList(), tableConfig(this, displayMode), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
+			}).toList(), tableConfig(this, displayMode, prettyStyle()), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
 					out);
 		}
 	}

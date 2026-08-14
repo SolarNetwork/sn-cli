@@ -34,6 +34,7 @@ import com.github.freva.asciitable.Column;
 
 import de.siegmar.fastcsv.writer.CsvWriter;
 import net.solarnetwork.util.StringUtils;
+import s10k.tool.common.domain.PrettyStyle;
 import s10k.tool.common.domain.ProfileProvider;
 import s10k.tool.common.domain.ResultDisplayMode;
 
@@ -216,15 +217,16 @@ public class TableUtils {
 	/**
 	 * A tabular display configuration.
 	 */
-	public record TableConfiguration(ResultDisplayMode mode, ZoneId zone, boolean singletonJsonObject) {
+	public record TableConfiguration(ResultDisplayMode mode, PrettyStyle prettyStyle, ZoneId zone,
+			boolean singletonJsonObject) {
 
 		/**
-		 * Create a copy with "singlton JSON mode" enabled.
+		 * Create a copy with "singleton JSON mode" enabled.
 		 * 
 		 * @return the copy
 		 */
 		public TableConfiguration asJsonSingleton() {
-			return new TableConfiguration(mode, zone, true);
+			return new TableConfiguration(mode, prettyStyle, zone, true);
 		}
 
 	}
@@ -234,11 +236,12 @@ public class TableUtils {
 	 * 
 	 * @param profileProvider the profile provider for configuration
 	 * @param mode            the specifically desired display mode
+	 * @param prettyStyle     the specifically desired pretty style
 	 * @return the configuration
 	 */
 	public static TableConfiguration tableConfig(final @Nullable ProfileProvider profileProvider,
-			final @Nullable ResultDisplayMode mode) {
-		return tableConfig(profileProvider, mode, null);
+			final @Nullable ResultDisplayMode mode, @Nullable PrettyStyle prettyStyle) {
+		return tableConfig(profileProvider, mode, prettyStyle, null);
 	}
 
 	/**
@@ -246,15 +249,18 @@ public class TableUtils {
 	 * 
 	 * @param profileProvider the profile provider for configuration
 	 * @param mode            the specifically desired display mode
+	 * @param prettyStyle     the specifically desired pretty style
 	 * @param zone            the specifically desired display time zone
 	 * @return the configuration
 	 */
 	public static TableConfiguration tableConfig(final @Nullable ProfileProvider profileProvider,
-			final @Nullable ResultDisplayMode mode, final @Nullable ZoneId zone) {
+			final @Nullable ResultDisplayMode mode, @Nullable PrettyStyle prettyStyle, final @Nullable ZoneId zone) {
 		ResultDisplayMode dispMode = mode;
+		PrettyStyle style = prettyStyle;
 		ZoneId tz = zone;
 		if (profileProvider != null) {
 			dispMode = profileProvider.displayMode();
+			style = profileProvider.prettyStyle();
 			tz = profileProvider.zone();
 		}
 		if (mode != null) {
@@ -262,12 +268,17 @@ public class TableUtils {
 		} else if (dispMode == null) {
 			dispMode = ResultDisplayMode.PRETTY;
 		}
+		if (prettyStyle != null) {
+			style = prettyStyle;
+		} else if (style == null) {
+			style = PrettyStyle.DEFAULT_PRETTY_STYLE;
+		}
 		if (zone != null) {
 			tz = zone;
 		} else if (tz == null) {
 			tz = ZoneId.systemDefault();
 		}
-		return new TableConfiguration(dispMode, tz, false);
+		return new TableConfiguration(dispMode, style, tz, false);
 	}
 
 	/**
@@ -383,12 +394,13 @@ public class TableUtils {
 				}
 			}
 		} else {
+			@Nullable
 			Object[][] tableData;
 			if (mapData != null) {
-				tableData = mapData.entrySet().stream()
+				tableData = (@Nullable Object[][]) mapData.entrySet().stream()
 						.map(e -> new Object[] { e.getKey(), cellValue(e.getValue(), zone) }).toArray(Object[][]::new);
 			} else {
-				tableData = data.stream().map(row -> {
+				tableData = (@Nullable Object[][]) data.stream().map(row -> {
 					if (row instanceof Object[] a) {
 						return a;
 					} else if (row instanceof Collection<?> l) {
@@ -408,6 +420,10 @@ public class TableUtils {
 				}).toArray(Object[][]::new);
 			}
 			AsciiTableBuilder atb = AsciiTable.builder();
+			atb.border(switch (config.prettyStyle()) {
+			case Fancy -> AsciiTable.FANCY_ASCII;
+			default -> AsciiTable.BASIC_ASCII;
+			});
 			if (columns != null) {
 				atb.data(columns, tableData);
 			} else {

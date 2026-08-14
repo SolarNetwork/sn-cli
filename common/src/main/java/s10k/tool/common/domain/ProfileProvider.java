@@ -54,6 +54,16 @@ public interface ProfileProvider {
 	}
 
 	/**
+	 * Get the profile pretty style.
+	 * 
+	 * @return the pretty style, or {@code PrettyStyle.DEFAULT_PRETTY_STYLE}
+	 */
+	default PrettyStyle prettyStyle() {
+		final var profile = profile();
+		return (profile != null ? profile.prettyStyle() : PrettyStyle.DEFAULT_PRETTY_STYLE);
+	}
+
+	/**
 	 * Get the profile time zone.
 	 * 
 	 * @return the time zone

@@ -141,7 +141,7 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 						, checkup.pollTasks.warningCount()
 						, checkup.rakeTasks.taskCount()
 						, checkup.rakeTasks.warningCount()
-					)), tableConfig(this, displayMode), objectMapper,
+					)), tableConfig(this, displayMode, prettyStyle()), objectMapper,
 							TableUtils.TableDataJsonPrettyPrinter.INSTANCE, out);
 					// @formatter:on
 				}
@@ -186,7 +186,7 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 			if (outputDir == null) {
 				System.out.printf("\n\nDatum Streams %s:\n", title);
 			}
-			final TableConfiguration tableConfig = tableConfig(this, displayMode);
+			final TableConfiguration tableConfig = tableConfig(this, displayMode, prettyStyle());
 			try (OutputStream out = (outputDir != null
 					? Files.newOutputStream(outputDir.resolve(fileName(fileName, tableConfig.mode())))
 					: nonClosing(System.out))) {
@@ -205,7 +205,7 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 			if (outputDir == null) {
 				System.out.printf("\n\nPoll Tasks %s:\n", title);
 			}
-			final TableConfiguration tableConfig = tableConfig(this, displayMode);
+			final TableConfiguration tableConfig = tableConfig(this, displayMode, prettyStyle());
 			try (OutputStream out = (outputDir != null
 					? Files.newOutputStream(outputDir.resolve(fileName(fileName, tableConfig.mode())))
 					: nonClosing(System.out))) {
@@ -224,7 +224,7 @@ public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implement
 			if (outputDir == null) {
 				System.out.printf("\n\nRake Tasks %s:\n", title);
 			}
-			final TableConfiguration tableConfig = tableConfig(this, displayMode);
+			final TableConfiguration tableConfig = tableConfig(this, displayMode, prettyStyle());
 			try (OutputStream out = (outputDir != null
 					? Files.newOutputStream(outputDir.resolve(fileName(fileName, tableConfig.mode())))
 					: nonClosing(System.out))) {

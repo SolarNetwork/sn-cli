@@ -128,8 +128,9 @@ public class DeleteDatumIdsCmd extends BaseSubCmd<DatumDeleteBaseCmd> implements
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? result
 					: result.stream().map(DeleteDatumIdsCmd::tableDataRow).toList());
-			TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode, zone),
-					objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			TableUtils.renderTableData(tableDataColumns(), tableData,
+					tableConfig(this, displayMode, prettyStyle(), zone), objectMapper,
+					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error deleting datum by ID: %s".formatted(e.getMessage()));

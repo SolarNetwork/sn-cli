@@ -111,7 +111,7 @@ public class CreateCmd extends BaseSubCmd<CertificatesCmd> implements Callable<I
 			}
 
 			List<Object[]> tableData = Collections.singletonList(NodeUtils.nodeInfoRow(node));
-			TableUtils.renderTableData(NodeUtils.nodeInfoColumns(), tableData, tableConfig(this, displayMode, zone),
+			TableUtils.renderTableData(NodeUtils.nodeInfoColumns(), tableData, tableConfig(this, displayMode, prettyStyle(), zone),
 					objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {

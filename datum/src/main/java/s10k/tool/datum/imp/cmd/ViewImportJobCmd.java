@@ -67,7 +67,7 @@ public class ViewImportJobCmd extends BaseSubCmd<DatumImportsCmd> implements Cal
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? List.of(result)
 					: List.of((Object) tableDataRow(result)));
-			TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode).asJsonSingleton(),
+			TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode, prettyStyle()).asJsonSingleton(),
 					objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {

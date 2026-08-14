@@ -127,7 +127,7 @@ public class ListPackagesCmd extends BaseSubCmd<InstructionsCmd> implements Call
 						new Column().header("Name").dataAlign(HorizontalAlign.LEFT),
 						new Column().header("Version").dataAlign(HorizontalAlign.RIGHT),
 						new Column().header("Installed").dataAlign(HorizontalAlign.RIGHT)
-				}, data, tableConfig(this, displayMode), objectMapper, System.out);
+				}, data, tableConfig(this, displayMode, prettyStyle()), objectMapper, System.out);
 				// @formatter:on
 				return 0;
 			} else if (status.getInstructionState() == InstructionState.Declined) {

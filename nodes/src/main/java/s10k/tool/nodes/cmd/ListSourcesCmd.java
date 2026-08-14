@@ -148,7 +148,7 @@ public class ListSourcesCmd extends BaseSubCmd<NodesCmd> implements Callable<Int
 			TableUtils.renderTableData(new Column[] {
 					new Column().header("Node ID").dataAlign(RIGHT),
 					new Column().header("Source ID").dataAlign(LEFT),
-				}, tableData, tableConfig(this, displayMode), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+				}, tableData, tableConfig(this, displayMode, prettyStyle()), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			// @formatter:on
 			return 0;
 		} catch (Exception e) {

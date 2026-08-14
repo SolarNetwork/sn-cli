@@ -87,7 +87,7 @@ public class ListControlsCmd extends BaseSubCmd<InstructionsCmd> implements Call
 				// @formatter:off
 				TableUtils.renderTableData(new Column[] {
 						new Column().header("Control ID").dataAlign(HorizontalAlign.LEFT)
-				}, controlIds, tableConfig(this, displayMode), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+				}, controlIds, tableConfig(this, displayMode, prettyStyle()), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 				// @formatter:on
 				return 0;
 			} else if (status.getInstructionState() == InstructionState.Declined) {

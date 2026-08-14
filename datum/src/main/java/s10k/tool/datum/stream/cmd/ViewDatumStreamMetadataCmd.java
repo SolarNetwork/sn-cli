@@ -88,7 +88,7 @@ public class ViewDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imple
 			TableUtils.renderTableData(new Column[] {
 					new Column().header("Property").dataAlign(LEFT),
 					new Column().header("Value").dataAlign(LEFT),
-				}, tableData, tableConfig(this, displayMode), objectMapper, System.out);
+				}, tableData, tableConfig(this, displayMode, prettyStyle()), objectMapper, System.out);
 			// @formatter:on
 			return 0;
 		} catch (Exception e) {

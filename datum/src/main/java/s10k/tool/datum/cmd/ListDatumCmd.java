@@ -226,7 +226,7 @@ public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integ
 				List<Object[]> data = prettyRows(filter, result, propertyColumns, columns);
 				// @formatter:off
 				AsciiTable.builder()
-					.data(columns.toArray(Column[]::new), data.toArray(Object[][]::new))
+					.data(columns.toArray(Column[]::new), (@Nullable Object[][]) data.toArray(Object[][]::new))
 					.writeTo(System.out)
 					;
 				// @formatter:on

@@ -122,7 +122,7 @@ public class CreateTasksCmd extends BaseSubCmd<PollTasksCmd> implements Callable
 			final List<?> tableData = (displayMode == ResultDisplayMode.JSON ? tasksToCreate.values().stream().toList()
 					: tasksToCreate.entrySet().stream()
 							.map(e -> tableDataRow(datumStreams.get(e.getKey()), e.getValue())).toList());
-			TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode, zone),
+			TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode, prettyStyle(), zone),
 					objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (

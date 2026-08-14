@@ -85,7 +85,7 @@ public class CreateSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Calla
 				OutputUtils.writeJsonObject(objectMapper, result);
 			} else {
 				List<?> tableData = Collections.singletonList(tokenRow(result, pretty));
-				TableUtils.renderTableData(tokenColumns(), tableData, tableConfig(this, displayMode), objectMapper,
+				TableUtils.renderTableData(tokenColumns(), tableData, tableConfig(this, displayMode, prettyStyle()), objectMapper,
 						TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			}
 			return 0;

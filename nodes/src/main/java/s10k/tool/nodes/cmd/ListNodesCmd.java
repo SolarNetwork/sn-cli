@@ -119,7 +119,7 @@ public class ListNodesCmd extends BaseSubCmd<NodesCmd> implements Callable<Integ
 
 			final List<?> tableData = (displayMode == ResultDisplayMode.JSON ? nodes
 					: nodes.stream().map(ListNodesCmd::userNodeInfoRow).toList());
-			TableUtils.renderTableData(userNodeInfoColumns(), tableData, tableConfig(this, displayMode, zone),
+			TableUtils.renderTableData(userNodeInfoColumns(), tableData, tableConfig(this, displayMode, prettyStyle(), zone),
 					objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {

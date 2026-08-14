@@ -76,7 +76,7 @@ public class PreviewStagedImportCmd extends BaseSubCmd<DatumImportsCmd> implemen
 				final DatumResultStructure structure = DatumUtils.resultStructure(datum);
 				List<?> tableData = stream(datum.spliterator(), false).map(d -> structure.tableDataRow(d)).toList();
 				TableUtils.renderTableData(structure != null ? structure.columns().toArray(Column[]::new) : null,
-						tableData, tableConfig(this, displayMode), objectMapper,
+						tableData, tableConfig(this, displayMode, prettyStyle()), objectMapper,
 						TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			}
 			return 0;

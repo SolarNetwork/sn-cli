@@ -127,7 +127,7 @@ public class UpdateIntegrationServicePropertiesCmd extends BaseSubCmd<Integratio
 			}
 
 			TableUtils.renderTableData(TableUtils.mapColumns("Property", "Value", false), List.of(result),
-					tableConfig(this, displayMode), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
+					tableConfig(this, displayMode, prettyStyle()), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
 					System.out);
 			return 0;
 		} catch (Exception e) {

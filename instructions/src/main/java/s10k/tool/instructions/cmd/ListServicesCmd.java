@@ -97,7 +97,7 @@ public class ListServicesCmd extends BaseSubCmd<InstructionsCmd> implements Call
 				TableUtils.renderTableData(new Column[] {
 						new Column().header("ID").dataAlign(HorizontalAlign.LEFT),
 						new Column().header( "Title").dataAlign(HorizontalAlign.LEFT),
-				}, data, tableConfig(this, displayMode), objectMapper, System.out);
+				}, data, tableConfig(this, displayMode, prettyStyle()), objectMapper, System.out);
 				// @formatter:on
 				return 0;
 			} else if (status.getInstructionState() == InstructionState.Declined) {

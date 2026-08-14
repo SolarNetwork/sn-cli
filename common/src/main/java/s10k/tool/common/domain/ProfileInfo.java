@@ -54,6 +54,18 @@ public record ProfileInfo(String name, SnTokenCredentials tokenCredentials, @Nul
 	}
 
 	@Override
+	public PrettyStyle prettyStyle() {
+		if (config != null && config.get("pretty-style") instanceof String mode) {
+			try {
+				return PrettyStyle.fromValue(mode);
+			} catch (Exception e) {
+				// ignore and fall back to UTC
+			}
+		}
+		return PrettyStyle.DEFAULT_PRETTY_STYLE;
+	}
+
+	@Override
 	public ZoneId zone() {
 		if (config != null && config.get("zone") instanceof String tz) {
 			try {

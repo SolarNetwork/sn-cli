@@ -171,7 +171,7 @@ public class ReportCmd extends BaseSubCmd<CertificatesCmd> implements Callable<I
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? infos
 					: infos.stream().map(info -> reportRow(info, zone)).toList());
-			TableUtils.renderTableData(reportColumns(), tableData, tableConfig(this, displayMode), objectMapper,
+			TableUtils.renderTableData(reportColumns(), tableData, tableConfig(this, displayMode, prettyStyle()), objectMapper,
 					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 
 			return 0;

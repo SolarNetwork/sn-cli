@@ -124,7 +124,7 @@ public class RenameDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> imp
 				OutputUtils.writeJsonObject(objectMapper, result);
 			} else {
 				List<?> tableData = Collections.singletonList(result).stream().map(m -> metadataRow(m, true)).toList();
-				TableUtils.renderTableData(metadataColumns(), tableData, tableConfig(this, displayMode), objectMapper,
+				TableUtils.renderTableData(metadataColumns(), tableData, tableConfig(this, displayMode, prettyStyle()), objectMapper,
 						TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			}
 			return 0;

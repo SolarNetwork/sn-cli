@@ -129,7 +129,7 @@ public class ListStaleAggregatesCmd extends BaseSubCmd<DatumCmd> implements Call
 
 			final List<?> tableData = (displayMode == ResultDisplayMode.JSON ? results
 					: results.stream().map(c -> tableDataRow(c)).toList());
-			TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode, zone),
+			TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode, prettyStyle(), zone),
 					objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {

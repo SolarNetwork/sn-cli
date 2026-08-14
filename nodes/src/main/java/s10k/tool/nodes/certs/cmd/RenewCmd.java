@@ -81,7 +81,7 @@ public class RenewCmd extends BaseSubCmd<CertificatesCmd> implements Callable<In
 				OutputUtils.writeJsonObject(objectMapper, info);
 			} else {
 				List<?> tableData = Collections.singletonList(ReportCmd.reportRow(info, zone));
-				TableUtils.renderTableData(ReportCmd.reportColumns(), tableData, tableConfig(this, displayMode),
+				TableUtils.renderTableData(ReportCmd.reportColumns(), tableData, tableConfig(this, displayMode, prettyStyle()),
 						objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			}
 			return 0;

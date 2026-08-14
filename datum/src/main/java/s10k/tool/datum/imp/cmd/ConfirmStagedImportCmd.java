@@ -75,7 +75,7 @@ public class ConfirmStagedImportCmd extends BaseSubCmd<DatumImportsCmd> implemen
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? List.of(result)
 					: List.of((Object) ViewImportJobCmd.tableDataRow(result)));
 			TableUtils.renderTableData(ViewImportJobCmd.tableDataColumns(), tableData,
-					tableConfig(this, displayMode).asJsonSingleton(), objectMapper,
+					tableConfig(this, displayMode, prettyStyle()).asJsonSingleton(), objectMapper,
 					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {

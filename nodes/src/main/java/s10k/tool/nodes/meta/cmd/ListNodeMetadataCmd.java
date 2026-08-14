@@ -88,7 +88,7 @@ public class ListNodeMetadataCmd extends BaseSubCmd<NodeMetadataCmd> implements 
 					new Column().header("Node ID").dataAlign(RIGHT),
 					new Column().header("Updated").dataAlign(LEFT),
 					new Column().header("Metadata").dataAlign(LEFT),
-				}, tableData, tableConfig(this, displayMode), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+				}, tableData, tableConfig(this, displayMode, prettyStyle()), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			// @formatter:on
 
 			return 0;

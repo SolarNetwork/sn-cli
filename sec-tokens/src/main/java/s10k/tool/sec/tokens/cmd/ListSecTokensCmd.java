@@ -103,7 +103,7 @@ public class ListSecTokensCmd extends BaseSubCmd<SecTokensCmd> implements Callab
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? infos
 					: infos.stream().map(info -> tokenRow(info, pretty)).toList());
-			TableUtils.renderTableData(tokenColumns(), tableData, tableConfig(this, displayMode), objectMapper,
+			TableUtils.renderTableData(tokenColumns(), tableData, tableConfig(this, displayMode, prettyStyle()), objectMapper,
 					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {

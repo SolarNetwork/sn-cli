@@ -223,7 +223,7 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? List.of(result)
 					: List.of((Object) ListDatumStreamsCmd.tableDataRow(result, false, pretty)));
 			TableUtils.renderTableData(ListDatumStreamsCmd.tableDataColumns(), tableData,
-					tableConfig(this, displayMode), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
+					tableConfig(this, displayMode, prettyStyle()), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
 					System.out);
 			return 0;
 		} catch (Exception e) {

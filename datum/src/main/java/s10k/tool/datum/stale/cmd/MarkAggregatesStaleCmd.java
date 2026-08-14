@@ -130,7 +130,7 @@ public class MarkAggregatesStaleCmd extends BaseSubCmd<DatumCmd> implements Call
 			final List<?> tableData = (displayMode == ResultDisplayMode.JSON ? results
 					: results.stream().map(c -> ListStaleAggregatesCmd.tableDataRow(c)).toList());
 			TableUtils.renderTableData(ListStaleAggregatesCmd.tableDataColumns(), tableData,
-					tableConfig(this, displayMode, zone), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
+					tableConfig(this, displayMode, prettyStyle(), zone), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
 					System.out);
 			return 0;
 		} catch (Exception e) {

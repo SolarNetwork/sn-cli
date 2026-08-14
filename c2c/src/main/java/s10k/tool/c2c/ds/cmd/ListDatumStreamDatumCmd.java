@@ -113,7 +113,7 @@ public class ListDatumStreamDatumCmd extends BaseSubCmd<DatumStreamsCmd> impleme
 				objectMapper.writeValue(nonClosing(System.out), datum);
 			} else {
 				final DatumResultStructure structure = DatumUtils.resultStructure(datum);
-				final TableConfiguration tableConfig = tableConfig(this, displayMode, zone);
+				final TableConfiguration tableConfig = tableConfig(this, displayMode, prettyStyle(), zone);
 				List<?> tableData = stream(datum.spliterator(), false).map(d -> structure.tableDataRow(d)).toList();
 				TableUtils.renderTableData(structure != null ? structure.columns().toArray(Column[]::new) : null,
 						tableData, tableConfig, objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,

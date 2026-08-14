@@ -52,6 +52,7 @@ import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
+import s10k.tool.common.domain.PrettyStyle;
 import s10k.tool.common.domain.ProfileInfo;
 import s10k.tool.common.domain.ProfileProvider;
 import s10k.tool.common.domain.ResultDisplayMode;
@@ -236,6 +237,7 @@ public class TailFluxCmd extends BaseSubCmd<FluxCmd> implements Callable<Integer
 		private final ObjectWriter jsonOut;
 		private final OutputStream out;
 		private final ResultDisplayMode displayMode;
+		private final PrettyStyle prettyStyle;
 
 		private AtomicLong count = new AtomicLong();
 		private List<Column> globalColumns;
@@ -248,6 +250,7 @@ public class TailFluxCmd extends BaseSubCmd<FluxCmd> implements Callable<Integer
 			jsonOut = objectMapper.writerWithDefaultPrettyPrinter();
 			out = StreamUtils.nonClosing(System.out);
 			displayMode = profileProvider.displayMode();
+			prettyStyle = profileProvider.prettyStyle();
 		}
 
 		@Override
@@ -280,7 +283,8 @@ public class TailFluxCmd extends BaseSubCmd<FluxCmd> implements Callable<Integer
 					TableUtils.renderTableData(displayMode == PRETTY || !csvGlobalHeader || msgNum == 1
 								? cols.toArray(Column[]::new)
 								: null,
-							List.of(displayMap.values()), tableConfig(profileProvider, displayMode), objectMapper, out);
+							List.of(displayMap.values()), tableConfig(profileProvider, displayMode, prettyStyle),
+								objectMapper, out);
 					// @formatter:on
 				}
 			} catch (IOException e) {

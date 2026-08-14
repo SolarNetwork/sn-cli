@@ -106,7 +106,7 @@ public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements C
 								.map(p -> new CloudDatumStreamPropertyDetail(datumStream, mapping, integration, p))
 								.toList());
 				final List<?> tableData = details.stream().map(c -> tableDataRow(c, false)).toList();
-				TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode), objectMapper,
+				TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode, prettyStyle()), objectMapper,
 						TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			}
 			return 0;

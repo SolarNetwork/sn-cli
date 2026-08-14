@@ -72,7 +72,7 @@ public class CsvGetCmd extends BaseSubCmd<NodeMetadataCmd> implements Callable<I
 			}
 
 			List<List<String>> data = parseCsvMetadata(gdm.metadataAtPath(metadataPath));
-			TableUtils.renderTableData(data, tableConfig(this, displayMode), objectMapper, System.out);
+			TableUtils.renderTableData(data, tableConfig(this, displayMode, prettyStyle()), objectMapper, System.out);
 
 			return 0;
 		} catch (Exception e) {

@@ -75,7 +75,7 @@ subprojects {
 	}
 
 	ext {
-		asciiTableVersion = '1.8.0'
+		asciiTableVersion = '1.13.0'
 		commonsIoVersion = '2.20.0'
 		fastCsvVersion = '4.1.0'
 		jlineVersion = '3.30.13'
