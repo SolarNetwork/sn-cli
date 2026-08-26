@@ -42,6 +42,7 @@ echo '{"schedule":900}' |s10k cloud-integrations datum-streams update --stream-i
 s10k cloud-integrations datum-streams update
 	[-rI]
 	-stream=<datumStreamId>
+	[-g=<mode>]
 	[-S=<serviceIdentifier>]
 	[-m=<name>]
 	[-source=<sourceId>]
