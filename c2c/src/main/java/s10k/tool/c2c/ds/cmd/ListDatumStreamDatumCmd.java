@@ -17,7 +17,6 @@ import java.util.concurrent.Callable;
 import org.jspecify.annotations.Nullable;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -45,7 +44,6 @@ import s10k.tool.common.util.TableUtils.TableConfiguration;
 /**
  * Query for Cloud Datum Stream datum.
  */
-@Component
 @Command(name = "datum", sortSynopsis = false, showDefaultValues = true)
 public class ListDatumStreamDatumCmd extends BaseSubCmd<DatumStreamsCmd> implements Callable<Integer> {
 

@@ -14,7 +14,6 @@ import java.util.concurrent.Callable;
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -38,7 +37,6 @@ import s10k.tool.common.util.TableUtils;
 /**
  * View Cloud Datum Stream details.
  */
-@Component
 @Command(name = "view", sortSynopsis = false, showDefaultValues = true)
 public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements Callable<Integer> {
 
@@ -106,8 +104,8 @@ public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements C
 								.map(p -> new CloudDatumStreamPropertyDetail(datumStream, mapping, integration, p))
 								.toList());
 				final List<?> tableData = details.stream().map(c -> tableDataRow(c, false)).toList();
-				TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode, prettyStyle()), objectMapper,
-						TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+				TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode, prettyStyle()),
+						objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			}
 			return 0;
 		} catch (Exception e) {

@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,7 +29,6 @@ import s10k.tool.common.util.TableUtils;
 /**
  * List Cloud Datum Stream configurations.
  */
-@Component
 @Command(name = "list", sortSynopsis = false, showDefaultValues = true)
 public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements Callable<Integer> {
 
@@ -135,8 +133,8 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? confs
 					: confs.stream().map(c -> tableDataRow(c, false, pretty)).toList());
-			TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode, prettyStyle()), objectMapper,
-					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode, prettyStyle()),
+					objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error viewing cloud datum streams: %s".formatted(e.getMessage()));

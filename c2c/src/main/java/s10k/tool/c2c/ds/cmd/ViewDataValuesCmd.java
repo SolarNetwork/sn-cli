@@ -16,7 +16,6 @@ import java.util.concurrent.Callable;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
@@ -41,7 +40,6 @@ import s10k.tool.common.util.TableUtils;
 /**
  * View datum stream data values.
  */
-@Component
 @Command(name = "data-values", aliases = "dv", sortSynopsis = false, showDefaultValues = true)
 public class ViewDataValuesCmd extends BaseSubCmd<DatumStreamsCmd> implements Callable<Integer> {
 
@@ -134,8 +132,8 @@ public class ViewDataValuesCmd extends BaseSubCmd<DatumStreamsCmd> implements Ca
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? confs
 					: CloudDataValue.flatList(confs).stream().map(c -> tableDataRow(c, identifiersAsPaths)).toList());
-			TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode, prettyStyle()), objectMapper,
-					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode, prettyStyle()),
+					objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error viewing cloud data values: %s".formatted(e.getMessage()));

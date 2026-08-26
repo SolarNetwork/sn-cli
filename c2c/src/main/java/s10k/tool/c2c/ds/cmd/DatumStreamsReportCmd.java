@@ -31,7 +31,6 @@ import java.util.function.Function;
 
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
@@ -57,7 +56,6 @@ import s10k.tool.common.util.TableUtils.TableConfiguration;
 /**
  * Identify Cloud Datum Stream potential issues.
  */
-@Component
 @Command(name = "report", sortSynopsis = false, showDefaultValues = true)
 public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implements Callable<Integer> {
 

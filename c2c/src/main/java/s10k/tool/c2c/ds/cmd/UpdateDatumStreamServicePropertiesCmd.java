@@ -14,7 +14,6 @@ import java.util.concurrent.Callable;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -36,7 +35,6 @@ import s10k.tool.common.util.TableUtils;
 /**
  * Update cloud datum stream entity service properties.
  */
-@Component
 @Command(name = "update-service-properties", aliases = "update-props", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"Update a cloud datum stream's service properties using a @|bold merge|@ operation.%n" })
 public class UpdateDatumStreamServicePropertiesCmd extends BaseSubCmd<DatumStreamsCmd> implements Callable<Integer> {
@@ -123,8 +121,8 @@ public class UpdateDatumStreamServicePropertiesCmd extends BaseSubCmd<DatumStrea
 			}
 
 			TableUtils.renderTableData(TableUtils.mapColumns("Property", "Value", false), List.of(result),
-					tableConfig(this, displayMode, prettyStyle()), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
-					System.out);
+					tableConfig(this, displayMode, prettyStyle()), objectMapper,
+					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error viewing cloud datum streams: %s".formatted(e.getMessage()));
