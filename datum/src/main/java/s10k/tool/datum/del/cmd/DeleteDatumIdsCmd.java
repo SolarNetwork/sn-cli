@@ -36,7 +36,6 @@ import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.SystemUtils;
 import s10k.tool.common.util.TableUtils;
-import s10k.tool.datum.del.domain.DatumDeleteTaskInfo;
 import s10k.tool.datum.domain.ObjectDatumId;
 
 @Command(name = "ids", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
@@ -197,7 +196,7 @@ public class DeleteDatumIdsCmd extends BaseSubCmd<DatumDeleteBaseCmd> implements
 	 * Get datum delete job tabular structure columns.
 	 * 
 	 * @return the columns
-	 * @see #tableDataRow(DatumDeleteTaskInfo)
+	 * @see #tableDataRow(ObjectDatumId)
 	 */
 	public static Column[] tableDataColumns() {
 		// @formatter:off

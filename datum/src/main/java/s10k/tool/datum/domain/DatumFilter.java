@@ -755,7 +755,7 @@ public final class DatumFilter extends SimplePagination {
 	 * Set the object ID mappings as an encoded string array.
 	 *
 	 * @param mappings the mapping values
-	 * @see ObjectMappingCriteria#mappingsFrom(String[])
+	 * @see objectMappingsFrom(String[])
 	 */
 	public void setObjectIdMaps(String @Nullable [] mappings) {
 		setObjectIdMappings(objectMappingsFrom(mappings));

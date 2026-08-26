@@ -145,8 +145,8 @@ public class ListUserEventsCmd extends BaseSubCmd<BaseUserEventsCmd> implements 
 							.map(c -> tableDataRow(c, includeEventId, columnMapping, expressions, quiet, includeData))
 							.toList());
 			TableUtils.renderTableData(tableDataColumns(includeEventId, extraColumns, includeData), tableData,
-					tableConfig(this, displayMode, prettyStyle()), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
-					System.out);
+					tableConfig(this, displayMode, prettyStyle()), objectMapper,
+					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error listing user events: %s".formatted(e.getMessage()));
@@ -246,7 +246,7 @@ public class ListUserEventsCmd extends BaseSubCmd<BaseUserEventsCmd> implements 
 	 * @param includeData    if {@code columnReferences} are provided, then
 	 *                       {@code true} to still include the <b>Data</b> column
 	 * @return the columns
-	 * @see #tableDataRow(DatumImportTaskInfo)
+	 * @see #tableDataRow(UserEvent, boolean, Map, Map, boolean, boolean)
 	 */
 	public static Column[] tableDataColumns(final boolean includeEventId,
 			final @Nullable Collection<String> columnNames, boolean includeData) {
@@ -288,7 +288,7 @@ public class ListUserEventsCmd extends BaseSubCmd<BaseUserEventsCmd> implements 
 	 * @param includeData    if {@code columnReferences} are provided, then
 	 *                       {@code true} to still include the <b>Data</b> column
 	 * @return the tabular data row
-	 * @see #tableDataColumns()
+	 * @see #tableDataColumns(boolean, Collection, boolean)
 	 */
 	public static Object[] tableDataRow(final UserEvent info, final boolean includeEventId,
 			final @Nullable Map<String, String> columnMapping, Map<String, Expression> expressions, boolean quiet,
