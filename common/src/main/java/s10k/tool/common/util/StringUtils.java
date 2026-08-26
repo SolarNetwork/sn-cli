@@ -155,9 +155,9 @@ public final class StringUtils {
 	 * Lookup bundle values that case-insenstive match any of a set of substring
 	 * queries.
 	 * 
-	 * @param queries the substrings to look for
 	 * @param prefix  a prefix the bundle key must have
 	 * @param suffix  a prefix the bundle key must have
+	 * @param queries the substrings to look for
 	 * @param queries the queries to search for
 	 * @return the list of matching bundle values, never {@code null}
 	 */
@@ -197,8 +197,8 @@ public final class StringUtils {
 	 * @return the first matching entry
 	 * @throws IllegalStateException if a matching entry is not found
 	 */
-	public static Entry<String, String> findBundleEntry(final ResourceBundle bundle, final @Nullable String prefix,
-			final @Nullable String suffix, String query) {
+	public static Entry<String, String> findBundleEntry(final ResourceBundle bundle, final @Nullable String query,
+			final @Nullable String prefix, String suffix) {
 		if (query == null || query.isEmpty()) {
 			throw new IllegalStateException("Datum stream type not provided.");
 		}
