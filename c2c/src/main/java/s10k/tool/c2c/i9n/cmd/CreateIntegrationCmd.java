@@ -45,16 +45,12 @@ public class CreateIntegrationCmd extends BaseSubCmd<IntegrationsCmd> implements
 
 	// @formatter:off
 	@Option(names = { "-m", "--name" },
-			description = "the display name to assign",
-			required = true)
-	@SuppressWarnings("NullAway.Init")
-	String name;
+			description = "the display name to assign")
+	@Nullable String name;
 	
 	@Option(names = { "-S", "--service" },
-			description = "the integration service identifier",
-			required = true)
-	@SuppressWarnings("NullAway.Init")
-	String serviceIdentifier;
+			description = "the integration service identifier")
+	@Nullable String serviceIdentifier;
 
 	@Option(names = { "-prop", "--service-property" },
 			description = "a service property, in the form path:value",
@@ -119,6 +115,14 @@ public class CreateIntegrationCmd extends BaseSubCmd<IntegrationsCmd> implements
 				CollectionUtils.mergeServiceProperties(inputProps, settings, MergeMode.Simple);
 			}
 
+			if (!settings.containsKey("name")) {
+				System.err.println("A name is required (--name option).");
+				return 1;
+			} else if (!settings.containsKey("serviceIdentifier")) {
+				System.err.println("A service identifier is required (--service option).");
+				return 1;
+			}
+
 			CloudIntegrationConfiguration conf;
 			if (!isDryRun()) {
 				conf = createCloudIntegration(restClient, objectMapper, settings);
@@ -135,7 +139,7 @@ public class CreateIntegrationCmd extends BaseSubCmd<IntegrationsCmd> implements
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? confs
 					: confs.stream().map(c -> ListIntegrationsCmd.tableDataRow(c, false)).toList());
 			TableUtils.renderTableData(ListIntegrationsCmd.tableDataColumns(), tableData,
-					tableConfig(this, displayMode, prettyStyle()), objectMapper,
+					tableConfig(this, displayMode, prettyStyle()).asJsonSingleton(), objectMapper,
 					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
