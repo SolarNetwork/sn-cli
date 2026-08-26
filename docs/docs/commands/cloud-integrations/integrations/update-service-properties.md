@@ -63,7 +63,7 @@ s10k cloud-integrations integrations update-service-properties
 | `-g=`  | `--merge-mode=` | one of `Simple`, `RecursiveObjects`, or `RecursiveObjectsAndArrays` to control the merge style; see [here][merge-option] for details |
 | `-I` | `--ignore-input` | ignore standard input, instead of treating that as a JSON settings object |
 | `-prop=` | `--service-property` | a service property, in the form `path:value` or `@@file.json`; see [here][prop-option] for details |
-| `-i=` | `--integration-id=` | the integration ID to update |
+| `-i=` | `--integration-id=` | the ID of the integration to update |
 | `-mode=` | `--display-mode=` | the format to display the output as, one of `CSV`, `JSON`, or `PRETTY`; defaults to `PRETTY` |
 
 </div>

@@ -37,7 +37,7 @@ import s10k.tool.common.util.SystemUtils;
 import s10k.tool.common.util.TableUtils;
 
 /**
- * Delete Cloud Integration configurations.
+ * Create Cloud Integration configurations.
  */
 @Command(name = "create", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"Create Cloud Integration entities.%n" })
@@ -71,8 +71,8 @@ public class CreateIntegrationCmd extends BaseSubCmd<IntegrationsCmd> implements
 
 	@Parameters(index = "0",
 			arity = "0..1",
-			paramLabel = "<service properties>",
-			description = "the service properties to use as a JSON object, or @file for file to load")
+			paramLabel = "<config>",
+			description = "the configuration to use as a JSON object, or @file for file to load")
 	@Nullable String value;
 	// @formatter:on
 
@@ -99,11 +99,11 @@ public class CreateIntegrationCmd extends BaseSubCmd<IntegrationsCmd> implements
 			if (!(ignoreStdIn || SystemUtils.systemConsoleIsTerminal())) {
 				Map<String, Object> inputProps = objectMapper.readValue(new InputStreamReader(System.in, UTF_8),
 						JsonUtils.STRING_MAP_TYPE);
-				CollectionUtils.mergeServiceProperties(inputProps, settings, MergeMode.Simple);
+				CollectionUtils.mergeServiceProperties(inputProps, settings, MergeMode.RecursiveObjects);
 			}
 
 			try {
-				populateSettings(settings, objectMapper);
+				populateConfiguration(settings, objectMapper);
 			} catch (RuntimeException e) {
 				System.err.println(e.getMessage());
 				return 1;
@@ -112,7 +112,7 @@ public class CreateIntegrationCmd extends BaseSubCmd<IntegrationsCmd> implements
 			if (value != null && !value.isBlank()) {
 				Map<String, Object> inputProps = objectMapper.readValue(stringOrFileContents(value),
 						JsonUtils.STRING_MAP_TYPE);
-				CollectionUtils.mergeServiceProperties(inputProps, settings, MergeMode.Simple);
+				CollectionUtils.mergeServiceProperties(inputProps, settings, MergeMode.RecursiveObjects);
 			}
 
 			if (!settings.containsKey("name")) {
@@ -148,7 +148,7 @@ public class CreateIntegrationCmd extends BaseSubCmd<IntegrationsCmd> implements
 		return 1;
 	}
 
-	private void populateSettings(Map<String, Object> settings, ObjectMapper objectMapper) {
+	private void populateConfiguration(Map<String, Object> settings, ObjectMapper objectMapper) {
 		if (name != null) {
 			settings.put("name", name);
 		}
@@ -161,7 +161,6 @@ public class CreateIntegrationCmd extends BaseSubCmd<IntegrationsCmd> implements
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			final Map<String, Object> sprops = (Map) settings.compute(SERVICE_PROPERTIES_KEY,
 					(_, v) -> v instanceof Map<?, ?> t ? (Map) t : new LinkedHashMap<>(8));
-
 			CollectionUtils.populateServiceProperties(serviceProperties, sprops, objectMapper);
 		}
 	}
@@ -185,7 +184,7 @@ public class CreateIntegrationCmd extends BaseSubCmd<IntegrationsCmd> implements
 		try {
 			return objectMapper.treeToValue(response.path("data"), CloudIntegrationConfiguration.class);
 		} catch (JsonProcessingException | IllegalArgumentException e) {
-			throw new IllegalStateException("Error parsing cloud integration list response: " + e.getMessage(), e);
+			throw new IllegalStateException("Error parsing cloud integration create response: " + e.getMessage(), e);
 		}
 	}
 

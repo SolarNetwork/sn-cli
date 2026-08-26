@@ -5,7 +5,7 @@ title: create
 
 Create [Cloud Integration][integration] entities.
 
-The settings to save can be provided by a combination of methods:
+The configuration to save can be provided by a combination of methods:
 
  1. Standard input, as a JSON object in the form supported by the [Cloud Integration create API][create-api].
  3. Command line options
@@ -45,11 +45,11 @@ echo '{"name":"SolarEdge A"}' |s10k cloud-integrations integrations create --nam
 ```
 s10k cloud-integrations integrations create
 	[-dI]
-	-m=<name>
-    -S=<serviceIdentifier>
+	[-m=<name>]
+    [-S=<serviceIdentifier>]
 	[-prop=serviceProperty]...
     [-mode=<displayMode>]
-	[<service properties>]
+	[<config>]
 ```
 
 <div markdown="1" class="options-explicit-col-widths">
@@ -57,7 +57,7 @@ s10k cloud-integrations integrations create
 | Option | Long Version | Description |
 |:-------|:-------------|:------------|
 | `-d` | `--disabled` | create in disabled state |
-| `-I` | `--ignore-input` | ignore standard input, instead of treating that as a JSON settings object |
+| `-I` | `--ignore-input` | ignore standard input, instead of treating that as a JSON configuration object |
 | `-m=`     | `--name=` | the display name to set |
 | `-prop=` | `--service-property` | a service property, in the form `path:value` or `@@file.json`; see [here][prop-option] for details |
 | `-S=` | `--service=` | the Cloud Integration service idenetifier to set; can be specified as a case-insensitive sub-string of a supported service, matched against both the service identifier and the display name, for example `also` will match the AlsoEnergy type |
