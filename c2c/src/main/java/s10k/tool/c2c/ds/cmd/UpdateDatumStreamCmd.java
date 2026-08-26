@@ -16,7 +16,6 @@ import java.util.concurrent.Callable;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -42,7 +41,6 @@ import s10k.tool.common.util.TableUtils;
 /**
  * Update cloud datum stream entity.
  */
-@Component
 @Command(name = "update", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"Update a cloud datum stream. The various optional options can be used to update",
 		"specific settings of a datum stream, leaving all other settings of the stream", "unchagned.%n",
@@ -98,11 +96,11 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 
 	@Option(names = {"-r", "--replace"},
 			description = "when JSON input is provided, replace the settings instead of merging the given settings")
-	public boolean replace;
+	boolean replace;
 	
 	@Option(names = {"-I", "--ignore-input"},
 			description = "do not try to read settings from standard input")
-	public boolean ignoreStdIn;
+	boolean ignoreStdIn;
 	
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data")
@@ -180,7 +178,8 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 			final ResultDisplayMode displayMode = displayMode(this.displayMode);
 			final ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
 
-			CloudDatumStreamConfiguration existing = viewCloudDatumStream(restClient, objectMapper, datumStreamId);
+			final CloudDatumStreamConfiguration existing = viewCloudDatumStream(restClient, objectMapper,
+					datumStreamId);
 
 			final Map<String, Object> settings = (replace ? new LinkedHashMap<>(4) : existing.toSettings());
 
@@ -223,8 +222,8 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? List.of(result)
 					: List.of((Object) ListDatumStreamsCmd.tableDataRow(result, false, pretty)));
 			TableUtils.renderTableData(ListDatumStreamsCmd.tableDataColumns(), tableData,
-					tableConfig(this, displayMode, prettyStyle()), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
-					System.out);
+					tableConfig(this, displayMode, prettyStyle()), objectMapper,
+					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error viewing cloud datum streams: %s".formatted(e.getMessage()));
