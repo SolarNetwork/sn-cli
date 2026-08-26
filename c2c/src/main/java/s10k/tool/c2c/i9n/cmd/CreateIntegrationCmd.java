@@ -59,7 +59,13 @@ public class CreateIntegrationCmd extends BaseSubCmd<IntegrationsCmd> implements
 
 	@Option(names = {"-d", "--disabled"},
 			description = "craete in disabled state")
-	public boolean disabled;
+	boolean disabled;
+
+	@Option(names = { "-g", "--merge-mode" },
+			description = "the merge style to perform",
+			defaultValue = "RecursiveObjects")
+	@SuppressWarnings("NullAway.Init")
+	MergeMode mode;
 
 	@Option(names = {"-I", "--ignore-input"},
 			description = "do not try to read settings from standard input")
@@ -99,7 +105,7 @@ public class CreateIntegrationCmd extends BaseSubCmd<IntegrationsCmd> implements
 			if (!(ignoreStdIn || SystemUtils.systemConsoleIsTerminal())) {
 				Map<String, Object> inputProps = objectMapper.readValue(new InputStreamReader(System.in, UTF_8),
 						JsonUtils.STRING_MAP_TYPE);
-				CollectionUtils.mergeServiceProperties(inputProps, settings, MergeMode.RecursiveObjects);
+				CollectionUtils.mergeServiceProperties(inputProps, settings, mode);
 			}
 
 			try {
@@ -112,7 +118,7 @@ public class CreateIntegrationCmd extends BaseSubCmd<IntegrationsCmd> implements
 			if (value != null && !value.isBlank()) {
 				Map<String, Object> inputProps = objectMapper.readValue(stringOrFileContents(value),
 						JsonUtils.STRING_MAP_TYPE);
-				CollectionUtils.mergeServiceProperties(inputProps, settings, MergeMode.RecursiveObjects);
+				CollectionUtils.mergeServiceProperties(inputProps, settings, mode);
 			}
 
 			if (!settings.containsKey("name")) {
