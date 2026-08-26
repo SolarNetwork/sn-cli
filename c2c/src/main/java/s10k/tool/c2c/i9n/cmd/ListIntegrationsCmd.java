@@ -121,8 +121,8 @@ public class ListIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implements 
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? confs
 					: confs.stream().map(c -> tableDataRow(c, false)).toList());
-			TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode, prettyStyle()), objectMapper,
-					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode, prettyStyle()),
+					objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error viewing cloud integrations: %s".formatted(e.getMessage()));
@@ -165,6 +165,7 @@ public class ListIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implements 
 				new Column().header("Name").dataAlign(LEFT),
 				new Column().header("Type").dataAlign(LEFT),
 				new Column().header("Enabled").dataAlign(LEFT),
+				new Column().header("Service Properties").dataAlign(LEFT),
 			};
 		// @formatter:on
 	}
@@ -183,6 +184,7 @@ public class ListIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implements 
 				conf.name(),
 				(rawIdentifiers ? conf.serviceIdentifier() : integrationServiceLocalizedName(conf.serviceIdentifier())),
 				conf.enabled(),
+				TableUtils.basicTable(conf.serviceProperties(), null, null, false),
 			};
 		// @formatter:on
 	}

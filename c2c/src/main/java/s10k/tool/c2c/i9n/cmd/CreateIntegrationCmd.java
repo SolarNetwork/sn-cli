@@ -1,0 +1,188 @@
+package s10k.tool.c2c.i9n.cmd;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static s10k.tool.common.domain.ServiceConfiguration.SERVICE_PROPERTIES_KEY;
+import static s10k.tool.common.util.RestUtils.checkSuccess;
+import static s10k.tool.common.util.StringUtils.stringOrFileContents;
+import static s10k.tool.common.util.TableUtils.tableConfig;
+
+import java.io.InputStreamReader;
+import java.time.Instant;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+
+import org.jspecify.annotations.Nullable;
+import org.springframework.http.MediaType;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.web.client.RestClient;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import net.solarnetwork.codec.JsonUtils;
+import net.solarnetwork.util.DateUtils;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+import picocli.CommandLine.Parameters;
+import s10k.tool.c2c.domain.CloudIntegrationConfiguration;
+import s10k.tool.c2c.util.CloudIntegrationsUtils;
+import s10k.tool.common.cmd.BaseSubCmd;
+import s10k.tool.common.domain.MergeMode;
+import s10k.tool.common.domain.ResultDisplayMode;
+import s10k.tool.common.util.CollectionUtils;
+import s10k.tool.common.util.SystemUtils;
+import s10k.tool.common.util.TableUtils;
+
+/**
+ * Delete Cloud Integration configurations.
+ */
+@Command(name = "create", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
+		"Create Cloud Integration entities.%n" })
+public class CreateIntegrationCmd extends BaseSubCmd<IntegrationsCmd> implements Callable<Integer> {
+
+	// @formatter:off
+	@Option(names = { "-m", "--name" },
+			description = "the display name to assign",
+			required = true)
+	@SuppressWarnings("NullAway.Init")
+	String name;
+	
+	@Option(names = { "-S", "--service" },
+			description = "the integration service identifier",
+			required = true)
+	@SuppressWarnings("NullAway.Init")
+	String serviceIdentifier;
+
+	@Option(names = { "-prop", "--service-property" },
+			description = "a service property, in the form path:value",
+			paramLabel = "serviceProperty")
+	String @Nullable [] serviceProperties;
+
+	@Option(names = {"-d", "--disabled"},
+			description = "craete in disabled state")
+	public boolean disabled;
+
+	@Option(names = {"-I", "--ignore-input"},
+			description = "do not try to read settings from standard input")
+	boolean ignoreStdIn;
+	
+	@Option(names = { "-mode", "--display-mode" },
+			description = "how to display the data")
+	@Nullable ResultDisplayMode displayMode;
+
+	@Parameters(index = "0",
+			arity = "0..1",
+			paramLabel = "<service properties>",
+			description = "the service properties to use as a JSON object, or @file for file to load")
+	@Nullable String value;
+	// @formatter:on
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param reqFactory   the HTTP request factory to use
+	 * @param objectMapper the mapper to use
+	 */
+	public CreateIntegrationCmd(ClientHttpRequestFactory reqFactory, ObjectMapper objectMapper) {
+		super(reqFactory, objectMapper);
+	}
+
+	@Override
+	public Integer call() throws Exception {
+		try {
+			final RestClient restClient = restClient();
+			final ObjectMapper objectMapper = objectMapper();
+			final ResultDisplayMode displayMode = displayMode(this.displayMode);
+
+			final Map<String, Object> settings = new LinkedHashMap<>(4);
+
+			// look for JSON on stdin if allowed
+			if (!(ignoreStdIn || SystemUtils.systemConsoleIsTerminal())) {
+				Map<String, Object> inputProps = objectMapper.readValue(new InputStreamReader(System.in, UTF_8),
+						JsonUtils.STRING_MAP_TYPE);
+				CollectionUtils.mergeServiceProperties(inputProps, settings, MergeMode.Simple);
+			}
+
+			try {
+				populateSettings(settings, objectMapper);
+			} catch (RuntimeException e) {
+				System.err.println(e.getMessage());
+				return 1;
+			}
+
+			if (value != null && !value.isBlank()) {
+				Map<String, Object> inputProps = objectMapper.readValue(stringOrFileContents(value),
+						JsonUtils.STRING_MAP_TYPE);
+				CollectionUtils.mergeServiceProperties(inputProps, settings, MergeMode.Simple);
+			}
+
+			CloudIntegrationConfiguration conf;
+			if (!isDryRun()) {
+				conf = createCloudIntegration(restClient, objectMapper, settings);
+			} else {
+				settings.put("configId", -1L);
+				String ts = DateUtils.ISO_DATE_TIME_ALT_UTC.format(Instant.now());
+				settings.put("created", ts);
+				settings.put("modified", ts);
+				conf = objectMapper.treeToValue(JsonUtils.getTreeFromObject(settings),
+						CloudIntegrationConfiguration.class);
+			}
+
+			final List<CloudIntegrationConfiguration> confs = List.of(conf);
+			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? confs
+					: confs.stream().map(c -> ListIntegrationsCmd.tableDataRow(c, false)).toList());
+			TableUtils.renderTableData(ListIntegrationsCmd.tableDataColumns(), tableData,
+					tableConfig(this, displayMode, prettyStyle()), objectMapper,
+					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			return 0;
+		} catch (Exception e) {
+			System.err.println("Error creating cloud integration: %s".formatted(e.getMessage()));
+		}
+		return 1;
+	}
+
+	private void populateSettings(Map<String, Object> settings, ObjectMapper objectMapper) {
+		if (name != null) {
+			settings.put("name", name);
+		}
+		if (serviceIdentifier != null) {
+			String type = CloudIntegrationsUtils.findIntegrationServiceId(serviceIdentifier).getKey();
+			settings.put("serviceIdentifier", type);
+		}
+		settings.put("enabled", !disabled);
+		if (serviceProperties != null) {
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			final Map<String, Object> sprops = (Map) settings.compute(SERVICE_PROPERTIES_KEY,
+					(_, v) -> v instanceof Map<?, ?> t ? (Map) t : new LinkedHashMap<>(8));
+
+			CollectionUtils.populateServiceProperties(serviceProperties, sprops, objectMapper);
+		}
+	}
+
+	private static CloudIntegrationConfiguration createCloudIntegration(RestClient restClient,
+			ObjectMapper objectMapper, Map<String, Object> settings) {
+		// @formatter:off
+		JsonNode response = checkSuccess(restClient.post()
+			.uri(b -> {
+				b.path("/solaruser/api/v1/sec/user/c2c/integrations");
+				return b.build();
+			})
+			.contentType(MediaType.APPLICATION_JSON)
+			.body(settings)
+			.accept(MediaType.APPLICATION_JSON)
+			.retrieve()
+			.body(JsonNode.class)
+			);		
+		// @formatter:on
+
+		try {
+			return objectMapper.treeToValue(response.path("data"), CloudIntegrationConfiguration.class);
+		} catch (JsonProcessingException | IllegalArgumentException e) {
+			throw new IllegalStateException("Error parsing cloud integration list response: " + e.getMessage(), e);
+		}
+	}
+
+}

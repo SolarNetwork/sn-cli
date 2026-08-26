@@ -9,6 +9,7 @@ import s10k.tool.common.cmd.BaseSubCmd;
  */
 // @formatter:off
 @Command(name = "integrations", aliases = "i9n", subcommands = {
+		CreateIntegrationCmd.class,
 		DeleteIntegrationsCmd.class,
 		ListIntegrationsCmd.class,
 		UpdateIntegrationServicePropertiesCmd.class,

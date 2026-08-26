@@ -96,6 +96,22 @@ public final class CloudIntegrationsUtils {
 	}
 
 	/**
+	 * Lookup a Cloud Integration service ID using a case-insensitive substring
+	 * search.
+	 * 
+	 * @param query the substring to look for
+	 * @return the matching service ID and name
+	 * @throws IllegalStateException if a matching service ID is not found
+	 */
+	public static Entry<String, String> findIntegrationServiceId(String query) {
+		try {
+			return StringUtils.findBundleEntry(RESOURCE_BUNDLE, query, "i9n.", ".name");
+		} catch (Exception e) {
+			throw new IllegalStateException("Integration type not found for [" + query + "]");
+		}
+	}
+
+	/**
 	 * Lookup Cloud Integration service IDs using a case-insensitive substring
 	 * search.
 	 * 
