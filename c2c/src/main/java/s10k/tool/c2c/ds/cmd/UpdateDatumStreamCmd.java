@@ -92,7 +92,7 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 	@Option(names = { "-prop", "--service-property" },
 			description = "a service property, in the form path:value",
 			paramLabel = "serviceProperty")
-	String serviceProperties[];
+	String[] serviceProperties;
 
 	@Option(names = {"-r", "--replace"},
 			description = "when JSON input is provided, replace the settings instead of merging the given settings")
@@ -222,11 +222,11 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? List.of(result)
 					: List.of((Object) ListDatumStreamsCmd.tableDataRow(result, false, pretty)));
 			TableUtils.renderTableData(ListDatumStreamsCmd.tableDataColumns(), tableData,
-					tableConfig(this, displayMode, prettyStyle()), objectMapper,
+					tableConfig(this, displayMode, prettyStyle()).asJsonSingleton(), objectMapper,
 					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
-			System.err.println("Error viewing cloud datum streams: %s".formatted(e.getMessage()));
+			System.err.println("Error updating cloud datum stream: %s".formatted(e.getMessage()));
 		}
 		return 1;
 	}
