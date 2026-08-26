@@ -44,11 +44,13 @@ echo '{"name":"SolarEdge A"}' |s10k cloud-integrations integrations update --int
 
 ```
 s10k cloud-integrations integrations update
-	[-dI]
+	[-rI]
 	-i=<integrationId>
+	[-g=<mode>]
 	[-m=<name>]
     [-S=<serviceIdentifier>]
 	[-prop=serviceProperty]...
+	[-e | -d]
     [-mode=<displayMode>]
 	[<config>]
 ```
@@ -57,11 +59,14 @@ s10k cloud-integrations integrations update
 
 | Option | Long Version | Description |
 |:-------|:-------------|:------------|
-| `-d` | `--disabled` | update in disabled state |
+| `-d`   | `--disabled` | make the entity disabled |
+| `-e`   | `--enabled` | make the entity enabled |
+| `-g=`  | `--merge-mode=` | one of `Simple`, `RecursiveObjects`, or `RecursiveObjectsAndArrays` to control the merge style; see [here][merge-option] for details |
 | `-I` | `--ignore-input` | ignore standard input, instead of treating that as a JSON configuration object |
 | `-i=` | `--integration-id=` | the ID of the integration to update |
 | `-m=`     | `--name=` | the display name to set |
 | `-prop=` | `--service-property` | a service property, in the form `path:value` or `@@file.json`; see [here][prop-option] for details |
+| `-r` | `--replace` | replace the existing configuration completely, instead of merging in the changes provided |
 | `-S=` | `--service=` | the Cloud Integration service idenetifier to set; can be specified as a case-insensitive sub-string of a supported service, matched against both the service identifier and the display name, for example `also` will match the AlsoEnergy type |
 | `-mode=` | `--display-mode=` | the format to display the data as, one of `CSV`, `JSON`, or `PRETTY`; defaults to `PRETTY` |
 
@@ -136,5 +141,6 @@ The created integration.
 
 [update-api]: https://github.com/SolarNetwork/solarnetwork/wiki/SolarUser-Cloud-Integrations-API#cloud-integration-update
 [integration]: https://github.com/SolarNetwork/solarnetwork/wiki/SolarUser-Cloud-Integrations-API#cloud-integration
+[merge-option]: ../../../service-properties.md#-merge-mode-option
 [prop-option]: ../../../service-properties.md#-service-property-option
 

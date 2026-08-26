@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.solarnetwork.codec.JsonUtils;
 import net.solarnetwork.util.DateUtils;
-import net.solarnetwork.util.ObjectUtils;
+import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
@@ -42,7 +42,18 @@ import s10k.tool.common.util.TableUtils;
  * Update Cloud Integration configurations.
  */
 @Command(name = "update", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
-		"Update Cloud Integration entities.%n" })
+		// @formatter:off
+		"Update a cloud integration. The various optional options can be used to update",
+		"specific settings of an integration, leaving all other settings of the integration",
+		"unchagned.%n",
+
+		"Alternatively the configuration can be provided as JSON via standard input or via",
+		"an @file.json parameter. The JSON must be structured as an object as specified",
+		"in the @|bold Cloud Integration update|@ API in SolarNetwork. The given configuration",
+		"will be merged into the existing configuration unless the @|bold --replace|@ option is given",
+		"in which case the given JSON will completely replace the existing configuration.%n", 
+		// @formatter:on
+})
 public class UpdateIntegrationCmd extends BaseSubCmd<IntegrationsCmd> implements Callable<Integer> {
 
 	// @formatter:off
@@ -51,6 +62,12 @@ public class UpdateIntegrationCmd extends BaseSubCmd<IntegrationsCmd> implements
 			required =  true)
 	@SuppressWarnings("NullAway.Init")
 	Long integrationId;
+
+	@Option(names = { "-g", "--merge-mode" },
+			description = "the merge style to perform",
+			defaultValue = "RecursiveObjects")
+	@SuppressWarnings("NullAway.Init")
+	MergeMode mode;
 
 	@Option(names = { "-m", "--name" },
 			description = "the display name to assign")
@@ -65,10 +82,13 @@ public class UpdateIntegrationCmd extends BaseSubCmd<IntegrationsCmd> implements
 			paramLabel = "serviceProperty")
 	String @Nullable [] serviceProperties;
 
-	@Option(names = {"-d", "--disabled"},
-			description = "craete in disabled state")
-	public boolean disabled;
+	@ArgGroup(exclusive = true, multiplicity = "0..1")
+	@Nullable EnabledOrDisabled enabledOrDisabled;
 
+	@Option(names = {"-r", "--replace"},
+			description = "when JSON input is provided, replace the settings instead of merging the given settings")
+	public boolean replace;
+	
 	@Option(names = {"-I", "--ignore-input"},
 			description = "do not try to read settings from standard input")
 	boolean ignoreStdIn;
@@ -83,6 +103,32 @@ public class UpdateIntegrationCmd extends BaseSubCmd<IntegrationsCmd> implements
 			description = "the configuration to use as a JSON object, or @file for file to load")
 	@Nullable String value;
 	// @formatter:on
+
+	/**
+	 * Grouping of enabled/disabled mode flags.
+	 */
+	static class EnabledOrDisabled {
+
+		// @formatter:off
+		@Option(names = {"-e", "--enabled"},
+				description = "make enabled")
+		public boolean enabled;
+		
+		@Option(names = {"-d", "--disabled"},
+				description = "make disabled")
+		public boolean disabled;
+		// @formatter:on
+
+		/**
+		 * Test if enabled or disabled.
+		 * 
+		 * @return {@code true} if {@code enabled}
+		 */
+		boolean isEnabled() {
+			return enabled;
+		}
+
+	}
 
 	/**
 	 * Constructor.
@@ -104,14 +150,13 @@ public class UpdateIntegrationCmd extends BaseSubCmd<IntegrationsCmd> implements
 			final CloudIntegrationConfiguration existing = viewCloudIntegration(restClient, objectMapper,
 					integrationId);
 
-			final Map<String, Object> settings = ObjectUtils.nonnull(JsonUtils.getStringMapFromObject(existing),
-					"Configuration");
+			final Map<String, Object> settings = (replace ? new LinkedHashMap<>(4) : existing.toSettings());
 
 			// look for JSON on stdin if allowed
 			if (!(ignoreStdIn || SystemUtils.systemConsoleIsTerminal())) {
 				Map<String, Object> inputProps = objectMapper.readValue(new InputStreamReader(System.in, UTF_8),
 						JsonUtils.STRING_MAP_TYPE);
-				CollectionUtils.mergeServiceProperties(inputProps, settings, MergeMode.RecursiveObjects);
+				CollectionUtils.mergeServiceProperties(inputProps, settings, mode);
 			}
 
 			try {
@@ -124,7 +169,7 @@ public class UpdateIntegrationCmd extends BaseSubCmd<IntegrationsCmd> implements
 			if (value != null && !value.isBlank()) {
 				Map<String, Object> inputProps = objectMapper.readValue(stringOrFileContents(value),
 						JsonUtils.STRING_MAP_TYPE);
-				CollectionUtils.mergeServiceProperties(inputProps, settings, MergeMode.RecursiveObjects);
+				CollectionUtils.mergeServiceProperties(inputProps, settings, mode);
 			}
 
 			if (!settings.containsKey("name")) {
@@ -166,7 +211,9 @@ public class UpdateIntegrationCmd extends BaseSubCmd<IntegrationsCmd> implements
 			String type = CloudIntegrationsUtils.findIntegrationServiceId(serviceIdentifier).getKey();
 			settings.put("serviceIdentifier", type);
 		}
-		settings.put("enabled", !disabled);
+		if (enabledOrDisabled != null) {
+			settings.put("enabled", enabledOrDisabled.isEnabled());
+		}
 		if (serviceProperties != null) {
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			final Map<String, Object> sprops = (Map) settings.compute(SERVICE_PROPERTIES_KEY,
