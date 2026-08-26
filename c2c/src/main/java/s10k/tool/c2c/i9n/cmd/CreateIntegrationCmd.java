@@ -40,7 +40,15 @@ import s10k.tool.common.util.TableUtils;
  * Create Cloud Integration configurations.
  */
 @Command(name = "create", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
-		"Create Cloud Integration entities.%n" })
+		// @formatter:off
+		"Create a cloud integration. The various options can be used to configure specific",
+		"settings of the integration.%n",
+
+		"Alternatively the configuration can be provided as JSON via standard input or via",
+		"an @file.json parameter. The JSON must be structured as an object as specified",
+		"in the @|bold Cloud Integration create|@ API in SolarNetwork.%n", 
+		// @formatter:on
+})
 public class CreateIntegrationCmd extends BaseSubCmd<IntegrationsCmd> implements Callable<Integer> {
 
 	// @formatter:off
