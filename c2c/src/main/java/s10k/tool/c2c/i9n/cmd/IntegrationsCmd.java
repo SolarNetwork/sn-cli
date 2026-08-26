@@ -12,6 +12,7 @@ import s10k.tool.common.cmd.BaseSubCmd;
 		CreateIntegrationCmd.class,
 		DeleteIntegrationsCmd.class,
 		ListIntegrationsCmd.class,
+		UpdateIntegrationCmd.class,
 		UpdateIntegrationServicePropertiesCmd.class,
 })
 // @formatter:on
