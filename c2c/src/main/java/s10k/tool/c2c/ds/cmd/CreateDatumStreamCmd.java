@@ -1,7 +1,6 @@
 package s10k.tool.c2c.ds.cmd;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static s10k.tool.c2c.util.CloudIntegrationRestUtils.viewCloudDatumStream;
 import static s10k.tool.common.domain.ServiceConfiguration.SERVICE_PROPERTIES_KEY;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 import static s10k.tool.common.util.StringUtils.stringOrFileContents;
@@ -14,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.solarnetwork.codec.JsonUtils;
 import net.solarnetwork.domain.datum.ObjectDatumKind;
+import net.solarnetwork.util.DateUtils;
 import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -38,25 +39,21 @@ import s10k.tool.common.util.SystemUtils;
 import s10k.tool.common.util.TableUtils;
 
 /**
- * Update cloud datum stream entity.
+ * Create Cloud Datum Stream configurations.
  */
-@Command(name = "update", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
-		"Update a cloud datum stream. The various optional options can be used to update",
-		"specific settings of a datum stream, leaving all other settings of the stream", "unchagned.%n",
+@Command(name = "create", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
+		// @formatter:off
+		"Create a cloud datum stream. The various options can be used to configure specific",
+		"settings of the datum stream.%n",
 
-		"Alternatively the settings can be provided as JSON via standard input or via",
+		"Alternatively the configuration can be provided as JSON via standard input or via",
 		"an @file.json parameter. The JSON must be structured as an object as specified",
-		"in the @|bold Cloud Datum Stream update|@ API in SolarNetwork. The given settings",
-		"will be merged into the existing settings unless the @|bold --replace|@ option is given",
-		"in which case the given JSON will completely replace the existing settings.%n", })
-public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements Callable<Integer> {
+		"in the @|bold Cloud Datum Stream create|@ API in SolarNetwork.%n", 
+		// @formatter:on
+})
+public class CreateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements Callable<Integer> {
 
 	// @formatter:off
-	@Option(names = { "-stream", "--stream-id" },
-			description = "the datum stream ID to update",
-			required = true)
-	Long datumStreamId;
-
 	@Option(names = { "-g", "--merge-mode" },
 			description = "the merge style to perform",
 			defaultValue = "RecursiveObjects")
@@ -64,21 +61,22 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 
 	@Option(names = { "-S", "--service" },
 			description = "the service identifier to set; a substring of the service type can be used")
-	String serviceIdentifier;
+	@Nullable String serviceIdentifier;
 
 	@Option(names = { "-m", "--name" },
 			description = "a name to set")
-	String name;
+	@Nullable String name;
 
 	@ArgGroup(exclusive = true, multiplicity = "0..1")
-	NodeOrLocationId nodeOrLocationId;
+	@Nullable NodeOrLocationId nodeOrLocationId;
 
 	@Option(names = { "-source", "--source-id" },
 			description = "the source ID to set")
-	String sourceId;
+	@Nullable String sourceId;
 	
-	@ArgGroup(exclusive = true, multiplicity = "0..1")
-	EnabledOrDisabled enabledOrDisabled;
+	@Option(names = {"-d", "--disabled"},
+			description = "craete in disabled state")
+	boolean disabled;
 
 	@Option(names = { "-map", "--mapping-id" },
 			description = "the datum  stream mapping ID to set")
@@ -91,12 +89,8 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 	@Option(names = { "-prop", "--service-property" },
 			description = "a service property, in the form path:value",
 			paramLabel = "serviceProperty")
-	String[] serviceProperties;
+	String @Nullable [] serviceProperties;
 
-	@Option(names = {"-r", "--replace"},
-			description = "when JSON input is provided, replace the settings instead of merging the given settings")
-	boolean replace;
-	
 	@Option(names = {"-I", "--ignore-input"},
 			description = "do not try to read settings from standard input")
 	boolean ignoreStdIn;
@@ -108,32 +102,6 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 	@Parameters(index = "0", paramLabel = "<config>", description = "the updates to save, or @file for file to load", arity = "0..1")
 	String value;
 	// @formatter:on
-
-	/**
-	 * Grouping of enabled/disabled mode flags.
-	 */
-	static class EnabledOrDisabled {
-
-		// @formatter:off
-		@Option(names = {"-e", "--enabled"},
-				description = "make enabled")
-		public boolean enabled;
-		
-		@Option(names = {"-d", "--disabled"},
-				description = "make disabled")
-		public boolean disabled;
-		// @formatter:on
-
-		/**
-		 * Test if enabled or disabled.
-		 * 
-		 * @return {@code true} if {@code enabled}
-		 */
-		boolean isEnabled() {
-			return enabled;
-		}
-
-	}
 
 	/**
 	 * Grouping of node/location ID.
@@ -166,7 +134,7 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 	 * @param reqFactory   the HTTP request factory to use
 	 * @param objectMapper the mapper to use
 	 */
-	public UpdateDatumStreamCmd(ClientHttpRequestFactory reqFactory, ObjectMapper objectMapper) {
+	public CreateDatumStreamCmd(ClientHttpRequestFactory reqFactory, ObjectMapper objectMapper) {
 		super(reqFactory, objectMapper);
 	}
 
@@ -176,10 +144,7 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 			final RestClient restClient = restClient();
 			final ResultDisplayMode displayMode = displayMode(this.displayMode);
 
-			final CloudDatumStreamConfiguration existing = viewCloudDatumStream(restClient, objectMapper,
-					datumStreamId);
-
-			final Map<String, Object> settings = (replace ? new LinkedHashMap<>(4) : existing.toSettings());
+			final Map<String, Object> settings = new LinkedHashMap<>(4);
 
 			// look for JSON on stdin if allowed
 			if (!(ignoreStdIn || SystemUtils.systemConsoleIsTerminal())) {
@@ -189,7 +154,7 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 			}
 
 			try {
-				populateSettings(settings);
+				populateConfiguration(settings);
 			} catch (RuntimeException e) {
 				System.err.println(e.getMessage());
 				return 1;
@@ -201,35 +166,39 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 				CollectionUtils.mergeServiceProperties(inputProps, settings, mode);
 			}
 
-			if (!existing.differsFromSettings(settings)) {
-				System.err.println("The settings have not changed, so no update performed.");
-				return 0;
+			if (!settings.containsKey("name")) {
+				System.err.println("A name is required (--name option).");
+				return 1;
+			} else if (!settings.containsKey("serviceIdentifier")) {
+				System.err.println("A service identifier is required (--service option).");
+				return 1;
 			}
 
-			CloudDatumStreamConfiguration result;
+			CloudDatumStreamConfiguration conf;
 			if (isDryRun()) {
-				settings.put("configId", existing.configId());
-				settings.put("created", existing.created());
-				settings.put("modified", Instant.now());
-				result = objectMapper.treeToValue(objectMapper.valueToTree(settings),
+				settings.put("configId", -1L);
+				String ts = DateUtils.ISO_DATE_TIME_ALT_UTC.format(Instant.now());
+				settings.put("created", ts);
+				settings.put("modified", ts);
+				conf = objectMapper.treeToValue(JsonUtils.getTreeFromObject(settings),
 						CloudDatumStreamConfiguration.class);
 			} else {
-				result = updateCloudDatumStream(restClient, objectMapper, datumStreamId, settings);
+				conf = createCloudDatumStream(restClient, objectMapper, settings);
 			}
 
-			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? List.of(result)
-					: List.of((Object) ListDatumStreamsCmd.tableDataRow(result, false)));
+			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? List.of(conf)
+					: List.of((Object) ListDatumStreamsCmd.tableDataRow(conf, false)));
 			TableUtils.renderTableData(ListDatumStreamsCmd.tableDataColumns(), tableData,
 					tableConfig(this, displayMode, prettyStyle()).asJsonSingleton(), objectMapper,
 					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
-			System.err.println("Error updating cloud datum stream: %s".formatted(e.getMessage()));
+			System.err.println("Error creating cloud datum stream: %s".formatted(e.getMessage()));
 		}
 		return 1;
 	}
 
-	private void populateSettings(Map<String, Object> settings) {
+	private void populateConfiguration(Map<String, Object> settings) {
 		if (name != null) {
 			settings.put("name", name);
 		}
@@ -245,13 +214,13 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 				settings.put("kind", ObjectDatumKind.Node.keyValue());
 				settings.put("objectId", nodeOrLocationId.nodeId);
 			}
+		} else {
+			settings.put("kind", ObjectDatumKind.Node.keyValue());
 		}
 		if (sourceId != null) {
 			settings.put("sourceId", sourceId);
 		}
-		if (enabledOrDisabled != null) {
-			settings.put("enabled", enabledOrDisabled.isEnabled());
-		}
+		settings.put("enabled", !disabled);
 		if (mappingId != null) {
 			settings.put("datumStreamMappingId", mappingId);
 		}
@@ -263,28 +232,25 @@ public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			final Map<String, Object> sprops = (Map) settings.compute(SERVICE_PROPERTIES_KEY,
 					(_, v) -> v instanceof Map<?, ?> t ? (Map) t : new LinkedHashMap<>(8));
-
 			CollectionUtils.populateServiceProperties(serviceProperties, sprops, objectMapper);
 		}
 	}
 
-	private static final CloudDatumStreamConfiguration updateCloudDatumStream(RestClient restClient,
-			ObjectMapper objectMapper, Long datumStreamId, Map<String, Object> settings) {
+	private static final CloudDatumStreamConfiguration createCloudDatumStream(RestClient restClient,
+			ObjectMapper objectMapper, Map<String, Object> settings) {
 		// @formatter:off
-		final JsonNode response = restClient.put()
+		final JsonNode response = checkSuccess(restClient.post()
 				.uri(b -> {
-					return b.path("/solaruser/api/v1/sec/user/c2c/datum-streams/{datumStreamId}")
-							.build(datumStreamId);
+					return b.path("/solaruser/api/v1/sec/user/c2c/datum-streams")
+							.build();
 				})
 				.contentType(MediaType.APPLICATION_JSON)
 				.body(settings)
 				.accept(MediaType.APPLICATION_JSON)
 				.retrieve()
 				.body(JsonNode.class)
-				;
+				);
 		// @formatter:on
-
-		checkSuccess(response);
 
 		try {
 			return objectMapper.treeToValue(response.path("data"), CloudDatumStreamConfiguration.class);

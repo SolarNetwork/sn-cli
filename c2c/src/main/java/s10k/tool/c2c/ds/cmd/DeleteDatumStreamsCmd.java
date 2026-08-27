@@ -14,7 +14,6 @@ import org.springframework.web.client.RestClient;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -62,7 +61,6 @@ public class DeleteDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implement
 			final RestClient restClient = restClient();
 			final ResultDisplayMode displayMode = displayMode(this.displayMode);
 			final ObjectMapper objectMapper = objectMapper();
-			final ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
 
 			final var filter = new CloudIntegrationsFilter();
 			filter.setDatumStreamIds(List.of(datumStreamIds));
@@ -80,10 +78,10 @@ public class DeleteDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implement
 			}
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? confs
-					: confs.stream().map(c -> ListDatumStreamsCmd.tableDataRow(c, false, pretty)).toList());
+					: confs.stream().map(c -> ListDatumStreamsCmd.tableDataRow(c, false)).toList());
 			TableUtils.renderTableData(ListDatumStreamsCmd.tableDataColumns(), tableData,
-					tableConfig(this, displayMode, prettyStyle()), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
-					System.out);
+					tableConfig(this, displayMode, prettyStyle()), objectMapper,
+					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
 			System.err.println("Error deleting cloud datum streams: %s".formatted(e.getMessage()));

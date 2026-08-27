@@ -58,7 +58,7 @@ public record CloudDatumStreamConfiguration(Long configId, String name, String s
 				sourceIds.addAll(sources);
 			}
 		}
-		if (serviceProperties == null || !serviceProperties.containsKey("sourceIdMap")) {
+		if ((serviceProperties == null || !serviceProperties.containsKey("sourceIdMap")) && sourceId != null) {
 			sourceIds.add(sourceId);
 		}
 		return sourceIds;

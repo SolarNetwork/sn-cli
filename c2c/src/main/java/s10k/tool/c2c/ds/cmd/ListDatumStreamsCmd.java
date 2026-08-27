@@ -13,7 +13,6 @@ import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.github.freva.asciitable.Column;
 
 import picocli.CommandLine.ArgGroup;
@@ -121,7 +120,6 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 	public Integer call() throws Exception {
 		try {
 			final RestClient restClient = restClient();
-			final ObjectWriter pretty = objectMapper.writerWithDefaultPrettyPrinter();
 			final CloudIntegrationsFilter filter = filter();
 			final ResultDisplayMode displayMode = displayMode(this.displayMode);
 
@@ -132,7 +130,7 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 			}
 
 			List<?> tableData = (displayMode == ResultDisplayMode.JSON ? confs
-					: confs.stream().map(c -> tableDataRow(c, false, pretty)).toList());
+					: confs.stream().map(c -> tableDataRow(c, false)).toList());
 			TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode, prettyStyle()),
 					objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
@@ -198,11 +196,9 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 	 * 
 	 * @param conf           the configuration to convert
 	 * @param rawIdentifiers {@code true} to output the raw service identifiers
-	 * @param jsonWriter     the JSON writer to use for service properties
 	 * @return the metadata data
 	 */
-	public static Object[] tableDataRow(CloudDatumStreamConfiguration conf, boolean rawIdentifiers,
-			ObjectWriter jsonWriter) {
+	public static Object[] tableDataRow(CloudDatumStreamConfiguration conf, boolean rawIdentifiers) {
 		try {
 			// @formatter:off
 			return new Object[] {
@@ -217,9 +213,7 @@ public class ListDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements 
 					conf.sourceIdsValue(),
 					conf.schedule(),
 					conf.datumStreamMappingId(),
-					(conf.serviceProperties() != null 
-						? jsonWriter.writeValueAsString(conf.serviceProperties())
-						: null),
+					TableUtils.basicTable(conf.serviceProperties(), null, null, false),
 				};
 			// @formatter:on
 		} catch (Exception e) {
