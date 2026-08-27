@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.SequencedMap;
 import java.util.Set;
 import java.util.SortedMap;
@@ -23,6 +24,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import s10k.tool.c2c.domain.CloudDatumStreamConfiguration;
+import s10k.tool.c2c.domain.CloudDatumStreamMappingConfiguration;
+import s10k.tool.c2c.domain.CloudDatumStreamMappingPropertyConfiguration;
 import s10k.tool.c2c.domain.CloudIntegrationConfiguration;
 import s10k.tool.c2c.domain.CloudIntegrationsFilter;
 import s10k.tool.common.util.RestUtils;
@@ -48,17 +51,15 @@ public final class CloudIntegrationRestUtils {
 	public static CloudDatumStreamConfiguration viewCloudDatumStream(RestClient restClient, ObjectMapper objectMapper,
 			Long datumStreamId) {
 		// @formatter:off
-		JsonNode response = restClient.get()
+		JsonNode response = checkSuccess(restClient.get()
 			.uri(b -> b.path("/solaruser/api/v1/sec/user/c2c/datum-streams/{datumStreamId}")
 				.build(datumStreamId)
 			)
 			.accept(MediaType.APPLICATION_JSON)
 			.retrieve()
 			.body(JsonNode.class)
-			;		
+			);		
 		// @formatter:on
-
-		checkSuccess(response);
 
 		try {
 			return objectMapper.treeToValue(response.path("data"), CloudDatumStreamConfiguration.class);
@@ -79,7 +80,7 @@ public final class CloudIntegrationRestUtils {
 	public static List<CloudDatumStreamConfiguration> listCloudDatumStreams(RestClient restClient,
 			ObjectMapper objectMapper, CloudIntegrationsFilter filter) {
 		// @formatter:off
-		JsonNode response = restClient.get()
+		JsonNode response = checkSuccess(restClient.get()
 			.uri(b -> {
 				b.path("/solaruser/api/v1/sec/user/c2c/datum-streams");
 				if (filter != null ) {
@@ -90,10 +91,8 @@ public final class CloudIntegrationRestUtils {
 			.accept(MediaType.APPLICATION_JSON)
 			.retrieve()
 			.body(JsonNode.class)
-			;		
+			);		
 		// @formatter:on
-
-		checkSuccess(response);
 
 		List<CloudDatumStreamConfiguration> result = new ArrayList<>(response.path("data").size());
 		for (JsonNode node : response.path("data").path("results")) {
@@ -161,7 +160,8 @@ public final class CloudIntegrationRestUtils {
 						return true;
 					}
 				}
-				final String lcServiceName = datumStreamServiceLocalizedName(c.serviceIdentifier())
+				final String lcServiceName = Objects
+						.requireNonNullElse(datumStreamServiceLocalizedName(c.serviceIdentifier()), "")
 						.toLowerCase(Locale.ROOT);
 				for (String lcExclude : lcExcludeTypes) {
 					if (lcServiceName.contains(lcExclude)) {
@@ -197,17 +197,15 @@ public final class CloudIntegrationRestUtils {
 	public static CloudIntegrationConfiguration viewCloudIntegration(RestClient restClient, ObjectMapper objectMapper,
 			Long integrationId) {
 		// @formatter:off
-		JsonNode response = restClient.get()
+		JsonNode response = checkSuccess(restClient.get()
 			.uri(b -> b.path("/solaruser/api/v1/sec/user/c2c/integrations/{integrationId}")
 				.build(integrationId)
 			)
 			.accept(MediaType.APPLICATION_JSON)
 			.retrieve()
 			.body(JsonNode.class)
-			;		
+			);		
 		// @formatter:on
-
-		checkSuccess(response);
 
 		try {
 			return objectMapper.treeToValue(response.path("data"), CloudIntegrationConfiguration.class);
@@ -229,7 +227,7 @@ public final class CloudIntegrationRestUtils {
 	public static SequencedMap<String, String> viewDatumStreamFilters(RestClient restClient, ObjectMapper objectMapper,
 			String datumStreamServiceId) {
 		// @formatter:off
-		JsonNode response = restClient.get()
+		JsonNode response = checkSuccess(restClient.get()
 			.uri(b -> b.path("/solaruser/api/v1/sec/user/c2c/services/datum-streams/data-filters")
 					.replaceQueryParam("identifier", datumStreamServiceId)
 				.build()
@@ -237,10 +235,8 @@ public final class CloudIntegrationRestUtils {
 			.accept(MediaType.APPLICATION_JSON)
 			.retrieve()
 			.body(JsonNode.class)
-			;		
+			);		
 		// @formatter:on
-
-		checkSuccess(response);
 
 		final JsonNode dataListNode = response.path("data");
 		final SequencedMap<String, String> result = new LinkedHashMap<>(dataListNode.size());
@@ -266,7 +262,7 @@ public final class CloudIntegrationRestUtils {
 	public static List<CloudIntegrationConfiguration> listCloudIntegrations(RestClient restClient,
 			ObjectMapper objectMapper, CloudIntegrationsFilter filter) {
 		// @formatter:off
-		JsonNode response = restClient.get()
+		JsonNode response = checkSuccess(restClient.get()
 			.uri(b -> {
 				b.path("/solaruser/api/v1/sec/user/c2c/integrations");
 				if (filter != null ) {
@@ -277,11 +273,9 @@ public final class CloudIntegrationRestUtils {
 			.accept(MediaType.APPLICATION_JSON)
 			.retrieve()
 			.body(JsonNode.class)
-			;		
+			);		
 		// @formatter:on
-	
-		checkSuccess(response);
-	
+
 		List<CloudIntegrationConfiguration> result = new ArrayList<>(response.path("data").size());
 		for (JsonNode node : response.path("data").path("results")) {
 			CloudIntegrationConfiguration conf;
@@ -295,6 +289,71 @@ public final class CloudIntegrationRestUtils {
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * View a cloud datum stream mapping properties.
+	 * 
+	 * @param restClient   the REST client
+	 * @param objectMapper the object mapper
+	 * @param mappingId    the mapping ID to view
+	 * @return the result
+	 */
+	public static List<CloudDatumStreamMappingPropertyConfiguration> listCloudDatumStreamMappingProperties(
+			RestClient restClient, ObjectMapper objectMapper, Long mappingId) {
+		// @formatter:off
+		JsonNode response = checkSuccess(restClient.get()
+			.uri(b -> b.path("/solaruser/api/v1/sec/user/c2c/datum-stream-mappings/{datumStreamMappingId}/properties")
+				.build(mappingId)
+			)
+			.accept(MediaType.APPLICATION_JSON)
+			.retrieve()
+			.body(JsonNode.class)
+			);		
+		// @formatter:on
+
+		List<CloudDatumStreamMappingPropertyConfiguration> result = new ArrayList<>(response.path("data").size());
+		for (JsonNode node : response.path("data").path("results")) {
+			CloudDatumStreamMappingPropertyConfiguration conf;
+			try {
+				conf = objectMapper.treeToValue(node, CloudDatumStreamMappingPropertyConfiguration.class);
+			} catch (JsonProcessingException | IllegalArgumentException e) {
+				throw new IllegalStateException(
+						"Error parsing cloud datum stream mapping property list response: " + e.getMessage(), e);
+			}
+			if (conf != null) {
+				result.add(conf);
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * View a cloud datum stream mapping.
+	 * 
+	 * @param restClient   the REST client
+	 * @param objectMapper the object mapper
+	 * @param mappingId    the mapping ID to view
+	 * @return the result
+	 */
+	public static CloudDatumStreamMappingConfiguration viewCloudDatumStreamMapping(RestClient restClient,
+			ObjectMapper objectMapper, Long mappingId) {
+		// @formatter:off
+		JsonNode response = checkSuccess(restClient.get()
+			.uri(b -> b.path("/solaruser/api/v1/sec/user/c2c/datum-stream-mappings/{datumStreamMappingId}")
+				.build(mappingId)
+			)
+			.accept(MediaType.APPLICATION_JSON)
+			.retrieve()
+			.body(JsonNode.class)
+			);		
+		// @formatter:on
+
+		try {
+			return objectMapper.treeToValue(response.path("data"), CloudDatumStreamMappingConfiguration.class);
+		} catch (JsonProcessingException | IllegalArgumentException e) {
+			throw new IllegalStateException("Error parsing cloud datum stream mapping response: " + e.getMessage(), e);
+		}
 	}
 
 }
