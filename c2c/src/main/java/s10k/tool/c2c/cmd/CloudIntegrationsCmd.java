@@ -3,6 +3,7 @@ package s10k.tool.c2c.cmd;
 import picocli.CommandLine.Command;
 import s10k.tool.c2c.ds.cmd.DatumStreamsCmd;
 import s10k.tool.c2c.i9n.cmd.IntegrationsCmd;
+import s10k.tool.c2c.mapping.MappingsCmd;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.cmd.ToolCmd;
 
@@ -12,7 +13,8 @@ import s10k.tool.common.cmd.ToolCmd;
 // @formatter:off
 @Command(name = "cloud-integrations", aliases = "c2c", subcommands = {
 		DatumStreamsCmd.class,
-		IntegrationsCmd.class
+		IntegrationsCmd.class,
+		MappingsCmd.class,
 })
 // @formatter:on
 public class CloudIntegrationsCmd extends BaseSubCmd<ToolCmd> {

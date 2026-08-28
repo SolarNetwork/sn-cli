@@ -6,7 +6,9 @@ import static s10k.tool.c2c.util.CloudIntegrationRestUtils.listCloudDatumStreams
 import static s10k.tool.c2c.util.CloudIntegrationsUtils.datumStreamServiceLocalizedName;
 import static s10k.tool.common.util.TableUtils.tableConfig;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.springframework.http.client.ClientHttpRequestFactory;
@@ -21,7 +23,7 @@ import s10k.tool.c2c.domain.CloudDatumStreamConfiguration;
 import s10k.tool.c2c.domain.CloudDatumStreamMappingConfiguration;
 import s10k.tool.c2c.domain.CloudDatumStreamMappingDetail;
 import s10k.tool.c2c.domain.CloudDatumStreamMappingPropertyConfiguration;
-import s10k.tool.c2c.domain.CloudDatumStreamPropertyDetail;
+import s10k.tool.c2c.domain.CloudDatumStreamMappingPropertyDetail;
 import s10k.tool.c2c.domain.CloudIntegrationConfiguration;
 import s10k.tool.c2c.domain.CloudIntegrationsFilter;
 import s10k.tool.c2c.util.CloudIntegrationRestUtils;
@@ -81,25 +83,28 @@ public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements C
 				return 0;
 			}
 			final CloudDatumStreamMappingConfiguration mapping = (datumStream.datumStreamMappingId() != null
-					? CloudIntegrationRestUtils.viewCloudDatumStreamMapping(restClient, objectMapper, datumStream.datumStreamMappingId())
+					? CloudIntegrationRestUtils.viewCloudDatumStreamMapping(restClient, objectMapper,
+							datumStream.datumStreamMappingId())
 					: null);
 			final CloudIntegrationConfiguration integration = (mapping != null
 					? CloudIntegrationRestUtils.viewCloudIntegration(restClient, objectMapper, mapping.integrationId())
 					: null);
 			final List<CloudDatumStreamMappingPropertyConfiguration> properties = (mapping != null
-					? CloudIntegrationRestUtils.listCloudDatumStreamMappingProperties(restClient, objectMapper, mapping.configId())
+					? CloudIntegrationRestUtils.listCloudDatumStreamMappingProperties(restClient, objectMapper,
+							mapping.configId())
 					: null);
 
 			if (displayMode == ResultDisplayMode.JSON) {
 				OutputUtils.writeJsonObject(objectMapper,
 						CloudDatumStreamMappingDetail.mappingDetails(datumStream, mapping, integration, properties));
 			} else {
-				final List<CloudDatumStreamPropertyDetail> details = (properties == null || properties.isEmpty()
-						? List.of(new CloudDatumStreamPropertyDetail(datumStream, mapping, integration, null))
-						: properties.stream()
-								.map(p -> new CloudDatumStreamPropertyDetail(datumStream, mapping, integration, p))
+				final List<CloudDatumStreamMappingPropertyDetail> details = (properties == null || properties.isEmpty()
+						? List.of(new CloudDatumStreamMappingPropertyDetail(datumStream, mapping, integration, null))
+						: properties.stream().map(
+								p -> new CloudDatumStreamMappingPropertyDetail(datumStream, mapping, integration, p))
 								.toList());
-				final List<?> tableData = details.stream().map(c -> tableDataRow(c, false)).toList();
+				final Set<Long> lastSeenMapping = new HashSet<>(1);
+				final List<?> tableData = details.stream().map(c -> tableDataRow(c, false, lastSeenMapping)).toList();
 				TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode, prettyStyle()),
 						objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			}
@@ -125,7 +130,7 @@ public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements C
 	}
 
 	/**
-	 * Get integrations info tabular structure columns.
+	 * Get datum stream detail tabular structure columns.
 	 * 
 	 * @return the columns
 	 */
@@ -151,6 +156,8 @@ public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements C
 				new Column().header("Property Name").dataAlign(LEFT),
 				new Column().header("Value Type").dataAlign(LEFT),
 				new Column().header("Value Reference").dataAlign(LEFT),
+				new Column().header("Multiplier").dataAlign(RIGHT),
+				new Column().header("Scale").dataAlign(RIGHT),
 			};
 		// @formatter:on
 	}
@@ -160,32 +167,43 @@ public class ViewDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements C
 	 * 
 	 * @param conf           the configuration to convert
 	 * @param rawIdentifiers {@code true} to output the raw service identifiers
+	 * @param lastMappingId  a mutable set that holds the ID of the last-processed
+	 *                       mapping, for tracking the display of non-property
+	 *                       details
 	 * @return the metadata data
 	 */
-	public static Object[] tableDataRow(CloudDatumStreamPropertyDetail conf, boolean rawIdentifiers) {
+	public static Object[] tableDataRow(CloudDatumStreamMappingPropertyDetail conf, boolean rawIdentifiers,
+			Set<Long> lastMappingId) {
+		boolean newMapping = (lastMappingId.isEmpty()
+				|| (conf.mapping() != null && !lastMappingId.contains(conf.mapping().configId())));
+		if (conf.mapping() != null) {
+			lastMappingId.add(conf.mapping().configId());
+		}
 		// @formatter:off
 		return new Object[] {
-				conf.datumStream().configId(),
-				conf.datumStream().name(),
-				(rawIdentifiers 
+				(newMapping ? conf.datumStream().configId() : null),
+				(newMapping ? conf.datumStream().name() : null),
+				(!newMapping ? null : rawIdentifiers 
 						? conf.datumStream().serviceIdentifier()
 						: datumStreamServiceLocalizedName(conf.datumStream().serviceIdentifier())),
-				conf.datumStream().enabled(),
-				(conf.datumStream().kind() != null ? conf.datumStream().kind().keyValue() : null),
-				conf.datumStream().objectId(),
-				conf.datumStream().sourceIdsValue(),
-				conf.datumStream().schedule(),
-				conf.datumStream().datumStreamMappingId(),
-				(conf.mapping() != null ? conf.mapping().name() : null),
-				(conf.mapping() != null ? conf.mapping().integrationId() : null),
-				(conf.integration() != null ? conf.integration().name() : null),
-				(conf.integration() != null ? conf.integration().enabled() : null),
+				(newMapping ? conf.datumStream().enabled() : null),
+				((newMapping && conf.datumStream().kind() != null) ? conf.datumStream().kind().keyValue() : null),
+				(newMapping ? conf.datumStream().objectId() : null),
+				(newMapping ? conf.datumStream().sourceIdsValue() : null),
+				(newMapping ? conf.datumStream().schedule() : null),
+				(newMapping ? conf.datumStream().datumStreamMappingId() : null),
+				((newMapping && conf.mapping() != null) ? conf.mapping().name() : null),
+				((newMapping && conf.mapping() != null) ? conf.mapping().integrationId() : null),
+				((newMapping && conf.integration() != null) ? conf.integration().name() : null),
+				((newMapping && conf.integration() != null) ? conf.integration().enabled() : null),
 				(conf.property() != null ? conf.property().index() : null),
 				(conf.property() != null ? conf.property().enabled() : null),
 				(conf.property() != null ? conf.property().propertyType() : null),
 				(conf.property() != null ? conf.property().propertyName() : null),
 				(conf.property() != null ? conf.property().valueType() : null),
 				(conf.property() != null ? conf.property().valueReference() : null),
+				(conf.property() != null ? conf.property().multiplier() : null),
+				(conf.property() != null ? conf.property().scale() : null),
 			};
 		// @formatter:on
 	}

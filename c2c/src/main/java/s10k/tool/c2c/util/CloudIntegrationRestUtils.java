@@ -292,6 +292,75 @@ public final class CloudIntegrationRestUtils {
 	}
 
 	/**
+	 * View a cloud datum stream mapping.
+	 * 
+	 * @param restClient   the REST client
+	 * @param objectMapper the object mapper
+	 * @param mappingId    the mapping ID to view
+	 * @return the result
+	 */
+	public static CloudDatumStreamMappingConfiguration viewCloudDatumStreamMapping(RestClient restClient,
+			ObjectMapper objectMapper, Long mappingId) {
+		// @formatter:off
+		JsonNode response = checkSuccess(restClient.get()
+			.uri(b -> b.path("/solaruser/api/v1/sec/user/c2c/datum-stream-mappings/{datumStreamMappingId}")
+				.build(mappingId)
+			)
+			.accept(MediaType.APPLICATION_JSON)
+			.retrieve()
+			.body(JsonNode.class)
+			);		
+		// @formatter:on
+
+		try {
+			return objectMapper.treeToValue(response.path("data"), CloudDatumStreamMappingConfiguration.class);
+		} catch (JsonProcessingException | IllegalArgumentException e) {
+			throw new IllegalStateException("Error parsing cloud datum stream mapping response: " + e.getMessage(), e);
+		}
+	}
+
+	/**
+	 * List cloud datum stream mappings.
+	 * 
+	 * @param restClient   the REST client
+	 * @param objectMapper the object mapper
+	 * @param filter       the filter
+	 * @return the result
+	 */
+	public static List<CloudDatumStreamMappingConfiguration> listCloudDatumStreamMappings(RestClient restClient,
+			ObjectMapper objectMapper, CloudIntegrationsFilter filter) {
+		// @formatter:off
+		JsonNode response = checkSuccess(restClient.get()
+			.uri(b -> {
+				b.path("/solaruser/api/v1/sec/user/c2c/datum-stream-mappings");
+				if (filter != null ) {
+					RestUtils.populateQueryParameters(b, filter::toRequestMap);
+				}
+				return b.build();
+			})
+			.accept(MediaType.APPLICATION_JSON)
+			.retrieve()
+			.body(JsonNode.class)
+			);		
+		// @formatter:on
+
+		List<CloudDatumStreamMappingConfiguration> result = new ArrayList<>(response.path("data").size());
+		for (JsonNode node : response.path("data").path("results")) {
+			CloudDatumStreamMappingConfiguration conf;
+			try {
+				conf = objectMapper.treeToValue(node, CloudDatumStreamMappingConfiguration.class);
+			} catch (JsonProcessingException | IllegalArgumentException e) {
+				throw new IllegalStateException(
+						"Error parsing cloud datum stream mapping list response: " + e.getMessage(), e);
+			}
+			if (conf != null) {
+				result.add(conf);
+			}
+		}
+		return result;
+	}
+
+	/**
 	 * View a cloud datum stream mapping properties.
 	 * 
 	 * @param restClient   the REST client
@@ -326,34 +395,6 @@ public final class CloudIntegrationRestUtils {
 			}
 		}
 		return result;
-	}
-
-	/**
-	 * View a cloud datum stream mapping.
-	 * 
-	 * @param restClient   the REST client
-	 * @param objectMapper the object mapper
-	 * @param mappingId    the mapping ID to view
-	 * @return the result
-	 */
-	public static CloudDatumStreamMappingConfiguration viewCloudDatumStreamMapping(RestClient restClient,
-			ObjectMapper objectMapper, Long mappingId) {
-		// @formatter:off
-		JsonNode response = checkSuccess(restClient.get()
-			.uri(b -> b.path("/solaruser/api/v1/sec/user/c2c/datum-stream-mappings/{datumStreamMappingId}")
-				.build(mappingId)
-			)
-			.accept(MediaType.APPLICATION_JSON)
-			.retrieve()
-			.body(JsonNode.class)
-			);		
-		// @formatter:on
-
-		try {
-			return objectMapper.treeToValue(response.path("data"), CloudDatumStreamMappingConfiguration.class);
-		} catch (JsonProcessingException | IllegalArgumentException e) {
-			throw new IllegalStateException("Error parsing cloud datum stream mapping response: " + e.getMessage(), e);
-		}
 	}
 
 }
