@@ -64,9 +64,7 @@ Detailed information about the datum stream, including its mapped properties.
 	|      |                    |            |         |      |           | /S1F2/S1/B1/INV/1 |                |            |                  |                |                  |                     |            |                  |               |               |            |                                    |
 	|      |                    |            |         |      |           | /S1F2/S1/B1/INV/2 |                |            |                  |                |                  |                     |            |                  |               |               |            |                                    |
 	+------+--------------------+------------+---------+------+-----------+-------------------+----------------+------------+------------------+----------------+------------------+---------------------+------------+------------------+---------------+---------------+------------+------------------------------------+
-	| 1000 | Solar Farm S1F2 PV | AlsoEnergy | true    | n    |       123 | /S1F2/S1/B1/GEN/1 | 0 0/30 * * * * |        222 | AlsoEnergy Basic |            121 | AlsoEnergy       | true                |          1 | true             | a             | wattHours     | r          | /{siteId}/{hardwareId}/KWHnet/Last |
-	|      |                    |            |         |      |           | /S1F2/S1/B1/INV/1 |                |            |                  |                |                  |                     |            |                  |               |               |            |                                    |
-	|      |                    |            |         |      |           | /S1F2/S1/B1/INV/1 |                |            |                  |                |                  |                     |            |                  |               |               |            |                                    |
+	|      |                    |            |         |      |           |                   |                |            |                  |                |                  |                     |          1 | true             | a             | wattHours     | r          | /{siteId}/{hardwareId}/KWHnet/Last |
 	+------+--------------------+------------+---------+------+-----------+-------------------+----------------+------------+------------------+----------------+------------------+---------------------+------------+------------------+---------------+---------------+------------+------------------------------------+
 	```
 
@@ -77,9 +75,7 @@ Detailed information about the datum stream, including its mapped properties.
 	1000,Solar Farm S1F2 PV,AlsoEnergy,true,n,123,"/S1F2/S1/B1/GEN/1
 	/S1F2/S1/B1/INV/1
 	/S1F2/S1/B1/INV/2",0 0/30 * * * *,222,AlsoEnergy Basic,121,AlsoEnergy,true,0,true,i,watts,r,/{siteId}/{hardwareId}/KW/Last
-	1000,Solar Farm S1F2 PV,AlsoEnergy,true,n,123,"/S1F2/S1/B1/GEN/1
-	/S1F2/S1/B1/INV/1
-	/S1F2/S1/B1/INV/2",0 0/30 * * * *,222,AlsoEnergy Basic,121,AlsoEnergy,true,1,true,a,wattHours,r,/{siteId}/{hardwareId}/KWHnet/Last
+	,,,,,,,,,,,,,1,true,a,wattHours,r,/{siteId}/{hardwareId}/KWHnet/Last
 	```
 
 === "JSON Output"
@@ -155,7 +151,7 @@ Detailed information about the datum stream, including its mapped properties.
 !!! note "Repeated rows in CSV and PRETTY output"
 
 	The CSV and PRETTY output will generate one row for each mapped property configured on the datum
-	stream, and repeat all the stream/mapping/integration details on each row. The **Property #**
+	stream, with empty stream/mapping/integration details on each row. The **Property #**
 	column shows the property index value (unique across all properties within the datum stream).
 
 [datum-stream]: https://github.com/SolarNetwork/solarnetwork/wiki/SolarUser-Cloud-Integrations-API#cloud-datum-stream
