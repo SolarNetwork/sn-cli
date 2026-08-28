@@ -39,7 +39,6 @@ import s10k.tool.c2c.domain.CloudDatumStreamMappingPropertyConfiguration;
 import s10k.tool.c2c.domain.CloudDatumStreamMappingPropertyInfo;
 import s10k.tool.c2c.domain.CloudDatumStreamValueType;
 import s10k.tool.c2c.domain.CloudIntegrationConfiguration;
-import s10k.tool.c2c.i9n.cmd.IntegrationsCmd;
 import s10k.tool.c2c.util.CloudIntegrationRestUtils;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.MergeMode;
@@ -59,11 +58,11 @@ import s10k.tool.common.util.TableUtils;
 		"Alternatively the configuration can be provided as JSON via standard input or via an @file.json parameter.%n", 
 		// @formatter:on
 })
-public class CreateMappingCmd extends BaseSubCmd<IntegrationsCmd> implements Callable<Integer> {
+public class CreateMappingCmd extends BaseSubCmd<MappingsCmd> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-i", "--integration-id" },
-			description = "the ID of the integration to update")
+			description = "the ID of the integration to assign")
 	@Nullable Long integrationId;
 
 	@Option(names = { "-m", "--name" },
@@ -166,7 +165,7 @@ public class CreateMappingCmd extends BaseSubCmd<IntegrationsCmd> implements Cal
 			if (!isDryRun()) {
 				mapping = createCloudDatumStreamMapping(restClient, objectMapper, settings);
 				if (!propertySettings.isEmpty()) {
-					properties = saveCloudDatumStreamMappingProperties(restClient, objectMapper, integrationId,
+					properties = saveCloudDatumStreamMappingProperties(restClient, objectMapper, mapping.configId(),
 							propertySettings);
 				}
 			} else {

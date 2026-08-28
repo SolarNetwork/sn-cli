@@ -39,10 +39,10 @@ A listing of matching mappings and their associated integrations and properties.
 
 === "List mappings (shortcut)"
 
-	You can use `c2c` instead of `cloud-integrations` and `map` instead of `mappings`:
+	You can use `c2c` instead of `cloud-integrations` and `maps` instead of `mappings`:
 
 	```sh
-	s10k c2c map list
+	s10k c2c maps list
 	```
 
 === "Pretty Output"

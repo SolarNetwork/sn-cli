@@ -118,10 +118,10 @@ The created mapping and associated properties.
 
 === "Create mapping (shortcut)"
 
-	You can use `c2c` instead of `cloud-integrations` and `map` instead of `mappings`:
+	You can use `c2c` instead of `cloud-integrations` and `maps` instead of `mappings`:
 
 	```sh
-	s10k c2c i9n create --name 'My Mapping' --integration-id 7 \
+	s10k c2c maps create --name 'My Mapping' --integration-id 7 \
 		--property 'i,watts,r,/{siteId}/inv/*/W' \
 		--property 'a,wattHours,r,/{siteId}/inv/*/TotWhExp'
 	```
