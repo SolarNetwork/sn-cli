@@ -6,6 +6,7 @@ import static net.solarnetwork.util.ObjectUtils.nonnull;
 import static s10k.tool.c2c.util.CloudIntegrationRestUtils.listCloudDatumStreamMappings;
 import static s10k.tool.common.util.TableUtils.tableConfig;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,9 +30,10 @@ import s10k.tool.c2c.domain.CloudDatumStreamMappingPropertyConfiguration;
 import s10k.tool.c2c.domain.CloudDatumStreamMappingPropertyInfo;
 import s10k.tool.c2c.domain.CloudIntegrationConfiguration;
 import s10k.tool.c2c.domain.CloudIntegrationsFilter;
-import s10k.tool.c2c.i9n.cmd.IntegrationsCmd;
 import s10k.tool.c2c.util.CloudIntegrationRestUtils;
 import s10k.tool.common.cmd.BaseSubCmd;
+import s10k.tool.common.domain.PrettyStyle;
+import s10k.tool.common.domain.ProfileProvider;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.OutputUtils;
 import s10k.tool.common.util.TableUtils;
@@ -44,7 +46,7 @@ import s10k.tool.common.util.TableUtils;
 		"List cloud datum stream mapping configurations matching search criteria.%n", 
 		// @formatter:on
 })
-public class ListMappingsCmd extends BaseSubCmd<IntegrationsCmd> implements Callable<Integer> {
+public class ListMappingsCmd extends BaseSubCmd<MappingsCmd> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-i", "--integration-id" },
@@ -91,49 +93,67 @@ public class ListMappingsCmd extends BaseSubCmd<IntegrationsCmd> implements Call
 				return 0;
 			}
 
-			final Map<Long, CloudIntegrationConfiguration> integrations = new HashMap<>(confs.size());
-			final Map<Long, List<CloudDatumStreamMappingPropertyConfiguration>> props = new HashMap<>(confs.size());
-			for (CloudDatumStreamMappingConfiguration conf : confs) {
-				final List<CloudDatumStreamMappingPropertyConfiguration> properties = CloudIntegrationRestUtils
-						.listCloudDatumStreamMappingProperties(restClient, objectMapper, conf.configId());
-				props.put(conf.configId(), properties);
-				if (!integrations.containsKey(conf.integrationId())) {
-					integrations.put(conf.integrationId(), CloudIntegrationRestUtils.viewCloudIntegration(restClient,
-							objectMapper, conf.integrationId()));
-				}
-			}
-
-			if (displayMode == ResultDisplayMode.JSON) {
-				List<CloudDatumStreamMappingInfo> infos = new ArrayList<>(confs.size());
-				for (CloudDatumStreamMappingConfiguration conf : confs) {
-					infos.add(CloudDatumStreamMappingInfo.mappingPropertiesInfo(conf,
-							nonnull(integrations.get(conf.integrationId()), "Integration"),
-							props.get(conf.configId())));
-				}
-				OutputUtils.writeJsonObject(objectMapper, infos);
-			} else {
-				final List<CloudDatumStreamMappingPropertyInfo> infos = new ArrayList<>();
-				for (CloudDatumStreamMappingConfiguration conf : confs) {
-					CloudIntegrationConfiguration integration = nonnull(integrations.get(conf.integrationId()),
-							"Integration");
-					List<CloudDatumStreamMappingPropertyConfiguration> properties = props.get(conf.configId());
-					if (properties == null || properties.isEmpty()) {
-						infos.add(new CloudDatumStreamMappingPropertyInfo(conf, integration, null));
-					} else {
-						for (CloudDatumStreamMappingPropertyConfiguration prop : properties) {
-							infos.add(new CloudDatumStreamMappingPropertyInfo(conf, integration, prop));
-						}
-					}
-				}
-				final Set<Long> lastSeenMapping = new HashSet<>(1);
-				final List<?> tableData = infos.stream().map(c -> tableDataRow(c, lastSeenMapping)).toList();
-				TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode, prettyStyle()),
-						objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
-			}
+			renderMappings(restClient, objectMapper, this, displayMode, prettyStyle(), confs);
 		} catch (Exception e) {
 			System.err.println("Error listing cloud datum stream mappings: %s".formatted(e.getMessage()));
 		}
 		return 1;
+	}
+
+	/**
+	 * Render a list of mapping configurations.
+	 * 
+	 * @param restClient      the REST client
+	 * @param objectMapper    the object mapper
+	 * @param profileProvider the profile provider
+	 * @param displayMode     the display mode
+	 * @param prettyStyle     the pretty style
+	 * @param confs           the configurations
+	 * @throws IOException if any IO error occurs
+	 */
+	public static void renderMappings(final RestClient restClient, final ObjectMapper objectMapper,
+			final @Nullable ProfileProvider profileProvider, final @Nullable ResultDisplayMode displayMode,
+			@Nullable PrettyStyle prettyStyle, final List<CloudDatumStreamMappingConfiguration> confs)
+			throws IOException {
+		final Map<Long, CloudIntegrationConfiguration> integrations = new HashMap<>(confs.size());
+		final Map<Long, List<CloudDatumStreamMappingPropertyConfiguration>> props = new HashMap<>(confs.size());
+		for (CloudDatumStreamMappingConfiguration conf : confs) {
+			final List<CloudDatumStreamMappingPropertyConfiguration> properties = CloudIntegrationRestUtils
+					.listCloudDatumStreamMappingProperties(restClient, objectMapper, conf.configId());
+			props.put(conf.configId(), properties);
+			if (!integrations.containsKey(conf.integrationId())) {
+				integrations.put(conf.integrationId(),
+						CloudIntegrationRestUtils.viewCloudIntegration(restClient, objectMapper, conf.integrationId()));
+			}
+		}
+
+		if (displayMode == ResultDisplayMode.JSON) {
+			List<CloudDatumStreamMappingInfo> infos = new ArrayList<>(confs.size());
+			for (CloudDatumStreamMappingConfiguration conf : confs) {
+				infos.add(CloudDatumStreamMappingInfo.mappingPropertiesInfo(conf,
+						nonnull(integrations.get(conf.integrationId()), "Integration"), props.get(conf.configId())));
+			}
+			OutputUtils.writeJsonObject(objectMapper, infos);
+		} else {
+			final List<CloudDatumStreamMappingPropertyInfo> infos = new ArrayList<>();
+			for (CloudDatumStreamMappingConfiguration conf : confs) {
+				CloudIntegrationConfiguration integration = nonnull(integrations.get(conf.integrationId()),
+						"Integration");
+				List<CloudDatumStreamMappingPropertyConfiguration> properties = props.get(conf.configId());
+				if (properties == null || properties.isEmpty()) {
+					infos.add(new CloudDatumStreamMappingPropertyInfo(conf, integration, null));
+				} else {
+					for (CloudDatumStreamMappingPropertyConfiguration prop : properties) {
+						infos.add(new CloudDatumStreamMappingPropertyInfo(conf, integration, prop));
+					}
+				}
+			}
+			final Set<Long> lastSeenMapping = new HashSet<>(1);
+			final List<?> tableData = infos.stream().map(c -> tableDataRow(c, lastSeenMapping)).toList();
+			TableUtils.renderTableData(tableDataColumns(), tableData,
+					tableConfig(profileProvider, displayMode, prettyStyle), objectMapper,
+					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+		}
 	}
 
 	private CloudIntegrationsFilter filter() {

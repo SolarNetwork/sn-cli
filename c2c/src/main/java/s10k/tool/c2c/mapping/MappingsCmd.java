@@ -10,6 +10,7 @@ import s10k.tool.common.cmd.BaseSubCmd;
 // @formatter:off
 @Command(name = "mappings", aliases = "maps", subcommands = {
 		CreateMappingCmd.class,
+		DeleteMappingsCmd.class,
 		ListMappingsCmd.class,
 })
 // @formatter:on

@@ -73,7 +73,7 @@ public class DeleteDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implement
 
 			if (!isDryRun()) {
 				for (CloudDatumStreamConfiguration stream : confs) {
-					deleteCloudDatumStream(restClient, objectMapper, stream.configId());
+					deleteCloudDatumStream(restClient, stream.configId());
 				}
 			}
 
@@ -93,11 +93,10 @@ public class DeleteDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implement
 	 * Delete a cloud datum stream.
 	 * 
 	 * @param restClient    the REST client
-	 * @param objectMapper  the object mapper
 	 * @param datumStreamId the datum stream ID to delete
 	 * @throws IllegalStateException if an error occurs fetching the stream
 	 */
-	public static void deleteCloudDatumStream(RestClient restClient, ObjectMapper objectMapper, Long datumStreamId) {
+	public static void deleteCloudDatumStream(RestClient restClient, Long datumStreamId) {
 		// @formatter:off
 		checkSuccess(restClient.delete()
 			.uri(b -> b.path("/solaruser/api/v1/sec/user/c2c/datum-streams/{datumStreamId}")
