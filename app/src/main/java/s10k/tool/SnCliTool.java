@@ -25,6 +25,7 @@ import s10k.tool.datum.cmd.DatumCmd;
 import s10k.tool.datum.imp.domain.DatumImportState;
 import s10k.tool.flux.cmd.FluxCmd;
 import s10k.tool.instructions.cmd.InstructionsCmd;
+import s10k.tool.locations.cmd.LocationsCmd;
 import s10k.tool.nodes.cmd.NodesCmd;
 import s10k.tool.sec.tokens.cmd.SecTokensCmd;
 import s10k.tool.user.cmd.BaseUserCmd;
@@ -63,6 +64,7 @@ public class SnCliTool implements CommandLineRunner, ExitCodeGenerator {
 				.addSubcommand(new DatumCmd())
 				.addSubcommand(new FluxCmd())
 				.addSubcommand(new InstructionsCmd())
+				.addSubcommand(new LocationsCmd())
 				.addSubcommand(new NodesCmd())
 				.addSubcommand(new SecTokensCmd())
 				.addSubcommand(new BaseUserCmd())

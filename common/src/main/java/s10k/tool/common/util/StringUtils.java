@@ -220,7 +220,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * Get a list of valid
+	 * Get a list of valid ordering keys.
 	 * 
 	 * @param <E>   the enum type with the valid order keys
 	 * @param keys  the order keys to validate
@@ -238,7 +238,7 @@ public final class StringUtils {
 			final String k = (descending ? key.substring(0, key.length() - 1) : key);
 			for (E enumVal : clazz.getEnumConstants()) {
 				if (k.equalsIgnoreCase(enumVal.name())) {
-					result.add(key.toLowerCase(Locale.ROOT));
+					result.add(enumVal.name().substring(0, 1).toLowerCase(Locale.ROOT) + enumVal.name().substring(1));
 				}
 			}
 		}

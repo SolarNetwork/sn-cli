@@ -28,7 +28,7 @@ s10k nodes list
 | `-c=` | `--country=` | a country code to match, like `NZ` or `US` |
 | `-loc=` | `--location-id=` | the location ID(s) to match |
 | `-M=` | `--max=` | the maximum number of records to return |
-| `-m=` | `--name=` | a case-insensitive name or description substring ot match |
+| `-m=` | `--name=` | a case-insensitive name or description substring to match |
 | `-node=` | `--node-id=` | the node ID(s) to match |
 | `-O=` | `--offset=` | start returning records from this offset, `0` being the first record |
 | `-sort=` | `--sort-by=` | the sort key(s) to order the results by, one of `created`, `name`, `node`, or `zone`; note that `zone` orders the results based on the time zone ID (name), not its offset from UTC |

@@ -49,6 +49,7 @@ dependencies {
 	implementation project(':sn-cli-datum')
 	implementation project(':sn-cli-flux')
 	implementation project(':sn-cli-instructions')
+	implementation project(':sn-cli-locations')
 	implementation project(':sn-cli-nodes')
 	implementation project(':sn-cli-sec-tokens')
 	implementation project(':sn-cli-user')

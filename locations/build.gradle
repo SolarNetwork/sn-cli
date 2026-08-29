@@ -1,0 +1,47 @@
+plugins {
+	id 'java-library'
+	id 'org.springframework.boot' version '3.5.16' apply false
+}
+
+apply plugin: 'java-library'
+apply plugin: 'io.spring.dependency-management'
+
+dependencyManagement {
+	imports {
+		mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+	}
+}
+
+description = 'sn-cli: Locations'
+
+base {
+	archivesName = 'sn-cli-locations'
+}
+
+dependencies {
+	implementation project(':sn-cli-common')
+	
+	// Core
+	implementation "info.picocli:picocli:${picoCliVersion}"
+	implementation 'org.springframework:spring-web'
+	implementation 'org.springframework.boot:spring-boot'
+
+	// JSON
+	implementation 'com.fasterxml.jackson.core:jackson-annotations'
+	implementation 'com.fasterxml.jackson.core:jackson-core'
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+	// Utilities
+	implementation "com.github.freva:ascii-table:${asciiTableVersion}"
+	implementation "de.siegmar:fastcsv:${fastCsvVersion}"
+	
+	// Annotations
+	annotationProcessor "info.picocli:picocli-codegen:${picoCliVersion}"
+	
+	// Testing
+	testImplementation project(':sn-cli-common-test')
+}
+
+jar.manifest {
+	attributes('Implementation-Version': version)
+}
