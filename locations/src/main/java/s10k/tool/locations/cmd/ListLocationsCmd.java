@@ -125,7 +125,7 @@ public class ListLocationsCmd extends BaseSubCmd<LocationsCmd> implements Callab
 					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
-			System.err.println("Error listing node metadata: %s".formatted(e.getMessage()));
+			System.err.println("Error listing locations: %s".formatted(e.getMessage()));
 		}
 		return 1;
 	}
@@ -175,7 +175,7 @@ public class ListLocationsCmd extends BaseSubCmd<LocationsCmd> implements Callab
 	 * @param restClient   the REST client
 	 * @param objectMapper the mapper to use
 	 * @param filter       the search criteria
-	 * @return the nodes
+	 * @return the locations
 	 */
 	public static List<BasicIdentityLocation> listLocations(final RestClient restClient,
 			final ObjectMapper objectMapper, final LocationFilter filter) {

@@ -48,7 +48,7 @@ A listing of matching locations. Each record contains the following properties:
 | Property | Description |
 |:---------|:------------|
 | **ID** | A unique identifier for the location. |
-| **Countr** | The country code, for example `NZ` or `US`. |
+| **Country** | The country code, for example `NZ` or `US`. |
 | **Region** | The region name. |
 | **Time Zone** | The time zone ID, for example `Pacific/Auckland` or `UTC`. |
 | **Locatlity** | The locality (city) name. |

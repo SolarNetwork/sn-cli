@@ -3,6 +3,9 @@ package s10k.tool.locations.domain;
 import static net.solarnetwork.util.StringUtils.commaDelimitedStringFromCollection;
 import static s10k.tool.common.util.StringUtils.orderByList;
 
+import java.util.List;
+import java.util.SequencedCollection;
+
 import org.jspecify.annotations.Nullable;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -16,6 +19,7 @@ import net.solarnetwork.domain.SimplePagination;
 public class LocationFilter extends SimplePagination {
 
 	private @Nullable SimpleLocation location;
+	private @Nullable SequencedCollection<LocationRequestStatus> requestStatuses;
 
 	/**
 	 * Constructor.
@@ -58,6 +62,10 @@ public class LocationFilter extends SimplePagination {
 			}
 		}
 
+		if (requestStatuses != null && !requestStatuses.isEmpty()) {
+			postBody.set("requestStatuses", commaDelimitedStringFromCollection(requestStatuses));
+		}
+
 		return postBody;
 	}
 
@@ -96,6 +104,48 @@ public class LocationFilter extends SimplePagination {
 	 */
 	public final void setLocation(@Nullable SimpleLocation location) {
 		this.location = location;
+	}
+
+	/**
+	 * Get the first location request status.
+	 *
+	 * <p>
+	 * This returns the first available state from the
+	 * {@link #getLocationRequestStatuses()} list, or {@code null} if not available.
+	 * </p>
+	 *
+	 * @return the first status, or {@code null} if not available
+	 */
+	public final @Nullable LocationRequestStatus getLocationRequestStatus() {
+		final SequencedCollection<LocationRequestStatus> array = getLocationRequestStatuses();
+		return (array != null && !array.isEmpty() ? array.getFirst() : null);
+	}
+
+	/**
+	 * Set the claimable job state.
+	 *
+	 * @param state the status to set
+	 */
+	public void setLocationRequestStatus(@Nullable LocationRequestStatus state) {
+		setLocationRequestStatuses(state != null ? List.of(state) : null);
+	}
+
+	/**
+	 * Get the location request statuses.
+	 * 
+	 * @return the statuses
+	 */
+	public final @Nullable SequencedCollection<LocationRequestStatus> getLocationRequestStatuses() {
+		return requestStatuses;
+	}
+
+	/**
+	 * Set the location request statuses.
+	 *
+	 * @param requestStatuses the statuses to set
+	 */
+	public final void setLocationRequestStatuses(@Nullable SequencedCollection<LocationRequestStatus> requestStatuses) {
+		this.requestStatuses = requestStatuses;
 	}
 
 }

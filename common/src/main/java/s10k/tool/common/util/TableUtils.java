@@ -440,9 +440,9 @@ public class TableUtils {
 
 	private static @Nullable String cellValue(@Nullable Object val, ZoneId zone) {
 		if (val instanceof Collection<?> c) {
-			val = StringUtils.commaDelimitedStringFromCollection(c);
+			val = StringUtils.delimitedStringFromCollection(c, ", ");
 		} else if (val instanceof Map<?, ?> m) {
-			val = StringUtils.delimitedStringFromMap(m);
+			val = StringUtils.delimitedStringFromMap(m, "=", ", ");
 		} else if (val instanceof Instant date) {
 			ZoneOffset offset = (zone instanceof ZoneOffset o ? o : zone.getRules().getOffset(date));
 			val = ISO_DATE_OPT_TIME_ALT_LOCAL.format(local(date, zone)) + offset;

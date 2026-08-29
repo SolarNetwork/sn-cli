@@ -297,7 +297,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param state the state to set
 	 */
-	public void setClaimableJobState(@Nullable ClaimableJobState state) {
+	public final void setClaimableJobState(@Nullable ClaimableJobState state) {
 		setClaimableJobStates(state != null ? List.of(state) : null);
 	}
 
@@ -413,7 +413,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @return the first name, or {@code null} if not available
 	 */
-	public @Nullable String getName() {
+	public final @Nullable String getName() {
 		final SequencedCollection<String> array = getNames();
 		return (array != null && !array.isEmpty() ? array.getFirst() : null);
 	}
@@ -423,7 +423,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param name the identifier to set
 	 */
-	public void setName(@Nullable String name) {
+	public final void setName(@Nullable String name) {
 		setNames(names != null ? List.of(name) : null);
 	}
 
@@ -455,7 +455,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @return the first service identifier, or {@code null} if not available
 	 */
-	public @Nullable String getServiceIdentifier() {
+	public final @Nullable String getServiceIdentifier() {
 		final SequencedCollection<String> array = getServiceIdentifiers();
 		return (array != null && !array.isEmpty() ? array.getFirst() : null);
 	}
@@ -465,7 +465,7 @@ public class CloudIntegrationsFilter extends SimplePagination {
 	 *
 	 * @param serviceIdentifier the identifier to set
 	 */
-	public void setServiceIdentifier(@Nullable String serviceIdentifier) {
+	public final void setServiceIdentifier(@Nullable String serviceIdentifier) {
 		setServiceIdentifiers(serviceIdentifiers != null ? List.of(serviceIdentifier) : null);
 	}
 
