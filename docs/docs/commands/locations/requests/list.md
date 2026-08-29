@@ -42,13 +42,13 @@ A listing of matching location requests. Each record contains the following prop
 
 ## Examples
 
-=== "List locations"
+=== "List requests"
 
 	```sh
 	s10k locations requests list --status Completed
 	```
 
-=== "List locations (shortcut)"
+=== "List requests (shortcut)"
 
 	You can use `locs` instead of `locations` and `reqs` instead of `requests`:
 
