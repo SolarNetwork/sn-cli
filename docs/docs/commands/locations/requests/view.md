@@ -62,13 +62,13 @@ The location request information.
 === "CSV Output"
 
 	```csv
-ID,Created,Modified,Status,Location ID,Source ID,Features,Info,Message
-3,2026-08-30 17:30:10.387888+12:00,2026-08-30 17:30:10.387888+12:00,Submitted,,OpenWeatherMap,"weather, forecast, day","name     Wellington
-zone     Pacific/Auckland
-region   Wellington
-country  NZ
-locality Wellington
-",
+	ID,Created,Modified,Status,Location ID,Source ID,Features,Info,Message
+	3,2026-08-30 17:30:10.387888+12:00,2026-08-30 17:30:10.387888+12:00,Submitted,,OpenWeatherMap,"weather, forecast, day","name     Wellington
+	zone     Pacific/Auckland
+	region   Wellington
+	country  NZ
+	locality Wellington
+	",
 	```
 
 === "JSON Output"
