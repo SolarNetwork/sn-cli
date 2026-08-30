@@ -238,7 +238,8 @@ public final class StringUtils {
 			final String k = (descending ? key.substring(0, key.length() - 1) : key);
 			for (E enumVal : clazz.getEnumConstants()) {
 				if (k.equalsIgnoreCase(enumVal.name())) {
-					result.add(enumVal.name().substring(0, 1).toLowerCase(Locale.ROOT) + enumVal.name().substring(1));
+					result.add(enumVal.name().substring(0, 1).toLowerCase(Locale.ROOT) + enumVal.name().substring(1)
+							+ (descending ? "~" : ""));
 				}
 			}
 		}
