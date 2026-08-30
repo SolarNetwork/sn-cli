@@ -32,7 +32,7 @@ import s10k.tool.datum.imp.util.DatumImportRestUtils;
 
 		"Once retracted, the job will transition to the @|bold Retracted|@ state, and begin processing",
 		"at some point in the future.%n" })
-public class RetractImportCmd extends BaseSubCmd<DatumImportsCmd> implements Callable<Integer> {
+public class RetractImportCmd extends BaseSubCmd<DatumImportsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-j", "--job-id" },

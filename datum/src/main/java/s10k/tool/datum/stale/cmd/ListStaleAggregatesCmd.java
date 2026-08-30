@@ -31,7 +31,7 @@ import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.DateUtils;
 import s10k.tool.common.util.RestUtils;
 import s10k.tool.common.util.TableUtils;
-import s10k.tool.datum.cmd.DatumCmd;
+import s10k.tool.datum.cmd.DatumGroup;
 import s10k.tool.datum.domain.DatumFilter;
 import s10k.tool.datum.stale.domain.StaleNodeDatumAggregate;
 
@@ -43,7 +43,7 @@ import s10k.tool.datum.stale.domain.StaleNodeDatumAggregate;
 
 		"SolarNetwork continuously processes stale datum aggregate records, and the",
 		"records are removed when the associated aggregate period is no longer stale.%n" })
-public class ListStaleAggregatesCmd extends BaseSubCmd<DatumCmd> implements Callable<Integer> {
+public class ListStaleAggregatesCmd extends BaseSubCmd<DatumGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-node", "--node-id" },

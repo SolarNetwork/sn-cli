@@ -69,7 +69,7 @@ import s10k.tool.datum.domain.DatumFilter;
  */
 @Component
 @Command(name = "list", sortSynopsis = false, showDefaultValues = true)
-public class ListDatumCmd extends BaseSubCmd<DatumCmd> implements Callable<Integer> {
+public class ListDatumCmd extends BaseSubCmd<DatumGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-stream", "--stream-id" },

@@ -27,7 +27,7 @@ import s10k.tool.locations.domain.LocationRequest;
  */
 @Command(name = "view", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"View a location request record.%n" })
-public class ViewLocationRequestCmd extends BaseSubCmd<LocationsRequestsCmd> implements Callable<Integer> {
+public class ViewLocationRequestCmd extends BaseSubCmd<LocationsRequestsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-r", "--request-id" },

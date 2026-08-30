@@ -31,7 +31,7 @@ import s10k.tool.instructions.domain.InstructionsFilter;
  */
 @Component
 @Command(name = "list", sortSynopsis = false, showDefaultValues = true)
-public class ListInstructionsCmd extends BaseSubCmd<InstructionsCmd> implements Callable<Integer> {
+public class ListInstructionsCmd extends BaseSubCmd<InstructionsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-id", "--instruction-id" },

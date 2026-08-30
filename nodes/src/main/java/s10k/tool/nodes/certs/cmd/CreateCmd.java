@@ -51,7 +51,7 @@ import s10k.tool.nodes.util.NodeUtils;
 		""",
 		// @formatter:on
 })
-public class CreateCmd extends BaseSubCmd<CertificatesCmd> implements Callable<Integer> {
+public class CreateCmd extends BaseSubCmd<CertificatesGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-tz", "--time-zone" },

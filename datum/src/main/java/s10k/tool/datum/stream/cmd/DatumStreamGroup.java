@@ -2,7 +2,7 @@ package s10k.tool.datum.stream.cmd;
 
 import picocli.CommandLine.Command;
 import s10k.tool.common.cmd.BaseSubCmd;
-import s10k.tool.datum.cmd.DatumCmd;
+import s10k.tool.datum.cmd.DatumGroup;
 
 /**
  * Datum stream commands.
@@ -15,6 +15,6 @@ import s10k.tool.datum.cmd.DatumCmd;
 		ViewDatumStreamMetadataCmd.class
 })
 // @formatter:on
-public class DatumStreamCmd extends BaseSubCmd<DatumCmd> {
+public class DatumStreamGroup extends BaseSubCmd<DatumGroup> {
 
 }

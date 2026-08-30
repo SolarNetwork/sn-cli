@@ -27,7 +27,7 @@ import s10k.tool.datum.imp.domain.DatumImportTaskInfo;
  */
 @Command(name = "monitor", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"Monitor the status of a datum import job.%n" })
-public class MonitorImportCmd extends BaseSubCmd<DatumImportsCmd> implements Callable<Integer> {
+public class MonitorImportCmd extends BaseSubCmd<DatumImportsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-j", "--job-id" },

@@ -57,7 +57,7 @@ import s10k.tool.common.util.TableUtils.TableConfiguration;
  * Identify Cloud Datum Stream potential issues.
  */
 @Command(name = "report", sortSynopsis = false, showDefaultValues = true)
-public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsCmd> implements Callable<Integer> {
+public class DatumStreamsReportCmd extends BaseSubCmd<DatumStreamsGroup> implements Callable<Integer> {
 
 	public static final Duration DEFAULT_LAG_THRESHOLD = Duration.ofDays(3);
 

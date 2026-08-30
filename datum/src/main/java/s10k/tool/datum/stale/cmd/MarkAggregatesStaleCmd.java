@@ -26,7 +26,7 @@ import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.DateUtils;
 import s10k.tool.common.util.RestUtils;
 import s10k.tool.common.util.TableUtils;
-import s10k.tool.datum.cmd.DatumCmd;
+import s10k.tool.datum.cmd.DatumGroup;
 import s10k.tool.datum.domain.DatumFilter;
 import s10k.tool.datum.stale.domain.StaleNodeDatumAggregate;
 
@@ -37,7 +37,7 @@ import s10k.tool.datum.stale.domain.StaleNodeDatumAggregate;
 		"Mark aggregate records for time ranges of datum streams as @|bold stale|@.",
 		"This will cause SolarNetwork to recalculate the stale aggregate records,",
 		"including any enclosing higher-level aggregate records.%n" })
-public class MarkAggregatesStaleCmd extends BaseSubCmd<DatumCmd> implements Callable<Integer> {
+public class MarkAggregatesStaleCmd extends BaseSubCmd<DatumGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-node", "--node-id" },

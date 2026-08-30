@@ -1,7 +1,7 @@
 package s10k.tool.c2c.ds.rake.cmd;
 
 import picocli.CommandLine.Command;
-import s10k.tool.c2c.ds.cmd.DatumStreamsCmd;
+import s10k.tool.c2c.ds.cmd.DatumStreamsGroup;
 import s10k.tool.common.cmd.BaseSubCmd;
 
 /**
@@ -14,6 +14,6 @@ import s10k.tool.common.cmd.BaseSubCmd;
 		ListTasksCmd.class,
 })
 // @formatter:on
-public class RakeTasksCmd extends BaseSubCmd<DatumStreamsCmd> {
+public class RakeTasksGroup extends BaseSubCmd<DatumStreamsGroup> {
 
 }

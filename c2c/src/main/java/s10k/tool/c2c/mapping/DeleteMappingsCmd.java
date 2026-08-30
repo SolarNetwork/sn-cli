@@ -31,7 +31,7 @@ import s10k.tool.common.domain.ResultDisplayMode;
 		"When deleting a mapping, all associated properties are deleted as well, and any cloud datum streams referencing the deleted mapping will have their mapping association nullified.", 
 		// @formatter:on
 })
-public class DeleteMappingsCmd extends BaseSubCmd<MappingsCmd> implements Callable<Integer> {
+public class DeleteMappingsCmd extends BaseSubCmd<MappingsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-map", "--mapping-id" },

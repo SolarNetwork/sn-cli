@@ -37,7 +37,7 @@ import s10k.tool.common.util.OutputUtils;
 		""",
 		// @formatter:on
 })
-public class DownloadCmd extends BaseSubCmd<CertificatesCmd> implements Callable<Integer> {
+public class DownloadCmd extends BaseSubCmd<CertificatesGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-node", "--node-id" },

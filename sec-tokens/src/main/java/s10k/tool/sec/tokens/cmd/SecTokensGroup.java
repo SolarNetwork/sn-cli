@@ -15,6 +15,6 @@ import s10k.tool.common.cmd.ToolCmd;
 		UpdateSecTokenCmd.class,
 })
 //@formatter:on
-public class SecTokensCmd extends BaseSubCmd<ToolCmd> {
+public class SecTokensGroup extends BaseSubCmd<ToolCmd> {
 
 }

@@ -63,7 +63,7 @@ import s10k.tool.nodes.domain.UserNodeInfo;
  */
 @Component("createRakeTasksCmd")
 @Command(name = "create", sortSynopsis = false, showDefaultValues = true)
-public class CreateTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable<Integer> {
+public class CreateTasksCmd extends BaseSubCmd<RakeTasksGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-stream", "--stream-id" },

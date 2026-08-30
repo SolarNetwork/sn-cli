@@ -38,7 +38,7 @@ import s10k.tool.common.util.TableUtils;
  */
 @Component
 @Command(name = "view")
-public class ViewDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> implements Callable<Integer> {
+public class ViewDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-stream", "--stream-id" }, description = "the stream ID to view metadata for", required = true)

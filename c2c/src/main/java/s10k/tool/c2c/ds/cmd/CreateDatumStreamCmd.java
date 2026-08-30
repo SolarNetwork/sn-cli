@@ -51,7 +51,7 @@ import s10k.tool.common.util.TableUtils;
 		"in the @|bold Cloud Datum Stream create|@ API in SolarNetwork.%n", 
 		// @formatter:on
 })
-public class CreateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements Callable<Integer> {
+public class CreateDatumStreamCmd extends BaseSubCmd<DatumStreamsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-g", "--merge-mode" },

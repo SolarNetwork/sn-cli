@@ -58,7 +58,7 @@ import s10k.tool.common.util.TableUtils;
 		"Alternatively the configuration can be provided as JSON via standard input or via an @file.json parameter.%n", 
 		// @formatter:on
 })
-public class CreateMappingCmd extends BaseSubCmd<MappingsCmd> implements Callable<Integer> {
+public class CreateMappingCmd extends BaseSubCmd<MappingsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-i", "--integration-id" },

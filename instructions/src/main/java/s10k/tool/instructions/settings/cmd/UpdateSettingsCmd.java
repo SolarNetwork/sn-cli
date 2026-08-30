@@ -57,7 +57,7 @@ import s10k.tool.instructions.util.InstructionsUtils;
 		"column. The header names are case-insensitive.%n",
 })
 // @formatter:on
-public class UpdateSettingsCmd extends BaseSubCmd<SettingsCmd> implements Callable<Integer> {
+public class UpdateSettingsCmd extends BaseSubCmd<SettingsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-s", "--service-id" },

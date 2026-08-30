@@ -45,7 +45,7 @@ import s10k.tool.common.util.TableUtils.TableConfiguration;
  * Query for Cloud Datum Stream datum.
  */
 @Command(name = "datum", sortSynopsis = false, showDefaultValues = true)
-public class ListDatumStreamDatumCmd extends BaseSubCmd<DatumStreamsCmd> implements Callable<Integer> {
+public class ListDatumStreamDatumCmd extends BaseSubCmd<DatumStreamsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-stream", "--stream-id" },

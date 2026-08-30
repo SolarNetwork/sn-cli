@@ -1,7 +1,7 @@
 package s10k.tool.instructions.cmd;
 
 import static s10k.tool.common.util.TableUtils.tableConfig;
-import static s10k.tool.instructions.cmd.InstructionsCmd.TOPIC_SYSTEM_CONFIGURATION;
+import static s10k.tool.instructions.cmd.InstructionsGroup.TOPIC_SYSTEM_CONFIGURATION;
 import static s10k.tool.instructions.util.InstructionsUtils.executeInstruction;
 import static s10k.tool.instructions.util.InstructionsUtils.parseCompressedResultList;
 
@@ -35,7 +35,7 @@ import s10k.tool.instructions.util.InstructionsUtils.ServiceInfo;
  */
 @Component
 @Command(name = "list-services", sortSynopsis = false, showDefaultValues = true)
-public class ListServicesCmd extends BaseSubCmd<InstructionsCmd> implements Callable<Integer> {
+public class ListServicesCmd extends BaseSubCmd<InstructionsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-node", "--node-id" },
@@ -70,7 +70,7 @@ public class ListServicesCmd extends BaseSubCmd<InstructionsCmd> implements Call
 			final ResultDisplayMode displayMode = displayMode(this.displayMode);
 
 			final BasicInstruction instr = new BasicInstruction(null, TOPIC_SYSTEM_CONFIGURATION, null, null);
-			instr.addParameter(InstructionsCmd.PARAM_SERVICE, InstructionsCmd.SYSTEM_CONFIGURATION_SETTINGS_SERVICE);
+			instr.addParameter(InstructionsGroup.PARAM_SERVICE, InstructionsGroup.SYSTEM_CONFIGURATION_SETTINGS_SERVICE);
 			instr.addParameter("compress", "true");
 			if (listComponentInstance) {
 				instr.addParameter("uid", componentId);

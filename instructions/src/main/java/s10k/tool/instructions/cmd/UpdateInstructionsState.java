@@ -34,7 +34,7 @@ import s10k.tool.instructions.domain.InstructionsFilter;
  */
 @Component
 @Command(name = "update-state")
-public class UpdateInstructionsState extends BaseSubCmd<InstructionsCmd> implements Callable<Integer> {
+public class UpdateInstructionsState extends BaseSubCmd<InstructionsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-id", "--instruction-id" },

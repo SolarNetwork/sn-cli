@@ -40,7 +40,7 @@ import s10k.tool.datum.domain.DatumFilter;
  */
 @Component
 @Command(name = "date-range", aliases = "range", sortSynopsis = false, showDefaultValues = true)
-public class DatumRangeCmd extends BaseSubCmd<DatumCmd> implements Callable<Integer> {
+public class DatumRangeCmd extends BaseSubCmd<DatumGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@ArgGroup(exclusive = true, multiplicity = "1")

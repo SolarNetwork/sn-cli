@@ -32,7 +32,7 @@ import s10k.tool.common.util.TableUtils;
  */
 @Component
 @Command(name = "list", sortSynopsis = false, showDefaultValues = true)
-public class ListIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implements Callable<Integer> {
+public class ListIntegrationsCmd extends BaseSubCmd<IntegrationsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@ArgGroup(exclusive = true, multiplicity = "0..1")

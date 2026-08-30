@@ -36,7 +36,7 @@ import s10k.tool.common.util.TableUtils;
  */
 @Component
 @Command(name = "sources", sortSynopsis = false, showDefaultValues = true)
-public class ListSourcesCmd extends BaseSubCmd<NodesCmd> implements Callable<Integer> {
+public class ListSourcesCmd extends BaseSubCmd<NodesGroup> implements Callable<Integer> {
 
 	// @formatter:off	
 	@Option(names = { "-node", "--node-id" },

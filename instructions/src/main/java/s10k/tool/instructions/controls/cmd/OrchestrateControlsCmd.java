@@ -29,7 +29,7 @@ import s10k.tool.instructions.domain.InstructionRequest;
  */
 @Component
 @Command(name = "orchestrate", sortSynopsis = false, showDefaultValues = true)
-public class OrchestrateControlsCmd extends BaseSubCmd<ControlsCmd> implements Callable<Integer> {
+public class OrchestrateControlsCmd extends BaseSubCmd<ControlsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-param", "--parameter" },

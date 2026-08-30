@@ -47,7 +47,7 @@ import s10k.tool.common.util.TableUtils;
 		""",
 		// @formatter:on
 })
-public class RenameDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamCmd> implements Callable<Integer> {
+public class RenameDatumStreamMetadataCmd extends BaseSubCmd<DatumStreamGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-stream", "--stream-id" },

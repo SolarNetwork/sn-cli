@@ -21,7 +21,7 @@ import s10k.tool.common.cmd.BaseSubCmd;
  */
 @Component
 @Command(name = "delete", sortSynopsis = false, showDefaultValues = true)
-public class DeleteSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Callable<Integer> {
+public class DeleteSecTokenCmd extends BaseSubCmd<SecTokensGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-id", "--identifier" },

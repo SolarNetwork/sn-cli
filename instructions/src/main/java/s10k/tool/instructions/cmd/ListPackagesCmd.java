@@ -1,7 +1,7 @@
 package s10k.tool.instructions.cmd;
 
 import static s10k.tool.common.util.TableUtils.tableConfig;
-import static s10k.tool.instructions.cmd.InstructionsCmd.TOPIC_SYSTEM_CONFIGURATION;
+import static s10k.tool.instructions.cmd.InstructionsGroup.TOPIC_SYSTEM_CONFIGURATION;
 import static s10k.tool.instructions.util.InstructionsUtils.executeInstruction;
 import static s10k.tool.instructions.util.InstructionsUtils.parseCompressedResultList;
 
@@ -34,7 +34,7 @@ import s10k.tool.instructions.domain.InstructionRequest;
  */
 @Component
 @Command(name = "list-packages", sortSynopsis = false, showDefaultValues = true)
-public class ListPackagesCmd extends BaseSubCmd<InstructionsCmd> implements Callable<Integer> {
+public class ListPackagesCmd extends BaseSubCmd<InstructionsGroup> implements Callable<Integer> {
 
 	/** The service name for listing packages. */
 	public static final String PACKAGES_SERVICE = "net.solarnetwork.node.packages";
@@ -99,7 +99,7 @@ public class ListPackagesCmd extends BaseSubCmd<InstructionsCmd> implements Call
 			final ResultDisplayMode displayMode = displayMode(this.displayMode);
 
 			final BasicInstruction instr = new BasicInstruction(null, TOPIC_SYSTEM_CONFIGURATION, null, null);
-			instr.addParameter(InstructionsCmd.PARAM_SERVICE, PACKAGES_SERVICE);
+			instr.addParameter(InstructionsGroup.PARAM_SERVICE, PACKAGES_SERVICE);
 			instr.addParameter("compress", "true");
 
 			if (filter != null && !filter.isBlank()) {

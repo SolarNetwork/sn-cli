@@ -46,7 +46,7 @@ import s10k.tool.common.util.TableUtils;
 		"List cloud datum stream mapping configurations matching search criteria.%n", 
 		// @formatter:on
 })
-public class ListMappingsCmd extends BaseSubCmd<MappingsCmd> implements Callable<Integer> {
+public class ListMappingsCmd extends BaseSubCmd<MappingsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-i", "--integration-id" },

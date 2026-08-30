@@ -49,7 +49,7 @@ import s10k.tool.common.util.TableUtils;
 		"in the @|bold Cloud Datum Stream update|@ API in SolarNetwork. The given settings",
 		"will be merged into the existing settings unless the @|bold --replace|@ option is given",
 		"in which case the given JSON will completely replace the existing settings.%n", })
-public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsCmd> implements Callable<Integer> {
+public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-stream", "--stream-id" },

@@ -15,20 +15,20 @@ import net.solarnetwork.domain.datum.ObjectDatumKind;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.IFactory;
-import s10k.tool.c2c.cmd.CloudIntegrationsCmd;
+import s10k.tool.c2c.cmd.CloudIntegrationsGroup;
 import s10k.tool.common.cmd.ToolCmd;
 import s10k.tool.common.cmd.VersionCmd;
 import s10k.tool.common.domain.ClaimableJobState;
 import s10k.tool.common.domain.EnabledOrDisabled;
 import s10k.tool.common.util.StringUtils;
-import s10k.tool.datum.cmd.DatumCmd;
+import s10k.tool.datum.cmd.DatumGroup;
 import s10k.tool.datum.imp.domain.DatumImportState;
-import s10k.tool.flux.cmd.FluxCmd;
-import s10k.tool.instructions.cmd.InstructionsCmd;
-import s10k.tool.locations.cmd.LocationsCmd;
-import s10k.tool.nodes.cmd.NodesCmd;
-import s10k.tool.sec.tokens.cmd.SecTokensCmd;
-import s10k.tool.user.cmd.BaseUserCmd;
+import s10k.tool.flux.cmd.FluxGroup;
+import s10k.tool.instructions.cmd.InstructionsGroup;
+import s10k.tool.locations.cmd.LocationsGroup;
+import s10k.tool.nodes.cmd.NodesGroup;
+import s10k.tool.sec.tokens.cmd.SecTokensGroup;
+import s10k.tool.user.cmd.UserGroup;
 
 /**
  * SolarNetwork command-line tool.
@@ -60,14 +60,14 @@ public class SnCliTool implements CommandLineRunner, ExitCodeGenerator {
 		exitCode = new CommandLine(app, factory)
 				.setExecutionStrategy(app::globalInit)
 				.addSubcommand(new VersionCmd())
-				.addSubcommand(new CloudIntegrationsCmd())
-				.addSubcommand(new DatumCmd())
-				.addSubcommand(new FluxCmd())
-				.addSubcommand(new InstructionsCmd())
-				.addSubcommand(new LocationsCmd())
-				.addSubcommand(new NodesCmd())
-				.addSubcommand(new SecTokensCmd())
-				.addSubcommand(new BaseUserCmd())
+				.addSubcommand(new CloudIntegrationsGroup())
+				.addSubcommand(new DatumGroup())
+				.addSubcommand(new FluxGroup())
+				.addSubcommand(new InstructionsGroup())
+				.addSubcommand(new LocationsGroup())
+				.addSubcommand(new NodesGroup())
+				.addSubcommand(new SecTokensGroup())
+				.addSubcommand(new UserGroup())
 				.setCaseInsensitiveEnumValuesAllowed(true)
 				.registerConverter(ClaimableJobState.class, ClaimableJobState::fromValue)
 				.registerConverter(DatumImportState.class, DatumImportState::fromValue)

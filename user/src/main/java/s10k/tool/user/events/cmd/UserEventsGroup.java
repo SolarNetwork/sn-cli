@@ -2,7 +2,7 @@ package s10k.tool.user.events.cmd;
 
 import picocli.CommandLine.Command;
 import s10k.tool.common.cmd.BaseSubCmd;
-import s10k.tool.user.cmd.BaseUserCmd;
+import s10k.tool.user.cmd.UserGroup;
 
 /**
  * User events commands.
@@ -12,6 +12,6 @@ import s10k.tool.user.cmd.BaseUserCmd;
 		ListUserEventsCmd.class,
 })
 //@formatter:on
-public class BaseUserEventsCmd extends BaseSubCmd<BaseUserCmd> {
+public class UserEventsGroup extends BaseSubCmd<UserGroup> {
 
 }

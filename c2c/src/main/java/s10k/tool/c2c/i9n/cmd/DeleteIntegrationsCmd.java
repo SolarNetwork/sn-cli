@@ -28,7 +28,7 @@ import s10k.tool.common.util.TableUtils;
  */
 @Command(name = "delete", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"Delete Cloud Integration entities.%n" })
-public class DeleteIntegrationsCmd extends BaseSubCmd<IntegrationsCmd> implements Callable<Integer> {
+public class DeleteIntegrationsCmd extends BaseSubCmd<IntegrationsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-i", "--integration-id" },

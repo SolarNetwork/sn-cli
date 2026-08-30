@@ -26,7 +26,7 @@ import s10k.tool.instructions.domain.InstructionRequest;
  */
 @Component
 @Command(name = "signal", sortSynopsis = false, showDefaultValues = true)
-public class SignalCmd extends BaseSubCmd<ControlsCmd> implements Callable<Integer> {
+public class SignalCmd extends BaseSubCmd<ControlsGroup> implements Callable<Integer> {
 
 	@Parameters(index = "0", description = "the signal to send", paramLabel = "signalName")
 	String value;

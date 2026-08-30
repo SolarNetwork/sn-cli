@@ -37,7 +37,7 @@ import s10k.tool.sec.tokens.domain.SecurityTokenType;
  */
 @Component
 @Command(name = "create", sortSynopsis = false, showDefaultValues = true)
-public class CreateSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Callable<Integer> {
+public class CreateSecTokenCmd extends BaseSubCmd<SecTokensGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-t", "--type" },

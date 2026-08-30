@@ -15,6 +15,6 @@ import s10k.tool.common.cmd.ToolCmd;
 		ReportCmd.class,
 })
 //@formatter:on
-public class CertificatesCmd extends BaseSubCmd<ToolCmd> {
+public class CertificatesGroup extends BaseSubCmd<ToolCmd> {
 
 }

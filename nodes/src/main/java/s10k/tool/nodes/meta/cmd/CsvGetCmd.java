@@ -32,7 +32,7 @@ import s10k.tool.nodes.domain.NodeMetadata;
  */
 @Component
 @Command(name = "csv-get", aliases = "csv")
-public class CsvGetCmd extends BaseSubCmd<NodeMetadataCmd> implements Callable<Integer> {
+public class CsvGetCmd extends BaseSubCmd<NodeMetadataGroup> implements Callable<Integer> {
 
 	@Option(names = { "-node", "--node-id" }, description = "a node ID to get metadata from", required = true)
 	Long nodeId;

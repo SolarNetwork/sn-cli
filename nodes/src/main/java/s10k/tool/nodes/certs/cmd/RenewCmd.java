@@ -40,7 +40,7 @@ import s10k.tool.nodes.domain.NodeCertificateInfo;
 		""",
 		// @formatter:on
 })
-public class RenewCmd extends BaseSubCmd<CertificatesCmd> implements Callable<Integer> {
+public class RenewCmd extends BaseSubCmd<CertificatesGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-node", "--node-id" },

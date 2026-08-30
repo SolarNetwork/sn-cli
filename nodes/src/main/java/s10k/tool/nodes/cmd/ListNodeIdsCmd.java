@@ -28,7 +28,7 @@ import s10k.tool.common.util.TableUtils;
  */
 @Component
 @Command(name = "ids")
-public class ListNodeIdsCmd extends BaseSubCmd<NodesCmd> implements Callable<Integer> {
+public class ListNodeIdsCmd extends BaseSubCmd<NodesGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-mode", "--display-mode" },

@@ -27,7 +27,7 @@ import s10k.tool.locations.domain.LocationRequest;
  */
 @Command(name = "delete", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"Delete a location request record.%n" })
-public class DeleteRequestCmd extends BaseSubCmd<LocationsRequestsCmd> implements Callable<Integer> {
+public class DeleteRequestCmd extends BaseSubCmd<LocationsRequestsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-r", "--request-id" },

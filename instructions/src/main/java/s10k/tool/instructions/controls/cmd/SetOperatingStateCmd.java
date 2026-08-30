@@ -27,7 +27,7 @@ import s10k.tool.instructions.domain.InstructionRequest;
  */
 @Component
 @Command(name = "set-operating-state", aliases = "set-op-state", sortSynopsis = false, showDefaultValues = true)
-public class SetOperatingStateCmd extends BaseSubCmd<ControlsCmd> implements Callable<Integer> {
+public class SetOperatingStateCmd extends BaseSubCmd<ControlsGroup> implements Callable<Integer> {
 
 	@Parameters(index = "0", description = "the operating state to set", paramLabel = "desiredState")
 	DeviceOperatingState value;

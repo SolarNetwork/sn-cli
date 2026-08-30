@@ -4,7 +4,7 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.ScopeType;
 import s10k.tool.common.cmd.BaseSubCmd;
-import s10k.tool.instructions.cmd.InstructionsCmd;
+import s10k.tool.instructions.cmd.InstructionsGroup;
 
 /**
  * Settings commands.
@@ -15,7 +15,7 @@ import s10k.tool.instructions.cmd.InstructionsCmd;
 		ViewSettingsCmd.class,
 })
 // @formatter:on
-public class SettingsCmd extends BaseSubCmd<InstructionsCmd> {
+public class SettingsGroup extends BaseSubCmd<InstructionsGroup> {
 
 	// @formatter:off
 	@Option(names = { "-node", "--node-id" },

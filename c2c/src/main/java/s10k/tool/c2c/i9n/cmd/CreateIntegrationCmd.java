@@ -49,7 +49,7 @@ import s10k.tool.common.util.TableUtils;
 		"in the @|bold Cloud Integration create|@ API in SolarNetwork.%n", 
 		// @formatter:on
 })
-public class CreateIntegrationCmd extends BaseSubCmd<IntegrationsCmd> implements Callable<Integer> {
+public class CreateIntegrationCmd extends BaseSubCmd<IntegrationsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-m", "--name" },

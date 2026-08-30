@@ -1,7 +1,7 @@
 package s10k.tool.instructions.settings.cmd;
 
 import static s10k.tool.common.util.TableUtils.tableConfig;
-import static s10k.tool.instructions.cmd.InstructionsCmd.TOPIC_SYSTEM_CONFIGURATION;
+import static s10k.tool.instructions.cmd.InstructionsGroup.TOPIC_SYSTEM_CONFIGURATION;
 import static s10k.tool.instructions.util.InstructionsUtils.executeInstruction;
 import static s10k.tool.instructions.util.InstructionsUtils.parseCompressedResultList;
 
@@ -30,7 +30,7 @@ import picocli.CommandLine.Option;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.TableUtils;
-import s10k.tool.instructions.cmd.InstructionsCmd;
+import s10k.tool.instructions.cmd.InstructionsGroup;
 import s10k.tool.instructions.domain.InstructionRequest;
 
 /**
@@ -38,7 +38,7 @@ import s10k.tool.instructions.domain.InstructionRequest;
  */
 @Component
 @Command(name = "view", sortSynopsis = false, showDefaultValues = true)
-public class ViewSettingsCmd extends BaseSubCmd<SettingsCmd> implements Callable<Integer> {
+public class ViewSettingsCmd extends BaseSubCmd<SettingsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-s", "--service-id" },
@@ -89,7 +89,7 @@ public class ViewSettingsCmd extends BaseSubCmd<SettingsCmd> implements Callable
 			final ResultDisplayMode displayMode = displayMode(this.displayMode);
 
 			final BasicInstruction instr = new BasicInstruction(null, TOPIC_SYSTEM_CONFIGURATION, null, null);
-			instr.addParameter(InstructionsCmd.PARAM_SERVICE, InstructionsCmd.SYSTEM_CONFIGURATION_SETTINGS_SERVICE);
+			instr.addParameter(InstructionsGroup.PARAM_SERVICE, InstructionsGroup.SYSTEM_CONFIGURATION_SETTINGS_SERVICE);
 			instr.addParameter("compress", "true");
 			if (viewComponentInstance) {
 				instr.addParameter("uid", componentId);

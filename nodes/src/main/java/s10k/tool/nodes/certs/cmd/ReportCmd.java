@@ -73,7 +73,7 @@ import s10k.tool.nodes.domain.NodeCertificateInfo;
 		""",
 		// @formatter:on
 })
-public class ReportCmd extends BaseSubCmd<CertificatesCmd> implements Callable<Integer> {
+public class ReportCmd extends BaseSubCmd<CertificatesGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-n", "--node-id-col" },

@@ -37,7 +37,7 @@ import s10k.tool.common.util.TableUtils;
  */
 @Command(name = "update-service-properties", aliases = "update-props", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"Update a cloud datum stream's service properties using a @|bold merge|@ operation.%n" })
-public class UpdateDatumStreamServicePropertiesCmd extends BaseSubCmd<DatumStreamsCmd> implements Callable<Integer> {
+public class UpdateDatumStreamServicePropertiesCmd extends BaseSubCmd<DatumStreamsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-stream", "--stream-id" },

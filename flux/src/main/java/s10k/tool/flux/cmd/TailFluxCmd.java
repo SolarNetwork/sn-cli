@@ -66,7 +66,7 @@ import s10k.tool.common.util.TableUtils;
  */
 @Component
 @Command(name = "tail", sortSynopsis = false, showDefaultValues = true)
-public class TailFluxCmd extends BaseSubCmd<FluxCmd> implements Callable<Integer> {
+public class TailFluxCmd extends BaseSubCmd<FluxGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@ArgGroup(exclusive = true, multiplicity = "1")

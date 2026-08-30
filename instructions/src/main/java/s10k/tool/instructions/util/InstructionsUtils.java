@@ -3,9 +3,9 @@ package s10k.tool.instructions.util;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static s10k.tool.common.util.RestUtils.checkSuccess;
 import static s10k.tool.common.util.RestUtils.populateQueryParameters;
-import static s10k.tool.instructions.cmd.InstructionsCmd.PARAM_ERROR_CODE_RESULT;
-import static s10k.tool.instructions.cmd.InstructionsCmd.PARAM_MESSAGE_RESULT;
-import static s10k.tool.instructions.cmd.InstructionsCmd.PARAM_SERVICE_RESULT;
+import static s10k.tool.instructions.cmd.InstructionsGroup.PARAM_ERROR_CODE_RESULT;
+import static s10k.tool.instructions.cmd.InstructionsGroup.PARAM_MESSAGE_RESULT;
+import static s10k.tool.instructions.cmd.InstructionsGroup.PARAM_SERVICE_RESULT;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

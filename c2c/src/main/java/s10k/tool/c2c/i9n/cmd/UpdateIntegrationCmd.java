@@ -54,7 +54,7 @@ import s10k.tool.common.util.TableUtils;
 		"in which case the given JSON will completely replace the existing configuration.%n", 
 		// @formatter:on
 })
-public class UpdateIntegrationCmd extends BaseSubCmd<IntegrationsCmd> implements Callable<Integer> {
+public class UpdateIntegrationCmd extends BaseSubCmd<IntegrationsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-i", "--integration-id" },

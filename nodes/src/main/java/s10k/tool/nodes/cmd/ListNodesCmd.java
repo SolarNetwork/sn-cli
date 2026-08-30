@@ -35,7 +35,7 @@ import s10k.tool.nodes.domain.UserNodeInfo;
  */
 @Command(name = "list", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"List brief node information records matching search criteria.%n" })
-public class ListNodesCmd extends BaseSubCmd<NodesCmd> implements Callable<Integer> {
+public class ListNodesCmd extends BaseSubCmd<NodesGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-node", "--node-id" },

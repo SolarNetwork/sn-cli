@@ -26,14 +26,14 @@ import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.domain.ResultDisplayMode;
 import s10k.tool.common.util.TableUtils;
 import s10k.tool.datum.del.domain.DatumDeleteTaskInfo;
-import s10k.tool.datum.imp.cmd.DatumImportsCmd;
+import s10k.tool.datum.imp.cmd.DatumImportsGroup;
 
 /**
  * View datum import job status.
  */
 @Command(name = "view", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"View the details of a previously submitted datum delete job.%n" })
-public class ViewDeleteJobCmd extends BaseSubCmd<DatumImportsCmd> implements Callable<Integer> {
+public class ViewDeleteJobCmd extends BaseSubCmd<DatumImportsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-j", "--job-id" },

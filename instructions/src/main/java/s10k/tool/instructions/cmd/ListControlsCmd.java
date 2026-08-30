@@ -1,8 +1,8 @@
 package s10k.tool.instructions.cmd;
 
 import static s10k.tool.common.util.TableUtils.tableConfig;
-import static s10k.tool.instructions.cmd.InstructionsCmd.PARAM_SERVICE_RESULT;
-import static s10k.tool.instructions.cmd.InstructionsCmd.TOPIC_SYSTEM_CONFIGURATION;
+import static s10k.tool.instructions.cmd.InstructionsGroup.PARAM_SERVICE_RESULT;
+import static s10k.tool.instructions.cmd.InstructionsGroup.TOPIC_SYSTEM_CONFIGURATION;
 import static s10k.tool.instructions.util.InstructionsUtils.executeInstruction;
 
 import java.util.List;
@@ -34,7 +34,7 @@ import s10k.tool.instructions.domain.InstructionRequest;
  */
 @Component
 @Command(name = "list-controls", sortSynopsis = false, showDefaultValues = true)
-public class ListControlsCmd extends BaseSubCmd<InstructionsCmd> implements Callable<Integer> {
+public class ListControlsCmd extends BaseSubCmd<InstructionsGroup> implements Callable<Integer> {
 
 	/** The service name for listing controls. */
 	public static final String CONTROLS_SERVICE = "net.solarnetwork.node.controls";
@@ -70,7 +70,7 @@ public class ListControlsCmd extends BaseSubCmd<InstructionsCmd> implements Call
 			final RestClient restClient = restClient();
 
 			final BasicInstruction instr = new BasicInstruction(null, TOPIC_SYSTEM_CONFIGURATION, null, null);
-			instr.addParameter(InstructionsCmd.PARAM_SERVICE, CONTROLS_SERVICE);
+			instr.addParameter(InstructionsGroup.PARAM_SERVICE, CONTROLS_SERVICE);
 
 			if (filter != null && !filter.isBlank()) {
 				instr.addParameter("filter", filter);

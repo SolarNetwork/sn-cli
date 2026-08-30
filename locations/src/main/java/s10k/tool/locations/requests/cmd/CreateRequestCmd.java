@@ -50,7 +50,7 @@ import s10k.tool.locations.domain.LocationRequestStatus;
 		"Alternatively the request can be provided as JSON via standard input or via an @file.json parameter.%n", 
 		// @formatter:on
 })
-public class CreateRequestCmd extends BaseSubCmd<LocationsRequestsCmd> implements Callable<Integer> {
+public class CreateRequestCmd extends BaseSubCmd<LocationsRequestsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-source", "--source-id" },

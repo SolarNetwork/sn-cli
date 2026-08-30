@@ -63,7 +63,7 @@ public class ReportCmdTests {
 		var tool = new ToolCmd(TEST_TOKEN_ID, TEST_TOKEN_SEC);
 		tool.globalInit(null);
 
-		var certCmd = new CertificatesCmd();
+		var certCmd = new CertificatesGroup();
 		certCmd.setParentCmd(tool);
 
 		cmd = new ReportCmd(reqFactory, objectMapper);

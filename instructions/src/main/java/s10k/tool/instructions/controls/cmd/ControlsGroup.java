@@ -7,7 +7,7 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.ScopeType;
 import s10k.tool.common.cmd.BaseSubCmd;
-import s10k.tool.instructions.cmd.InstructionsCmd;
+import s10k.tool.instructions.cmd.InstructionsGroup;
 
 /**
  * Control commands.
@@ -20,7 +20,7 @@ import s10k.tool.instructions.cmd.InstructionsCmd;
 		SignalCmd.class,
 })
 // @formatter:on
-public class ControlsCmd extends BaseSubCmd<InstructionsCmd> {
+public class ControlsGroup extends BaseSubCmd<InstructionsGroup> {
 
 	// @formatter:off
 	@Option(names = { "-node", "--node-id" },

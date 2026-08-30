@@ -35,7 +35,7 @@ import s10k.tool.common.util.TableUtils;
  */
 @Component("listRakeTasksCmd")
 @Command(name = "list", sortSynopsis = false, showDefaultValues = true)
-public class ListTasksCmd extends BaseSubCmd<RakeTasksCmd> implements Callable<Integer> {
+public class ListTasksCmd extends BaseSubCmd<RakeTasksGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-stream", "--stream-id" },

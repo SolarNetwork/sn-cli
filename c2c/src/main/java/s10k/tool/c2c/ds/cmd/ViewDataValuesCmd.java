@@ -41,7 +41,7 @@ import s10k.tool.common.util.TableUtils;
  * View datum stream data values.
  */
 @Command(name = "data-values", aliases = "dv", sortSynopsis = false, showDefaultValues = true)
-public class ViewDataValuesCmd extends BaseSubCmd<DatumStreamsCmd> implements Callable<Integer> {
+public class ViewDataValuesCmd extends BaseSubCmd<DatumStreamsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-i", "--integration-id" },

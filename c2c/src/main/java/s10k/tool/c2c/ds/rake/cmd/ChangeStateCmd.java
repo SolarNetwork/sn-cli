@@ -43,7 +43,7 @@ import s10k.tool.common.util.TableUtils;
  */
 @Component("changeRakeTasksStateCmd")
 @Command(name = "change-state", sortSynopsis = false, showDefaultValues = true)
-public class ChangeStateCmd extends BaseSubCmd<RakeTasksCmd> implements Callable<Integer> {
+public class ChangeStateCmd extends BaseSubCmd<RakeTasksGroup> implements Callable<Integer> {
 
 	// @formatter:off
 		@Option(names = { "-stream", "--stream-id" },

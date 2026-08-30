@@ -2,7 +2,7 @@ package s10k.tool.nodes.meta.cmd;
 
 import picocli.CommandLine.Command;
 import s10k.tool.common.cmd.BaseSubCmd;
-import s10k.tool.nodes.cmd.NodesCmd;
+import s10k.tool.nodes.cmd.NodesGroup;
 
 /**
  * Node commands.
@@ -16,6 +16,6 @@ import s10k.tool.nodes.cmd.NodesCmd;
 		SaveNodeMetadataCmd.class
 })
 // @formatter:on
-public class NodeMetadataCmd extends BaseSubCmd<NodesCmd> {
+public class NodeMetadataGroup extends BaseSubCmd<NodesGroup> {
 
 }

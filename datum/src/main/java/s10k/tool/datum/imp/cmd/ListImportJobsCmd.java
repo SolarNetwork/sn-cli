@@ -26,7 +26,7 @@ import s10k.tool.datum.imp.domain.DatumImportsFilter;
  */
 @Command(name = "list", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"List the details of datum import jobs matching search criteria.%n" })
-public class ListImportJobsCmd extends BaseSubCmd<DatumImportsCmd> implements Callable<Integer> {
+public class ListImportJobsCmd extends BaseSubCmd<DatumImportsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-state", "--job-state" },

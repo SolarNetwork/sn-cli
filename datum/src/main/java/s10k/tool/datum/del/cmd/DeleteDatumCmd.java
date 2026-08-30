@@ -38,7 +38,7 @@ import s10k.tool.datum.domain.DatumRecordCounts;
  */
 @Command(name = "range", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"Delete datum for a time range.%n" })
-public class DeleteDatumCmd extends BaseSubCmd<DatumDeleteBaseCmd> implements Callable<Integer> {
+public class DeleteDatumCmd extends BaseSubCmd<DatumDeleteGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-node", "--node-id" },

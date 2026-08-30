@@ -47,7 +47,7 @@ import s10k.tool.user.events.domain.UserEventsFilter;
  */
 @Command(name = "list", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"List user events matching search criteria.%n" })
-public class ListUserEventsCmd extends BaseSubCmd<BaseUserEventsCmd> implements Callable<Integer> {
+public class ListUserEventsCmd extends BaseSubCmd<UserEventsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-E", "--show-event-id" },

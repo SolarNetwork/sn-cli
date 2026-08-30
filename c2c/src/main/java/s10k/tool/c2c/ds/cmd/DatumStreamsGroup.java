@@ -1,9 +1,9 @@
 package s10k.tool.c2c.ds.cmd;
 
 import picocli.CommandLine.Command;
-import s10k.tool.c2c.cmd.CloudIntegrationsCmd;
-import s10k.tool.c2c.ds.poll.cmd.PollTasksCmd;
-import s10k.tool.c2c.ds.rake.cmd.RakeTasksCmd;
+import s10k.tool.c2c.cmd.CloudIntegrationsGroup;
+import s10k.tool.c2c.ds.poll.cmd.PollTasksGroup;
+import s10k.tool.c2c.ds.rake.cmd.RakeTasksGroup;
 import s10k.tool.common.cmd.BaseSubCmd;
 
 /**
@@ -18,12 +18,12 @@ import s10k.tool.common.cmd.BaseSubCmd;
 		ListDatumStreamsCmd.class,
 		ViewDatumStreamCmd.class,
 		ViewDataValuesCmd.class,
-		PollTasksCmd.class,
-		RakeTasksCmd.class,
+		PollTasksGroup.class,
+		RakeTasksGroup.class,
 		UpdateDatumStreamCmd.class,
 		UpdateDatumStreamServicePropertiesCmd.class,
 })
 // @formatter:on
-public class DatumStreamsCmd extends BaseSubCmd<CloudIntegrationsCmd> {
+public class DatumStreamsGroup extends BaseSubCmd<CloudIntegrationsGroup> {
 
 }

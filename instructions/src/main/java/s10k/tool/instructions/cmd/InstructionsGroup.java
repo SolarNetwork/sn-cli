@@ -3,26 +3,26 @@ package s10k.tool.instructions.cmd;
 import picocli.CommandLine.Command;
 import s10k.tool.common.cmd.BaseSubCmd;
 import s10k.tool.common.cmd.ToolCmd;
-import s10k.tool.instructions.controls.cmd.ControlsCmd;
-import s10k.tool.instructions.settings.cmd.SettingsCmd;
+import s10k.tool.instructions.controls.cmd.ControlsGroup;
+import s10k.tool.instructions.settings.cmd.SettingsGroup;
 
 /**
  * Instruction commands.
  */
 // @formatter:off
 @Command(name = "instructions", aliases = "instr", subcommands = {
-		ControlsCmd.class,
+		ControlsGroup.class,
 		ListComponents.class,
 		ListControlsCmd.class,
 		ListPackagesCmd.class,
 		ListInstructionsCmd.class,
 		ListServicesCmd.class,
-		SettingsCmd.class,
+		SettingsGroup.class,
 		ToggleOperationalModeCmd.class,
 		UpdateInstructionsState.class,
 })
 // @formatter:on
-public class InstructionsCmd extends BaseSubCmd<ToolCmd> {
+public class InstructionsGroup extends BaseSubCmd<ToolCmd> {
 
 	/**
 	 * The instruction topic for applying system configuration.

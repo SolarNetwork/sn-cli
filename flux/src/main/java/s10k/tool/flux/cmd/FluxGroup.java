@@ -12,6 +12,6 @@ import s10k.tool.common.cmd.ToolCmd;
 		TailFluxCmd.class
 })
 // @formatter:on
-public class FluxCmd extends BaseSubCmd<ToolCmd> {
+public class FluxGroup extends BaseSubCmd<ToolCmd> {
 
 }

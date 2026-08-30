@@ -40,7 +40,7 @@ import s10k.tool.common.util.TableUtils;
 @Component
 @Command(name = "update-service-properties", aliases = "update-props", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"Update a cloud integration's service properties using a @|bold merge|@ operation.%n" })
-public class UpdateIntegrationServicePropertiesCmd extends BaseSubCmd<IntegrationsCmd> implements Callable<Integer> {
+public class UpdateIntegrationServicePropertiesCmd extends BaseSubCmd<IntegrationsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-i", "--integration-id" },

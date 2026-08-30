@@ -35,7 +35,7 @@ import s10k.tool.nodes.domain.NodeMetadata;
  */
 @Component
 @Command(name = "list")
-public class ListNodeMetadataCmd extends BaseSubCmd<NodeMetadataCmd> implements Callable<Integer> {
+public class ListNodeMetadataCmd extends BaseSubCmd<NodeMetadataGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	

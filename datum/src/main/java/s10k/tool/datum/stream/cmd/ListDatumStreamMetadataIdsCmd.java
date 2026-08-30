@@ -36,7 +36,7 @@ import s10k.tool.datum.domain.DatumStreamFilter;
  */
 @Component
 @Command(name = "ids", sortSynopsis = false, showDefaultValues = true)
-public class ListDatumStreamMetadataIdsCmd extends BaseSubCmd<DatumStreamCmd> implements Callable<Integer> {
+public class ListDatumStreamMetadataIdsCmd extends BaseSubCmd<DatumStreamGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-stream", "--stream-id" },

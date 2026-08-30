@@ -36,7 +36,7 @@ import s10k.tool.sec.tokens.domain.SecurityTokenType;
  */
 @Component
 @Command(name = "list", sortSynopsis = false, showDefaultValues = true)
-public class ListSecTokensCmd extends BaseSubCmd<SecTokensCmd> implements Callable<Integer> {
+public class ListSecTokensCmd extends BaseSubCmd<SecTokensGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@ArgGroup(exclusive = true, multiplicity = "0..1")

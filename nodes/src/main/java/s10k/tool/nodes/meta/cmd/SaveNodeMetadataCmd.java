@@ -30,7 +30,7 @@ import s10k.tool.common.util.SystemUtils;
  */
 @Component
 @Command(name = "save")
-public class SaveNodeMetadataCmd extends BaseSubCmd<NodeMetadataCmd> implements Callable<Integer> {
+public class SaveNodeMetadataCmd extends BaseSubCmd<NodeMetadataGroup> implements Callable<Integer> {
 
 	@Option(names = { "-node", "--node-id" }, description = "a node ID to save metadata on", required = true)
 	Long nodeId;

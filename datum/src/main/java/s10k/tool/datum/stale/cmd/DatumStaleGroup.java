@@ -2,7 +2,7 @@ package s10k.tool.datum.stale.cmd;
 
 import picocli.CommandLine.Command;
 import s10k.tool.common.cmd.BaseSubCmd;
-import s10k.tool.datum.cmd.DatumCmd;
+import s10k.tool.datum.cmd.DatumGroup;
 
 /**
  * Datum stale-aggregates commands.
@@ -13,6 +13,6 @@ import s10k.tool.datum.cmd.DatumCmd;
 		MarkAggregatesStaleCmd.class,
 })
 // @formatter:on
-public class DatumStaleBaseCmd extends BaseSubCmd<DatumCmd> {
+public class DatumStaleGroup extends BaseSubCmd<DatumGroup> {
 
 }

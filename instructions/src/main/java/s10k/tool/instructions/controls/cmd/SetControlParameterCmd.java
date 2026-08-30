@@ -26,7 +26,7 @@ import s10k.tool.instructions.domain.InstructionRequest;
  */
 @Component
 @Command(name = "set", sortSynopsis = false, showDefaultValues = true)
-public class SetControlParameterCmd extends BaseSubCmd<ControlsCmd> implements Callable<Integer> {
+public class SetControlParameterCmd extends BaseSubCmd<ControlsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Parameters(index = "0", description = "the value to set the control to", paramLabel = "desiredValue")

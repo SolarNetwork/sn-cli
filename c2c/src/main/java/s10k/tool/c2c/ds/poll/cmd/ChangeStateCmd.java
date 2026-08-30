@@ -40,7 +40,7 @@ import s10k.tool.common.util.TableUtils;
  */
 @Component("changePollTasksStateCmd")
 @Command(name = "change-state", sortSynopsis = false, showDefaultValues = true)
-public class ChangeStateCmd extends BaseSubCmd<PollTasksCmd> implements Callable<Integer> {
+public class ChangeStateCmd extends BaseSubCmd<PollTasksGroup> implements Callable<Integer> {
 
 	// @formatter:off
 		@Option(names = { "-stream", "--stream-id" },

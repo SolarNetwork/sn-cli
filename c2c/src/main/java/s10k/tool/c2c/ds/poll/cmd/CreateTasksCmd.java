@@ -45,7 +45,7 @@ import s10k.tool.common.util.TableUtils;
  */
 @Component("createPollTasksCmd")
 @Command(name = "create", sortSynopsis = false, showDefaultValues = true)
-public class CreateTasksCmd extends BaseSubCmd<PollTasksCmd> implements Callable<Integer> {
+public class CreateTasksCmd extends BaseSubCmd<PollTasksGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-stream", "--stream-id" },

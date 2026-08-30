@@ -40,7 +40,7 @@ import s10k.tool.datum.domain.ObjectDatumId;
 
 @Command(name = "ids", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"Delete a small set of datum by identifiers.%n" })
-public class DeleteDatumIdsCmd extends BaseSubCmd<DatumDeleteBaseCmd> implements Callable<Integer> {
+public class DeleteDatumIdsCmd extends BaseSubCmd<DatumDeleteGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-stream", "--stream-datum" },

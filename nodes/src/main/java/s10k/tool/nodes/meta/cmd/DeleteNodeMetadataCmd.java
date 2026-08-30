@@ -21,7 +21,7 @@ import s10k.tool.common.cmd.BaseSubCmd;
  */
 @Component
 @Command(name = "delete")
-public class DeleteNodeMetadataCmd extends BaseSubCmd<NodeMetadataCmd> implements Callable<Integer> {
+public class DeleteNodeMetadataCmd extends BaseSubCmd<NodeMetadataGroup> implements Callable<Integer> {
 
 	@Option(names = { "-node", "--node-id" }, description = "a node ID to delete metadata from", required = true)
 	Long nodeId;

@@ -28,7 +28,7 @@ import s10k.tool.common.util.TableUtils;
  */
 @Command(name = "delete", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"Delete Cloud Datum Stream entities.%n" })
-public class DeleteDatumStreamsCmd extends BaseSubCmd<DatumStreamsCmd> implements Callable<Integer> {
+public class DeleteDatumStreamsCmd extends BaseSubCmd<DatumStreamsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-stream", "--stream-id" },

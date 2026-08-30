@@ -68,7 +68,7 @@ import s10k.tool.datum.imp.util.DatumImportUtils;
 		"processed by SolarNetwork at some point in the future.%n",
 
 		"Use the @|bold view|@ or @|bold list|@ commands to monitor a job's overall status.%n" })
-public class ImportDatumCmd extends BaseSubCmd<DatumImportsCmd> implements Callable<Integer> {
+public class ImportDatumCmd extends BaseSubCmd<DatumImportsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = {"-f", "--data-file"},

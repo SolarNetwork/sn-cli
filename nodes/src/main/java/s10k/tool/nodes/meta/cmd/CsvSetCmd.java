@@ -40,7 +40,7 @@ import s10k.tool.common.util.TableUtils;
  */
 @Component
 @Command(name = "csv-set")
-public class CsvSetCmd extends BaseSubCmd<NodeMetadataCmd> implements Callable<Integer> {
+public class CsvSetCmd extends BaseSubCmd<NodeMetadataGroup> implements Callable<Integer> {
 
 	@Option(names = { "-node", "--node-id" }, description = "a node ID to write metadata to", required = true)
 	Long nodeId;

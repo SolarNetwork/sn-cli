@@ -32,7 +32,7 @@ import s10k.tool.datum.imp.util.DatumImportRestUtils;
 
 		"Once confirmed, the job will transition to the @|bold Queued|@ state, and begin processing",
 		"at some point in the future.%n" })
-public class ConfirmStagedImportCmd extends BaseSubCmd<DatumImportsCmd> implements Callable<Integer> {
+public class ConfirmStagedImportCmd extends BaseSubCmd<DatumImportsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-j", "--job-id" },

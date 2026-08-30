@@ -39,7 +39,7 @@ import s10k.tool.sec.tokens.domain.SecurityTokenInfo;
  */
 @Component
 @Command(name = "update", sortSynopsis = false, showDefaultValues = true)
-public class UpdateSecTokenCmd extends BaseSubCmd<SecTokensCmd> implements Callable<Integer> {
+public class UpdateSecTokenCmd extends BaseSubCmd<SecTokensGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-id", "--identifier" },

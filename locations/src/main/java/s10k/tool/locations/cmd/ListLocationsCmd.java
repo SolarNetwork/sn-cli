@@ -35,7 +35,7 @@ import s10k.tool.locations.domain.LocationFilter;
  */
 @Command(name = "list", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"List location records matching search criteria.%n" })
-public class ListLocationsCmd extends BaseSubCmd<LocationsCmd> implements Callable<Integer> {
+public class ListLocationsCmd extends BaseSubCmd<LocationsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-m", "--name" },

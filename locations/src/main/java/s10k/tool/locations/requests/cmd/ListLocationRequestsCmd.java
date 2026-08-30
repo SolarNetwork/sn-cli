@@ -36,7 +36,7 @@ import s10k.tool.locations.domain.LocationRequestStatus;
  */
 @Command(name = "list", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		"List location request records matching search criteria.%n" })
-public class ListLocationRequestsCmd extends BaseSubCmd<LocationsRequestsCmd> implements Callable<Integer> {
+public class ListLocationRequestsCmd extends BaseSubCmd<LocationsRequestsGroup> implements Callable<Integer> {
 
 	// @formatter:off
 	@Option(names = { "-s", "--status" },

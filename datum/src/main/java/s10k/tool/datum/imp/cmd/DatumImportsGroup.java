@@ -2,7 +2,7 @@ package s10k.tool.datum.imp.cmd;
 
 import picocli.CommandLine.Command;
 import s10k.tool.common.cmd.BaseSubCmd;
-import s10k.tool.datum.cmd.DatumCmd;
+import s10k.tool.datum.cmd.DatumGroup;
 
 /**
  * Datum import commands.
@@ -19,6 +19,6 @@ import s10k.tool.datum.cmd.DatumCmd;
 		ViewImportJobCmd.class,
 })
 // @formatter:on
-public class DatumImportsCmd extends BaseSubCmd<DatumCmd> {
+public class DatumImportsGroup extends BaseSubCmd<DatumGroup> {
 
 }
