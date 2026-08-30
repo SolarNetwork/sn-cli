@@ -85,8 +85,8 @@ s10k locations requests create
 
 	```sh
 	s10k --dry-run locations requests create --source-id OpenWeatherMap \
-	--feature weather,day,forecast --name Wellington --region Wellington \
-	--locality Wellington --country NZ --time-zone Pacific/Auckland
+		--feature weather,day,forecast --name Wellington --region Wellington \
+		--locality Wellington --country NZ --time-zone Pacific/Auckland
 	```
 
 ## Output

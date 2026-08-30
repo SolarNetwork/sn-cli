@@ -93,7 +93,7 @@ A listing of matching location requests. Each record contains the following prop
 	country         US
 	locality        Florence
 	stateOrProvince Arizona
-	"
+	",
 	```
 
 === "JSON Output"

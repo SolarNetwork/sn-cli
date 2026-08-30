@@ -100,7 +100,7 @@ public class ListLocationRequestsCmd extends BaseSubCmd<LocationsRequestsCmd> im
 	}
 
 	/**
-	 * List locations.
+	 * List location requests.
 	 * 
 	 * @param restClient   the REST client
 	 * @param objectMapper the mapper to use
