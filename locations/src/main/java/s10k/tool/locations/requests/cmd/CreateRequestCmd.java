@@ -45,9 +45,15 @@ import s10k.tool.locations.domain.LocationRequestStatus;
  */
 @Command(name = "create", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		// @formatter:off
-		"Create a location request. The various options can be used to configure specific settings of the request.%n",
-
-		"Alternatively the request can be provided as JSON via standard input or via an @file.json parameter.%n", 
+		"""
+		Create a location request. The various options can be used to configure \
+		specific settings of the request.
+		""",
+		
+		"""
+		Alternatively the request can be provided as JSON via standard input or \
+		via an @file.json parameter.
+		""",
 		// @formatter:on
 })
 public class CreateRequestCmd extends BaseSubCmd<LocationsRequestsGroup> implements Callable<Integer> {

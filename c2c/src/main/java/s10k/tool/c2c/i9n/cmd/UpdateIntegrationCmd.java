@@ -43,15 +43,19 @@ import s10k.tool.common.util.TableUtils;
  */
 @Command(name = "update", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		// @formatter:off
-		"Update a cloud integration. The various optional options can be used to update",
-		"specific settings of an integration, leaving all other settings of the integration",
-		"unchagned.%n",
-
-		"Alternatively the configuration can be provided as JSON via standard input or via",
-		"an @file.json parameter. The JSON must be structured as an object as specified",
-		"in the @|bold Cloud Integration update|@ API in SolarNetwork. The given configuration",
-		"will be merged into the existing configuration unless the @|bold --replace|@ option is given",
-		"in which case the given JSON will completely replace the existing configuration.%n", 
+		"""
+		Update a cloud integration. The various optional options can be used to update \
+		specific settings of an integration, leaving all other settings of the integration \
+		unchagned.
+		""",
+		
+		"""
+		Alternatively the configuration can be provided as JSON via standard input or via \
+		an @file.json parameter. The JSON must be structured as an object as specified \
+		in the @|bold Cloud Integration update|@ API in SolarNetwork. The given configuration \
+		will be merged into the existing configuration unless the @|bold --replace|@ option is given \
+		in which case the given JSON will completely replace the existing configuration.
+		""",
 		// @formatter:on
 })
 public class UpdateIntegrationCmd extends BaseSubCmd<IntegrationsGroup> implements Callable<Integer> {

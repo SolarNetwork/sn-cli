@@ -53,21 +53,34 @@ import s10k.tool.datum.imp.util.DatumImportUtils;
  * Submit a datum import job.
  */
 @Command(name = "submit", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
-		"Submit a datum import job.%n",
-
-		"The @|bold --data-file|@ option is required by some, but not all, input services.",
-		"For example the Cloud Integration service does @|bold not|@ require this, and so",
-		"this option does not need to be provided.%n",
-
-		"The job can be staged with the @|bold --stage|@ option, in which case the job will start",
-		"in the @|bold Staged|@ state and not progess any further until confirmed (see the",
-		"@|bold confirm-staged|@ command to do that). A staged job can also be previewed so you can",
-		"verify the configuration (see the @|bold preview-staged|@ command to do that).%n",
-
-		"If the job is @|bold not|@ staged, it will start in the @|bold Queued|@ state and will be",
-		"processed by SolarNetwork at some point in the future.%n",
-
-		"Use the @|bold view|@ or @|bold list|@ commands to monitor a job's overall status.%n" })
+		// @formatter:off
+		"""
+		Submit a datum import job.
+		""",
+		
+		"""
+		The @|bold --data-file|@ option is required by some, but not all, input services. \
+		For example the Cloud Integration service does @|bold not|@ require this, and so \
+		this option does not need to be provided.
+		""",
+		
+		"""
+		The job can be staged with the @|bold --stage|@ option, in which case the job will start \
+		in the @|bold Staged|@ state and not progess any further until confirmed (see the \
+		@|bold confirm-staged|@ command to do that). A staged job can also be previewed so you can \
+		verify the configuration (see the @|bold preview-staged|@ command to do that).
+		""",
+		
+		"""
+		If the job is @|bold not|@ staged, it will start in the @|bold Queued|@ state and will be \
+		processed by SolarNetwork at some point in the future.
+		""",
+		
+		"""
+		Use the @|bold view|@ or @|bold list|@ commands to monitor a job's overall status.
+		""",
+		// @formatter:on
+})
 public class ImportDatumCmd extends BaseSubCmd<DatumImportsGroup> implements Callable<Integer> {
 
 	// @formatter:off

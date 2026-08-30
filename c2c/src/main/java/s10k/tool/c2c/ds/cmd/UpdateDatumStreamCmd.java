@@ -41,14 +41,21 @@ import s10k.tool.common.util.TableUtils;
  * Update cloud datum stream entity.
  */
 @Command(name = "update", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
-		"Update a cloud datum stream. The various optional options can be used to update",
-		"specific settings of a datum stream, leaving all other settings of the stream", "unchagned.%n",
-
-		"Alternatively the settings can be provided as JSON via standard input or via",
-		"an @file.json parameter. The JSON must be structured as an object as specified",
-		"in the @|bold Cloud Datum Stream update|@ API in SolarNetwork. The given settings",
-		"will be merged into the existing settings unless the @|bold --replace|@ option is given",
-		"in which case the given JSON will completely replace the existing settings.%n", })
+		// @formatter:off
+		"""
+		Update a cloud datum stream. The various optional options can be used to update \
+		specific settings of a datum stream, leaving all other settings of the stream unchanged.
+		""",
+		
+		"""
+		Alternatively the settings can be provided as JSON via standard input or via \
+		an @file.json parameter. The JSON must be structured as an object as specified \
+		in the @|bold Cloud Datum Stream update|@ API in SolarNetwork. The given settings \
+		will be merged into the existing settings unless the @|bold --replace|@ option is given \
+		in which case the given JSON will completely replace the existing settings.
+		""",
+		// @formatter:on
+})
 public class UpdateDatumStreamCmd extends BaseSubCmd<DatumStreamsGroup> implements Callable<Integer> {
 
 	// @formatter:off

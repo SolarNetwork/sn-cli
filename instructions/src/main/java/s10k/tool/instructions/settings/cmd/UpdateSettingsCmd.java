@@ -42,19 +42,27 @@ import s10k.tool.instructions.util.InstructionsUtils;
 @Component
 // @formatter:off
 @Command(name = "update", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
-		"Update one or more settings on a node. The settings can be provided for a",
-		"specific service or component instance using the @|bold --service-id|@ and",
-		"@|bold --component-id|@ options, followed by key and value parameter pairs. For",
-		"example, to update the schedule of a component to run every 5 seconds:%n",
+		// @formatter:off
+		"""
+		Update one or more settings on a node. The settings can be provided for a \
+		specific service or component instance using the @|bold --service-id|@ and \
+		@|bold --component-id|@ options, followed by key and value parameter pairs. For \
+		example, to update the schedule of a component to run every 5 seconds:	
+		""",
 		
-		"s10k instructions settings update --component-id the.component --service-id \\",
-		"  schedule '0/5 * * * * *'%n",
+		"""
+		s10k instructions settings update --component-id the.component --service-id \
+		--schedule '0/5 * * * * *'
+		""",
 		
-		"Alternatively the settings can be provided as CSV via standard input or via",
-		"an @file.csv parameter. The CSV must contain a header row. If @|bold --service-id|@",
-		"and optionally \"@|bold --component-id|@ options are provided the header must define",
-		"@|bold Key|@ and @|bold Value|@ columns, otherwise the header must additionally define a @|bold Type|@",
-		"column. The header names are case-insensitive.%n",
+		"""
+		Alternatively the settings can be provided as CSV via standard input or via \
+		an @file.csv parameter. The CSV must contain a header row. If @|bold --service-id|@ \
+		and optionally \"@|bold --component-id|@ options are provided the header must define \
+		@|bold Key|@ and @|bold Value|@ columns, otherwise the header must additionally define a @|bold Type|@ \
+		column. The header names are case-insensitive.
+		""",
+		// @formatter:on
 })
 // @formatter:on
 public class UpdateSettingsCmd extends BaseSubCmd<SettingsGroup> implements Callable<Integer> {

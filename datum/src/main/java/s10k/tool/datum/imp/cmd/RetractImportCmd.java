@@ -28,10 +28,17 @@ import s10k.tool.datum.imp.util.DatumImportRestUtils;
  * Retract a datum import job.
  */
 @Command(name = "retract", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
-		"Cancel a datum import job so it will not be processed.%n",
-
-		"Once retracted, the job will transition to the @|bold Retracted|@ state, and begin processing",
-		"at some point in the future.%n" })
+		// @formatter:off
+		"""
+		Cancel a datum import job so it will not be processed.
+		""",
+		
+		"""
+		Once retracted, the job will transition to the @|bold Retracted|@ state, and begin processing \
+		at some point in the future.
+		""",
+		// @formatter:on
+})
 public class RetractImportCmd extends BaseSubCmd<DatumImportsGroup> implements Callable<Integer> {
 
 	// @formatter:off

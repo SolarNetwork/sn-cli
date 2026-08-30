@@ -43,12 +43,16 @@ import s10k.tool.common.util.TableUtils;
  */
 @Command(name = "create", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		// @formatter:off
-		"Create a cloud datum stream. The various options can be used to configure specific",
-		"settings of the datum stream.%n",
-
-		"Alternatively the configuration can be provided as JSON via standard input or via",
-		"an @file.json parameter. The JSON must be structured as an object as specified",
-		"in the @|bold Cloud Datum Stream create|@ API in SolarNetwork.%n", 
+		"""
+		Create a cloud datum stream. The various options can be used to configure specific \
+		settings of the datum stream.
+		""",
+		
+		"""
+		Alternatively the configuration can be provided as JSON via standard input or via \
+		an @file.json parameter. The JSON must be structured as an object as specified \
+		in the @|bold Cloud Datum Stream create|@ API in SolarNetwork.
+		""",
 		// @formatter:on
 })
 public class CreateDatumStreamCmd extends BaseSubCmd<DatumStreamsGroup> implements Callable<Integer> {

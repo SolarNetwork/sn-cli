@@ -41,12 +41,16 @@ import s10k.tool.common.util.TableUtils;
  */
 @Command(name = "create", sortSynopsis = false, showDefaultValues = true, descriptionHeading = "%n", optionListHeading = "%n", description = {
 		// @formatter:off
-		"Create a cloud integration. The various options can be used to configure specific",
-		"settings of the integration.%n",
+		"""
+		Create a cloud integration. The various options can be used to configure specific \
+		settings of the integration.
+		""",
 
-		"Alternatively the configuration can be provided as JSON via standard input or via",
-		"an @file.json parameter. The JSON must be structured as an object as specified",
-		"in the @|bold Cloud Integration create|@ API in SolarNetwork.%n", 
+		"""
+		Alternatively the configuration can be provided as JSON via standard input or via \
+		an @file.json parameter. The JSON must be structured as an object as specified in \
+		the @|bold Cloud Integration create|@ API in SolarNetwork.
+		""",
 		// @formatter:on
 })
 public class CreateIntegrationCmd extends BaseSubCmd<IntegrationsGroup> implements Callable<Integer> {
