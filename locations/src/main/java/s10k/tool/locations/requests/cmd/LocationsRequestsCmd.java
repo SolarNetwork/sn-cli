@@ -9,6 +9,7 @@ import s10k.tool.locations.cmd.LocationsCmd;
  */
 @Command(name = "requests", aliases = { "reqs" }, subcommands = {
 		//@formatter:off
+		CreateRequestCmd.class,
 		ListLocationRequestsCmd.class,
 		//@formatter:on
 })

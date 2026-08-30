@@ -7,14 +7,13 @@ import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import net.solarnetwork.domain.SimpleLocation;
+import net.solarnetwork.domain.Location;
 
 /**
  * A location request information record.
  */
 @RegisterReflectionForBinding
 @JsonPropertyOrder({ "locationId", "sourceId", "features", "location" })
-public record LocationRequestInfo(@Nullable Long locationId, String sourceId, SimpleLocation location,
-		Set<String> features) {
+public record LocationRequestInfo(@Nullable Long locationId, String sourceId, Location location, Set<String> features) {
 
 }
