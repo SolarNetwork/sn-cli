@@ -68,7 +68,7 @@ public class ViewLocationRequestCmd extends BaseSubCmd<LocationsRequestsCmd> imp
 					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (Exception e) {
-			System.err.println("Error listing location requests: %s".formatted(e.getMessage()));
+			System.err.println("Error viewing location request: %s".formatted(e.getMessage()));
 		}
 		return 1;
 	}
