@@ -11,6 +11,7 @@ import s10k.tool.locations.cmd.LocationsCmd;
 		//@formatter:off
 		CreateRequestCmd.class,
 		ListLocationRequestsCmd.class,
+		ViewLocationRequestCmd.class,
 		//@formatter:on
 })
 public class LocationsRequestsCmd extends BaseSubCmd<LocationsCmd> {
