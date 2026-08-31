@@ -122,8 +122,9 @@ public class CreateTasksCmd extends BaseSubCmd<PollTasksGroup> implements Callab
 			final List<?> tableData = (displayMode == ResultDisplayMode.JSON ? tasksToCreate.values().stream().toList()
 					: tasksToCreate.entrySet().stream()
 							.map(e -> tableDataRow(datumStreams.get(e.getKey()), e.getValue())).toList());
-			TableUtils.renderTableData(tableDataColumns(), tableData, tableConfig(this, displayMode, prettyStyle(), zone),
-					objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
+			TableUtils.renderTableData(tableDataColumns(), tableData,
+					tableConfig(this, displayMode, prettyStyle(), zone), objectMapper,
+					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, System.out);
 			return 0;
 		} catch (
 
@@ -204,7 +205,7 @@ public class CreateTasksCmd extends BaseSubCmd<PollTasksGroup> implements Callab
 	private static void createPollTask(RestClient restClient, Long datumStreamId,
 			CloudDatumStreamPollTaskConfiguration task) {
 		// @formatter:off
-			JsonNode response = restClient.post()
+			JsonNode response = restClient.put()
 				.uri(b -> {
 					b.path("/solaruser/api/v1/sec/user/c2c/datum-stream-poll-tasks/{datumStreamId}");
 					return b.build(datumStreamId);
