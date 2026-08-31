@@ -322,7 +322,7 @@ public class CreateTasksCmd extends BaseSubCmd<RakeTasksGroup> implements Callab
 		JsonNode response = restClient.post()
 			.uri(b -> {
 				b.path("/solaruser/api/v1/sec/user/c2c/datum-stream-rake-tasks");
-				return b.build(datumStreamId);
+				return b.build();
 			})
 			.contentType(MediaType.APPLICATION_JSON)
 			.body(task)
@@ -382,8 +382,8 @@ public class CreateTasksCmd extends BaseSubCmd<RakeTasksGroup> implements Callab
 				rows.addAll(actions.undesiredOffsets.values().stream()
 						.map(c -> tableDataRow(datumStreams.get(actions.datumStreamId()), c, "Remove")).toList());
 				return rows.stream();
-			}).toList(), tableConfig(this, displayMode, prettyStyle()), objectMapper, TableUtils.TableDataJsonPrettyPrinter.INSTANCE,
-					out);
+			}).toList(), tableConfig(this, displayMode, prettyStyle()), objectMapper,
+					TableUtils.TableDataJsonPrettyPrinter.INSTANCE, out);
 		}
 	}
 
