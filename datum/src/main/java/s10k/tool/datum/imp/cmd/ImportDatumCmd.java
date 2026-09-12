@@ -128,11 +128,11 @@ public class ImportDatumCmd extends BaseSubCmd<DatumImportsGroup> implements Cal
 	@Option(names = { "-prop", "--service-property" },
 			description = "a service property, in the form path:value",
 			paramLabel = "serviceProperty")
-	String serviceProperties@Nullable [];
+	String serviceProperties @Nullable [];
 
 	@Option(names = {"-I", "--ignore-input"},
 			description = "do not try to read settings from standard input")
-	public boolean ignoreStdIn;
+	boolean ignoreStdIn;
 	
 	@Option(names = { "-mode", "--display-mode" },
 			description = "how to display the data")
