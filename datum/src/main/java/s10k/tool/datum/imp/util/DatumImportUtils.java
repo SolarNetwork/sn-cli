@@ -71,7 +71,7 @@ public final class DatumImportUtils {
 	 * @return the list of matching service IDs, never {@code null}
 	 */
 	public static List<String> findDatumImportServiceIds(final String[] queries) {
-		return StringUtils.findBundleKeys(RESOURCE_BUNDLE, "imp.", ".name", queries);
+		return StringUtils.findBundleKeys(RESOURCE_BUNDLE, queries, "imp.", ".name");
 	}
 
 	/**

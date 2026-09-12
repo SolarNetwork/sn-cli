@@ -119,7 +119,7 @@ public final class CloudIntegrationsUtils {
 	 * @return the list of matching service IDs, never {@code null}
 	 */
 	public static List<String> findIntegrationServiceIds(final String[] queries) {
-		return StringUtils.findBundleKeys(RESOURCE_BUNDLE, "i9n.", ".name", queries);
+		return StringUtils.findBundleKeys(RESOURCE_BUNDLE, queries, "i9n.", ".name");
 	}
 
 	/**
@@ -130,7 +130,7 @@ public final class CloudIntegrationsUtils {
 	 * @return the list of matching service IDs, never {@code null}
 	 */
 	public static List<String> findDatumStreamServiceIds(final String[] queries) {
-		return StringUtils.findBundleKeys(RESOURCE_BUNDLE, "ds.", ".name", queries);
+		return StringUtils.findBundleKeys(RESOURCE_BUNDLE, queries, "ds.", ".name");
 	}
 
 }

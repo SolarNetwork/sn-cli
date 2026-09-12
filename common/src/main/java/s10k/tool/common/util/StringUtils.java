@@ -154,15 +154,15 @@ public final class StringUtils {
 	/**
 	 * Lookup bundle values that case-insenstive match any of a set of substring
 	 * queries.
-	 * 
-	 * @param prefix  a prefix the bundle key must have
-	 * @param suffix  a prefix the bundle key must have
 	 * @param queries the substrings to look for
 	 * @param queries the queries to search for
+	 * @param prefix  a prefix the bundle key must have
+	 * @param suffix  a prefix the bundle key must have
+	 * 
 	 * @return the list of matching bundle values, never {@code null}
 	 */
-	public static List<String> findBundleKeys(final ResourceBundle bundle, final @Nullable String prefix,
-			final @Nullable String suffix, final String @Nullable [] queries) {
+	public static List<String> findBundleKeys(final ResourceBundle bundle, final String @Nullable [] queries,
+			final @Nullable String prefix, final @Nullable String suffix) {
 		if (queries == null || queries.length < 0) {
 			return List.of();
 		}
