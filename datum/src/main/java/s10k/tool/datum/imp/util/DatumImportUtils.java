@@ -83,7 +83,7 @@ public final class DatumImportUtils {
 	 */
 	public static Entry<String, String> findDatumImportServiceId(String query) {
 		try {
-			return StringUtils.findBundleEntry(RESOURCE_BUNDLE, "imp.", ".name", query);
+			return StringUtils.findBundleEntry(RESOURCE_BUNDLE, query, "imp.", ".name");
 		} catch (Exception e) {
 			throw new IllegalStateException("Datum import type not found for [" + query + "]");
 		}
