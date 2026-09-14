@@ -246,7 +246,7 @@ public class CreateMappingCmd extends BaseSubCmd<MappingsGroup> implements Calla
 
 	private Map<String, Object> parsePropertyDefinition(int index, String propertyDefinition) {
 		// [index,]type,name,val_type,ref[,multiplier][,scale]
-		String[] components = propertyDefinition.split(",", 0);
+		String[] components = propertyDefinition.split("(?<!\\\\),", 0);
 		if (components.length < 4) {
 			throw new IllegalArgumentException(
 					"At least type,name,val_type,ref components must be provided in a property definition.");
@@ -270,7 +270,7 @@ public class CreateMappingCmd extends BaseSubCmd<MappingsGroup> implements Calla
 		settings.put("propertyType", DatumSamplesType.fromValue(components[pos]));
 		settings.put("propertyName", components[++pos]);
 		settings.put("valueType", CloudDatumStreamValueType.fromValue(components[++pos]));
-		settings.put("valueReference", components[++pos]);
+		settings.put("valueReference", components[++pos].replaceAll("\\\\,", ","));
 
 		if (components.length > ++pos) {
 			String s = components[pos];

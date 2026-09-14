@@ -98,7 +98,7 @@ The `--property` option accepts a _property definition_ value in this form:
 | `type`       | The [datum property classification][datum-samples-type], one of `i`, `a`, or `s`. |
 | `name`       | The datum property name. |
 | `val_type`   | Either `r` for a normal reference or `s` for a Spel Expression. |
-| `ref`        | The value reference, or expression if the `val_type` is `s`. |
+| `ref`        | The value reference, or expression if the `val_type` is `s`. :warning: For expressions, you must escape any embedded `,` characters with a backslash, as `\,`. For example `latestProp(sourceId,timestamp,"lifetime")` would need to be specified as `offsetProp(sourceId\,timestamp\,"lifetime")` to escape the commas. |
 | `multiplier` | An optional decimal number to multiply captured data values by. |
 | `scale`      | An optional maximum number of decimal places to round data values to. |
 
