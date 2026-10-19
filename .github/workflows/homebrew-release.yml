@@ -19,9 +19,9 @@ jobs:
           formula_folder: Formula
           commit_owner: homebrew-releaser
           commit_email: homebrew-releaser@solarnetwork.net
+          update_readme_table: true
           target_darwin_amd64: false
           target_darwin_arm64: true
           target_linux_amd64: true
           target_linux_arm64: true
           install: 'bin.install "s10k"'
-          #test: 'assert_match("my script output", shell_output("my-script-command"))'
