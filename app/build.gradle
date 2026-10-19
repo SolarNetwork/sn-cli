@@ -104,8 +104,10 @@ distributions  {
 		contents {
 			from(tasks.named("nativeCompile")) {
 				into('/')
-				exclude("management_ext.dll")
-				exclude("s10k-build-report.html")
+				include('s10k', 's10k.exe')
+				filePermissions {
+					unix('rwxr-xr-x')
+				}
 			}
 		}
 	}
