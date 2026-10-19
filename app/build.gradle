@@ -94,7 +94,7 @@ def getArchName() {
 	} else if ( osdetector.arch == 'x86_64' ) {
 		return 'amd64'
 	}
-	return osdetector.os
+	return osdetector.arch
 }
 
 distributions  {
